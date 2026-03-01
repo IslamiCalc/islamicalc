@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>بروفايل المستخدم | IslamiCalc</title>
+  <meta name="robots" content="noindex">
+  <link rel="icon" href="/favicon.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap">
+  <link rel="stylesheet" href="/style.css">
+  <style>
+    /* ===== متغيرات خاصة بالبروفايل ===== */
+    :root[data-theme="dark"] {
+      --profile-bg:    #0f0f1a;
+      --card-bg:       #1a1a2e;
+      --card-border:   rgba(201,168,76,0.15);
+      --gold:          #c9a84c;
+      --gold-light:    #f0d080;
+      --primary:       #2d6a4f;
+      --primary-light: #40916c;
+      --text:          #e8e8f0;
+      --text-muted:    #8888aa;
+      --success:       #10b981;
+      --error:         #ef4444;
+    }
+    :root[data-theme="light"] {
+      --profile-bg:    #f0f4f0;
+      --card-bg:       #ffffff;
+      --card-border:   rgba(45,106,79,0.2);
+      --gold:          #b8860b;
+      --gold-light:    #d4a017;
+      --primary:       #2d6a4f;
+      --primary-light: #40916c;
+      --text:          #1a1a2e;
+      --text-muted:    #555577;
+      --success:       #10b981;
+      --error:         #ef4444;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Tajawal', sans-serif;
+      background: var(--profile-bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* ===== هيدر البروفايل ===== */
+    .profile-hero {
+      background: linear-gradient(135deg, #0f1923 0%, #1a2e1a 50%, #1a1a2e 100%);
+      padding: 80px 20px 40px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .profile-hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 50% 0%, rgba(201,168,76,0.12) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .profile-avatar-wrap {
+      position: relative;
+      display: inline-block;
+      margin-bottom: 16px;
+    }
+    .profile-avatar {
+      width: 100px; height: 100px;
+      border-radius: 50%;
+      border: 4px solid var(--gold);
+      object-fit: cover;
+      display: block;
+    }
+    .profile-level-badge {
+      position: absolute;
+      bottom: -4px; left: -4px;
+      background: var(--gold);
+      color: #1a1a2e;
+      font-weight: 800;
+      font-size: 0.75rem;
+      padding: 3px 8px;
+      border-radius: 20px;
+      white-space: nowrap;
+    }
+    .profile-name {
+      font-size: 1.6rem;
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+    .profile-title {
+      color: var(--gold);
+      font-size: 0.95rem;
+      margin-bottom: 16px;
+      font-weight: 500;
+    }
+    .profile-country {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 20px;
+      padding: 4px 14px;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 24px;
+    }
+
+    /* ===== شريط XP ===== */
+    .xp-bar-section {
+      max-width: 400px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    .xp-bar-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+    .xp-bar-track {
+      background: rgba(255,255,255,0.1);
+      border-radius: 10px;
+      height: 10px;
+      overflow: hidden;
+    }
+    .xp-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary), var(--gold));
+      border-radius: 10px;
+      transition: width 1s cubic-bezier(0.4,0,0.2,1);
+      width: 0%;
+    }
+
+    /* ===== شبكة الإحصاء ===== */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      max-width: 600px;
+      margin: 28px auto 0;
+      padding: 0 20px;
+    }
+    .stat-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 16px 10px;
+      text-align: center;
+    }
+    .stat-icon { font-size: 1.6rem; margin-bottom: 6px; display: block; }
+    .stat-value {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--gold);
+      display: block;
+    }
+    .stat-label {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    /* ===== المحتوى الرئيسي ===== */
+    .profile-content {
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 28px 16px 60px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .section-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 22px;
+    }
+    .section-title {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+      color: var(--gold);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* ===== شبكة الأوسمة ===== */
+    .badges-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+      gap: 10px;
+    }
+    .badge-item {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 14px;
+      padding: 12px 8px;
+      text-align: center;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .badge-item.earned {
+      border-color: rgba(201,168,76,0.35);
+      background: rgba(201,168,76,0.06);
+    }
+    .badge-item.earned:hover { transform: translateY(-3px); }
+    .badge-icon   { font-size: 1.8rem; display: block; margin-bottom: 5px; }
+    .badge-label  { font-size: 0.72rem; font-weight: 700; }
+    .badge-desc   { font-size: 0.65rem; color: var(--text-muted); margin-top: 2px; }
+    .badge-item:not(.earned) { opacity: 0.35; filter: grayscale(1); }
+
+    /* ===== شريط التقدم اليومي ===== */
+    .activity-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      font-size: 0.9rem;
+    }
+    .activity-row:last-child { border-bottom: none; }
+    .activity-val {
+      font-weight: 700;
+      color: var(--primary-light);
+      font-size: 1rem;
+    }
+
+    /* ===== Streak Calendar ===== */
+    .streak-info {
+      display: flex;
+      justify-content: space-around;
+      padding: 10px 0;
+    }
+    .streak-box {
+      text-align: center;
+    }
+    .streak-num {
+      font-size: 2rem;
+      font-weight: 800;
+    }
+    .streak-num.fire { color: #ff7849; }
+    .streak-num.star { color: var(--gold); }
+    .streak-sub { font-size: 0.78rem; color: var(--text-muted); }
+
+    /* ===== أزرار ===== */
+    .btn-logout {
+      width: 100%;
+      padding: 14px;
+      border-radius: 14px;
+      background: rgba(239,68,68,0.1);
+      border: 1px solid rgba(239,68,68,0.3);
+      color: #ef4444;
+      font-family: inherit;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .btn-logout:hover { background: rgba(239,68,68,0.2); }
+
+    /* ===== حالة عدم تسجيل الدخول ===== */
+    .not-logged {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 60vh;
+      text-align: center;
+      gap: 16px;
+      padding: 40px 20px;
+    }
+    .not-logged-icon { font-size: 4rem; }
+    .not-logged h2   { font-size: 1.4rem; font-weight: 700; }
+    .not-logged p    { color: var(--text-muted); font-size: 0.95rem; }
+    .btn-login {
+      padding: 14px 36px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      color: #fff;
+      border: none;
+      border-radius: 14px;
+      font-family: inherit;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+    .btn-login:hover { opacity: 0.9; }
+
+    /* ===== Loading ===== */
+    .profile-loading {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 60vh;
+      gap: 16px;
+    }
+    .spinner {
+      width: 44px; height: 44px;
+      border: 4px solid rgba(255,255,255,0.1);
+      border-top-color: var(--gold);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    @media (max-width: 480px) {
+      .stats-grid { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+      .stat-value { font-size: 1.1rem; }
+      .badges-grid { grid-template-columns: repeat(auto-fill, minmax(85px, 1fr)); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Navbar من الملف الرئيسي سيُدرج هنا لاحقاً — حالياً نضع زر رجوع بسيط -->
+<nav style="position:fixed;top:0;right:0;left:0;height:60px;background:var(--card-bg,#1a1a2e);
+            border-bottom:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;
+            padding:0 20px;z-index:100;gap:12px;">
+  <a href="/" style="color:var(--gold,#c9a84c);text-decoration:none;font-size:1.4rem;">☪</a>
+  <span style="font-weight:700;font-size:1rem;">IslamiCalc</span>
+  <a href="/" style="margin-right:auto;color:var(--text-muted,#888);font-size:0.9rem;text-decoration:none;">
+    ← الرئيسية
+  </a>
+</nav>
+
+<!-- ===== حالة التحميل ===== -->
+<div id="profileLoading" class="profile-loading" style="padding-top:60px;">
+  <div class="spinner"></div>
+  <div style="color:var(--text-muted);">جاري تحميل البروفايل...</div>
+</div>
+
+<!-- ===== حالة عدم تسجيل الدخول ===== -->
+<div id="notLogged" class="not-logged" style="display:none;padding-top:60px;">
+  <div class="not-logged-icon">🔐</div>
+  <h2>سجّل دخولك أولاً</h2>
+  <p>لعرض بروفايلك وإحصائياتك وأوسمتك</p>
+  <button class="btn-login" onclick="window.islamiCalc?.loginWithGoogle()">
+    تسجيل الدخول بـ Google
+  </button>
+</div>
+
+<!-- ===== محتوى البروفايل ===== -->
+<div id="profileContent" style="display:none;padding-top:60px;">
+
+  <!-- هيدر البروفايل -->
+  <div class="profile-hero">
+    <div class="profile-avatar-wrap">
+      <img id="pAvatar" class="profile-avatar" src="" alt="صورة المستخدم" onerror="this.src='https://ui-avatars.com/api/?name=User&background=2d6a4f&color=fff&size=100'">
+      <div id="pLevelBadge" class="profile-level-badge">Lv. 1</div>
+    </div>
+    <div id="pName"    class="profile-name">جاري التحميل...</div>
+    <div id="pTitle"   class="profile-title">مسلم مبتدئ</div>
+    <div id="pCountry" class="profile-country">🌍 --</div>
+
+    <div class="xp-bar-section">
+      <div class="xp-bar-header">
+        <span id="pXPText">0 XP</span>
+        <span id="pNextLevel">المستوى القادم</span>
+      </div>
+      <div class="xp-bar-track">
+        <div class="xp-bar-fill" id="pXPBar"></div>
+      </div>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <span class="stat-icon">⭐</span>
+        <span class="stat-value" id="pXP">0</span>
+        <div class="stat-label">نقاط XP</div>
+      </div>
+      <div class="stat-card">
+        <span class="stat-icon">📊</span>
+        <span class="stat-value" id="pLevel">1</span>
+        <div class="stat-label">المستوى</div>
+      </div>
+      <div class="stat-card">
+        <span class="stat-icon">🏅</span>
+        <span class="stat-value" id="pBadgeCount">0</span>
+        <div class="stat-label">وسام</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- محتوى البروفايل -->
+  <div class="profile-content">
+
+    <!-- الـ Streak -->
+    <div class="section-card">
+      <div class="section-title">🔥 الاستمرارية</div>
+      <div class="streak-info">
+        <div class="streak-box">
+          <div class="streak-num fire" id="pStreak">0</div>
+          <div class="streak-sub">Streak الحالي</div>
+        </div>
+        <div class="streak-box">
+          <div class="streak-num star" id="pLongestStreak">0</div>
+          <div class="streak-sub">أطول Streak</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- الإنجازات والنشاط -->
+    <div class="section-card">
+      <div class="section-title">📈 إحصائيات النشاط</div>
+      <div id="activityList">
+        <div class="activity-row">
+          <span>📖 ختمات القرآن المكتملة</span>
+          <span class="activity-val" id="pKhatma">0</span>
+        </div>
+        <div class="activity-row">
+          <span>📿 مرات إتمام الأذكار</span>
+          <span class="activity-val" id="pAthkar">0</span>
+        </div>
+        <div class="activity-row">
+          <span>🏆 انتصارات التحديات</span>
+          <span class="activity-val" id="pQuizWins">0</span>
+        </div>
+        <div class="activity-row">
+          <span>❓ أسئلة يومية صحيحة</span>
+          <span class="activity-val" id="pDailyQ">0</span>
+        </div>
+        <div class="activity-row">
+          <span>📅 تاريخ الانضمام</span>
+          <span class="activity-val" id="pJoined">--</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- الأوسمة -->
+    <div class="section-card">
+      <div class="section-title">🏅 الأوسمة والشارات</div>
+      <div class="badges-grid" id="pBadgesGrid">
+        <!-- تُولَّد بـ JavaScript -->
+      </div>
+    </div>
+
+    <!-- تسجيل الخروج -->
+    <button class="btn-logout" onclick="window.islamiCalc?.logoutUser().then(()=>window.location='/')">
+      تسجيل الخروج 👋
+    </button>
+
+  </div>
+</div>
+
+<!-- Toast -->
+<div id="toast" class="toast"></div>
+
+<!-- Firebase -->
+<script type="module" src="/firebase.js"></script>
+
+<script>
+  // تهيئة الثيم
+  const saved = localStorage.getItem("theme") || "dark";
+  document.documentElement.setAttribute("data-theme", saved);
+
+  // الانتظار حتى يصبح المستخدم جاهزاً
+  let profileLoaded = false;
+
+  window.addEventListener("userReady", (e) => {
+    if (profileLoaded) return;
+    profileLoaded = true;
+    renderProfile(e.detail);
+  });
+
+  window.addEventListener("userSignedOut", () => {
+    document.getElementById("profileLoading").style.display = "none";
+    document.getElementById("profileContent").style.display  = "none";
+    document.getElementById("notLogged").style.display       = "flex";
+  });
+
+  // Timeout إذا Firebase تأخر
+  setTimeout(() => {
+    if (!profileLoaded) {
+      document.getElementById("profileLoading").style.display = "none";
+      document.getElementById("notLogged").style.display      = "flex";
+    }
+  }, 6000);
+
+  function renderProfile(data) {
+    if (!data) {
+      document.getElementById("profileLoading").style.display = "none";
+      document.getElementById("notLogged").style.display      = "flex";
+      return;
+    }
+
+    // إخفاء التحميل وإظهار البروفايل
+    document.getElementById("profileLoading").style.display = "none";
+    document.getElementById("profileContent").style.display = "block";
+
+    const xp     = data.xp     || 0;
+    const level  = data.level  || 1;
+    const streak = data.streak || 0;
+    const lvl    = window.islamiCalc?.getLevelFromXP(xp) || { level: 1, title: "مسلم مبتدئ" };
+    const prog   = window.islamiCalc?.getLevelProgress(xp) || { percent: 0, current: 0, needed: 200 };
+
+    // Avatar & Name
+    const avatar = document.getElementById("pAvatar");
+    avatar.src   = data.photo || "";
+    if (!data.photo) avatar.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(data.name||"U")}&background=2d6a4f&color=fff&size=100`;
+
+    setText("pName",          data.name || "مجهول");
+    setText("pTitle",         lvl.title);
+    setText("pLevelBadge",    "Lv. " + level);
+    setText("pCountry",       "🌍 " + (data.country || "--"));
+    setText("pXP",            xp.toLocaleString("ar"));
+    setText("pLevel",         level);
+    setText("pBadgeCount",    (data.badges || []).length);
+    setText("pStreak",        streak);
+    setText("pLongestStreak", data.longestStreak || streak);
+    setText("pKhatma",        data.khatmaCount   || 0);
+    setText("pAthkar",        data.athkarCount   || 0);
+    setText("pQuizWins",      data.quizWins      || 0);
+    setText("pDailyQ",        data.dailyQCorrect || 0);
+
+    // تاريخ الانضمام
+    if (data.createdAt?.toDate) {
+      const d = data.createdAt.toDate();
+      setText("pJoined", d.toLocaleDateString("ar-SA", { year:"numeric", month:"long", day:"numeric" }));
+    }
+
+    // XP Bar
+    setText("pXPText",    xp.toLocaleString("ar") + " XP");
+    setText("pNextLevel", prog.percent < 100 ? `${prog.needed - prog.current} XP للمستوى التالي` : "🏆 أعلى مستوى!");
+    setTimeout(() => {
+      document.getElementById("pXPBar").style.width = prog.percent + "%";
+    }, 300);
+
+    // الأوسمة
+    renderBadges(data.badges || []);
+  }
+
+  function renderBadges(earnedBadges) {
+    const grid    = document.getElementById("pBadgesGrid");
+    const BADGES  = window.islamiCalc?.BADGES_DEF || {};
+    grid.innerHTML = "";
+
+    Object.entries(BADGES).forEach(([id, def]) => {
+      const earned = earnedBadges.includes(id);
+      const item   = document.createElement("div");
+      item.className = "badge-item" + (earned ? " earned" : "");
+      item.title     = def.desc;
+
+      const icon  = document.createElement("span");
+      icon.className   = "badge-icon";
+      icon.textContent = def.icon;
+
+      const label  = document.createElement("div");
+      label.className   = "badge-label";
+      label.textContent = def.label;
+
+      const desc   = document.createElement("div");
+      desc.className   = "badge-desc";
+      desc.textContent = earned ? "✅ مكتسب" : "🔒 مقفل";
+
+      item.append(icon, label, desc);
+      grid.appendChild(item);
+    });
+  }
+
+  function setText(id, val) {
+    const el = document.getElementById(id);
+    if (el) el.textContent = val;
+  }
+</script>
+</body>
+</html>

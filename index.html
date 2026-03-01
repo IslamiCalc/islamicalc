@@ -301,7 +301,7 @@
         <p class="card-desc">قصص الأنبياء الـ25 مرتبة ومكتوبة بأسلوب ممتع</p>
         <span class="card-arrow">اقرأ القصص ←</span>
       </a>
-      <a href="/faq" class="card">
+      <a href="/fiqh" class="card">
         <span class="card-icon">❓</span>
         <h3 class="card-title">أسئلة وأجوبة فقهية</h3>
         <p class="card-desc">500+ سؤال ديني موثوق من مصادر سنية معتمدة</p>
@@ -778,14 +778,6 @@ function closeLoginModal() {
 document.getElementById("loginModal").addEventListener("click", (e) => {
   if (e.target === e.currentTarget) closeLoginModal();
 });
-
-function loginWithGoogle() {
-  showToast("🔵 جاري تسجيل الدخول...", "toast-gold");
-  setTimeout(() => {
-    closeLoginModal();
-    showToast("✅ تم تسجيل الدخول بنجاح!", "toast-success");
-  }, 1500);
-}
 
 // ========== Toast ==========
 function showToast(msg, type = "") {
