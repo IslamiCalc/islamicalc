@@ -4,424 +4,245 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>IslamiCalc | منصة إسلامية شاملة</title>
-  <meta name="description" content="منصة إسلامية شاملة — حاسبات الزكاة والميراث، ختمة القرآن، أوقات الصلاة، أذكار، ومسابقات دينية تفاعلية">
-  <meta name="keywords" content="حاسبة الزكاة، ختمة القرآن، أوقات الصلاة، الأذكار، السيرة النبوية، الإسلام">
-  <meta name="author" content="IslamiCalc">
+  <meta name="description" content="منصة إسلامية شاملة — حاسبات الزكاة والميراث، ختمة القرآن، أوقات الصلاة، أذكار، والميدان الإسلامي">
+  <meta name="keywords" content="زكاة، ميراث، قرآن، صلاة، أذكار، إسلام، حاسبة">
   <meta name="robots" content="index, follow">
-  <meta property="og:title"       content="IslamiCalc | منصة إسلامية شاملة">
-  <meta property="og:description" content="حاسبات إسلامية دقيقة، ختمة القرآن، أوقات الصلاة، وأذكار">
-  <meta property="og:type"        content="website">
-  <meta property="og:url"         content="https://islamicalc.com">
   <link rel="canonical" href="https://islamicalc.com">
-  <link rel="icon" href="/favicon.ico">
 
-  <!-- ✅ خطوط في <head> مباشرةً — وليس @import في CSS -->
+  <!-- Open Graph -->
+  <meta property="og:title"       content="IslamiCalc | منصة إسلامية شاملة">
+  <meta property="og:description" content="حاسبات إسلامية، ختمة القرآن، الميدان الإسلامي، وأكثر">
+  <meta property="og:url"         content="https://islamicalc.com">
+  <meta property="og:type"        content="website">
+
+  <link rel="icon" href="/favicon.ico">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&family=Inter:wght@400;600;700;800&display=swap">
-
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap">
   <link rel="stylesheet" href="/style.css">
 
-  <!-- ✅ Schema مُصحَّح — بدون SearchAction الوهمي -->
   <script type="application/ld+json">
   {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    "name": "IslamiCalc",
-    "url": "https://islamicalc.com",
-    "description": "منصة إسلامية شاملة — حاسبات وأدوات إسلامية",
-    "inLanguage": "ar"
+    "@context":"https://schema.org","@type":"WebSite",
+    "name":"IslamiCalc","url":"https://islamicalc.com",
+    "description":"منصة إسلامية شاملة","inLanguage":"ar"
   }
   </script>
 </head>
-
 <body>
 
-<!-- ===== شريط التنقل ===== -->
+<!-- ====== NAVBAR ====== -->
 <nav class="navbar" role="navigation" aria-label="القائمة الرئيسية">
-
-  <!-- الشعار -->
-  <a href="/" class="navbar-brand" aria-label="IslamiCalc الرئيسية">
-    <div class="navbar-logo" aria-hidden="true">☪</div>
+  <a href="/" class="navbar-brand">
+    <div class="navbar-logo">☪</div>
     <span class="navbar-title">IslamiCalc</span>
   </a>
-
-  <!-- قائمة سطح المكتب -->
-  <ul class="navbar-menu" id="navMenu" role="list">
-    <li><a href="/">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-      الرئيسية
-    </a></li>
-    <li><a href="/zakat">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-      الحاسبات
-    </a></li>
-    <li><a href="/khatma">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>
-      القرآن
-    </a></li>
-    <li><a href="/prayer">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-      الصلاة
-    </a></li>
-    <li><a href="/athkar">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="2"/><path d="M12 2a10 10 0 100 20 10 10 0 000-20z" stroke-dasharray="4 2"/></svg>
-      الأذكار
-    </a></li>
-    <li><a href="/arena">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 9H4.5a2.5 2.5 0 010-5H6"/><path d="M18 9h1.5a2.5 2.5 0 000-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0012 0V2z"/></svg>
-      الأرينا
-    </a></li>
-    <li><a href="/faq">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-      المعرفة
-    </a></li>
-
-    <!-- ✅ زر الدخول في القائمة على الجوال -->
-    <li class="login-btn-mobile" style="display:none;">
-      <button class="login-btn" id="loginBtnMobile"
-              onclick="openLoginModal()"
-              aria-label="تسجيل الدخول بـ Google">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-        دخول بـ Google
-      </button>
-    </li>
-
-    <!-- رابط البروفايل (يظهر بعد تسجيل الدخول) -->
-    <li id="navProfile" style="display:none;">
-      <a href="/profile">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-        بروفايلي
-      </a>
-    </li>
+  <ul class="navbar-menu" id="navMenu">
+    <li><a href="/"          class="active">الرئيسية</a></li>
+    <li><a href="/zakat">الحاسبات</a></li>
+    <li><a href="/khatma">القرآن</a></li>
+    <li><a href="/prayer">الصلاة</a></li>
+    <li><a href="/athkar">الأذكار</a></li>
+    <li><a href="/arena">الميدان</a></li>
+    <li><a href="/faq">المعرفة</a></li>
+    <li id="navProfile" style="display:none;"><a href="/profile">بروفايلي</a></li>
   </ul>
-
-  <!-- أزرار يمين الناف -->
   <div class="navbar-actions">
-    <button class="lang-btn" id="langBtn" aria-label="تبديل اللغة">EN</button>
-
-    <button class="theme-btn" id="themeBtn" aria-label="تبديل الوضع الداكن/الفاتح">
-      <!-- أيقونة الشمس (light) -->
-      <svg id="iconSun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none;" aria-hidden="true">
-        <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
-        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
-        <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
-        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
-      </svg>
-      <!-- أيقونة القمر (dark) -->
-      <svg id="iconMoon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+    <button class="lang-btn"  id="langBtn"  aria-label="تغيير اللغة">EN</button>
+    <button class="theme-btn" id="themeBtn" aria-label="تبديل الثيم">
+      <svg id="iconMoon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>
       </svg>
-    </button>
-
-    <!-- ✅ زر الدخول — سطح المكتب فقط -->
-    <button class="login-btn" id="loginBtn"
-            onclick="openLoginModal()"
-            aria-label="تسجيل الدخول بـ Google">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-        <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/>
+      <svg id="iconSun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none">
+        <circle cx="12" cy="12" r="5"/>
+        <line x1="12" y1="1"  x2="12" y2="3"/>
+        <line x1="12" y1="21" x2="12" y2="23"/>
+        <line x1="4.22"  y1="4.22"  x2="5.64"  y2="5.64"/>
+        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+        <line x1="1"  y1="12" x2="3"  y2="12"/>
+        <line x1="21" y1="12" x2="23" y2="12"/>
       </svg>
-      دخول بـ Google
     </button>
-
-    <button class="menu-toggle" id="menuToggle"
-            aria-label="فتح القائمة" aria-expanded="false" aria-controls="navMenu">
-      <svg id="iconMenu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+    <button class="login-btn" id="loginBtn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+        <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
+        <circle cx="12" cy="7" r="4"/>
+      </svg>
+      دخول
+    </button>
+    <button class="menu-toggle" id="menuToggle" aria-label="القائمة" aria-expanded="false">
+      <svg id="iconMenu"  viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <line x1="3" y1="6"  x2="21" y2="6"/>
         <line x1="3" y1="12" x2="21" y2="12"/>
         <line x1="3" y1="18" x2="21" y2="18"/>
       </svg>
-      <svg id="iconClose" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none;" aria-hidden="true">
-        <line x1="18" y1="6"  x2="6" y2="18"/>
-        <line x1="6"  y1="6" x2="18" y2="18"/>
+      <svg id="iconClose" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none">
+        <line x1="18" y1="6"  x2="6"  y2="18"/>
+        <line x1="6"  y1="6"  x2="18" y2="18"/>
       </svg>
     </button>
   </div>
 </nav>
 
+<!-- ====== HERO ====== -->
+<section class="hero">
+  <div class="hero-badge">🌟 منصة إسلامية شاملة • أدوات + قرآن + مسابقات</div>
+  <h1 class="hero-title" id="heroTitle">
+    كل ما تحتاجه<br>في رحلتك الإسلامية
+  </h1>
+  <p class="hero-desc" id="heroDesc">
+    حاسبات إسلامية دقيقة، ختمة القرآن، أوقات الصلاة، أذكار، ومسابقات دينية تفاعلية — كل شيء في مكان واحد
+  </p>
+  <div class="hero-btns">
+    <a href="/arena" class="btn-primary">🏟️ ادخل الميدان</a>
+    <a href="/zakat" class="btn-secondary">🧮 الحاسبات</a>
+  </div>
 
-<!-- ===== المحتوى الرئيسي ===== -->
-<main>
+  <!-- آية اليوم -->
+  <div class="verse-card">
+    <div class="verse-text" id="verseText">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</div>
+    <div class="verse-source" id="verseSource">جاري التحميل...</div>
+  </div>
+</section>
 
-  <!-- قسم Hero -->
-  <section class="hero" aria-label="مقدمة الموقع">
-    <div class="hero-badge">🌟 منصة إسلامية شاملة • أدوات + قرآن + مسابقات</div>
-
-    <h1 id="heroTitle">كل ما تحتاجه<br>في رحلتك الإسلامية</h1>
-    <p id="heroDesc">حاسبات إسلامية دقيقة، ختمة القرآن، أوقات الصلاة، أذكار، ومسابقات دينية تفاعلية — كل شيء في مكان واحد</p>
-
-    <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin-bottom:40px;">
-      <a href="/arena" class="btn btn-gold btn-lg">🏆 ابدأ التحدي</a>
-      <a href="/zakat" class="btn btn-primary btn-lg">🧮 الحاسبات</a>
+<!-- ====== أوقات الصلاة ====== -->
+<section class="prayer-section">
+  <div class="prayer-grid">
+    <div class="prayer-item" id="fajr-item">
+      <span class="prayer-name">الفجر</span>
+      <span class="prayer-time" id="fajr-time">--:--</span>
     </div>
-
-    <!-- آية اليوم -->
-    <div class="verse-banner" aria-live="polite">
-      <div class="verse-text" id="verseText">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</div>
-      <div class="verse-source" id="verseSource">جاري التحميل...</div>
+    <div class="prayer-item" id="dhuhr-item">
+      <span class="prayer-name">الظهر</span>
+      <span class="prayer-time" id="dhuhr-time">--:--</span>
     </div>
-  </section>
-
-  <!-- أوقات الصلاة -->
-  <section style="max-width:1200px; margin:0 auto; padding:0 24px 48px;">
-    <div class="prayer-bar" id="prayerBar" aria-label="أوقات الصلاة">
-      <div class="prayer-item" id="fajr-item">
-        <span class="prayer-name">الفجر</span>
-        <span class="prayer-time" id="fajr-time">--:--</span>
-      </div>
-      <div class="prayer-item" id="dhuhr-item">
-        <span class="prayer-name">الظهر</span>
-        <span class="prayer-time" id="dhuhr-time">--:--</span>
-      </div>
-      <div class="prayer-item" id="asr-item">
-        <span class="prayer-name">العصر</span>
-        <span class="prayer-time" id="asr-time">--:--</span>
-      </div>
-      <div class="prayer-item" id="maghrib-item">
-        <span class="prayer-name">المغرب</span>
-        <span class="prayer-time" id="maghrib-time">--:--</span>
-      </div>
-      <div class="prayer-item" id="isha-item">
-        <span class="prayer-name">العشاء</span>
-        <span class="prayer-time" id="isha-time">--:--</span>
-      </div>
-      <div class="next-prayer">
-        <span class="next-label">الصلاة القادمة</span>
-        <span class="next-countdown" id="nextPrayerCountdown">--:--:--</span>
-        <span class="next-label" id="nextPrayerName">--</span>
-      </div>
+    <div class="prayer-item" id="asr-item">
+      <span class="prayer-name">العصر</span>
+      <span class="prayer-time" id="asr-time">--:--</span>
     </div>
-  </section>
-
-  <!-- سؤال اليوم -->
-  <section style="max-width:1200px; margin:0 auto; padding:0 24px 48px;">
-    <div class="leaderboard" style="border-radius:16px; overflow:hidden;">
-      <div style="padding:20px 24px; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px;">
-        <div>
-          <h2 style="font-size:18px; font-weight:800; margin-bottom:2px;">❓ سؤال اليوم</h2>
-          <p style="font-size:13px; color:var(--text-muted);">أجب وشارك نتيجتك!</p>
-        </div>
-        <div style="display:flex; align-items:center; gap:8px; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3); border-radius:20px; padding:6px 14px;">
-          <span style="font-size:14px; color:var(--gold); font-weight:700;">+50 XP</span>
-        </div>
-      </div>
-      <div style="padding:24px;" id="dailyQuizSection">
-        <p style="font-size:18px; font-weight:700; margin-bottom:20px; line-height:1.7;" id="dailyQuestion">جاري التحميل...</p>
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;" id="dailyOptions"></div>
-        <div id="dailyResult" style="display:none; margin-top:16px; padding:16px; border-radius:12px; text-align:center; font-weight:700;"></div>
-      </div>
+    <div class="prayer-item" id="maghrib-item">
+      <span class="prayer-name">المغرب</span>
+      <span class="prayer-time" id="maghrib-time">--:--</span>
     </div>
-  </section>
+    <div class="prayer-item" id="isha-item">
+      <span class="prayer-name">العشاء</span>
+      <span class="prayer-time" id="isha-time">--:--</span>
+    </div>
+    <div class="prayer-item next-prayer">
+      <span class="prayer-name">الصلاة القادمة</span>
+      <span class="prayer-time" id="nextPrayerCountdown">--:--:--</span>
+      <span class="prayer-sub"  id="nextPrayerName">--</span>
+    </div>
+  </div>
+</section>
 
-  <!-- الحاسبات الإسلامية -->
-  <section class="section">
+<!-- ====== سؤال اليوم ====== -->
+<section class="daily-section">
+  <div class="section-container">
+    <h2 class="section-title">❓ سؤال اليوم</h2>
+    <p class="section-sub">أجب وشارك نتيجتك!</p>
+    <div class="daily-card">
+      <div class="daily-xp-badge">+50 XP</div>
+      <div class="daily-q" id="dailyQuestion">جاري التحميل...</div>
+      <div class="daily-options" id="dailyOptions"></div>
+      <div class="daily-result" id="dailyResult" style="display:none"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== الحاسبات ====== -->
+<section class="features-section">
+  <div class="section-container">
     <h2 class="section-title">🧮 الحاسبات الإسلامية</h2>
-    <p class="section-subtitle">أدوات دقيقة وموثوقة لعباداتك اليومية</p>
-    <div class="cards-grid">
-      <a href="/zakat" class="card">
-        <span class="card-icon">💰</span>
-        <h3 class="card-title">حاسبة الزكاة</h3>
-        <p class="card-desc">احسب زكاة الذهب والفضة والأموال والتجارة بدقة</p>
-        <span class="card-arrow">احسب الآن ←</span>
-      </a>
-      <a href="/nisab" class="card">
-        <span class="card-icon">⚖️</span>
-        <h3 class="card-title">نصاب اليوم</h3>
-        <p class="card-desc">نصاب الذهب والفضة محدّث يومياً بالسعر الحالي</p>
-        <span class="card-arrow">اعرف النصاب ←</span>
-      </a>
-      <a href="/inheritance" class="card">
-        <span class="card-icon">📜</span>
-        <h3 class="card-title">حاسبة الميراث</h3>
-        <p class="card-desc">توزيع الميراث الشرعي وفق أحكام الفقه الإسلامي</p>
-        <span class="card-arrow">احسب الميراث ←</span>
-      </a>
-      <a href="/kafara" class="card">
-        <span class="card-icon">🤲</span>
-        <h3 class="card-title">حاسبة الكفارة</h3>
-        <p class="card-desc">كفارة اليمين والصيام والإطعام وفق الفقه السني</p>
-        <span class="card-arrow">احسب الكفارة ←</span>
-      </a>
-      <a href="/fasting" class="card">
-        <span class="card-icon">🌙</span>
-        <h3 class="card-title">حاسبة القضاء</h3>
-        <p class="card-desc">احسب أيام الصيام المتبقية عليك من رمضان</p>
-        <span class="card-arrow">احسب الآن ←</span>
-      </a>
-      <a href="/sadaqa" class="card">
-        <span class="card-icon">🎁</span>
-        <h3 class="card-title">صدقة الفطر</h3>
-        <p class="card-desc">احسب مقدار صدقة الفطر لك ولعائلتك</p>
-        <span class="card-arrow">احسب الآن ←</span>
-      </a>
-      <a href="/hijri" class="card">
-        <span class="card-icon">📅</span>
-        <h3 class="card-title">محول التاريخ</h3>
-        <p class="card-desc">تحويل التاريخ بين الهجري والميلادي بدقة</p>
-        <span class="card-arrow">حوّل التاريخ ←</span>
-      </a>
-      <a href="/islamic-age" class="card">
-        <span class="card-icon">🎂</span>
-        <h3 class="card-title">عمرك الإسلامي</h3>
-        <p class="card-desc">كم عمرك هجرياً؟ وكم رمضان صمت؟ وكم صلاة صليت؟</p>
-        <span class="card-arrow">اكتشف ←</span>
-      </a>
+    <p class="section-sub">أدوات دقيقة وموثوقة لعباداتك اليومية</p>
+    <div class="features-grid">
+      <a href="/zakat"       class="feature-card"><div class="feature-icon">💰</div><h3>حاسبة الزكاة</h3><p>احسب زكاة الذهب والفضة والأموال والتجارة بدقة</p><span class="feature-link">احسب الآن ←</span></a>
+      <a href="/nisab"       class="feature-card"><div class="feature-icon">⚖️</div><h3>نصاب اليوم</h3><p>نصاب الذهب والفضة محدّث يومياً بالسعر الحالي</p><span class="feature-link">اعرف النصاب ←</span></a>
+      <a href="/inheritance" class="feature-card"><div class="feature-icon">📜</div><h3>حاسبة الميراث</h3><p>توزيع الميراث الشرعي وفق أحكام الفقه الإسلامي</p><span class="feature-link">احسب الميراث ←</span></a>
+      <a href="/kafara"      class="feature-card"><div class="feature-icon">🤲</div><h3>حاسبة الكفارة</h3><p>كفارة اليمين والصيام والإطعام وفق الفقه السني</p><span class="feature-link">احسب الكفارة ←</span></a>
+      <a href="/fasting"     class="feature-card"><div class="feature-icon">🌙</div><h3>حاسبة القضاء</h3><p>احسب أيام الصيام المتبقية عليك من رمضان</p><span class="feature-link">احسب الآن ←</span></a>
+      <a href="/sadaqa"      class="feature-card"><div class="feature-icon">🎁</div><h3>صدقة الفطر</h3><p>احسب مقدار صدقة الفطر لك ولعائلتك</p><span class="feature-link">احسب الآن ←</span></a>
+      <a href="/hijri"       class="feature-card"><div class="feature-icon">📅</div><h3>محول التاريخ</h3><p>تحويل التاريخ بين الهجري والميلادي بدقة</p><span class="feature-link">حوّل التاريخ ←</span></a>
+      <a href="/islamic-age" class="feature-card"><div class="feature-icon">🎂</div><h3>عمرك الإسلامي</h3><p>كم عمرك هجرياً؟ وكم رمضان صمت؟</p><span class="feature-link">اكتشف ←</span></a>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- مركز القرآن -->
-  <section class="section" style="background:linear-gradient(135deg,rgba(26,86,219,0.05),rgba(245,158,11,0.05)); border-radius:24px; margin:0 24px;">
+<!-- ====== القرآن ====== -->
+<section class="features-section alt">
+  <div class="section-container">
     <h2 class="section-title">📖 مركز القرآن الكريم</h2>
-    <p class="section-subtitle">تتبّع ختمتك، وتدبّر كلام الله</p>
-    <div class="cards-grid">
-      <a href="/khatma" class="card">
-        <span class="card-icon">📖</span>
-        <h3 class="card-title">خطة الختمة</h3>
-        <p class="card-desc">ضع خطة مخصصة لختم القرآن حسب وقتك وهدفك</p>
-        <span class="card-arrow">ابدأ ختمتك ←</span>
-      </a>
-      <a href="/khatma/group" class="card">
-        <span class="card-icon">👨‍👩‍👧</span>
-        <h3 class="card-title">ختمة العائلة</h3>
-        <p class="card-desc">اختم القرآن مع عائلتك وتتبعوا التقدم معاً</p>
-        <span class="card-arrow">ابدأ مع العائلة ←</span>
-      </a>
-      <a href="/khatma/tracker" class="card">
-        <span class="card-icon">📊</span>
-        <h3 class="card-title">متابعة الختمة</h3>
-        <p class="card-desc">شريط تقدم يومي يبين وين وصلت في القرآن</p>
-        <span class="card-arrow">تابع تقدمك ←</span>
-      </a>
-      <a href="/names" class="card">
-        <span class="card-icon">✨</span>
-        <h3 class="card-title">أسماء الله الحسنى</h3>
-        <p class="card-desc">الأسماء الـ99 مع المعاني والأدعية المتعلقة بكل اسم</p>
-        <span class="card-arrow">استكشف ←</span>
-      </a>
+    <p class="section-sub">تتبّع ختمتك، وتدبّر كلام الله</p>
+    <div class="features-grid">
+      <a href="/khatma"         class="feature-card"><div class="feature-icon">📖</div><h3>خطة الختمة</h3><p>ضع خطة مخصصة لختم القرآن حسب وقتك وهدفك</p><span class="feature-link">ابدأ ختمتك ←</span></a>
+      <a href="/khatma/group"   class="feature-card"><div class="feature-icon">👨‍👩‍👧</div><h3>ختمة العائلة</h3><p>اختم القرآن مع عائلتك وتتبعوا التقدم معاً</p><span class="feature-link">ابدأ مع العائلة ←</span></a>
+      <a href="/khatma/tracker" class="feature-card"><div class="feature-icon">📊</div><h3>متابعة الختمة</h3><p>شريط تقدم يومي يبين وين وصلت في القرآن</p><span class="feature-link">تابع تقدمك ←</span></a>
+      <a href="/names"          class="feature-card"><div class="feature-icon">✨</div><h3>أسماء الله الحسنى</h3><p>الأسماء الـ99 مع المعاني والأدعية</p><span class="feature-link">استكشف ←</span></a>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- الأذكار والعبادات -->
-  <section class="section">
+<!-- ====== الأذكار ====== -->
+<section class="features-section">
+  <div class="section-container">
     <h2 class="section-title">🌙 الأذكار والعبادات</h2>
-    <p class="section-subtitle">حصّن يومك بذكر الله</p>
-    <div class="cards-grid">
-      <a href="/prayer" class="card">
-        <span class="card-icon">🕌</span>
-        <h3 class="card-title">أوقات الصلاة</h3>
-        <p class="card-desc">أوقات الصلاة حسب موقعك مع إشعار تلقائي</p>
-        <span class="card-arrow">اعرف الأوقات ←</span>
-      </a>
-      <a href="/athkar" class="card">
-        <span class="card-icon">📿</span>
-        <h3 class="card-title">أذكار الصباح والمساء</h3>
-        <p class="card-desc">أذكار صباح ومساء كاملة مع عداد لكل ذكر</p>
-        <span class="card-arrow">ابدأ الأذكار ←</span>
-      </a>
-      <a href="/tasbih" class="card">
-        <span class="card-icon">☪️</span>
-        <h3 class="card-title">مسبحة رقمية</h3>
-        <p class="card-desc">مسبحة تفاعلية لتسبيح وتهليل وتكبير بعد الصلاة</p>
-        <span class="card-arrow">افتح المسبحة ←</span>
-      </a>
-      <a href="/qibla" class="card">
-        <span class="card-icon">🧭</span>
-        <h3 class="card-title">اتجاه القبلة</h3>
-        <p class="card-desc">بوصلة حية تحدد اتجاه القبلة من أي مكان في العالم</p>
-        <span class="card-arrow">حدد القبلة ←</span>
-      </a>
+    <p class="section-sub">حصّن يومك بذكر الله</p>
+    <div class="features-grid">
+      <a href="/prayer" class="feature-card"><div class="feature-icon">🕌</div><h3>أوقات الصلاة</h3><p>أوقات الصلاة حسب موقعك مع إشعار تلقائي</p><span class="feature-link">اعرف الأوقات ←</span></a>
+      <a href="/athkar" class="feature-card"><div class="feature-icon">📿</div><h3>أذكار الصباح والمساء</h3><p>أذكار صباح ومساء كاملة مع عداد لكل ذكر</p><span class="feature-link">ابدأ الأذكار ←</span></a>
+      <a href="/tasbih" class="feature-card"><div class="feature-icon">☪️</div><h3>مسبحة رقمية</h3><p>مسبحة تفاعلية لتسبيح وتهليل وتكبير بعد الصلاة</p><span class="feature-link">افتح المسبحة ←</span></a>
+      <a href="/qibla"  class="feature-card"><div class="feature-icon">🧭</div><h3>اتجاه القبلة</h3><p>بوصلة حية تحدد اتجاه القبلة من أي مكان</p><span class="feature-link">حدد القبلة ←</span></a>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- ساحة التحدي -->
-  <section class="section">
-    <div style="background:linear-gradient(135deg,#0f172a,#1e1b4b,#0f172a); border-radius:24px; padding:48px 32px; text-align:center; position:relative; overflow:hidden;">
-      <div style="position:absolute;top:-40px;right:-40px;width:200px;height:200px;background:radial-gradient(circle,rgba(245,158,11,0.15),transparent);border-radius:50%;pointer-events:none;"></div>
-      <div style="position:absolute;bottom:-40px;left:-40px;width:200px;height:200px;background:radial-gradient(circle,rgba(26,86,219,0.15),transparent);border-radius:50%;pointer-events:none;"></div>
-
-      <div style="font-size:48px; margin-bottom:16px;">🏟️</div>
-      <h2 style="font-size:clamp(24px,5vw,40px); font-weight:900; color:white; margin-bottom:12px;">
-        ساحة التحدي الإسلامي
-      </h2>
-      <p style="color:#94a3b8; font-size:16px; max-width:500px; margin:0 auto 32px;">
-        تحدَّ نفسك وأصدقاءك وعائلتك بأسئلة دينية تفاعلية • 100 مرحلة • 700 سؤال
-      </p>
-
-      <div style="display:flex; gap:16px; justify-content:center; flex-wrap:wrap; margin-bottom:32px;">
-        <div style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:12px; padding:16px 24px; text-align:center;">
-          <div style="font-size:28px; font-weight:900; color:var(--gold); font-family:'Poppins';">700+</div>
-          <div style="font-size:12px; color:#94a3b8;">سؤال ديني</div>
-        </div>
-        <div style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:12px; padding:16px 24px; text-align:center;">
-          <div style="font-size:28px; font-weight:900; color:#3b82f6; font-family:'Poppins';">100</div>
-          <div style="font-size:12px; color:#94a3b8;">مرحلة</div>
-        </div>
-        <div style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:12px; padding:16px 24px; text-align:center;">
-          <div style="font-size:28px; font-weight:900; color:#10b981; font-family:'Poppins';">3</div>
-          <div style="font-size:12px; color:#94a3b8;">أوضاع لعب</div>
-        </div>
-      </div>
-
-      <a href="/arena" class="btn btn-gold btn-lg">
-        🎮 ابدأ التحدي الآن
-      </a>
+<!-- ====== الميدان ====== -->
+<section class="arena-section">
+  <div class="arena-content">
+    <div class="arena-icon">🏟️</div>
+    <h2>الميدان الإسلامي</h2>
+    <p>تحدَّ نفسك في ميدان المعرفة الإسلامية — أسئلة في القرآن والسيرة والفقه والأخلاق</p>
+    <div class="arena-stats">
+      <div class="arena-stat"><span class="arena-num">700+</span><span class="arena-lbl">سؤال ديني</span></div>
+      <div class="arena-stat"><span class="arena-num">7</span><span class="arena-lbl">فئة</span></div>
+      <div class="arena-stat"><span class="arena-num">3</span><span class="arena-lbl">أوضاع لعب</span></div>
     </div>
-  </section>
+    <a href="/arena" class="btn-primary">🎮 ادخل الميدان الآن</a>
+  </div>
+</section>
 
-  <!-- مركز المعرفة -->
-  <section class="section">
+<!-- ====== المعرفة ====== -->
+<section class="features-section alt">
+  <div class="section-container">
     <h2 class="section-title">📚 مركز المعرفة الإسلامية</h2>
-    <p class="section-subtitle">تعلّم وتعمّق في علوم الإسلام</p>
-    <div class="cards-grid">
-      <a href="/prophets" class="card">
-        <span class="card-icon">🌟</span>
-        <h3 class="card-title">قصص الأنبياء</h3>
-        <p class="card-desc">قصص الأنبياء الـ25 مرتبة ومكتوبة بأسلوب ممتع</p>
-        <span class="card-arrow">اقرأ القصص ←</span>
-      </a>
-      <a href="/fiqh" class="card">
-        <span class="card-icon">❓</span>
-        <h3 class="card-title">أسئلة وأجوبة فقهية</h3>
-        <p class="card-desc">500+ سؤال ديني موثوق من مصادر سنية معتمدة</p>
-        <span class="card-arrow">استعرض الأسئلة ←</span>
-      </a>
-      <a href="/seerah" class="card">
-        <span class="card-icon">🕌</span>
-        <h3 class="card-title">السيرة النبوية</h3>
-        <p class="card-desc">سيرة النبي ﷺ من الميلاد إلى الوفاة مرتبة بالتفصيل</p>
-        <span class="card-arrow">اقرأ السيرة ←</span>
-      </a>
-      <a href="/blog" class="card">
-        <span class="card-icon">✍️</span>
-        <h3 class="card-title">المقالات الإسلامية</h3>
-        <p class="card-desc">مقالات موثوقة في العقيدة والفقه والتزكية</p>
-        <span class="card-arrow">اقرأ المقالات ←</span>
-      </a>
+    <p class="section-sub">تعلّم وتعمّق في علوم الإسلام</p>
+    <div class="features-grid">
+      <a href="/prophets"  class="feature-card"><div class="feature-icon">🌟</div><h3>قصص الأنبياء</h3><p>قصص الأنبياء الـ25 مرتبة ومكتوبة بأسلوب ممتع</p><span class="feature-link">اقرأ القصص ←</span></a>
+      <a href="/fiqh"      class="feature-card"><div class="feature-icon">❓</div><h3>أسئلة وأجوبة فقهية</h3><p>500+ سؤال ديني موثوق من مصادر سنية معتمدة</p><span class="feature-link">استعرض ←</span></a>
+      <a href="/seerah"    class="feature-card"><div class="feature-icon">🕌</div><h3>السيرة النبوية</h3><p>سيرة النبي ﷺ من الميلاد إلى الوفاة مرتبة بالتفصيل</p><span class="feature-link">اقرأ السيرة ←</span></a>
+      <a href="/blog"      class="feature-card"><div class="feature-icon">✍️</div><h3>المقالات الإسلامية</h3><p>مقالات موثوقة في العقيدة والفقه والتزكية</p><span class="feature-link">اقرأ المقالات ←</span></a>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- عداد رمضان -->
-  <section style="max-width:1200px; margin:0 auto; padding:0 24px 48px;" id="ramadanSection">
-    <div style="background:linear-gradient(135deg,rgba(245,158,11,0.1),rgba(26,86,219,0.1)); border:1px solid rgba(245,158,11,0.2); border-radius:20px; padding:32px; text-align:center;">
-      <div style="font-size:40px; margin-bottom:12px;">🌙</div>
-      <h2 style="font-size:22px; font-weight:800; margin-bottom:8px;" id="ramadanTitle">شهر رمضان المبارك</h2>
-      <p style="color:var(--text-secondary); font-size:15px; margin-bottom:16px;" id="ramadanDesc">جاري حساب...</p>
-      <div style="font-size:48px; font-weight:900; color:var(--gold); font-family:'Poppins';" id="ramadanCounter">--</div>
-      <p style="color:var(--text-muted); font-size:14px; margin-top:8px;" id="ramadanLabel"></p>
-    </div>
-  </section>
+<!-- ====== رمضان ====== -->
+<section class="ramadan-section">
+  <div class="ramadan-inner">
+    <div class="ramadan-icon">🌙</div>
+    <h2 id="ramadanTitle">جاري الحساب...</h2>
+    <div class="ramadan-counter" id="ramadanCounter">--</div>
+    <div class="ramadan-label" id="ramadanLabel"></div>
+    <p class="ramadan-desc"   id="ramadanDesc"></p>
+  </div>
+</section>
 
-</main>
-
-<!-- ===== الفوتر ===== -->
-<footer>
-  <div class="footer-grid">
+<!-- ====== FOOTER ====== -->
+<footer class="footer">
+  <div class="footer-inner">
     <div class="footer-brand">
-      <span class="navbar-title" style="font-size:24px;">IslamiCalc ☪️</span>
-      <p class="footer-desc">منصة إسلامية شاملة تجمع الحاسبات الإسلامية، القرآن الكريم، الأذكار، والمسابقات الدينية في مكان واحد.</p>
-      <p style="font-size:12px; color:var(--text-muted); margin-top:12px;">
-        📧 islamicalc@outlook.com
-      </p>
+      <div class="footer-logo">IslamiCalc ☪️</div>
+      <p>منصة إسلامية شاملة تجمع الحاسبات الإسلامية، القرآن الكريم، الأذكار، والمسابقات الدينية في مكان واحد.</p>
+      <p>📧 islamicalc@outlook.com</p>
     </div>
     <div class="footer-col">
       <h4>الحاسبات</h4>
@@ -446,7 +267,7 @@
     <div class="footer-col">
       <h4>المنصة</h4>
       <ul>
-        <li><a href="/arena">ساحة التحدي</a></li>
+        <li><a href="/arena">الميدان</a></li>
         <li><a href="/prophets">قصص الأنبياء</a></li>
         <li><a href="/about">من نحن</a></li>
         <li><a href="/privacy">سياسة الخصوصية</a></li>
@@ -455,490 +276,379 @@
     </div>
   </div>
   <div class="footer-bottom">
-    <span>© 2026 IslamiCalc — جميع الحقوق محفوظة</span>
-    <span style="color:var(--text-muted);">صُنع بـ ❤️ لخدمة الإسلام والمسلمين</span>
-    <a href="/privacy" style="color:var(--text-muted); text-decoration:none;">الخصوصية</a>
+    © 2026 IslamiCalc — جميع الحقوق محفوظة &nbsp;|&nbsp;
+    صُنع بـ ❤️ لخدمة الإسلام والمسلمين &nbsp;|&nbsp;
+    <a href="/privacy">الخصوصية</a>
   </div>
 </footer>
 
-<!-- ===== شريط الكوكيز ===== -->
-<div class="cookie-banner" id="cookieBanner" style="display:none;" role="alert">
-  <p class="cookie-text">
-    نستخدم ملفات تعريف الارتباط لتحسين تجربتك وتشغيل الإعلانات.
-    <a href="/privacy">اعرف المزيد</a>
-  </p>
-  <div style="display:flex; gap:10px; flex-shrink:0;">
-    <button class="btn btn-sm btn-outline" onclick="rejectCookies()">رفض</button>
-    <button class="btn btn-sm btn-primary" onclick="acceptCookies()">قبول ✓</button>
+<!-- ====== Cookie Banner ====== -->
+<div class="cookie-banner" id="cookieBanner" style="display:none;">
+  <span>نستخدم ملفات تعريف الارتباط لتحسين تجربتك وتشغيل الإعلانات.
+    <a href="/privacy">اعرف المزيد</a></span>
+  <div class="cookie-btns">
+    <button onclick="rejectCookies()">رفض</button>
+    <button onclick="acceptCookies()" class="accept">قبول ✓</button>
   </div>
 </div>
 
-<!-- ===== Modal تسجيل الدخول ===== -->
-<div class="modal-overlay" id="loginModal" role="dialog" aria-modal="true" aria-labelledby="loginTitle">
-  <div class="modal">
-    <h2 class="modal-title" id="loginTitle">🔐 تسجيل الدخول</h2>
-    <p style="text-align:center; color:var(--text-secondary); font-size:14px; margin-bottom:24px;">
-      سجّل دخولك لحفظ تقدمك وشاراتك والمنافسة في الـ Leaderboard
-    </p>
-    <button class="btn btn-primary" style="width:100%; gap:12px; justify-content:center; margin-bottom:12px;" onclick="loginWithGoogle()">
+<!-- ====== Login Modal ====== -->
+<div class="modal" id="loginModal">
+  <div class="modal-box">
+    <h2>🔐 تسجيل الدخول</h2>
+    <p>سجّل دخولك لحفظ تقدمك وشاراتك والمنافسة في الـ Leaderboard</p>
+    <button class="google-btn" onclick="window.islamiCalc?.loginWithGoogle()">
       🔵 تسجيل الدخول بـ Google
     </button>
-    <button class="btn btn-outline" style="width:100%;" onclick="closeLoginModal()">
-      تصفح بدون تسجيل
-    </button>
-    <p style="text-align:center; font-size:12px; color:var(--text-muted); margin-top:16px;">
-      بتسجيل الدخول توافق على <a href="/terms" style="color:var(--primary-light);">شروط الاستخدام</a>
-      و<a href="/privacy" style="color:var(--primary-light);">سياسة الخصوصية</a>
+    <button class="skip-btn" onclick="closeLoginModal()">تصفح بدون تسجيل</button>
+    <p class="modal-terms">
+      بتسجيل الدخول توافق على
+      <a href="/terms">شروط الاستخدام</a> و
+      <a href="/privacy">سياسة الخصوصية</a>
     </p>
   </div>
 </div>
 
-<!-- ===== Toast للإشعارات ===== -->
-<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<!-- Toast -->
+<div class="toast" id="toast"></div>
 
-<!-- ===== السكريبتات ===== -->
+<!-- Firebase -->
+<script type="module" src="/firebase.js"></script>
+
 <script>
-// ========== الثوابت والبيانات ==========
-
-// آيات اليوم — مصدرها القرآن الكريم
+// ================================================================
+// DATA
+// ================================================================
 const verses = [
-  { text: "إِنَّ مَعَ الْعُسْرِ يُسْرًا", source: "سورة الشرح — الآية 6" },
-  { text: "وَمَن يَتَّقِ اللَّهَ يَجْعَل لَّهُ مَخْرَجًا", source: "سورة الطلاق — الآية 2" },
-  { text: "أَلَا بِذِكْرِ اللَّهِ تَطْمَئِنُّ الْقُلُوبُ", source: "سورة الرعد — الآية 28" },
-  { text: "وَبَشِّرِ الصَّابِرِينَ", source: "سورة البقرة — الآية 155" },
-  { text: "إِنَّ اللَّهَ مَعَ الصَّابِرِينَ", source: "سورة البقرة — الآية 153" },
-  { text: "فَإِنَّ مَعَ الْعُسْرِ يُسْرًا", source: "سورة الشرح — الآية 5" },
-  { text: "وَقُل رَّبِّ زِدْنِي عِلْمًا", source: "سورة طه — الآية 114" },
-  { text: "حَسْبُنَا اللَّهُ وَنِعْمَ الْوَكِيلُ", source: "سورة آل عمران — الآية 173" },
-  { text: "رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً", source: "سورة البقرة — الآية 201" },
-  { text: "وَمَن يَتَوَكَّلْ عَلَى اللَّهِ فَهُوَ حَسْبُهُ", source: "سورة الطلاق — الآية 3" },
-  { text: "يَا أَيُّهَا الَّذِينَ آمَنُوا اسْتَعِينُوا بِالصَّبْرِ وَالصَّلَاةِ", source: "سورة البقرة — الآية 153" },
-  { text: "إِنَّ اللَّهَ لَا يُضِيعُ أَجْرَ الْمُحْسِنِينَ", source: "سورة التوبة — الآية 120" },
-  { text: "وَاللَّهُ يُحِبُّ الصَّابِرِينَ", source: "سورة آل عمران — الآية 146" },
-  { text: "إِنَّ اللَّهَ مَعَ الَّذِينَ اتَّقَوا", source: "سورة النحل — الآية 128" }
+  { text:"إِنَّ مَعَ الْعُسْرِ يُسْرًا",                               source:"سورة الشرح — الآية 6"   },
+  { text:"وَمَن يَتَّقِ اللَّهَ يَجْعَل لَّهُ مَخْرَجًا",              source:"سورة الطلاق — الآية 2"  },
+  { text:"أَلَا بِذِكْرِ اللَّهِ تَطْمَئِنُّ الْقُلُوبُ",              source:"سورة الرعد — الآية 28"  },
+  { text:"وَبَشِّرِ الصَّابِرِينَ",                                     source:"سورة البقرة — الآية 155"},
+  { text:"إِنَّ اللَّهَ مَعَ الصَّابِرِينَ",                           source:"سورة البقرة — الآية 153"},
+  { text:"وَقُل رَّبِّ زِدْنِي عِلْمًا",                               source:"سورة طه — الآية 114"    },
+  { text:"حَسْبُنَا اللَّهُ وَنِعْمَ الْوَكِيلُ",                      source:"سورة آل عمران — الآية 173"},
+  { text:"رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً", source:"سورة البقرة — الآية 201"},
+  { text:"وَمَن يَتَوَكَّلْ عَلَى اللَّهِ فَهُوَ حَسْبُهُ",            source:"سورة الطلاق — الآية 3"  },
+  { text:"إِنَّ اللَّهَ لَا يُضِيعُ أَجْرَ الْمُحْسِنِينَ",           source:"سورة التوبة — الآية 120" },
+  { text:"إِنَّ اللَّهَ مَعَ الَّذِينَ اتَّقَوا",                      source:"سورة النحل — الآية 128"  },
+  { text:"فَإِنَّ مَعَ الْعُسْرِ يُسْرًا",                             source:"سورة الشرح — الآية 5"   },
 ];
 
-// أسئلة اليوم — مصادرها islamqa.info وبنك الأسئلة المعتمد
 const dailyQuestions = [
-  {
-    q: "كم عدد أركان الإسلام؟",
-    options: ["3", "4", "5", "6"],
-    correct: 2,
-    explanation: "أركان الإسلام خمسة: الشهادتان، الصلاة، الزكاة، الصوم، الحج — متفق عليه في الصحيحين"
-  },
-  {
-    q: "كم عدد سور القرآن الكريم؟",
-    options: ["110", "112", "114", "116"],
-    correct: 2,
-    explanation: "القرآن الكريم يتكون من 114 سورة"
-  },
-  {
-    q: "ما هو نصاب زكاة الذهب بالجرامات تقريباً؟",
-    options: ["65 جرام", "75 جرام", "85 جرام", "95 جرام"],
-    correct: 2,
-    explanation: "نصاب الذهب 85 جراماً تقريباً، وهو ما يعادل 20 مثقالاً — المصدر: islamqa.info"
-  },
-  {
-    q: "كم عدد أركان الصلاة؟",
-    options: ["10", "12", "14", "16"],
-    correct: 2,
-    explanation: "أركان الصلاة 14 ركناً عند جمهور العلماء — المصدر: islamqa.info"
-  },
-  {
-    q: "من هو أول الأنبياء والمرسلين؟",
-    options: ["سيدنا إبراهيم", "سيدنا نوح", "سيدنا آدم", "سيدنا محمد"],
-    correct: 2,
-    explanation: "سيدنا آدم عليه السلام هو أول الأنبياء — ثبت ذلك في صحيح مسلم"
-  },
-  {
-    q: "كم عدد آيات سورة الفاتحة؟",
-    options: ["5", "6", "7", "8"],
-    correct: 2,
-    explanation: "سورة الفاتحة تتكون من 7 آيات وهي السبع المثاني"
-  },
-  {
-    q: "ما نسبة الزكاة الواجبة في المال؟",
-    options: ["2%", "2.25%", "2.5%", "3%"],
-    correct: 2,
-    explanation: "نسبة الزكاة في المال ربع العشر = 2.5٪ — متفق عليه"
-  }
+  { q:"كم عدد أركان الإسلام؟",           opts:["3","4","5","6"],         ans:2, exp:"الشهادتان، الصلاة، الزكاة، الصوم، الحج — متفق عليه" },
+  { q:"كم عدد سور القرآن الكريم؟",       opts:["110","112","114","116"], ans:2, exp:"القرآن الكريم يتكون من 114 سورة" },
+  { q:"ما نصاب زكاة الذهب تقريباً؟",     opts:["65 جرام","75 جرام","85 جرام","95 جرام"], ans:2, exp:"نصاب الذهب 85 جراماً تقريباً (20 مثقالاً)" },
+  { q:"كم عدد أركان الصلاة؟",            opts:["10","12","14","16"],     ans:2, exp:"أركان الصلاة 14 ركناً عند جمهور العلماء" },
+  { q:"من هو أول الأنبياء والمرسلين؟",   opts:["إبراهيم","نوح","آدم","محمد"], ans:2, exp:"سيدنا آدم عليه السلام هو أول الأنبياء" },
+  { q:"كم عدد آيات سورة الفاتحة؟",       opts:["5","6","7","8"],         ans:2, exp:"سورة الفاتحة 7 آيات وهي السبع المثاني" },
+  { q:"ما نسبة الزكاة الواجبة في المال؟", opts:["2%","2.25%","2.5%","3%"], ans:2, exp:"نسبة الزكاة ربع العشر = 2.5٪" },
 ];
 
-// ========== تبديل الوضع الداكن/الفاتح ==========
-const themeBtn = document.getElementById("themeBtn");
-const html = document.documentElement;
-
-function initTheme() {
+// ================================================================
+// THEME
+// ================================================================
+(function(){
   const saved = localStorage.getItem("theme") || "dark";
-  html.setAttribute("data-theme", saved);
-  themeBtn.textContent = saved === "dark" ? "☀️" : "🌙";
-}
+  document.documentElement.setAttribute("data-theme", saved);
+  document.getElementById("iconSun").style.display  = saved==="dark" ? "none"  : "block";
+  document.getElementById("iconMoon").style.display = saved==="dark" ? "block" : "none";
+})();
 
-themeBtn.addEventListener("click", () => {
-  const current = html.getAttribute("data-theme");
-  const next = current === "dark" ? "light" : "dark";
-  html.setAttribute("data-theme", next);
-  themeBtn.textContent = next === "dark" ? "☀️" : "🌙";
+document.getElementById("themeBtn").addEventListener("click", () => {
+  const next = document.documentElement.getAttribute("data-theme")==="dark" ? "light" : "dark";
+  document.documentElement.setAttribute("data-theme", next);
   localStorage.setItem("theme", next);
+  document.getElementById("iconSun").style.display  = next==="dark" ? "none"  : "block";
+  document.getElementById("iconMoon").style.display = next==="dark" ? "block" : "none";
 });
 
-// ========== تبديل اللغة ==========
-const langBtn = document.getElementById("langBtn");
+// ================================================================
+// LANGUAGE
+// ================================================================
 let currentLang = localStorage.getItem("lang") || "ar";
 
 function applyLang(lang) {
-  html.setAttribute("lang", lang);
-  html.setAttribute("dir", lang === "ar" ? "rtl" : "ltr");
-  langBtn.textContent = lang === "ar" ? "EN" : "عر";
+  document.documentElement.setAttribute("lang", lang);
+  document.documentElement.setAttribute("dir", lang==="ar"?"rtl":"ltr");
+  document.getElementById("langBtn").textContent = lang==="ar" ? "EN" : "عر";
   localStorage.setItem("lang", lang);
   currentLang = lang;
-  if (lang === "en") applyEnglish();
-  else applyArabic();
+  if (lang==="en") {
+    document.getElementById("heroTitle").innerHTML = "Everything You Need<br>on Your Islamic Journey";
+    document.getElementById("heroDesc").textContent = "Islamic calculators, Quran tracker, prayer times, adhkar, and quizzes — all in one place";
+  } else {
+    document.getElementById("heroTitle").innerHTML = "كل ما تحتاجه<br>في رحلتك الإسلامية";
+    document.getElementById("heroDesc").textContent = "حاسبات إسلامية دقيقة، ختمة القرآن، أوقات الصلاة، أذكار، ومسابقات دينية تفاعلية — كل شيء في مكان واحد";
+  }
 }
 
-function applyEnglish() {
-  document.getElementById("heroTitle").innerHTML = "Everything You Need<br>on Your Islamic Journey";
-  document.getElementById("heroDesc").textContent = "Precise Islamic calculators, Quran tracker, prayer times, adhkar, and interactive quizzes — all in one place";
-}
-
-function applyArabic() {
-  document.getElementById("heroTitle").innerHTML = "كل ما تحتاجه<br>في رحلتك الإسلامية";
-  document.getElementById("heroDesc").textContent = "حاسبات إسلامية دقيقة، ختمة القرآن، أوقات الصلاة، أذكار، ومسابقات دينية تفاعلية — كل شيء في مكان واحد";
-}
-
-langBtn.addEventListener("click", () => {
-  applyLang(currentLang === "ar" ? "en" : "ar");
+document.getElementById("langBtn").addEventListener("click", () => {
+  applyLang(currentLang==="ar" ? "en" : "ar");
 });
 
-// ========== القائمة في الجوال ==========
-const menuToggle = document.getElementById("menuToggle");
-const navMenu = document.getElementById("navMenu");
-
-// ========== القائمة في الجوال — مع أيقونة X ==========
+// ================================================================
+// MOBILE MENU
+// ================================================================
 const menuToggle = document.getElementById("menuToggle");
 const navMenu    = document.getElementById("navMenu");
-const iconMenu   = document.getElementById("iconMenu");
-const iconClose  = document.getElementById("iconClose");
+const iconMenuEl = document.getElementById("iconMenu");
+const iconCloseEl= document.getElementById("iconClose");
 
 menuToggle.addEventListener("click", () => {
-  const isOpen = navMenu.classList.toggle("open");
-  menuToggle.setAttribute("aria-expanded", isOpen);
-  iconMenu.style.display  = isOpen ? "none"  : "block";
-  iconClose.style.display = isOpen ? "block" : "none";
-  // إظهار زر الدخول في القائمة على الجوال
-  const loginMobile = document.querySelector(".login-btn-mobile");
-  if (loginMobile) loginMobile.style.display = isOpen ? "block" : "none";
+  const open = navMenu.classList.toggle("open");
+  menuToggle.setAttribute("aria-expanded", open);
+  iconMenuEl.style.display  = open ? "none"  : "block";
+  iconCloseEl.style.display = open ? "block" : "none";
 });
 
-document.addEventListener("click", (e) => {
-  if (!menuToggle.contains(e.target) && !navMenu.contains(e.target)) {
-    navMenu.classList.remove("open");
-    menuToggle.setAttribute("aria-expanded", "false");
-    iconMenu.style.display  = "block";
-    iconClose.style.display = "none";
-  }
-});
-
-// ========== Theme — مع أيقونتي شمس وقمر ==========
-const themeBtn = document.getElementById("themeBtn");
-const iconSun  = document.getElementById("iconSun");
-const iconMoon = document.getElementById("iconMoon");
-
-function initTheme() {
-  const saved = localStorage.getItem("theme") || "dark";
-  document.documentElement.setAttribute("data-theme", saved);
-  iconSun.style.display  = saved === "dark"  ? "none"  : "block";
-  iconMoon.style.display = saved === "dark"  ? "block" : "none";
-}
-
-themeBtn.addEventListener("click", () => {
-  const next = document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark";
-  document.documentElement.setAttribute("data-theme", next);
-  localStorage.setItem("theme", next);
-  iconSun.style.display  = next === "dark" ? "none"  : "block";
-  iconMoon.style.display = next === "dark" ? "block" : "none";
-});
-
-// إغلاق القائمة عند النقر خارجها
 document.addEventListener("click", (e) => {
   if (!menuToggle.contains(e.target) && !navMenu.contains(e.target)) {
     navMenu.classList.remove("open");
     menuToggle.setAttribute("aria-expanded", false);
-    menuToggle.textContent = "☰";
+    iconMenuEl.style.display  = "block";
+    iconCloseEl.style.display = "none";
   }
 });
 
-// ========== آية اليوم ==========
+// ================================================================
+// آية اليوم
+// ================================================================
 function loadVerse() {
-  const today = new Date();
-  const dayIndex = (today.getFullYear() * 366 + today.getMonth() * 31 + today.getDate()) % verses.length;
-  const verse = verses[dayIndex];
-  const verseText = document.getElementById("verseText");
-  const verseSource = document.getElementById("verseSource");
-  verseText.classList.remove("verse-fade");
+  const d   = new Date();
+  const idx = (d.getFullYear()*366 + d.getMonth()*31 + d.getDate()) % verses.length;
+  const v   = verses[idx];
+  const el  = document.getElementById("verseText");
+  el.classList.remove("verse-fade");
   setTimeout(() => {
-    verseText.textContent = verse.text;
-    verseSource.textContent = verse.source;
-    verseText.classList.add("verse-fade");
+    el.textContent = v.text;
+    document.getElementById("verseSource").textContent = v.source;
+    el.classList.add("verse-fade");
   }, 100);
 }
-
 loadVerse();
 setInterval(loadVerse, 30000);
 
-// ========== سؤال اليوم ==========
+// ================================================================
+// سؤال اليوم
+// ================================================================
 function loadDailyQuestion() {
-  const today = new Date();
-  const dayIndex = (today.getFullYear() * 366 + today.getMonth() * 31 + today.getDate()) % dailyQuestions.length;
-  const q = dailyQuestions[dayIndex];
-  const alreadyAnswered = localStorage.getItem("dailyQ_" + today.toDateString());
-
+  const d   = new Date();
+  const idx = (d.getFullYear()*366 + d.getMonth()*31 + d.getDate()) % dailyQuestions.length;
+  const q   = dailyQuestions[idx];
+  const answered = localStorage.getItem("dailyQ_" + d.toDateString());
   document.getElementById("dailyQuestion").textContent = q.q;
-  const optionsEl = document.getElementById("dailyOptions");
-  optionsEl.innerHTML = "";
-
-  q.options.forEach((opt, i) => {
+  const wrap = document.getElementById("dailyOptions");
+  wrap.innerHTML = "";
+  q.opts.forEach((opt, i) => {
     const btn = document.createElement("button");
     btn.className = "quiz-option";
     btn.textContent = opt;
-    if (alreadyAnswered) {
+    if (answered) {
       btn.disabled = true;
-      if (i === q.correct) btn.classList.add("correct");
+      if (i === q.ans) btn.classList.add("correct");
     }
-    btn.addEventListener("click", () => answerDaily(i, q, today.toDateString()));
-    optionsEl.appendChild(btn);
+    btn.addEventListener("click", () => answerDaily(i, q, d.toDateString()));
+    wrap.appendChild(btn);
   });
-
-  if (alreadyAnswered) {
-    const result = document.getElementById("dailyResult");
-    result.style.display = "block";
-    const wasCorrect = alreadyAnswered === "correct";
-    result.style.background = wasCorrect ? "rgba(16,185,129,0.1)" : "rgba(239,68,68,0.1)";
-    result.style.color = wasCorrect ? "var(--success)" : "var(--error)";
-    result.textContent = wasCorrect ? "✅ أجبت بشكل صحيح أمس! " + q.explanation : "❌ الإجابة الصحيحة: " + q.options[q.correct] + " — " + q.explanation;
+  if (answered) {
+    const res = document.getElementById("dailyResult");
+    res.style.display = "block";
+    const ok = answered === "correct";
+    res.style.color = ok ? "var(--primary-light)" : "#f85149";
+    res.textContent = ok
+      ? "✅ أجبت بشكل صحيح! " + q.exp
+      : "❌ الإجابة الصحيحة: " + q.opts[q.ans] + " — " + q.exp;
   }
 }
 
-function answerDaily(index, q, dateStr) {
-  const options = document.querySelectorAll("#dailyOptions .quiz-option");
-  options.forEach(btn => btn.disabled = true);
-  const isCorrect = index === q.correct;
-  options[index].classList.add(isCorrect ? "correct" : "wrong");
-  if (!isCorrect) options[q.correct].classList.add("correct");
-  localStorage.setItem("dailyQ_" + dateStr, isCorrect ? "correct" : "wrong");
-  if (isCorrect) {
-    showToast("✅ إجابة صحيحة! +50 XP", "toast-success");
-    addXP(50);
-    showXPFloat(50);
+function answerDaily(i, q, dateStr) {
+  document.querySelectorAll("#dailyOptions .quiz-option").forEach(b => b.disabled=true);
+  const ok = i === q.ans;
+  document.querySelectorAll("#dailyOptions .quiz-option")[i].classList.add(ok?"correct":"wrong");
+  if (!ok) document.querySelectorAll("#dailyOptions .quiz-option")[q.ans].classList.add("correct");
+  localStorage.setItem("dailyQ_" + dateStr, ok ? "correct" : "wrong");
+  if (ok) {
+    window.showToast?.("✅ إجابة صحيحة! +50 XP", "toast-success");
+    window.islamiCalc?.addXP(50, "daily_question");
+    window.logActivity?.("أجبت على سؤال اليوم", "إجابة صحيحة ✅", "❓", "rgba(45,106,79,0.1)", 50);
   } else {
-    showToast("❌ إجابة خاطئة", "toast-error");
+    window.showToast?.("❌ إجابة خاطئة", "toast-error");
   }
-  const result = document.getElementById("dailyResult");
-  result.style.display = "block";
-  result.style.background = isCorrect ? "rgba(16,185,129,0.1)" : "rgba(239,68,68,0.1)";
-  result.style.color = isCorrect ? "var(--success)" : "var(--error)";
-  result.textContent = (isCorrect ? "✅ " : "❌ الإجابة: " + q.options[q.correct] + " — ") + q.explanation;
+  const res = document.getElementById("dailyResult");
+  res.style.display = "block";
+  res.style.color   = ok ? "var(--primary-light)" : "#f85149";
+  res.textContent   = (ok ? "✅ " : "❌ الإجابة: " + q.opts[q.ans] + " — ") + q.exp;
 }
 
 loadDailyQuestion();
 
-// ========== أوقات الصلاة ==========
+// ================================================================
+// أوقات الصلاة
+// ================================================================
 function loadPrayerTimes() {
-  if (!navigator.geolocation) {
-    showDefaultPrayerTimes();
-    return;
-  }
+  if (!navigator.geolocation) { showDefaultPrayer(); return; }
   navigator.geolocation.getCurrentPosition(
-    (pos) => fetchPrayerTimes(pos.coords.latitude, pos.coords.longitude),
-    () => showDefaultPrayerTimes(),
+    p => fetchPrayer(p.coords.latitude, p.coords.longitude),
+    ()  => showDefaultPrayer(),
     { timeout: 8000 }
   );
 }
 
-function fetchPrayerTimes(lat, lng) {
-  const today = new Date();
-  const date = `${today.getDate()}-${today.getMonth()+1}-${today.getFullYear()}`;
-  const url = `https://api.aladhan.com/v1/timings/${date}?latitude=${lat}&longitude=${lng}&method=4`;
-  fetch(url)
+function fetchPrayer(lat, lng) {
+  const d = new Date();
+  const date = `${d.getDate()}-${d.getMonth()+1}-${d.getFullYear()}`;
+  fetch(`https://api.aladhan.com/v1/timings/${date}?latitude=${lat}&longitude=${lng}&method=4`)
     .then(r => r.json())
     .then(data => {
       if (data.code === 200) {
         const t = data.data.timings;
-        updatePrayerUI(t.Fajr, t.Dhuhr, t.Asr, t.Maghrib, t.Isha);
-      } else showDefaultPrayerTimes();
+        updatePrayer(t.Fajr, t.Dhuhr, t.Asr, t.Maghrib, t.Isha);
+      } else showDefaultPrayer();
     })
-    .catch(() => showDefaultPrayerTimes());
+    .catch(showDefaultPrayer);
 }
 
-function showDefaultPrayerTimes() {
-  updatePrayerUI("05:00", "12:00", "15:30", "18:00", "19:30");
-}
+function showDefaultPrayer() { updatePrayer("05:00","12:00","15:30","18:00","19:30"); }
 
-function updatePrayerUI(fajr, dhuhr, asr, maghrib, isha) {
-  document.getElementById("fajr-time").textContent = fajr;
-  document.getElementById("dhuhr-time").textContent = dhuhr;
-  document.getElementById("asr-time").textContent = asr;
+function updatePrayer(fajr, dhuhr, asr, maghrib, isha) {
+  document.getElementById("fajr-time").textContent    = fajr;
+  document.getElementById("dhuhr-time").textContent   = dhuhr;
+  document.getElementById("asr-time").textContent     = asr;
   document.getElementById("maghrib-time").textContent = maghrib;
-  document.getElementById("isha-time").textContent = isha;
-  highlightCurrentPrayer([fajr, dhuhr, asr, maghrib, isha]);
-  startCountdown([fajr, dhuhr, asr, maghrib, isha]);
+  document.getElementById("isha-time").textContent    = isha;
+  highlightPrayer([fajr,dhuhr,asr,maghrib,isha]);
+  startCountdown([fajr,dhuhr,asr,maghrib,isha]);
 }
 
-function highlightCurrentPrayer(times) {
-  const names = ["fajr", "dhuhr", "asr", "maghrib", "isha"];
-  const now = new Date();
-  const nowMins = now.getHours() * 60 + now.getMinutes();
-  const prayerMins = times.map(t => {
-    const [h, m] = t.split(":").map(Number);
-    return h * 60 + m;
-  });
-  let activeIndex = 0;
-  for (let i = 0; i < prayerMins.length; i++) {
-    if (nowMins >= prayerMins[i]) activeIndex = i;
-  }
+function highlightPrayer(times) {
+  const names = ["fajr","dhuhr","asr","maghrib","isha"];
+  const now   = new Date();
+  const nm    = now.getHours()*60+now.getMinutes();
+  const pm    = times.map(t => { const [h,m]=t.split(":").map(Number); return h*60+m; });
+  let ai = 0;
+  pm.forEach((p,i) => { if(nm>=p) ai=i; });
   names.forEach(n => document.getElementById(n+"-item").classList.remove("active"));
-  document.getElementById(names[activeIndex]+"-item").classList.add("active");
+  document.getElementById(names[ai]+"-item").classList.add("active");
 }
 
 function startCountdown(times) {
-  const prayerNames = ["الفجر", "الظهر", "العصر", "المغرب", "العشاء"];
-  function update() {
+  const pn = ["الفجر","الظهر","العصر","المغرب","العشاء"];
+  function tick() {
     const now = new Date();
-    const nowMins = now.getHours() * 60 + now.getMinutes();
-    const nowSecs = nowMins * 60 + now.getSeconds();
-    const prayerSecs = times.map(t => {
-      const [h, m] = t.split(":").map(Number);
-      return h * 3600 + m * 60;
-    });
-    let nextIndex = prayerSecs.findIndex(s => s > nowSecs);
-    if (nextIndex === -1) nextIndex = 0;
-    const diff = (nextIndex === 0 ? 86400 + prayerSecs[0] : prayerSecs[nextIndex]) - nowSecs;
-    const h = Math.floor(diff / 3600).toString().padStart(2, "0");
-    const m = Math.floor((diff % 3600) / 60).toString().padStart(2, "0");
-    const s = (diff % 60).toString().padStart(2, "0");
-    document.getElementById("nextPrayerCountdown").textContent = `${h}:${m}:${s}`;
-    document.getElementById("nextPrayerName").textContent = prayerNames[nextIndex];
+    const ns  = now.getHours()*3600+now.getMinutes()*60+now.getSeconds();
+    const ps  = times.map(t => { const [h,m]=t.split(":").map(Number); return h*3600+m*60; });
+    let ni = ps.findIndex(s => s > ns);
+    if (ni===-1) ni=0;
+    const diff = (ni===0 ? 86400+ps[0] : ps[ni]) - ns;
+    const hh=Math.floor(diff/3600).toString().padStart(2,"0");
+    const mm=Math.floor(diff%3600/60).toString().padStart(2,"0");
+    const ss=(diff%60).toString().padStart(2,"0");
+    document.getElementById("nextPrayerCountdown").textContent = `${hh}:${mm}:${ss}`;
+    document.getElementById("nextPrayerName").textContent      = pn[ni];
   }
-  update();
-  setInterval(update, 1000);
+  tick(); setInterval(tick, 1000);
 }
 
 loadPrayerTimes();
 
-// ========== عداد رمضان ==========
-function updateRamadanCounter() {
-  const now = new Date();
-  // 2026: رمضان يبدأ تقريباً 18 فبراير وينتهي 19 مارس
-  const ramadanStart = new Date("2026-02-18");
-  const ramadanEnd = new Date("2026-03-19");
-
-  const counter = document.getElementById("ramadanCounter");
-  const label = document.getElementById("ramadanLabel");
-  const desc = document.getElementById("ramadanDesc");
+// ================================================================
+// رمضان
+// ================================================================
+function updateRamadan() {
+  const now   = new Date();
+  const start = new Date("2026-02-18");
+  const end   = new Date("2026-03-19");
+  const cnt   = document.getElementById("ramadanCounter");
+  const lbl   = document.getElementById("ramadanLabel");
+  const desc  = document.getElementById("ramadanDesc");
   const title = document.getElementById("ramadanTitle");
-
-  if (now >= ramadanStart && now <= ramadanEnd) {
-    const day = Math.floor((now - ramadanStart) / 86400000) + 1;
-    counter.textContent = day;
-    label.textContent = "اليوم في رمضان 🌙";
-    desc.textContent = "بارك الله فيكم وتقبل الله منا ومنكم";
+  if (now>=start && now<=end) {
+    cnt.textContent   = Math.floor((now-start)/86400000)+1;
+    lbl.textContent   = "اليوم في رمضان 🌙";
+    desc.textContent  = "بارك الله فيكم وتقبل الله منا ومنكم";
     title.textContent = "🌙 رمضان المبارك";
-  } else if (now < ramadanStart) {
-    const diff = Math.ceil((ramadanStart - now) / 86400000);
-    counter.textContent = diff;
-    label.textContent = "يوم على رمضان";
-    desc.textContent = "استعد لاستقبال ضيف الله الكريم";
+  } else if (now<start) {
+    cnt.textContent   = Math.ceil((start-now)/86400000);
+    lbl.textContent   = "يوم على رمضان";
+    desc.textContent  = "استعد لاستقبال ضيف الله الكريم";
     title.textContent = "⏳ العد التنازلي لرمضان";
   } else {
-    const nextRamadan = new Date("2027-02-06");
-    const diff = Math.ceil((nextRamadan - now) / 86400000);
-    counter.textContent = diff;
-    label.textContent = "يوم على رمضان القادم";
-    desc.textContent = "أسأل الله أن يبلغنا رمضان القادم";
+    const next = new Date("2027-02-06");
+    cnt.textContent   = Math.ceil((next-now)/86400000);
+    lbl.textContent   = "يوم على رمضان القادم";
+    desc.textContent  = "أسأل الله أن يبلغنا رمضان القادم";
     title.textContent = "🌙 رمضان القادم";
   }
 }
+updateRamadan();
 
-updateRamadanCounter();
-
-// ========== الكوكيز ==========
-function initCookieBanner() {
-  if (!localStorage.getItem("cookiesAccepted")) {
-    setTimeout(() => {
-      document.getElementById("cookieBanner").style.display = "flex";
-    }, 2000);
-  }
+// ================================================================
+// Cookie
+// ================================================================
+function initCookie() {
+  if (!localStorage.getItem("cookiesAccepted"))
+    setTimeout(() => document.getElementById("cookieBanner").style.display="flex", 2000);
 }
-
 function acceptCookies() {
-  localStorage.setItem("cookiesAccepted", "true");
-  document.getElementById("cookieBanner").style.display = "none";
-  showToast("✓ تم قبول ملفات الارتباط", "toast-success");
+  localStorage.setItem("cookiesAccepted","true");
+  document.getElementById("cookieBanner").style.display="none";
 }
-
 function rejectCookies() {
-  localStorage.setItem("cookiesAccepted", "false");
-  document.getElementById("cookieBanner").style.display = "none";
+  localStorage.setItem("cookiesAccepted","false");
+  document.getElementById("cookieBanner").style.display="none";
 }
+initCookie();
 
-initCookieBanner();
-
-// ========== Login Modal ==========
-function openLoginModal() {
-  document.getElementById("loginModal").classList.add("open");
-}
-
-function closeLoginModal() {
-  document.getElementById("loginModal").classList.remove("open");
-}
-
-document.getElementById("loginModal").addEventListener("click", (e) => {
-  if (e.target === e.currentTarget) closeLoginModal();
+// ================================================================
+// Login Modal
+// ================================================================
+function openLoginModal()  { document.getElementById("loginModal").classList.add("open");    }
+function closeLoginModal() { document.getElementById("loginModal").classList.remove("open"); }
+document.getElementById("loginModal").addEventListener("click", e => {
+  if (e.target===e.currentTarget) closeLoginModal();
+});
+// ربط زر "دخول" بالمودال (قبل تسجيل الدخول)
+document.getElementById("loginBtn").addEventListener("click", function() {
+  if (!window.islamiCalc?.getCurrentUser()) openLoginModal();
 });
 
-// ========== Toast ==========
-function showToast(msg, type = "") {
+// ================================================================
+// Toast fallback (قبل تحميل firebase.js)
+// ================================================================
+function showToast(msg, type="") {
   const toast = document.getElementById("toast");
+  if (!toast) return;
   toast.textContent = msg;
   toast.className = "toast show " + type;
   setTimeout(() => toast.classList.remove("show"), 3500);
 }
 
-// ========== XP System ==========
+// ================================================================
+// XP fallback (قبل تحميل firebase.js)
+// ================================================================
 function addXP(amount) {
-  const current = parseInt(localStorage.getItem("userXP") || "0");
-  localStorage.setItem("userXP", current + amount);
+  if (window.islamiCalc?.addXP) { window.islamiCalc.addXP(amount); return; }
+  localStorage.setItem("userXP", parseInt(localStorage.getItem("userXP")||"0") + amount);
 }
 
-function showXPFloat(amount) {
-  const el = document.createElement("div");
-  el.className = "xp-float";
-  el.textContent = "+" + amount + " XP";
-  el.style.top = "50%";
-  el.style.left = "50%";
-  el.style.transform = "translate(-50%, -50%)";
-  document.body.appendChild(el);
-  setTimeout(() => el.remove(), 1200);
-}
-
-// ========== تهيئة اللغة ==========
-initTheme();
-applyLang(currentLang);
-
-// ========== تحية ذكية حسب الوقت ==========
-function showGreeting() {
+// ================================================================
+// تحية ذكية
+// ================================================================
+setTimeout(() => {
   const h = new Date().getHours();
-  let greeting = "";
-  if (h >= 5 && h < 12) greeting = "🌅 صباح الخير! ابدأ يومك بذكر الله";
-  else if (h >= 12 && h < 15) greeting = "☀️ وقت الظهر — تذكر صلاة الظهر";
-  else if (h >= 15 && h < 18) greeting = "🌤️ وقت العصر — تذكر ذكر الله";
-  else if (h >= 18 && h < 20) greeting = "🌆 وقت المغرب — لا تنس أذكار المساء";
-  else greeting = "🌙 مساء الخير — لا تنس أذكار النوم";
-  if (greeting) showToast(greeting, "toast-gold");
-}
+  let msg = "";
+  if      (h>=5  && h<12) msg = "🌅 صباح الخير! ابدأ يومك بذكر الله";
+  else if (h>=12 && h<15) msg = "☀️ وقت الظهر — تذكر صلاة الظهر";
+  else if (h>=15 && h<18) msg = "🌤️ وقت العصر — تذكر ذكر الله";
+  else if (h>=18 && h<20) msg = "🌆 وقت المغرب — لا تنس أذكار المساء";
+  else                    msg = "🌙 مساء الخير — لا تنس أذكار النوم";
+  showToast(msg, "toast-gold");
+}, 1500);
 
-setTimeout(showGreeting, 1500);
+// ================================================================
+// INIT
+// ================================================================
+applyLang(currentLang);
 </script>
-
 </body>
 </html>
