@@ -1,0 +1,1163 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>مسار العلم — IslamiCalc</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0f1e;
+    --bg-card: #111827;
+    --bg-card2: #1a2236;
+    --border: #1e2d45;
+    --gold: #f59e0b;
+    --gold2: #fbbf24;
+    --green: #10b981;
+    --red: #ef4444;
+    --blue: #3b82f6;
+    --purple: #8b5cf6;
+    --text: #f1f5f9;
+    --text2: #94a3b8;
+    --shadow: 0 4px 24px rgba(0,0,0,0.4);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family: Cairo, sans-serif; background: var(--bg); color: var(--text); min-height:100vh; }
+
+  /* ===== NAVBAR ===== */
+  nav {
+    background: rgba(10,15,30,0.95);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 20px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .nav-logo { font-size: 18px; font-weight: 900; color: var(--gold); text-decoration: none; }
+  .nav-back { color: var(--text2); text-decoration: none; font-size: 14px; display:flex; align-items:center; gap:6px; }
+  .nav-back:hover { color: var(--text); }
+
+  /* ===== SCREENS ===== */
+  .screen { display:none; min-height: calc(100vh - 60px); }
+  .screen.active { display:block; }
+
+  /* ===== MAP SCREEN ===== */
+  #mapScreen {
+    padding: 24px 20px 40px;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+  .map-header { text-align:center; margin-bottom: 32px; }
+  .map-header h1 { font-size: 26px; font-weight: 900; margin-bottom: 6px; }
+  .map-header p { color: var(--text2); font-size: 14px; }
+
+  /* XP Bar */
+  .xp-bar-wrap { background: var(--bg-card); border-radius: 16px; padding: 16px; margin-bottom: 28px; border: 1px solid var(--border); }
+  .xp-bar-top { display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }
+  .xp-title { font-size:13px; color:var(--text2); }
+  .xp-val { font-size:13px; color:var(--gold); font-weight:700; }
+  .xp-bar { height:8px; background:#1e2d45; border-radius:10px; overflow:hidden; }
+  .xp-fill { height:100%; background: linear-gradient(90deg, var(--gold), var(--gold2)); border-radius:10px; transition: width 1s ease; }
+  .xp-stats { display:flex; gap:12px; margin-top:12px; }
+  .xp-stat { flex:1; background: var(--bg-card2); border-radius:10px; padding:8px; text-align:center; }
+  .xp-stat-val { font-size:18px; font-weight:900; color:var(--gold); }
+  .xp-stat-lbl { font-size:11px; color:var(--text2); }
+
+  /* Path Levels */
+  .path-container { position:relative; }
+  .path-line {
+    position: absolute;
+    right: 39px;
+    top: 50px;
+    width: 3px;
+    background: linear-gradient(180deg, var(--gold) 0%, var(--border) 100%);
+    border-radius: 3px;
+    z-index: 0;
+    transition: height 0.5s ease;
+  }
+  .level-card {
+    display:flex;
+    align-items:center;
+    gap:16px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 16px;
+    margin-bottom: 16px;
+    cursor: pointer;
+    transition: all 0.25s;
+    position: relative;
+    z-index: 1;
+  }
+  .level-card:hover:not(.locked) { border-color: var(--gold); transform: translateY(-2px); box-shadow: 0 8px 30px rgba(245,158,11,0.15); }
+  .level-card.locked { opacity: 0.5; cursor: not-allowed; }
+  .level-card.completed { border-color: var(--green); background: linear-gradient(135deg, #0a1a10, var(--bg-card)); }
+  .level-card.active-level { border-color: var(--gold); background: linear-gradient(135deg, #1a1200, var(--bg-card)); box-shadow: 0 0 20px rgba(245,158,11,0.2); }
+
+  .level-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 16px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size: 28px;
+    flex-shrink: 0;
+    background: var(--bg-card2);
+    border: 2px solid var(--border);
+  }
+  .level-card.completed .level-icon { border-color: var(--green); background: #0a2010; }
+  .level-card.active-level .level-icon { border-color: var(--gold); background: #1a1200; }
+
+  .level-info { flex:1; }
+  .level-name { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+  .level-desc { font-size: 12px; color: var(--text2); margin-bottom: 8px; }
+  .level-progress-bar { height:4px; background: var(--border); border-radius:4px; overflow:hidden; }
+  .level-progress-fill { height:100%; background: var(--gold); border-radius:4px; transition: width 0.5s; }
+  .level-progress-text { font-size:11px; color: var(--text2); margin-top:4px; }
+
+  .level-badge {
+    font-size:11px;
+    padding:4px 10px;
+    border-radius:20px;
+    font-weight:700;
+  }
+  .badge-done { background:#0a2010; color: var(--green); }
+  .badge-active { background:#1a1200; color: var(--gold); }
+  .badge-locked { background: var(--bg-card2); color: var(--text2); }
+
+  /* مقام العالم card */
+  .master-card {
+    background: linear-gradient(135deg, #1a0a2e, #0d1a2e);
+    border: 2px solid var(--purple);
+    border-radius: 24px;
+    padding: 24px;
+    text-align: center;
+    margin-top: 8px;
+    cursor: pointer;
+    transition: all 0.25s;
+  }
+  .master-card:hover:not(.locked) { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(139,92,246,0.25); }
+  .master-card.locked { opacity:0.4; cursor:not-allowed; }
+  .master-icon { font-size:48px; margin-bottom:8px; }
+  .master-title { font-size:20px; font-weight:900; color: var(--purple); margin-bottom:4px; }
+  .master-desc { font-size:13px; color:var(--text2); }
+
+  /* ===== GAME SCREEN ===== */
+  #gameScreen { padding: 20px; max-width: 560px; margin: 0 auto; }
+
+  .game-header { display:flex; align-items:center; justify-content:space-between; margin-bottom: 20px; }
+  .game-level-name { font-size:16px; font-weight:700; }
+  .game-quit { background:none; border:1px solid var(--border); color:var(--text2); border-radius:10px; padding:6px 14px; font-family:Cairo,sans-serif; cursor:pointer; font-size:13px; }
+  .game-quit:hover { border-color:var(--red); color:var(--red); }
+
+  /* Timer */
+  .timer-wrap { display:flex; align-items:center; justify-content:center; gap:10px; margin-bottom:16px; }
+  .timer-circle {
+    width:56px; height:56px;
+    border-radius:50%;
+    background: conic-gradient(var(--gold) 0%, var(--border) 0%);
+    display:flex; align-items:center; justify-content:center;
+    font-size:16px; font-weight:900; color:var(--gold);
+    transition: background 0.1s;
+    position:relative;
+  }
+  .timer-circle::before {
+    content:'';
+    position:absolute;
+    inset:5px;
+    border-radius:50%;
+    background:var(--bg-card);
+  }
+  .timer-num { position:relative; z-index:1; }
+
+  /* Progress */
+  .q-progress { display:flex; align-items:center; gap:10px; margin-bottom:20px; }
+  .q-progress-bar { flex:1; height:6px; background:var(--border); border-radius:6px; overflow:hidden; }
+  .q-progress-fill { height:100%; background: linear-gradient(90deg, var(--blue), var(--purple)); border-radius:6px; transition: width 0.3s; }
+  .q-progress-text { font-size:13px; color:var(--text2); white-space:nowrap; }
+
+  /* Question Card */
+  .q-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 24px;
+    margin-bottom: 20px;
+  }
+  .q-cat { font-size:12px; color:var(--gold); font-weight:700; margin-bottom:12px; text-transform:uppercase; letter-spacing:1px; }
+  .q-text { font-size:18px; font-weight:700; line-height:1.7; }
+
+  /* Options */
+  .options { display:flex; flex-direction:column; gap:10px; margin-bottom:20px; }
+  .opt-btn {
+    background: var(--bg-card);
+    border: 2px solid var(--border);
+    border-radius: 14px;
+    padding: 14px 18px;
+    font-family: Cairo, sans-serif;
+    font-size: 15px;
+    color: var(--text);
+    cursor: pointer;
+    text-align: right;
+    transition: all 0.2s;
+    display:flex;
+    align-items:center;
+    gap:12px;
+  }
+  .opt-btn:hover:not(:disabled) { border-color: var(--gold); background: #1a1200; transform: translateX(-3px); }
+  .opt-btn.correct { border-color: var(--green); background: #0a2010; color: var(--green); }
+  .opt-btn.wrong { border-color: var(--red); background: #1a0505; color: var(--red); }
+  .opt-btn:disabled { cursor: not-allowed; }
+  .opt-letter {
+    width:28px; height:28px;
+    border-radius:8px;
+    background:var(--bg-card2);
+    display:flex; align-items:center; justify-content:center;
+    font-size:13px; font-weight:700; color:var(--text2);
+    flex-shrink:0;
+  }
+  .opt-btn.correct .opt-letter { background:var(--green); color:white; }
+  .opt-btn.wrong .opt-letter { background:var(--red); color:white; }
+
+  /* Explanation */
+  .exp-box {
+    background: var(--bg-card2);
+    border: 1px solid var(--border);
+    border-right: 3px solid var(--gold);
+    border-radius: 14px;
+    padding: 14px 16px;
+    font-size: 14px;
+    color: var(--text2);
+    line-height: 1.8;
+    margin-bottom: 16px;
+    display:none;
+  }
+  .exp-box.show { display:block; }
+
+  /* Powers */
+  .powers-bar {
+    display:flex;
+    gap:10px;
+    justify-content:center;
+    margin-bottom:20px;
+  }
+  .power-btn {
+    flex:1;
+    max-width:80px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius:12px;
+    padding:8px 4px;
+    font-family:Cairo,sans-serif;
+    cursor:pointer;
+    text-align:center;
+    transition:all 0.2s;
+    color:var(--text);
+  }
+  .power-btn:hover:not(:disabled):not(.used) { border-color:var(--purple); background:#1a0a2e; }
+  .power-btn.used { opacity:0.3; cursor:not-allowed; }
+  .power-btn:disabled { cursor:not-allowed; opacity:0.5; }
+  .power-icon { font-size:20px; display:block; margin-bottom:2px; }
+  .power-name { font-size:10px; color:var(--text2); }
+
+  /* Next button */
+  .next-btn {
+    width:100%;
+    background: linear-gradient(135deg, var(--gold), var(--gold2));
+    color: #0a0f1e;
+    border:none;
+    border-radius:14px;
+    padding:16px;
+    font-family:Cairo,sans-serif;
+    font-size:17px;
+    font-weight:900;
+    cursor:pointer;
+    transition:all 0.2s;
+    display:none;
+  }
+  .next-btn:hover { transform:translateY(-2px); box-shadow:0 8px 25px rgba(245,158,11,0.35); }
+  .next-btn.show { display:block; }
+
+  /* ===== RESULT SCREEN ===== */
+  #resultScreen { padding: 24px 20px; max-width: 480px; margin: 0 auto; text-align:center; }
+  .result-icon { font-size:72px; margin-bottom:16px; }
+  .result-title { font-size:28px; font-weight:900; margin-bottom:8px; }
+  .result-sub { color:var(--text2); font-size:15px; margin-bottom:28px; }
+
+  .result-stats {
+    display:grid; grid-template-columns:1fr 1fr;
+    gap:12px; margin-bottom:28px;
+  }
+  .result-stat {
+    background:var(--bg-card);
+    border:1px solid var(--border);
+    border-radius:16px;
+    padding:16px;
+  }
+  .result-stat-val { font-size:28px; font-weight:900; color:var(--gold); }
+  .result-stat-lbl { font-size:12px; color:var(--text2); margin-top:4px; }
+
+  .result-xp-gained {
+    background: linear-gradient(135deg, #1a1200, var(--bg-card));
+    border: 2px solid var(--gold);
+    border-radius: 20px;
+    padding: 20px;
+    margin-bottom:24px;
+  }
+  .result-xp-num { font-size:40px; font-weight:900; color:var(--gold); }
+  .result-xp-lbl { color:var(--text2); font-size:14px; margin-top:4px; }
+
+  .result-btns { display:flex; flex-direction:column; gap:12px; }
+  .btn-primary {
+    background: linear-gradient(135deg, var(--gold), var(--gold2));
+    color:#0a0f1e; border:none; border-radius:14px;
+    padding:16px; font-family:Cairo,sans-serif;
+    font-size:16px; font-weight:900; cursor:pointer;
+    transition:all 0.2s;
+  }
+  .btn-primary:hover { transform:translateY(-2px); box-shadow:0 8px 25px rgba(245,158,11,0.3); }
+  .btn-secondary {
+    background:none; border:1px solid var(--border);
+    color:var(--text); border-radius:14px;
+    padding:14px; font-family:Cairo,sans-serif;
+    font-size:15px; cursor:pointer; transition:all 0.2s;
+  }
+  .btn-secondary:hover { border-color:var(--text2); }
+
+  /* Badge popup */
+  .badge-popup {
+    position:fixed; top:80px; left:50%; transform:translateX(-50%);
+    background:linear-gradient(135deg, #1a1200, var(--bg-card));
+    border:2px solid var(--gold);
+    border-radius:20px; padding:16px 24px;
+    text-align:center; z-index:999;
+    animation: slideDown 0.4s ease, fadeOut 0.4s ease 2.6s forwards;
+    min-width:220px;
+  }
+  @keyframes slideDown { from{opacity:0;transform:translateX(-50%) translateY(-20px)} to{opacity:1;transform:translateX(-50%) translateY(0)} }
+  @keyframes fadeOut { to{opacity:0;transform:translateX(-50%) translateY(-10px)} }
+
+  /* XP Float */
+  .xp-float {
+    position:fixed;
+    font-size:20px; font-weight:900; color:var(--gold);
+    pointer-events:none; z-index:999;
+    animation: floatUp 1.5s ease forwards;
+  }
+  @keyframes floatUp { from{opacity:1;transform:translateY(0)} to{opacity:0;transform:translateY(-60px)} }
+
+  /* Leaderboard button */
+  .lb-btn {
+    position:fixed; bottom:24px; left:20px;
+    background: linear-gradient(135deg, var(--purple), #6d28d9);
+    color:white; border:none; border-radius:14px;
+    padding:12px 20px; font-family:Cairo,sans-serif;
+    font-size:14px; font-weight:700; cursor:pointer;
+    box-shadow: 0 4px 20px rgba(139,92,246,0.4);
+    z-index:50; transition:all 0.2s;
+  }
+  .lb-btn:hover { transform:translateY(-2px); }
+
+  /* Leaderboard Modal */
+  .modal-overlay {
+    position:fixed; inset:0; background:rgba(0,0,0,0.8);
+    z-index:200; display:none; align-items:flex-end;
+    justify-content:center;
+  }
+  .modal-overlay.show { display:flex; }
+  .modal-sheet {
+    background:var(--bg-card);
+    border-radius:24px 24px 0 0;
+    padding:24px 20px 40px;
+    width:100%; max-width:520px;
+    max-height:85vh; overflow-y:auto;
+  }
+  .modal-handle { width:40px; height:4px; background:var(--border); border-radius:4px; margin:0 auto 20px; }
+  .modal-title { font-size:20px; font-weight:900; text-align:center; margin-bottom:20px; }
+  .lb-row {
+    display:flex; align-items:center; gap:12px;
+    background:var(--bg-card2); border-radius:14px;
+    padding:12px 16px; margin-bottom:8px;
+  }
+  .lb-rank { font-size:18px; font-weight:900; width:32px; text-align:center; }
+  .lb-rank.gold { color:var(--gold); }
+  .lb-rank.silver { color:#94a3b8; }
+  .lb-rank.bronze { color:#cd7f32; }
+  .lb-avatar { width:40px; height:40px; border-radius:50%; object-fit:cover; border:2px solid var(--border); }
+  .lb-name { flex:1; font-weight:700; font-size:15px; }
+  .lb-xp { color:var(--gold); font-weight:900; font-size:15px; }
+
+  /* Responsive */
+  @media(max-width:400px) {
+    .q-text { font-size:16px; }
+    .opt-btn { font-size:14px; padding:12px 14px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav>
+  <a href="../" class="nav-back">← العودة</a>
+  <span class="nav-logo">🕌 مسار العلم</span>
+  <button id="authBtn" onclick="handleAuth()" style="
+    background:none; border:1px solid var(--border);
+    color:var(--text2); border-radius:10px;
+    padding:6px 12px; font-family:Cairo,sans-serif;
+    font-size:12px; cursor:pointer; white-space:nowrap;
+    display:flex; align-items:center; gap:6px;
+  ">🔵 دخول</button>
+</nav>
+
+<!-- MAP SCREEN -->
+<div id="mapScreen" class="screen active">
+  <div class="map-header">
+    <h1>🗺️ مسار العلم</h1>
+    <p>رحلتك في تعلّم علوم الإسلام</p>
+  </div>
+
+  <!-- XP Bar -->
+  <div class="xp-bar-wrap">
+    <div class="xp-bar-top">
+      <span class="xp-title" id="mapLevelTitle">مسلم مبتدئ</span>
+      <span class="xp-val" id="mapXPVal">0 XP</span>
+    </div>
+    <div class="xp-bar"><div class="xp-fill" id="mapXPFill" style="width:0%"></div></div>
+    <div class="xp-stats">
+      <div class="xp-stat"><div class="xp-stat-val" id="mapStreak">0</div><div class="xp-stat-lbl">🔥 يوم متتالي</div></div>
+      <div class="xp-stat"><div class="xp-stat-val" id="mapCompleted">0</div><div class="xp-stat-lbl">✅ مستوى مكتمل</div></div>
+      <div class="xp-stat"><div class="xp-stat-val" id="mapBadges">0</div><div class="xp-stat-lbl">🏅 شارة</div></div>
+    </div>
+  </div>
+
+  <!-- Levels Path -->
+  <div class="path-container" id="pathContainer">
+    <div class="path-line" id="pathLine"></div>
+    <!-- generated by JS -->
+  </div>
+
+  <!-- Master Level -->
+  <div class="master-card locked" id="masterCard" onclick="startLevel('master')">
+    <div class="master-icon">🏛️</div>
+    <div class="master-title">مقام العالِم</div>
+    <div class="master-desc">أثبت علمك — بلا قدرات مساعدة — وانل الإجازة</div>
+    <div style="margin-top:12px; font-size:13px; color:#8b5cf6; font-weight:700;">🔒 يُفتح بإكمال جميع المستويات</div>
+  </div>
+</div>
+
+<!-- GAME SCREEN -->
+<div id="gameScreen" class="screen">
+  <div class="game-header">
+    <div class="game-level-name" id="gameLevelName">المبتدئ</div>
+    <button class="game-quit" onclick="quitGame()">✕ خروج</button>
+  </div>
+
+  <!-- Timer -->
+  <div class="timer-wrap">
+    <div class="timer-circle" id="timerCircle">
+      <span class="timer-num" id="timerNum">30</span>
+    </div>
+    <div style="flex:1">
+      <div class="q-progress">
+        <div class="q-progress-bar"><div class="q-progress-fill" id="qProgressFill" style="width:0%"></div></div>
+        <div class="q-progress-text" id="qProgressText">1 / 20</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Powers Bar -->
+  <div class="powers-bar" id="powersBar">
+    <button class="power-btn" id="power0" onclick="usePower('istakhara')" title="يحذف خيارين خاطئين">
+      <span class="power-icon">🤲</span>
+      <span class="power-name">الاستخارة</span>
+    </button>
+    <button class="power-btn" id="power1" onclick="usePower('mahla')" title="يؤجل السؤال لآخر الجلسة">
+      <span class="power-icon">⏸️</span>
+      <span class="power-name">المهلة</span>
+    </button>
+    <button class="power-btn" id="power2" onclick="usePower('shaikh')" title="تلميح من التفسير">
+      <span class="power-icon">📖</span>
+      <span class="power-name">همس الشيخ</span>
+    </button>
+    <button class="power-btn" id="power3" onclick="usePower('taamol')" title="يضيف 15 ثانية">
+      <span class="power-icon">⏱️</span>
+      <span class="power-name">التأمل</span>
+    </button>
+  </div>
+
+  <!-- Question -->
+  <div class="q-card">
+    <div class="q-cat" id="qCat">القرآن الكريم</div>
+    <div class="q-text" id="qText">جاري التحميل...</div>
+  </div>
+
+  <!-- Options -->
+  <div class="options" id="optionsContainer"></div>
+
+  <!-- Explanation -->
+  <div class="exp-box" id="expBox"></div>
+
+  <!-- Next Button -->
+  <button class="next-btn" id="nextBtn" onclick="nextQuestion()">التالي ←</button>
+</div>
+
+<!-- RESULT SCREEN -->
+<div id="resultScreen" class="screen">
+  <div class="result-icon" id="resultIcon">🎉</div>
+  <div class="result-title" id="resultTitle">أحسنت!</div>
+  <div class="result-sub" id="resultSub">أكملت المستوى بنجاح</div>
+
+  <div class="result-stats">
+    <div class="result-stat">
+      <div class="result-stat-val" id="resCorrect">0</div>
+      <div class="result-stat-lbl">✅ إجابة صحيحة</div>
+    </div>
+    <div class="result-stat">
+      <div class="result-stat-val" id="resWrong">0</div>
+      <div class="result-stat-lbl">❌ إجابة خاطئة</div>
+    </div>
+    <div class="result-stat">
+      <div class="result-stat-val" id="resStreak">0</div>
+      <div class="result-stat-lbl">🔥 أفضل تسلسل</div>
+    </div>
+    <div class="result-stat">
+      <div class="result-stat-val" id="resAccuracy">0%</div>
+      <div class="result-stat-lbl">🎯 دقة الإجابات</div>
+    </div>
+  </div>
+
+  <div class="result-xp-gained">
+    <div class="result-xp-num" id="resXP">+0</div>
+    <div class="result-xp-lbl">نقطة خبرة مكتسبة</div>
+  </div>
+
+  <div class="result-btns">
+    <button class="btn-primary" id="resPrimaryBtn" onclick="resultPrimary()">التالي ←</button>
+    <button class="btn-secondary" onclick="showScreen('mapScreen')">🗺️ خريطة المسار</button>
+  </div>
+</div>
+
+<!-- Leaderboard Button -->
+<button class="lb-btn" onclick="showLeaderboard()">🏆 المتصدرون</button>
+
+<!-- Leaderboard Modal -->
+<div class="modal-overlay" id="lbModal" onclick="closeLB(event)">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title">🏆 لوحة المتصدرين</div>
+    <div id="lbList">جاري التحميل...</div>
+  </div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+import {
+  getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+import {
+  getFirestore, doc, getDoc, setDoc, updateDoc, increment,
+  collection, query, where, getDocs, orderBy, limit, serverTimestamp
+} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAFzGPiCFB6vEH-wylbW4zRxxgB_2vZSIs",
+  authDomain: "islamicalc.firebaseapp.com",
+  projectId: "islamicalc",
+  storageBucket: "islamicalc.firebasestorage.app",
+  messagingSenderId: "708228371498",
+  appId: "1:708228371498:web:b71ec4a97af9f8fa0c9f53"
+};
+const app  = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db   = getFirestore(app);
+
+// ============ DATA VERSION (مسح تلقائي للبيانات القديمة) ============
+const DATA_VERSION = '3';
+if (localStorage.getItem('arenaDataVersion') !== DATA_VERSION) {
+  ['arenaProgress','arenaPowers','arenaBadges','userXP','userStreak','userLevel'].forEach(k => localStorage.removeItem(k));
+  localStorage.setItem('arenaDataVersion', DATA_VERSION);
+}
+
+// ============ AUTH UI ============
+function updateAuthUI(user) {
+  const btn = document.getElementById('authBtn');
+  if (!btn) return;
+  if (user) {
+    const name = user.displayName?.split(' ')[0] || 'حسابي';
+    const photo = user.photoURL;
+    btn.innerHTML = photo
+      ? `<img src="${photo}" style="width:22px;height:22px;border-radius:50%;object-fit:cover"> ${name} ▾`
+      : `👤 ${name} ▾`;
+    btn.style.borderColor = 'var(--gold)';
+    btn.style.color = 'var(--gold)';
+  } else {
+    btn.innerHTML = '🔵 دخول بـ Google';
+    btn.style.borderColor = 'var(--border)';
+    btn.style.color = 'var(--text2)';
+  }
+}
+
+window.handleAuth = async function() {
+  if (currentUser) {
+    const existing = document.getElementById('authMenu');
+    if (existing) { existing.remove(); return; }
+    const menu = document.createElement('div');
+    menu.id = 'authMenu';
+    menu.style.cssText = `
+      position:fixed; top:65px; left:16px;
+      background:var(--bg-card); border:1px solid var(--border);
+      border-radius:14px; padding:8px; z-index:200;
+      min-width:180px; box-shadow:var(--shadow);
+    `;
+    menu.innerHTML = `
+      <div style="padding:10px 14px;font-size:13px;color:var(--text2);border-bottom:1px solid var(--border);margin-bottom:6px;">
+        ${currentUser.displayName || 'مستخدم'}<br>
+        <span style="font-size:11px;color:var(--gold)">${(parseInt(localStorage.getItem('userXP')||0)).toLocaleString('ar')} XP</span>
+      </div>
+      <button onclick="doLogout()" style="
+        width:100%;background:none;border:none;color:var(--red);
+        font-family:Cairo,sans-serif;font-size:14px;padding:8px 14px;
+        cursor:pointer;text-align:right;border-radius:8px;
+      ">🚪 تسجيل خروج</button>
+    `;
+    document.body.appendChild(menu);
+    setTimeout(() => document.addEventListener('click', () => menu.remove(), {once:true}), 100);
+  } else {
+    try {
+      const provider = new GoogleAuthProvider();
+      provider.setCustomParameters({ prompt: 'select_account' });
+      await signInWithPopup(auth, provider);
+    } catch(e) {
+      if (e.code !== 'auth/popup-closed-by-user') alert('خطأ في تسجيل الدخول');
+    }
+  }
+};
+
+window.doLogout = async function() {
+  const { signOut } = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js");
+  await signOut(auth);
+  document.getElementById('authMenu')?.remove();
+  currentUser = null;
+  updateAuthUI(null);
+  loadLocalProgress();
+  renderMap();
+  updateMapStats();
+};
+
+// ============ CONFIG ============
+const LEVELS_CONFIG = [
+  { id:'beginner', name:'المبتدئ',    icon:'🌱', desc:'أساسيات الإسلام والعقيدة',     xpReward:100, totalQ:20 },
+  { id:'learner',  name:'المتعلم',    icon:'📚', desc:'الفقه والعبادات والأذكار',      xpReward:150, totalQ:20 },
+  { id:'student',  name:'طالب العلم', icon:'🎓', desc:'الحديث والتفسير والسيرة',      xpReward:200, totalQ:20 },
+  { id:'scholar',  name:'العالِم',    icon:'⚗️', desc:'أصول الفقه وعلوم الحديث',     xpReward:300, totalQ:20 },
+];
+const MASTER_CONFIG = { id:'master', name:'مقام العالِم', icon:'🏛️', xpReward:500, totalQ:10 };
+
+const CAT_NAMES = {
+  quran:'القرآن الكريم', hadith:'الحديث النبوي', fiqh:'الفقه',
+  aqeedah:'العقيدة', seerah:'السيرة', usool:'أصول الفقه', general:'عام'
+};
+
+// ============ STATE ============
+let currentUser = null;
+let allQuestions = {};
+let gameState = {
+  levelId: '', questions: [], current: 0,
+  correct: 0, wrong: 0, bestStreak: 0, streak: 0,
+  answered: false, timerVal: 30, timerInterval: null,
+  usedPowers: { istakhara:false, mahla:false, shaikh:false, taamol:false },
+  isMaster: false
+};
+let userProgress = {};
+let userPowers = { istakhara:1, mahla:1, shaikh:1, taamol:1 };
+
+// ============ AUTH ============
+onAuthStateChanged(auth, async user => {
+  currentUser = user;
+  updateAuthUI(user);
+  if (user) {
+    await loadUserProgress();
+  } else {
+    loadLocalProgress();
+  }
+  await loadAllQuestions();
+  renderMap();
+  updateMapStats();
+});
+
+// ============ LOAD QUESTIONS ============
+async function loadAllQuestions() {
+  try {
+    const snap = await getDocs(collection(db, 'questions'));
+    snap.forEach(d => {
+      const q = d.data();
+      if (!allQuestions[q.path]) allQuestions[q.path] = [];
+      allQuestions[q.path].push(q);
+    });
+  } catch(e) { console.error('loadQ:', e.message); }
+}
+
+// ============ PROGRESS ============
+async function loadUserProgress() {
+  try {
+    if (!currentUser) return;
+    const snap = await getDoc(doc(db, 'users', currentUser.uid));
+    if (snap.exists()) {
+      const d = snap.data();
+      userProgress = d.arenaProgress || {};
+      userPowers   = d.arenaPowers  || { istakhara:1, mahla:1, shaikh:1, taamol:1 };
+    }
+  } catch(e) {
+    loadLocalProgress();
+  }
+}
+
+function loadLocalProgress() {
+  userProgress = JSON.parse(localStorage.getItem('arenaProgress') || '{}');
+  userPowers   = JSON.parse(localStorage.getItem('arenaPowers')  || '{"istakhara":1,"mahla":1,"shaikh":1,"taamol":1}');
+}
+
+async function saveProgress() {
+  localStorage.setItem('arenaProgress', JSON.stringify(userProgress));
+  localStorage.setItem('arenaPowers',   JSON.stringify(userPowers));
+  if (!currentUser) return;
+  try {
+    await updateDoc(doc(db, 'users', currentUser.uid), {
+      arenaProgress: userProgress,
+      arenaPowers:   userPowers
+    });
+  } catch(e) {}
+}
+
+// ============ MAP RENDER ============
+function renderMap() {
+  const container = document.getElementById('pathContainer');
+  const line      = document.getElementById('pathLine');
+  const cards     = container.querySelectorAll('.level-card');
+  cards.forEach(c => c.remove());
+
+  let completedCount = 0;
+  LEVELS_CONFIG.forEach((lv, i) => {
+    const prog = userProgress[lv.id] || { completed:false, seenIds:[] };
+    const isCompleted = prog.completed;
+    const isActive    = !isCompleted && (i === 0 || (userProgress[LEVELS_CONFIG[i-1]?.id]?.completed));
+    const isLocked    = !isCompleted && !isActive;
+    if (isCompleted) completedCount++;
+
+    const done = Math.min(prog.seenIds?.length || 0, lv.totalQ);
+    const pct  = Math.min(100, Math.round((done / lv.totalQ) * 100));
+
+    const card = document.createElement('div');
+    card.className = `level-card ${isCompleted ? 'completed' : isActive ? 'active-level' : 'locked'}`;
+    if (!isLocked) card.onclick = () => startLevel(lv.id);
+    card.innerHTML = `
+      <div class="level-icon">${lv.icon}</div>
+      <div class="level-info">
+        <div class="level-name">${lv.name}</div>
+        <div class="level-desc">${lv.desc}</div>
+        <div class="level-progress-bar"><div class="level-progress-fill" style="width:${pct}%"></div></div>
+        <div class="level-progress-text">${done} / ${lv.totalQ} سؤال شوهد</div>
+      </div>
+      <div class="level-badge ${isCompleted?'badge-done':isActive?'badge-active':'badge-locked'}">
+        ${isCompleted ? '✅ مكتمل' : isActive ? '▶ العب' : '🔒'}
+      </div>`;
+    container.appendChild(card);
+  });
+
+  // Master card
+  const masterCard = document.getElementById('masterCard');
+  if (completedCount >= LEVELS_CONFIG.length) {
+    masterCard.classList.remove('locked');
+    masterCard.querySelector('div:last-child').textContent = '▶ ادخل المقام';
+  }
+
+  // Path line height
+  const allCards = container.querySelectorAll('.level-card');
+  if (allCards.length > 1) {
+    const first = allCards[0].getBoundingClientRect();
+    const last  = allCards[allCards.length-1].getBoundingClientRect();
+    line.style.height = (last.bottom - first.top - 50) + 'px';
+  }
+}
+
+function updateMapStats() {
+  const xp      = parseInt(localStorage.getItem('userXP')     || '0');
+  const streak  = parseInt(localStorage.getItem('userStreak') || '0');
+  const badges  = JSON.parse(localStorage.getItem('arenaBadges') || '[]');
+  const compl   = LEVELS_CONFIG.filter(l => userProgress[l.id]?.completed).length;
+
+  document.getElementById('mapXPVal').textContent      = xp.toLocaleString('ar') + ' XP';
+  document.getElementById('mapStreak').textContent     = streak;
+  document.getElementById('mapCompleted').textContent  = compl;
+  document.getElementById('mapBadges').textContent     = badges.length;
+  document.getElementById('mapLevelTitle').textContent = getLevelTitle(xp);
+
+  const maxXP  = 500;
+  const fillPct = Math.min(100, Math.round((xp % maxXP) / maxXP * 100));
+  document.getElementById('mapXPFill').style.width = fillPct + '%';
+}
+
+const LEVEL_TITLES = [
+  {xp:0,t:'مسلم مبتدئ'},{xp:200,t:'حلقة القرآن'},{xp:500,t:'طالب مسجد'},
+  {xp:1500,t:'طالب علم'},{xp:4000,t:'فقيه ناشئ'},{xp:9000,t:'عالم متقدم'},
+  {xp:18000,t:'شيخ'},{xp:35000,t:'إمام الأرينا'}
+];
+function getLevelTitle(xp) {
+  let t = LEVEL_TITLES[0].t;
+  for (const l of LEVEL_TITLES) { if (xp >= l.xp) t = l.t; else break; }
+  return t;
+}
+
+// ============ START LEVEL ============
+window.startLevel = async function(levelId) {
+  const isMaster = levelId === 'master';
+  const cfg = isMaster ? MASTER_CONFIG : LEVELS_CONFIG.find(l => l.id === levelId);
+  if (!cfg) return;
+
+  const pool = allQuestions[levelId] || [];
+  if (pool.length === 0) { alert('الأسئلة غير متاحة، تحقق من الاتصال'); return; }
+
+  const prog   = userProgress[levelId] || { completed:false, seenIds:[] };
+  let available = pool.filter(q => !prog.seenIds.includes(q.id));
+  if (available.length < cfg.totalQ) available = pool;
+
+  // سحب عشوائي
+  const shuffled = available.sort(() => Math.random() - 0.5).slice(0, cfg.totalQ);
+
+  gameState = {
+    levelId, questions: shuffled, current: 0,
+    correct:0, wrong:0, bestStreak:0, streak:0,
+    answered:false, timerVal:30, timerInterval:null,
+    usedPowers:{ istakhara:false, mahla:false, shaikh:false, taamol:false },
+    isMaster
+  };
+
+  // Powers UI
+  const powersBar = document.getElementById('powersBar');
+  if (isMaster) {
+    powersBar.style.display = 'none';
+  } else {
+    powersBar.style.display = 'flex';
+    ['istakhara','mahla','shaikh','taamol'].forEach((p,i) => {
+      const btn = document.getElementById('power'+i);
+      btn.classList.remove('used');
+      btn.disabled = userPowers[p] <= 0;
+      if (userPowers[p] > 0) btn.querySelector('.power-name').textContent =
+        ['الاستخارة','المهلة','همس الشيخ','التأمل'][i];
+      else btn.querySelector('.power-name').textContent = 'محدود';
+    });
+  }
+
+  document.getElementById('gameLevelName').textContent = cfg.name;
+  showScreen('gameScreen');
+  renderQuestion();
+};
+
+// ============ RENDER QUESTION ============
+function renderQuestion() {
+  const q    = gameState.questions[gameState.current];
+  const idx  = gameState.current;
+  const total= gameState.questions.length;
+
+  document.getElementById('qCat').textContent   = CAT_NAMES[q.cat] || q.cat;
+  document.getElementById('qText').textContent  = q.q;
+  document.getElementById('expBox').classList.remove('show');
+  document.getElementById('expBox').textContent = '';
+
+  const progressPct = Math.round((idx / total) * 100);
+  document.getElementById('qProgressFill').style.width = progressPct + '%';
+  document.getElementById('qProgressText').textContent = `${idx+1} / ${total}`;
+
+  // Options
+  const opts = document.getElementById('optionsContainer');
+  opts.innerHTML = '';
+  const letters = ['أ','ب','ج','د'];
+  q.opts.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'opt-btn';
+    btn.innerHTML = `<span class="opt-letter">${letters[i]}</span>${opt}`;
+    btn.onclick = () => selectAnswer(i);
+    opts.appendChild(btn);
+  });
+
+  document.getElementById('nextBtn').classList.remove('show');
+  gameState.answered = false;
+
+  // Timer
+  clearInterval(gameState.timerInterval);
+  gameState.timerVal = 30;
+  updateTimerUI(30);
+  gameState.timerInterval = setInterval(() => {
+    gameState.timerVal--;
+    updateTimerUI(gameState.timerVal);
+    if (gameState.timerVal <= 0) {
+      clearInterval(gameState.timerInterval);
+      if (!gameState.answered) selectAnswer(-1);
+    }
+  }, 1000);
+}
+
+function updateTimerUI(val) {
+  document.getElementById('timerNum').textContent = val;
+  const pct = (val / 30) * 100;
+  const color = val > 10 ? 'var(--gold)' : 'var(--red)';
+  document.getElementById('timerCircle').style.background =
+    `conic-gradient(${color} ${pct}%, var(--border) ${pct}%)`;
+  document.getElementById('timerNum').style.color = color;
+}
+
+// ============ SELECT ANSWER ============
+function selectAnswer(chosen) {
+  if (gameState.answered) return;
+  gameState.answered = true;
+  clearInterval(gameState.timerInterval);
+
+  const q    = gameState.questions[gameState.current];
+  const btns = document.querySelectorAll('.opt-btn');
+  const isCorrect = chosen === q.a;
+
+  btns.forEach((btn, i) => {
+    btn.disabled = true;
+    if (i === q.a)     btn.classList.add('correct');
+    if (i === chosen && !isCorrect) btn.classList.add('wrong');
+    btn.querySelector('.opt-letter').textContent =
+      i === q.a ? '✓' : i === chosen ? '✗' : ['أ','ب','ج','د'][i];
+  });
+
+  if (isCorrect) {
+    gameState.correct++;
+    gameState.streak++;
+    if (gameState.streak > gameState.bestStreak) gameState.bestStreak = gameState.streak;
+    showXPFloat('+10', btns[chosen]);
+  } else {
+    gameState.wrong++;
+    gameState.streak = 0;
+  }
+
+  if (q.exp) {
+    document.getElementById('expBox').textContent = '💡 ' + q.exp;
+    document.getElementById('expBox').classList.add('show');
+  }
+
+  document.getElementById('nextBtn').classList.add('show');
+}
+
+// ============ NEXT QUESTION ============
+window.nextQuestion = function() {
+  gameState.current++;
+  if (gameState.current >= gameState.questions.length) {
+    endGame();
+  } else {
+    renderQuestion();
+  }
+};
+
+// ============ END GAME ============
+async function endGame() {
+  const { levelId, correct, wrong, bestStreak, questions, isMaster } = gameState;
+  const total    = questions.length;
+  const accuracy = Math.round((correct / total) * 100);
+  const passed   = accuracy >= 60;
+
+  const cfg = isMaster ? MASTER_CONFIG : LEVELS_CONFIG.find(l => l.id === levelId);
+  let xpGained = 0;
+  if (passed) {
+    xpGained = cfg.xpReward + (correct * 10) + (bestStreak >= 5 ? 50 : 0);
+  } else {
+    xpGained = correct * 5;
+  }
+
+  // Save seen IDs — فقط عند النجاح نضيف الأسئلة للمُشاهَدة
+  const prog = userProgress[levelId] || { completed:false, seenIds:[] };
+  let newSeen = prog.seenIds || [];
+  if (passed) {
+    newSeen = [...new Set([...prog.seenIds, ...questions.map(q => q.id)])];
+  }
+  userProgress[levelId] = {
+    completed: passed ? true : prog.completed,
+    seenIds: newSeen
+  };
+
+  // Award power if perfect
+  if (accuracy === 100 && !isMaster) {
+    const powers = ['istakhara','mahla','shaikh','taamol'];
+    const p = powers[Math.floor(Math.random() * powers.length)];
+    userPowers[p] = (userPowers[p] || 0) + 1;
+    showBadgePopup('🎴 حصلت على رُخصة: ' + ['الاستخارة','المهلة','همس الشيخ','التأمل'][powers.indexOf(p)]);
+  }
+
+  // Award master badge
+  if (isMaster && passed) {
+    const badges = JSON.parse(localStorage.getItem('arenaBadges') || '[]');
+    if (!badges.includes('master_ijaza')) {
+      badges.push('master_ijaza');
+      localStorage.setItem('arenaBadges', JSON.stringify(badges));
+      showBadgePopup('🏛️ حصلت على إجازة مقام العالِم!');
+    }
+  }
+
+  // Save XP
+  const currentXP = parseInt(localStorage.getItem('userXP') || '0');
+  localStorage.setItem('userXP', currentXP + xpGained);
+
+  if (currentUser) {
+    try {
+      await updateDoc(doc(db, 'users', currentUser.uid), {
+        xp: increment(xpGained),
+        arenaProgress: userProgress,
+        arenaPowers: userPowers
+      });
+    } catch(e) {}
+  }
+
+  await saveProgress();
+
+  // Result Screen
+  document.getElementById('resultIcon').textContent   = passed ? (accuracy===100?'🌟':'🎉') : '💪';
+  document.getElementById('resultTitle').textContent  = passed ? (accuracy===100?'مثالي!':'أحسنت!') : 'حاول مجدداً!';
+  document.getElementById('resultSub').textContent    = passed ? `اجتزت المستوى بدقة ${accuracy}%` : `تحتاج 60% للاجتياز — حصلت على ${accuracy}%`;
+  document.getElementById('resCorrect').textContent   = correct;
+  document.getElementById('resWrong').textContent     = wrong;
+  document.getElementById('resStreak').textContent    = bestStreak;
+  document.getElementById('resAccuracy').textContent  = accuracy + '%';
+  document.getElementById('resXP').textContent        = '+' + xpGained;
+
+  const primaryBtn = document.getElementById('resPrimaryBtn');
+  if (passed) {
+    const nextIdx = LEVELS_CONFIG.findIndex(l => l.id === levelId) + 1;
+    if (!isMaster && nextIdx < LEVELS_CONFIG.length) {
+      primaryBtn.textContent = 'المستوى التالي ←';
+      window._resultNextLevel = LEVELS_CONFIG[nextIdx].id;
+    } else {
+      primaryBtn.textContent = '🗺️ خريطة المسار';
+      window._resultNextLevel = null;
+    }
+  } else {
+    primaryBtn.textContent = '🔄 أعد المحاولة';
+    window._resultNextLevel = levelId;
+  }
+
+  showScreen('resultScreen');
+}
+
+window.resultPrimary = function() {
+  if (window._resultNextLevel) {
+    startLevel(window._resultNextLevel);
+  } else {
+    showScreen('mapScreen');
+    renderMap();
+    updateMapStats();
+  }
+};
+
+// ============ POWERS ============
+window.usePower = function(type) {
+  if (gameState.answered) return;
+  if (gameState.usedPowers[type]) return;
+  if ((userPowers[type] || 0) <= 0) return;
+
+  const q    = gameState.questions[gameState.current];
+  const btns = document.querySelectorAll('.opt-btn');
+
+  if (type === 'istakhara') {
+    let removed = 0;
+    btns.forEach((btn, i) => {
+      if (i !== q.a && removed < 2 && !btn.disabled) {
+        btn.disabled = true; btn.style.opacity='0.3'; removed++;
+      }
+    });
+  } else if (type === 'mahla') {
+    const deferred = gameState.questions.splice(gameState.current, 1)[0];
+    gameState.questions.push(deferred);
+    gameState.answered = true;
+    clearInterval(gameState.timerInterval);
+    nextQuestion(); return;
+  } else if (type === 'shaikh') {
+    document.getElementById('expBox').textContent = '📖 ' + (q.exp || 'فكّر جيداً في المعنى اللغوي للكلمات');
+    document.getElementById('expBox').classList.add('show');
+  } else if (type === 'taamol') {
+    gameState.timerVal = Math.min(45, gameState.timerVal + 15);
+    updateTimerUI(gameState.timerVal);
+  }
+
+  gameState.usedPowers[type] = true;
+  userPowers[type]--;
+  const powers = ['istakhara','mahla','shaikh','taamol'];
+  const btn = document.getElementById('power' + powers.indexOf(type));
+  btn.classList.add('used');
+};
+
+// ============ LEADERBOARD ============
+window.showLeaderboard = async function() {
+  document.getElementById('lbModal').classList.add('show');
+  const list = document.getElementById('lbList');
+  list.innerHTML = '<div style="text-align:center;padding:20px;color:var(--text2)">جاري التحميل...</div>';
+  try {
+    const q = query(collection(db,'users'), orderBy('xp','desc'), limit(20));
+    const snap = await getDocs(q);
+    if (snap.empty) { list.innerHTML='<div style="text-align:center;padding:20px;color:var(--text2)">لا يوجد بيانات بعد</div>'; return; }
+    list.innerHTML = '';
+    snap.docs.forEach((d,i) => {
+      const data = d.data();
+      const rankClass = i===0?'gold':i===1?'silver':i===2?'bronze':'';
+      const rankIcon  = i===0?'🥇':i===1?'🥈':i===2?'🥉':`#${i+1}`;
+      const row = document.createElement('div');
+      row.className = 'lb-row';
+      row.innerHTML = `
+        <div class="lb-rank ${rankClass}">${rankIcon}</div>
+        ${data.photo ? `<img class="lb-avatar" src="${data.photo}" onerror="this.style.display='none'">` : ''}
+        <div class="lb-name">${data.name || 'مجهول'}</div>
+        <div class="lb-xp">${(data.xp||0).toLocaleString('ar')} XP</div>`;
+      list.appendChild(row);
+    });
+  } catch(e) {
+    list.innerHTML = '<div style="text-align:center;padding:20px;color:var(--red)">خطأ في التحميل</div>';
+  }
+};
+
+window.closeLB = function(e) {
+  if (e.target === document.getElementById('lbModal'))
+    document.getElementById('lbModal').classList.remove('show');
+};
+
+// ============ UTILS ============
+window.showScreen = function(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+};
+
+window.quitGame = function() {
+  clearInterval(gameState.timerInterval);
+  showScreen('mapScreen');
+  renderMap();
+  updateMapStats();
+};
+
+function showXPFloat(text, anchor) {
+  const el = document.createElement('div');
+  el.className = 'xp-float';
+  el.textContent = text + ' XP';
+  const rect = anchor ? anchor.getBoundingClientRect() : {left: window.innerWidth/2, top: window.innerHeight/2};
+  el.style.left = rect.left + 'px';
+  el.style.top  = (rect.top + window.scrollY) + 'px';
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 1600);
+}
+
+function showBadgePopup(msg) {
+  const el = document.createElement('div');
+  el.className = 'badge-popup';
+  el.innerHTML = `<div style="font-size:20px;margin-bottom:4px">🏅</div><div style="font-weight:700">${msg}</div>`;
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 3000);
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="canonical" href="https://islamicalc.com/hijri/">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📅</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+  <title>تحويل التاريخ الهجري | IslamiCalc</title>
+  <style>
+    .hijri-card { background:var(--bg-card); border:1px solid var(--border); border-radius:18px; padding:24px; margin-bottom:16px; }
+    .result-box { background:linear-gradient(135deg,var(--primary) 0%,#7c3aed 100%);
+      border-radius:16px; padding:28px; text-align:center; margin-bottom:16px; }
+    .result-hijri { font-size:32px; font-weight:900; color:white; margin-bottom:8px; }
+    .result-mday  { font-size:16px; color:rgba(255,255,255,0.8); }
+    .date-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+    .month-badge { background:var(--bg-main); border:1px solid var(--border); border-radius:12px;
+      padding:10px; text-align:center; cursor:pointer; transition:.2s; }
+    .month-badge:hover { border-color:var(--primary); }
+    .month-badge.active { border-color:var(--gold); background:rgba(245,158,11,0.1); }
+    .quick-btn { background:var(--bg-card); border:1px solid var(--border); border-radius:30px;
+      padding:8px 18px; font-size:13px; font-weight:700; cursor:pointer; font-family:var(--font-arabic);
+      color:var(--text-primary); transition:.2s; }
+    .quick-btn:hover { border-color:var(--primary); color:var(--primary); }
+    .info-row { display:flex; justify-content:space-between; align-items:center;
+      padding:12px 0; border-bottom:1px solid var(--border); }
+    .info-row:last-child { border-bottom:none; }
+    .special-day { background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.25);
+      border-radius:12px; padding:12px 16px; margin-bottom:10px; display:flex; gap:12px; align-items:center; }
+  </style>
+</head>
+<body>
+<nav class="navbar">
+  <a href="/" class="navbar-brand">
+    <div class="navbar-logo">☪</div>
+    <span class="navbar-title">IslamiCalc</span>
+  </a>
+  <ul class="navbar-menu" id="navMenu">
+    <li><a href="/">🏠 الرئيسية</a></li>
+    <li><a href="/zakat">🧮 الحاسبات</a></li>
+    <li><a href="/khatma">📖 القرآن</a></li>
+    <li><a href="/prayer">🕌 الصلاة</a></li>
+    <li><a href="/athkar">📿 الأذكار</a></li>
+    <li><a href="/arena">🏆 الأرينا</a></li>
+  </ul>
+  <div class="navbar-actions">
+    <button class="theme-btn" id="themeBtn">🌙</button>
+    <button class="login-btn" onclick="showToast('سجّل دخولك من الرئيسية','toast-gold')">دخول 🔵</button>
+    <button class="menu-toggle" id="menuToggle">☰</button>
+  </div>
+</nav>
+
+<main>
+<div style="max-width:680px;margin:0 auto;padding:24px 16px 80px;">
+
+  <!-- Header -->
+  <div style="text-align:center;padding:24px 0 20px;">
+    <div style="font-size:56px;margin-bottom:10px;">📅</div>
+    <h1 style="font-size:26px;font-weight:900;margin-bottom:6px;">تحويل التاريخ الهجري</h1>
+    <p style="color:var(--text-muted);font-size:14px;">ميلادي ↔ هجري — دقيق ومعتمد</p>
+  </div>
+
+  <!-- اليوم الحالي -->
+  <div class="result-box" id="todayBox">
+    <p style="color:rgba(255,255,255,0.7);font-size:14px;margin-bottom:6px;">اليوم الآن</p>
+    <div class="result-hijri" id="todayHijri">جاري التحميل...</div>
+    <div class="result-mday" id="todayMiladi"></div>
+    <div id="todaySpecial" style="margin-top:10px;"></div>
+  </div>
+
+  <!-- أزرار سريعة -->
+  <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;justify-content:center;">
+    <button class="quick-btn" onclick="setToday()">📍 اليوم</button>
+    <button class="quick-btn" onclick="setDate('miladi','1446-07-01')">🗓️ 1 رجب 1446</button>
+    <button class="quick-btn" onclick="convertMode('hijri')">🔄 هجري → ميلادي</button>
+    <button class="quick-btn" onclick="convertMode('miladi')">🔄 ميلادي → هجري</button>
+  </div>
+
+  <!-- المحول -->
+  <div class="hijri-card">
+    <div style="display:flex;gap:8px;margin-bottom:20px;">
+      <button class="tab-btn active" id="tabMtoH" onclick="switchTab('MtoH')">ميلادي → هجري</button>
+      <button class="tab-btn" id="tabHtoM" onclick="switchTab('HtoM')">هجري → ميلادي</button>
+    </div>
+
+    <!-- ميلادي → هجري -->
+    <div id="panelMtoH">
+      <div class="date-grid" style="margin-bottom:16px;">
+        <div>
+          <label style="display:block;font-size:13px;font-weight:700;margin-bottom:6px;color:var(--text-muted);">اليوم</label>
+          <input type="number" id="mDay" class="form-input" min="1" max="31" placeholder="يوم">
+        </div>
+        <div>
+          <label style="display:block;font-size:13px;font-weight:700;margin-bottom:6px;color:var(--text-muted);">السنة</label>
+          <input type="number" id="mYear" class="form-input" min="1800" max="2200" placeholder="سنة">
+        </div>
+      </div>
+      <div style="margin-bottom:16px;">
+        <label style="display:block;font-size:13px;font-weight:700;margin-bottom:8px;color:var(--text-muted);">الشهر</label>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;" id="mMonthGrid"></div>
+      </div>
+      <button class="btn btn-primary" style="width:100%" onclick="convertMtoH()">🔄 تحويل</button>
+    </div>
+
+    <!-- هجري → ميلادي -->
+    <div id="panelHtoM" style="display:none;">
+      <div class="date-grid" style="margin-bottom:16px;">
+        <div>
+          <label style="display:block;font-size:13px;font-weight:700;margin-bottom:6px;color:var(--text-muted);">اليوم</label>
+          <input type="number" id="hDay" class="form-input" min="1" max="30" placeholder="يوم">
+        </div>
+        <div>
+          <label style="display:block;font-size:13px;font-weight:700;margin-bottom:6px;color:var(--text-muted);">السنة الهجرية</label>
+          <input type="number" id="hYear" class="form-input" min="1300" max="1600" placeholder="١٤٤٦">
+        </div>
+      </div>
+      <div style="margin-bottom:16px;">
+        <label style="display:block;font-size:13px;font-weight:700;margin-bottom:8px;color:var(--text-muted);">الشهر الهجري</label>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;" id="hMonthGrid"></div>
+      </div>
+      <button class="btn btn-primary" style="width:100%" onclick="convertHtoM()">🔄 تحويل</button>
+    </div>
+  </div>
+
+  <!-- نتيجة التحويل -->
+  <div id="convResult" style="display:none;" class="hijri-card">
+    <h2 style="font-size:16px;font-weight:900;margin-bottom:16px;">📌 نتيجة التحويل</h2>
+    <div id="convResultContent"></div>
+  </div>
+
+  <!-- الأشهر الهجرية -->
+  <div class="hijri-card">
+    <h2 style="font-size:16px;font-weight:900;margin-bottom:16px;">🌙 الأشهر الهجرية</h2>
+    <div id="monthsList"></div>
+  </div>
+
+  <!-- المناسبات الإسلامية -->
+  <div class="hijri-card">
+    <h2 style="font-size:16px;font-weight:900;margin-bottom:16px;">⭐ المناسبات الإسلامية 1446هـ</h2>
+    <div id="occasionsList"></div>
+  </div>
+
+</div>
+</main>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ─── Theme & Nav ───────────────────────────────────────
+const themeBtn=document.getElementById("themeBtn");
+const htmlEl=document.documentElement;
+(function(){const s=localStorage.getItem("theme")||"dark";htmlEl.setAttribute("data-theme",s);themeBtn.textContent=s==="dark"?"☀️":"🌙";})();
+themeBtn.addEventListener("click",()=>{const n=htmlEl.getAttribute("data-theme")==="dark"?"light":"dark";htmlEl.setAttribute("data-theme",n);localStorage.setItem("theme",n);themeBtn.textContent=n==="dark"?"☀️":"🌙";});
+document.getElementById("menuToggle").addEventListener("click",()=>{const m=document.getElementById("navMenu");m.classList.toggle("open");document.getElementById("menuToggle").textContent=m.classList.contains("open")?"✕":"☰";});
+function showToast(msg,type=""){const t=document.getElementById("toast");t.textContent=msg;t.className="toast show "+(type||"");setTimeout(()=>t.classList.remove("show"),3000);}
+
+// ─── Data ──────────────────────────────────────────────
+const MILADI_MONTHS=["يناير","فبراير","مارس","أبريل","مايو","يونيو","يوليو","أغسطس","سبتمبر","أكتوبر","نوفمبر","ديسمبر"];
+const HIJRI_MONTHS=["محرم","صفر","ربيع الأول","ربيع الثاني","جمادى الأولى","جمادى الثانية","رجب","شعبان","رمضان","شوال","ذو القعدة","ذو الحجة"];
+const HIJRI_MONTHS_SHORT=["محرم","صفر","ربيع1","ربيع2","جمادى1","جمادى2","رجب","شعبان","رمضان","شوال","ذو القعدة","ذو الحجة"];
+const WEEKDAYS_AR=["الأحد","الاثنين","الثلاثاء","الأربعاء","الخميس","الجمعة","السبت"];
+
+const MONTHS_INFO=[
+  {name:"محرم",sacred:true,note:"أحد الأشهر الحرم الأربعة. صيام يوم عاشوراء (10 محرم) مستحب."},
+  {name:"صفر",sacred:false,note:"لا أصل لاعتقاد النحس في صفر — نهى عنه النبي ﷺ."},
+  {name:"ربيع الأول",sacred:false,note:"شهر مولد النبي محمد ﷺ (12 ربيع الأول)."},
+  {name:"ربيع الثاني",sacred:false,note:""},
+  {name:"جمادى الأولى",sacred:false,note:""},
+  {name:"جمادى الثانية",sacred:false,note:""},
+  {name:"رجب",sacred:true,note:"أحد الأشهر الحرم. فيه غزوة تبوك وليلة الإسراء والمعراج."},
+  {name:"شعبان",sacred:false,note:"شهر يرفع فيه الأعمال. النبي ﷺ كان يكثر فيه الصيام."},
+  {name:"رمضان",sacred:false,note:"شهر الصيام الفريضة. فيه ليلة القدر خير من ألف شهر."},
+  {name:"شوال",sacred:false,note:"عيد الفطر (1 شوال). صيام 6 أيام منه كصيام الدهر."},
+  {name:"ذو القعدة",sacred:true,note:"أحد الأشهر الحرم الأربعة."},
+  {name:"ذو الحجة",sacred:true,note:"أحد الأشهر الحرم. فيه الحج وعيد الأضحى (10 ذو الحجة). أفضل 10 أيام في السنة."},
+];
+
+const OCCASIONS_1446=[
+  {date:"1 محرم 1446",miladi:"8 يوليو 2024",  icon:"🌙",name:"رأس السنة الهجرية 1446"},
+  {date:"10 محرم 1446",miladi:"17 يوليو 2024", icon:"✡️",name:"يوم عاشوراء"},
+  {date:"12 ربيع الأول",miladi:"15 سبتمبر 2024",icon:"☪️",name:"المولد النبوي الشريف"},
+  {date:"27 رجب 1446", miladi:"27 يناير 2025", icon:"🌃",name:"الإسراء والمعراج"},
+  {date:"1 رمضان 1446", miladi:"~1 مارس 2025",  icon:"🌙",name:"أول رمضان"},
+  {date:"27 رمضان 1446",miladi:"~27 مارس 2025", icon:"⭐",name:"ليلة القدر (المتوقعة)"},
+  {date:"1 شوال 1446",  miladi:"~30 مارس 2025", icon:"🎉",name:"عيد الفطر المبارك"},
+  {date:"9 ذو الحجة 1446",miladi:"~4 يونيو 2025",icon:"🏔️",name:"يوم عرفة"},
+  {date:"10 ذو الحجة 1446",miladi:"~5 يونيو 2025",icon:"🎊",name:"عيد الأضحى المبارك"},
+];
+
+// ─── Julian Day Number conversion ──────────────────────
+function gregorianToJD(y,m,d){
+  if(m<=2){y--;m+=12;}
+  const A=Math.floor(y/100);
+  const B=2-A+Math.floor(A/4);
+  return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+B-1524.5;
+}
+function jdToGregorian(jd){
+  const z=Math.floor(jd+0.5), f=(jd+0.5)-z;
+  let a=z;
+  if(z>=2299161){const alpha=Math.floor((z-1867216.25)/36524.25);a=z+1+alpha-Math.floor(alpha/4);}
+  const b=a+1524, c=Math.floor((b-122.1)/365.25), d=Math.floor(365.25*c), e=Math.floor((b-d)/30.6001);
+  const day=b-d-Math.floor(30.6001*e);
+  const month=e<14?e-1:e-13;
+  const year=month>2?c-4716:c-4715;
+  return {y:year,m:month,d:day};
+}
+function jdToHijri(jd){
+  const z=Math.floor(jd)+0.5;
+  const N=z-1948438.5;
+  const year=Math.floor((N+0.5)/354.367)+1;
+  const monthStart=Math.floor((year-1)*354.367)+1948439.5;
+  const month=Math.floor((z-monthStart)/29.5)+1;
+  const day=Math.floor(z-monthStart-Math.floor((month-1)*29.5))+1;
+  return {y:year,m:Math.min(month,12),d:Math.min(day,30)};
+}
+function hijriToJD(y,m,d){
+  return Math.floor((11*y+3)/30)+Math.floor(354*(y-1))+Math.floor(30*(m-1)-(m-1)/2)+d+1948440-385;
+}
+
+// ─── Today ─────────────────────────────────────────────
+function setToday(){
+  const now=new Date();
+  document.getElementById("mDay").value=now.getDate();
+  document.getElementById("mYear").value=now.getFullYear();
+  // highlight month
+  document.querySelectorAll("#mMonthGrid .month-badge").forEach((b,i)=>{
+    b.classList.toggle("active",i===now.getMonth());
+    if(i===now.getMonth()) b.dataset.selected="1"; else delete b.dataset.selected;
+  });
+  convertMtoH();
+}
+
+// ─── Today box ─────────────────────────────────────────
+function loadToday(){
+  const now=new Date();
+  const jd=gregorianToJD(now.getFullYear(),now.getMonth()+1,now.getDate());
+  const h=jdToHijri(jd);
+  const weekday=WEEKDAYS_AR[now.getDay()];
+  document.getElementById("todayHijri").textContent=
+    h.d+" "+HIJRI_MONTHS[h.m-1]+" "+h.y+" هـ";
+  document.getElementById("todayMiladi").textContent=
+    weekday+" — "+now.getDate()+" "+MILADI_MONTHS[now.getMonth()]+" "+now.getFullYear()+" م";
+  // Check if today has special Islamic significance
+  const specials=[];
+  if(h.m===9) specials.push("🌙 أنت في رمضان المبارك!");
+  if(h.m===9&&h.d===27) specials.push("⭐ ليلة القدر المتوقعة");
+  if(h.m===10&&h.d===1) specials.push("🎉 عيد الفطر المبارك!");
+  if(h.m===12&&h.d===10) specials.push("🎊 عيد الأضحى المبارك!");
+  if(h.m===1&&h.d===10) specials.push("✡️ يوم عاشوراء");
+  if(h.m===1&&h.d===1) specials.push("🌙 رأس السنة الهجرية!");
+  if(now.getDay()===5) specials.push("🕌 يوم الجمعة المبارك");
+  const box=document.getElementById("todaySpecial");
+  box.innerHTML=specials.map(s=>`<span style="background:rgba(255,255,255,0.15);border-radius:20px;
+    padding:4px 12px;font-size:13px;font-weight:700;color:white;margin:4px 2px;display:inline-block;">${s}</span>`).join("");
+}
+
+// ─── Month grids ───────────────────────────────────────
+function buildMMonthGrid(){
+  const g=document.getElementById("mMonthGrid");
+  g.innerHTML=MILADI_MONTHS.map((m,i)=>`
+    <div class="month-badge" data-idx="${i}" onclick="selectMMonth(this)">
+      <div style="font-size:11px;color:var(--text-muted);">${i+1}</div>
+      <div style="font-size:12px;font-weight:700;">${m.slice(0,4)}</div>
+    </div>`).join("");
+}
+function selectMMonth(el){
+  document.querySelectorAll("#mMonthGrid .month-badge").forEach(b=>b.classList.remove("active"));
+  el.classList.add("active");
+}
+function getSelectedMMonth(){
+  const a=document.querySelector("#mMonthGrid .month-badge.active");
+  return a?parseInt(a.dataset.idx)+1:null;
+}
+
+function buildHMonthGrid(){
+  const g=document.getElementById("hMonthGrid");
+  g.innerHTML=HIJRI_MONTHS_SHORT.map((m,i)=>`
+    <div class="month-badge" data-idx="${i}" onclick="selectHMonth(this)">
+      <div style="font-size:11px;color:var(--text-muted);">${i+1}</div>
+      <div style="font-size:11px;font-weight:700;">${m}</div>
+    </div>`).join("");
+}
+function selectHMonth(el){
+  document.querySelectorAll("#hMonthGrid .month-badge").forEach(b=>b.classList.remove("active"));
+  el.classList.add("active");
+}
+function getSelectedHMonth(){
+  const a=document.querySelector("#hMonthGrid .month-badge.active");
+  return a?parseInt(a.dataset.idx)+1:null;
+}
+
+// ─── Tabs ──────────────────────────────────────────────
+function switchTab(t){
+  document.getElementById("panelMtoH").style.display=t==="MtoH"?"block":"none";
+  document.getElementById("panelHtoM").style.display=t==="HtoM"?"block":"none";
+  document.getElementById("tabMtoH").classList.toggle("active",t==="MtoH");
+  document.getElementById("tabHtoM").classList.toggle("active",t==="HtoM");
+  document.getElementById("convResult").style.display="none";
+}
+function convertMode(m){
+  switchTab(m==="hijri"?"HtoM":"MtoH");
+  window.scrollTo({top:300,behavior:"smooth"});
+}
+
+// ─── Convert M→H ───────────────────────────────────────
+function convertMtoH(){
+  const d=parseInt(document.getElementById("mDay").value);
+  const m=getSelectedMMonth();
+  const y=parseInt(document.getElementById("mYear").value);
+  if(!d||!m||!y||d<1||d>31||y<1800){showToast("❌ أدخل التاريخ كاملاً");return;}
+  const jd=gregorianToJD(y,m,d);
+  const h=jdToHijri(jd);
+  const gDate=new Date(y,m-1,d);
+  const weekday=WEEKDAYS_AR[gDate.getDay()];
+  showConvResult(
+    weekday+" "+d+" "+MILADI_MONTHS[m-1]+" "+y+" م",
+    h.d+" "+HIJRI_MONTHS[h.m-1]+" "+h.y+" هـ",
+    MONTHS_INFO[h.m-1],
+    h
+  );
+}
+
+// ─── Convert H→M ───────────────────────────────────────
+function convertHtoM(){
+  const d=parseInt(document.getElementById("hDay").value);
+  const m=getSelectedHMonth();
+  const y=parseInt(document.getElementById("hYear").value);
+  if(!d||!m||!y||d<1||d>30||y<1300){showToast("❌ أدخل التاريخ كاملاً");return;}
+  const jd=hijriToJD(y,m,d);
+  const g=jdToGregorian(jd);
+  const gDate=new Date(g.y,g.m-1,g.d);
+  const weekday=WEEKDAYS_AR[gDate.getDay()];
+  showConvResult(
+    d+" "+HIJRI_MONTHS[m-1]+" "+y+" هـ",
+    weekday+" "+g.d+" "+MILADI_MONTHS[g.m-1]+" "+g.y+" م",
+    MONTHS_INFO[m-1],
+    {y,m,d}
+  );
+}
+
+// ─── Show result ───────────────────────────────────────
+function showConvResult(from, to, monthInfo, h){
+  const box=document.getElementById("convResult");
+  const content=document.getElementById("convResultContent");
+  const specials=getSpecialDays(h);
+  content.innerHTML=`
+    <div style="background:var(--bg-main);border-radius:12px;padding:16px;margin-bottom:12px;text-align:center;">
+      <p style="color:var(--text-muted);font-size:13px;margin-bottom:4px;">من</p>
+      <p style="font-size:15px;font-weight:700;">${from}</p>
+    </div>
+    <div style="text-align:center;font-size:24px;margin-bottom:8px;">⬇️</div>
+    <div style="background:linear-gradient(135deg,var(--primary),#7c3aed);border-radius:12px;
+         padding:16px;text-align:center;margin-bottom:12px;">
+      <p style="color:rgba(255,255,255,0.7);font-size:13px;margin-bottom:4px;">إلى</p>
+      <p style="font-size:20px;font-weight:900;color:white;">${to}</p>
+    </div>
+    ${monthInfo.note?`<div style="background:rgba(99,102,241,0.08);border:1px solid rgba(99,102,241,0.2);
+      border-radius:10px;padding:12px;margin-bottom:12px;">
+      <p style="font-size:13px;color:var(--text-secondary);">📚 ${monthInfo.note}</p>
+    </div>`:""}
+    ${specials.map(s=>`<div class="special-day"><span style="font-size:28px;">${s.icon}</span>
+      <div><p style="font-weight:700;font-size:14px;">${s.name}</p>
+      <p style="color:var(--text-muted);font-size:12px;">${s.note}</p></div></div>`).join("")}
+    <button onclick="copyResult('${to}')" class="btn" style="width:100%;margin-top:4px;
+      background:var(--bg-main);border:1px solid var(--border);color:var(--text-primary);">
+      📋 نسخ النتيجة
+    </button>
+  `;
+  box.style.display="block";
+  box.scrollIntoView({behavior:"smooth",block:"nearest"});
+}
+
+function copyResult(txt){
+  navigator.clipboard.writeText(txt).then(()=>showToast("✅ تم النسخ: "+txt));
+}
+
+function getSpecialDays(h){
+  const specials=[];
+  const map=[
+    {m:1,d:1,icon:"🌙",name:"رأس السنة الهجرية",note:"أول أيام السنة الهجرية الجديدة"},
+    {m:1,d:10,icon:"✡️",name:"يوم عاشوراء",note:"صيامه يكفّر السنة الماضية"},
+    {m:3,d:12,icon:"☪️",name:"المولد النبوي",note:"ذكرى مولد النبي محمد ﷺ"},
+    {m:7,d:27,icon:"🌃",name:"الإسراء والمعراج",note:"ذكرى رحلة النبي ﷺ"},
+    {m:8,d:15,icon:"🌟",name:"نصف شعبان",note:"ليلة البراءة"},
+    {m:9,d:1,icon:"🌙",name:"أول رمضان",note:"بداية شهر الصيام المبارك"},
+    {m:9,d:27,icon:"⭐",name:"ليلة القدر (متوقعة)",note:"خير من ألف شهر"},
+    {m:10,d:1,icon:"🎉",name:"عيد الفطر",note:"تقبّل الله منا ومنكم"},
+    {m:12,d:9,icon:"🏔️",name:"يوم عرفة",note:"صيامه يكفّر سنتين"},
+    {m:12,d:10,icon:"🎊",name:"عيد الأضحى",note:"تقبّل الله منا ومنكم"},
+  ];
+  map.forEach(s=>{if(s.m===h.m&&s.d===h.d)specials.push(s);});
+  return specials;
+}
+
+// ─── Months list ───────────────────────────────────────
+function buildMonthsList(){
+  const el=document.getElementById("monthsList");
+  el.innerHTML=MONTHS_INFO.map((m,i)=>`
+    <div class="info-row">
+      <div style="display:flex;gap:10px;align-items:center;">
+        <span style="background:var(--bg-main);border-radius:8px;padding:4px 10px;
+          font-size:13px;font-weight:800;color:var(--primary-light);min-width:28px;text-align:center;">${i+1}</span>
+        <div>
+          <p style="font-weight:700;font-size:14px;">${m.name}
+            ${m.sacred?'<span style="color:var(--gold);font-size:11px;font-weight:900;">★ حرام</span>':""}</p>
+          ${m.note?`<p style="color:var(--text-muted);font-size:12px;">${m.note}</p>`:""}
+        </div>
+      </div>
+    </div>`).join("");
+}
+
+// ─── Occasions ─────────────────────────────────────────
+function buildOccasions(){
+  const el=document.getElementById("occasionsList");
+  el.innerHTML=OCCASIONS_1446.map(o=>`
+    <div class="special-day">
+      <span style="font-size:28px;">${o.icon}</span>
+      <div>
+        <p style="font-weight:700;font-size:14px;">${o.name}</p>
+        <p style="color:var(--text-muted);font-size:12px;">${o.date} — ${o.miladi}</p>
+      </div>
+    </div>`).join("");
+}
+
+// ─── Init ──────────────────────────────────────────────
+function setDate(type,val){}
+loadToday();
+buildMMonthGrid();
+buildHMonthGrid();
+buildMonthsList();
+buildOccasions();
+setTimeout(()=>{
+  const now=new Date();
+  document.getElementById("mDay").value=now.getDate();
+  document.getElementById("mYear").value=now.getFullYear();
+  document.querySelectorAll("#mMonthGrid .month-badge").forEach((b,i)=>{
+    if(i===now.getMonth()) b.classList.add("active");
+  });
+},100);
+</script>
+</body>
+</html>

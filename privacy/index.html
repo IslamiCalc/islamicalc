@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="canonical" href="https://islamicalc.com/privacy/">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔐</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+  <title>سياسة الخصوصية | IslamiCalc</title>
+</head>
+<body>
+<nav class="navbar">
+  <a href="/" class="navbar-brand">
+    <div class="navbar-logo">☪</div>
+    <span class="navbar-title">IslamiCalc</span>
+  </a>
+  <ul class="navbar-menu" id="navMenu">
+    <li><a href="/">🏠 الرئيسية</a></li>
+    <li><a href="/zakat">🧮 الحاسبات</a></li>
+    <li><a href="/khatma">📖 القرآن</a></li>
+    <li><a href="/prayer">🕌 الصلاة</a></li>
+    <li><a href="/athkar">📿 الأذكار</a></li>
+    <li><a href="/arena">🏆 الأرينا</a></li>
+  </ul>
+  <div class="navbar-actions">
+    <button class="theme-btn" id="themeBtn">🌙</button>
+    <button class="login-btn" onclick="showToast('سجّل دخولك من الرئيسية','toast-gold')">دخول 🔵</button>
+    <button class="menu-toggle" id="menuToggle">☰</button>
+  </div>
+</nav>
+<main>
+<div style="max-width:720px;margin:0 auto;padding:24px 16px 80px;">
+
+  <div style="text-align:center;padding:32px 0 24px;">
+    <div style="font-size:64px;margin-bottom:12px;">🔐</div>
+    <h1 style="font-size:28px;font-weight:900;margin-bottom:8px;">سياسة الخصوصية</h1>
+    <p style="color:var(--text-muted);font-size:15px;">آخر تحديث: فبراير 2026</p>
+  </div>
+  <div style="background:rgba(16,185,129,0.08);border:1px solid var(--success);border-radius:14px;
+       padding:16px 20px;margin-bottom:20px;display:flex;gap:12px;align-items:flex-start;">
+    <span style="font-size:24px;">✅</span>
+    <p style="color:var(--success);font-size:14px;font-weight:700;line-height:1.7;">
+      خلاصة: بياناتك تبقى على جهازك فقط. لا نبيع بياناتك. لا نشاركها مع أطراف ثالثة للتسويق.
+    </p>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:14px;">
+    <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:20px;">
+      <h2 style="font-size:16px;font-weight:900;margin-bottom:10px;">1️⃣ ما البيانات التي نجمعها؟</h2>
+      <ul style="color:var(--text-secondary);font-size:14px;line-height:2;padding-right:16px;">
+        <li>الموقع الجغرافي — لأوقات الصلاة واتجاه القبلة فقط (بإذنك)</li>
+        <li>اسم المدينة — يُرسل لـ Aladhan API لجلب أوقات الصلاة</li>
+        <li>عند التسجيل الاختياري — البريد الإلكتروني واسم المستخدم عبر Firebase</li>
+        <li>بيانات الاستخدام المجهولة — عدد الزيارات بدون هوية شخصية</li>
+      </ul>
+    </div>
+    <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:20px;">
+      <h2 style="font-size:16px;font-weight:900;margin-bottom:10px;">2️⃣ البيانات المحلية (localStorage)</h2>
+      <p style="color:var(--text-secondary);font-size:14px;line-height:1.8;">
+        بياناتك (ختمة القرآن، XP الأرينا، الأذكار، إعدادات الزكاة) تُحفظ على جهازك فقط.
+        لا ترسل لخوادمنا. يمكنك حذفها من إعدادات المتصفح في أي وقت.
+      </p>
+    </div>
+    <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:20px;">
+      <h2 style="font-size:16px;font-weight:900;margin-bottom:10px;">3️⃣ الخدمات الخارجية</h2>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <div style="display:flex;gap:10px;align-items:center;">
+          <span style="background:var(--bg-main);border-radius:8px;padding:4px 10px;font-size:12px;font-weight:700;color:var(--primary-light);">Aladhan API</span>
+          <span style="font-size:13px;color:var(--text-muted);">أوقات الصلاة — لا يجمع بيانات شخصية</span>
+        </div>
+        <div style="display:flex;gap:10px;align-items:center;">
+          <span style="background:var(--bg-main);border-radius:8px;padding:4px 10px;font-size:12px;font-weight:700;color:var(--primary-light);">Firebase (Google)</span>
+          <span style="font-size:13px;color:var(--text-muted);">تسجيل الدخول الاختياري فقط</span>
+        </div>
+        <div style="display:flex;gap:10px;align-items:center;">
+          <span style="background:var(--bg-main);border-radius:8px;padding:4px 10px;font-size:12px;font-weight:700;color:var(--primary-light);">Google Fonts</span>
+          <span style="font-size:13px;color:var(--text-muted);">خط Cairo — لا بيانات شخصية</span>
+        </div>
+      </div>
+    </div>
+    <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:20px;">
+      <h2 style="font-size:16px;font-weight:900;margin-bottom:10px;">4️⃣ حقوقك</h2>
+      <ul style="color:var(--text-secondary);font-size:14px;line-height:2;padding-right:16px;">
+        <li>حق الوصول لبياناتك وتصحيحها أو حذفها</li>
+        <li>حق سحب الموافقة على الموقع الجغرافي في أي وقت</li>
+        <li>حق حذف حسابك ومزامنة بياناتك نهائياً</li>
+      </ul>
+    </div>
+    <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:20px;">
+      <h2 style="font-size:16px;font-weight:900;margin-bottom:10px;">5️⃣ التواصل</h2>
+      <p style="color:var(--text-secondary);font-size:14px;line-height:1.8;">
+        لأي استفسار: <a href="mailto:privacy@islamicalc.com" style="color:var(--primary-light);">privacy@islamicalc.com</a>
+        أو عبر <a href="/contact" style="color:var(--primary-light);">صفحة التواصل</a>.
+      </p>
+    </div>
+  </div>
+
+</div>
+</main>
+<div class="toast" id="toast"></div>
+<script>
+const themeBtn=document.getElementById("themeBtn");
+const htmlEl=document.documentElement;
+(function(){const s=localStorage.getItem("theme")||"dark";htmlEl.setAttribute("data-theme",s);themeBtn.textContent=s==="dark"?"☀️":"🌙";})();
+themeBtn.addEventListener("click",()=>{const n=htmlEl.getAttribute("data-theme")==="dark"?"light":"dark";htmlEl.setAttribute("data-theme",n);localStorage.setItem("theme",n);themeBtn.textContent=n==="dark"?"☀️":"🌙";});
+document.getElementById("menuToggle").addEventListener("click",()=>{const m=document.getElementById("navMenu");m.classList.toggle("open");document.getElementById("menuToggle").textContent=m.classList.contains("open")?"✕":"☰";});
+function showToast(msg,type=""){const t=document.getElementById("toast");t.textContent=msg;t.className="toast show "+type;setTimeout(()=>t.classList.remove("show"),3000);}
+</script>
+</body>
+</html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="canonical" href="https://islamicalc.com/faq/">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>❓</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+  <title>الأسئلة الشائعة | IslamiCalc</title>
+</head>
+<body>
+<nav class="navbar">
+  <a href="/" class="navbar-brand">
+    <div class="navbar-logo">☪</div>
+    <span class="navbar-title">IslamiCalc</span>
+  </a>
+  <ul class="navbar-menu" id="navMenu">
+    <li><a href="/">🏠 الرئيسية</a></li>
+    <li><a href="/zakat">🧮 الحاسبات</a></li>
+    <li><a href="/khatma">📖 القرآن</a></li>
+    <li><a href="/prayer">🕌 الصلاة</a></li>
+    <li><a href="/athkar">📿 الأذكار</a></li>
+    <li><a href="/arena">🏆 الأرينا</a></li>
+  </ul>
+  <div class="navbar-actions">
+    <button class="theme-btn" id="themeBtn">🌙</button>
+    <button class="login-btn" onclick="showToast('سجّل دخولك من الرئيسية','toast-gold')">دخول 🔵</button>
+    <button class="menu-toggle" id="menuToggle">☰</button>
+  </div>
+</nav>
+<main>
+<div style="max-width:720px;margin:0 auto;padding:24px 16px 80px;">
+
+  <div style="text-align:center;padding:32px 0 24px;">
+    <div style="font-size:64px;margin-bottom:12px;">❓</div>
+    <h1 style="font-size:28px;font-weight:900;margin-bottom:8px;">الأسئلة الشائعة</h1>
+    <p style="color:var(--text-muted);font-size:15px;">إجابات على أكثر الأسئلة تكراراً</p>
+  </div>
+  <div id="faqList" style="display:flex;flex-direction:column;gap:10px;"></div>
+  <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:14px;
+       padding:20px;margin-top:20px;text-align:center;">
+    <p style="font-size:15px;font-weight:700;margin-bottom:12px;">لم تجد إجابتك؟</p>
+    <a href="/contact" class="btn btn-primary">📧 تواصل معنا</a>
+  </div>
+  <script>
+  const FAQS=[
+    {q:"هل IslamiCalc مجاني؟",a:"نعم، الموقع مجاني بالكامل ولا يتطلب أي اشتراك. جميع الأدوات متاحة للجميع بدون قيود."},
+    {q:"ما مصادر المعلومات الشرعية؟",a:"نعتمد على: صحيح البخاري، صحيح مسلم، islamqa.info، binbaz.org.sa، dorar.net. كل معلومة مدعومة بمصدرها."},
+    {q:"كيف تعمل حاسبة الزكاة؟",a:"تعتمد على نصاب الذهب (85 جرام) وتحسب 2.5٪ من المال الزكوي بعد مرور الحول. الأسعار تُدخلها أنت يدوياً لضمان الدقة."},
+    {q:"هل أوقات الصلاة دقيقة؟",a:"نعم، نستخدم Aladhan API الموثوق مع طريقة أم القرى للسعودية والخليج. يمكنك تغيير الطريقة حسب بلدك."},
+    {q:"هل تُحفظ بياناتي؟",a:"بياناتك تُحفظ على جهازك فقط عبر localStorage. لا نرسل أي بيانات شخصية لخوادمنا إلا عند التسجيل الاختياري."},
+    {q:"ما فائدة التسجيل؟",a:"التسجيل اختياري ويتيح مزامنة بياناتك (ختمة القرآن، XP الأرينا) عبر أجهزة متعددة."},
+    {q:"هل الموقع يعمل بدون إنترنت؟",a:"معظم الميزات تعمل offline (الأذكار، التسبيح، الختمة، الأرينا). أوقات الصلاة تحتاج إنترنت لأول تحميل."},
+    {q:"ما هو نظام XP في الأرينا؟",a:"تكسب XP بالإجابة على أسئلة الاختبار: سهل +10، متوسط +20، صعب +30، خبير +50 XP."},
+    {q:"كيف تعمل ختمة القرآن؟",a:"سجّل كل جزء تقرأه بالضغط عليه. الموقع يحسب تقدمك ويذكرك بهدفك ويحتفل معك عند الإتمام."},
+    {q:"كيف أبلغ عن خطأ شرعي؟",a:"تواصل معنا عبر صفحة التواصل واختر (ملاحظة شرعية). نأخذ الدقة الشرعية بجدية تامة."},
+    {q:"هل الموقع متوافق مع الجوال؟",a:"نعم، مصمم Mobile-First ويعمل بكفاءة على جميع الأجهزة والشاشات."},
+  ];
+  document.getElementById("faqList").innerHTML=FAQS.map((f,i)=>`
+    <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:14px;overflow:hidden;">
+      <button onclick="toggleFaq(${i})" style="width:100%;padding:16px 20px;background:transparent;border:none;
+              display:flex;justify-content:space-between;align-items:center;cursor:pointer;font-family:var(--font-arabic);text-align:right;">
+        <span style="font-size:15px;font-weight:700;color:var(--text-primary);">${f.q}</span>
+        <span id="faqIcon${i}" style="font-size:20px;color:var(--text-muted);flex-shrink:0;margin-right:8px;">+</span>
+      </button>
+      <div id="faqAns${i}" style="display:none;padding:0 20px 16px;">
+        <p style="color:var(--text-secondary);font-size:14px;line-height:1.8;border-top:1px solid var(--border);padding-top:12px;">${f.a}</p>
+      </div>
+    </div>`).join("");
+  function toggleFaq(i){
+    const a=document.getElementById("faqAns"+i);
+    const ic=document.getElementById("faqIcon"+i);
+    const open=a.style.display==="block";
+    a.style.display=open?"none":"block";
+    ic.textContent=open?"+":"−";
+    ic.style.color=open?"var(--text-muted)":"var(--gold)";
+  }
+  </script>
+
+</div>
+</main>
+<div class="toast" id="toast"></div>
+<script>
+const themeBtn=document.getElementById("themeBtn");
+const htmlEl=document.documentElement;
+(function(){const s=localStorage.getItem("theme")||"dark";htmlEl.setAttribute("data-theme",s);themeBtn.textContent=s==="dark"?"☀️":"🌙";})();
+themeBtn.addEventListener("click",()=>{const n=htmlEl.getAttribute("data-theme")==="dark"?"light":"dark";htmlEl.setAttribute("data-theme",n);localStorage.setItem("theme",n);themeBtn.textContent=n==="dark"?"☀️":"🌙";});
+document.getElementById("menuToggle").addEventListener("click",()=>{const m=document.getElementById("navMenu");m.classList.toggle("open");document.getElementById("menuToggle").textContent=m.classList.contains("open")?"✕":"☰";});
+function showToast(msg,type=""){const t=document.getElementById("toast");t.textContent=msg;t.className="toast show "+type;setTimeout(()=>t.classList.remove("show"),3000);}
+</script>
+</body>
+</html>

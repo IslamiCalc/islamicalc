@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="canonical" href="https://islamicalc.com/about/">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>ℹ️</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+  <title>من نحن | IslamiCalc</title>
+</head>
+<body>
+<nav class="navbar">
+  <a href="/" class="navbar-brand">
+    <div class="navbar-logo">☪</div>
+    <span class="navbar-title">IslamiCalc</span>
+  </a>
+  <ul class="navbar-menu" id="navMenu">
+    <li><a href="/">🏠 الرئيسية</a></li>
+    <li><a href="/zakat">🧮 الحاسبات</a></li>
+    <li><a href="/khatma">📖 القرآن</a></li>
+    <li><a href="/prayer">🕌 الصلاة</a></li>
+    <li><a href="/athkar">📿 الأذكار</a></li>
+    <li><a href="/arena">🏆 الأرينا</a></li>
+  </ul>
+  <div class="navbar-actions">
+    <button class="theme-btn" id="themeBtn">🌙</button>
+    <button class="login-btn" onclick="showToast('سجّل دخولك من الرئيسية','toast-gold')">دخول 🔵</button>
+    <button class="menu-toggle" id="menuToggle">☰</button>
+  </div>
+</nav>
+<main>
+<div style="max-width:720px;margin:0 auto;padding:24px 16px 80px;">
+
+  <div style="text-align:center;padding:32px 0 24px;">
+    <div style="font-size:64px;margin-bottom:12px;">☪️</div>
+    <h1 style="font-size:28px;font-weight:900;margin-bottom:8px;">من نحن</h1>
+    <p style="color:var(--text-muted);font-size:15px;">IslamiCalc — مرجعك الإسلامي الرقمي</p>
+  </div>
+  <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px;">
+    <h2 style="font-size:18px;font-weight:900;margin-bottom:12px;">🎯 رسالتنا</h2>
+    <p style="color:var(--text-secondary);line-height:1.9;font-size:15px;">
+      IslamiCalc منصة إسلامية رقمية تهدف إلى تيسير الوصول للمعلومات الإسلامية الصحيحة الموثقة
+      من المصادر الشرعية المعتمدة، بأدوات تفاعلية عصرية تخدم المسلم في حياته اليومية.
+    </p>
+  </div>
+  <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px;">
+    <h2 style="font-size:18px;font-weight:900;margin-bottom:16px;">✨ ما نقدمه</h2>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+      <div style="background:var(--bg-main);border-radius:12px;padding:16px;text-align:center;">
+        <div style="font-size:32px;margin-bottom:8px;">🧮</div>
+        <p style="font-weight:700;font-size:14px;">حاسبات الزكاة</p>
+        <p style="font-size:12px;color:var(--text-muted);">ذهب وفضة ومال وعروض</p>
+      </div>
+      <div style="background:var(--bg-main);border-radius:12px;padding:16px;text-align:center;">
+        <div style="font-size:32px;margin-bottom:8px;">🕌</div>
+        <p style="font-weight:700;font-size:14px;">أوقات الصلاة</p>
+        <p style="font-size:12px;color:var(--text-muted);">لأي مدينة في العالم</p>
+      </div>
+      <div style="background:var(--bg-main);border-radius:12px;padding:16px;text-align:center;">
+        <div style="font-size:32px;margin-bottom:8px;">📿</div>
+        <p style="font-weight:700;font-size:14px;">الأذكار</p>
+        <p style="font-size:12px;color:var(--text-muted);">موثقة من السنة النبوية</p>
+      </div>
+      <div style="background:var(--bg-main);border-radius:12px;padding:16px;text-align:center;">
+        <div style="font-size:32px;margin-bottom:8px;">🏆</div>
+        <p style="font-weight:700;font-size:14px;">الأرينا</p>
+        <p style="font-size:12px;color:var(--text-muted);">مسابقات إسلامية تفاعلية</p>
+      </div>
+      <div style="background:var(--bg-main);border-radius:12px;padding:16px;text-align:center;">
+        <div style="font-size:32px;margin-bottom:8px;">📖</div>
+        <p style="font-weight:700;font-size:14px;">ختمة القرآن</p>
+        <p style="font-size:12px;color:var(--text-muted);">تتبع قراءتك يومياً</p>
+      </div>
+      <div style="background:var(--bg-main);border-radius:12px;padding:16px;text-align:center;">
+        <div style="font-size:32px;margin-bottom:8px;">⚖️</div>
+        <p style="font-weight:700;font-size:14px;">حاسبة الميراث</p>
+        <p style="font-size:12px;color:var(--text-muted);">وفق الفقه الإسلامي</p>
+      </div>
+    </div>
+  </div>
+  <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px;">
+    <h2 style="font-size:18px;font-weight:900;margin-bottom:16px;">💎 قيمنا</h2>
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <div style="display:flex;gap:12px;align-items:flex-start;">
+        <span style="font-size:24px;">📚</span>
+        <div><p style="font-weight:700;margin-bottom:4px;">الصحة الشرعية</p>
+        <p style="color:var(--text-muted);font-size:13px;">كل المعلومات موثقة من مصادر معتمدة: البخاري، مسلم، islamqa.info، binbaz.org.sa</p></div>
+      </div>
+      <div style="display:flex;gap:12px;align-items:flex-start;">
+        <span style="font-size:24px;">🔓</span>
+        <div><p style="font-weight:700;margin-bottom:4px;">مجاني للجميع</p>
+        <p style="color:var(--text-muted);font-size:13px;">الموقع مجاني بالكامل — لا اشتراكات ولا إعلانات مزعجة</p></div>
+      </div>
+      <div style="display:flex;gap:12px;align-items:flex-start;">
+        <span style="font-size:24px;">🔐</span>
+        <div><p style="font-weight:700;margin-bottom:4px;">خصوصيتك محفوظة</p>
+        <p style="color:var(--text-muted);font-size:13px;">بياناتك تُحفظ على جهازك فقط — لا نبيع بيانات ولا نشاركها</p></div>
+      </div>
+    </div>
+  </div>
+  <div style="background:linear-gradient(135deg,var(--primary) 0%,#7c3aed 100%);border-radius:16px;padding:24px;text-align:center;">
+    <p style="color:white;font-size:16px;font-weight:700;margin-bottom:16px;">هل لديك اقتراح أو ملاحظة؟</p>
+    <a href="/contact" style="background:white;color:var(--primary);padding:12px 28px;
+       border-radius:30px;font-weight:800;font-size:15px;text-decoration:none;">📧 تواصل معنا</a>
+  </div>
+
+</div>
+</main>
+<div class="toast" id="toast"></div>
+<script>
+const themeBtn=document.getElementById("themeBtn");
+const htmlEl=document.documentElement;
+(function(){const s=localStorage.getItem("theme")||"dark";htmlEl.setAttribute("data-theme",s);themeBtn.textContent=s==="dark"?"☀️":"🌙";})();
+themeBtn.addEventListener("click",()=>{const n=htmlEl.getAttribute("data-theme")==="dark"?"light":"dark";htmlEl.setAttribute("data-theme",n);localStorage.setItem("theme",n);themeBtn.textContent=n==="dark"?"☀️":"🌙";});
+document.getElementById("menuToggle").addEventListener("click",()=>{const m=document.getElementById("navMenu");m.classList.toggle("open");document.getElementById("menuToggle").textContent=m.classList.contains("open")?"✕":"☰";});
+function showToast(msg,type=""){const t=document.getElementById("toast");t.textContent=msg;t.className="toast show "+type;setTimeout(()=>t.classList.remove("show"),3000);}
+</script>
+</body>
+</html>

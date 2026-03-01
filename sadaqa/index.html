@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="dark">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>حاسبة الصدقة | IslamiCalc</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../style.css">
+<style>.card{background:var(--bg-card);border:1px solid var(--border);border-radius:18px;padding:22px;margin-bottom:14px;}
+.calc-row{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--border);font-size:13px;}
+.calc-row:last-child{border-bottom:none;}
+.tab-btn{background:var(--bg-main);border:1px solid var(--border);border-radius:12px;padding:8px 14px;font-family:var(--font-arabic);font-weight:700;font-size:13px;cursor:pointer;color:var(--text-muted);transition:.2s;white-space:nowrap;}
+.tab-btn.active,.tab-btn:hover{background:var(--gold);border-color:var(--gold);color:#000;}
+.hadith-box{background:rgba(245,158,11,0.06);border-right:3px solid var(--gold);padding:12px 14px;border-radius:0 10px 10px 0;margin:10px 0;}</style></head><body>
+<nav class="navbar">
+  <a href="../index.html" class="navbar-brand"><div class="navbar-logo">☪</div><span class="navbar-title">IslamiCalc</span></a>
+  <div class="navbar-actions"><button class="theme-btn" id="themeBtn">🌙</button></div>
+</nav>
+<main><div style="max-width:660px;margin:0 auto;padding:24px 16px 80px;">
+  <div style="text-align:center;padding:20px 0 14px;"><div style="font-size:52px;margin-bottom:8px;">💝</div>
+  <h1 style="font-size:24px;font-weight:900;">حاسبة الصدقة</h1>
+  <p style="color:var(--text-muted);font-size:13px;">صدقة • زكاة فطر • صدقة جارية • هبة</p></div>
+
+  <div style="display:flex;gap:8px;overflow-x:auto;padding-bottom:8px;margin-bottom:14px;scrollbar-width:none;">
+    <button class="tab-btn active" data-t="sadaqa" onclick="switchT(this)">💝 الصدقة</button>
+    <button class="tab-btn" data-t="fitra" onclick="switchT(this)">🌙 زكاة الفطر</button>
+    <button class="tab-btn" data-t="jariya" onclick="switchT(this)">♾️ صدقة جارية</button>
+    <button class="tab-btn" data-t="hiba" onclick="switchT(this)">🎁 هبة وهدية</button>
+  </div>
+
+  <!-- صدقة -->
+  <div id="panel-sadaqa">
+    <div class="card">
+      <h2 style="font-size:15px;font-weight:900;margin-bottom:8px;">💝 حاسبة الصدقة</h2>
+      <div class="hadith-box"><p style="font-size:13px;color:var(--gold);">«الصدقة تطفئ الخطيئة كما يطفئ الماء النار» — رواه الترمذي</p></div>
+      <div style="margin:14px 0 8px;">
+        <label style="display:block;font-size:12px;font-weight:700;margin-bottom:6px;color:var(--text-muted);">الدخل الشهري</label>
+        <input type="number" id="income" class="form-input" placeholder="مثال: 10000" oninput="calcSadaqa()">
+      </div>
+      <div style="margin-bottom:14px;">
+        <label style="display:block;font-size:12px;font-weight:700;margin-bottom:6px;color:var(--text-muted);">نسبة الصدقة الشهرية</label>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <button class="tab-btn active" data-pct="2.5" onclick="setPct(this)">2.5% (زكاة)</button>
+          <button class="tab-btn" data-pct="5" onclick="setPct(this)">5%</button>
+          <button class="tab-btn" data-pct="10" onclick="setPct(this)">10%</button>
+          <button class="tab-btn" data-pct="custom" onclick="setPct(this)">مخصص</button>
+        </div>
+        <input type="number" id="customPct" class="form-input" style="margin-top:8px;display:none;" placeholder="أدخل النسبة %" oninput="calcSadaqa()">
+      </div>
+      <div id="sadaqaResult"></div>
+    </div>
+    <div class="card">
+      <h2 style="font-size:15px;font-weight:900;margin-bottom:12px;">🌟 أنواع الصدقات وفضلها</h2>
+      <div style="display:flex;flex-direction:column;gap:8px;" id="sadaqaTypes"></div>
+    </div>
+  </div>
+
+  <!-- زكاة الفطر -->
+  <div id="panel-fitra" style="display:none;">
+    <div class="card">
+      <h2 style="font-size:15px;font-weight:900;margin-bottom:8px;">🌙 حاسبة زكاة الفطر</h2>
+      <div class="hadith-box"><p style="font-size:13px;color:var(--gold);">«فرض رسول الله ﷺ زكاة الفطر صاعاً من تمر أو صاعاً من شعير» — متفق عليه</p></div>
+      <div style="margin:14px 0 8px;">
+        <label style="display:block;font-size:12px;font-weight:700;margin-bottom:6px;color:var(--text-muted);">عدد أفراد الأسرة</label>
+        <input type="number" id="familyCount" class="form-input" value="1" min="1" oninput="calcFitra()">
+      </div>
+      <div style="margin-bottom:14px;">
+        <label style="display:block;font-size:12px;font-weight:700;margin-bottom:6px;color:var(--text-muted);">المادة (سعر الكيلو)</label>
+        <select id="fitraType" class="form-select" onchange="calcFitra()">
+          <option value="3">أرز (3 ريال/كيلو)</option>
+          <option value="5">قمح (5 ريال/كيلو)</option>
+          <option value="15">تمر (15 ريال/كيلو)</option>
+          <option value="custom">مخصص</option>
+        </select>
+        <input type="number" id="fitraCustom" class="form-input" style="margin-top:8px;display:none;" placeholder="أدخل السعر" oninput="calcFitra()">
+      </div>
+      <div id="fitraResult"></div>
+    </div>
+  </div>
+
+  <!-- صدقة جارية -->
+  <div id="panel-jariya" style="display:none;">
+    <div class="card">
+      <h2 style="font-size:15px;font-weight:900;margin-bottom:8px;">♾️ الصدقة الجارية</h2>
+      <div class="hadith-box"><p style="font-size:13px;color:var(--gold);">«إذا مات الإنسان انقطع عمله إلا من ثلاثة: صدقة جارية أو علم ينتفع به أو ولد صالح يدعو له» — رواه مسلم</p></div>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-top:14px;" id="jariyaList"></div>
+    </div>
+  </div>
+
+  <!-- هبة -->
+  <div id="panel-hiba" style="display:none;">
+    <div class="card">
+      <h2 style="font-size:15px;font-weight:900;margin-bottom:12px;">🎁 أحكام الهبة والهدية</h2>
+      <div style="display:flex;flex-direction:column;gap:8px;" id="hibaList"></div>
+    </div>
+  </div>
+
+</div></main>
+<div class="toast" id="toast"></div>
+<script>
+const themeBtn=document.getElementById("themeBtn");
+const htmlEl=document.documentElement;
+(function(){const s=localStorage.getItem("theme")||"dark";htmlEl.setAttribute("data-theme",s);themeBtn.textContent=s==="dark"?"☀️":"🌙";})();
+themeBtn.addEventListener("click",()=>{const n=htmlEl.getAttribute("data-theme")==="dark"?"light":"dark";htmlEl.setAttribute("data-theme",n);localStorage.setItem("theme",n);themeBtn.textContent=n==="dark"?"☀️":"🌙";});
+function showToast(m){const el=document.getElementById("toast");el.textContent=m;el.className="toast show";setTimeout(()=>el.classList.remove("show"),3000);}
+
+let curPct=2.5;
+function switchT(el){
+  document.querySelectorAll("[data-t]").forEach(b=>b.classList.remove("active"));el.classList.add("active");
+  const t=el.dataset.t;
+  ["sadaqa","fitra","jariya","hiba"].forEach(p=>document.getElementById("panel-"+p).style.display=p===t?"block":"none");
+  if(t==="jariya")buildJariya();if(t==="hiba")buildHiba();
+}
+function setPct(el){
+  document.querySelectorAll("[data-pct]").forEach(b=>b.classList.remove("active"));el.classList.add("active");
+  const v=el.dataset.pct;
+  document.getElementById("customPct").style.display=v==="custom"?"block":"none";
+  if(v!=="custom")curPct=parseFloat(v);
+  calcSadaqa();
+}
+function calcSadaqa(){
+  const inc=parseFloat(document.getElementById("income").value)||0;
+  const c=document.getElementById("customPct").style.display!=="none"?parseFloat(document.getElementById("customPct").value)||0:curPct;
+  if(!inc){document.getElementById("sadaqaResult").innerHTML="";return;}
+  const monthly=(inc*c/100).toFixed(2);
+  const yearly=(monthly*12).toFixed(2);
+  document.getElementById("sadaqaResult").innerHTML=`
+    <div style="background:linear-gradient(135deg,#064e3b,#065f46);border-radius:14px;padding:18px;text-align:center;margin-bottom:12px;">
+      <p style="color:rgba(255,255,255,0.7);font-size:13px;">صدقتك الشهرية (${c}%)</p>
+      <p style="font-size:34px;font-weight:900;color:white;">${monthly} ريال</p>
+      <p style="color:rgba(255,255,255,0.6);font-size:12px;margin-top:4px;">سنوياً: ${yearly} ريال</p>
+    </div>`;
+}
+function calcFitra(){
+  const n=parseInt(document.getElementById("familyCount").value)||1;
+  const sel=document.getElementById("fitraType");
+  const pricePerKg=sel.value==="custom"?(parseFloat(document.getElementById("fitraCustom").value)||3):parseFloat(sel.value);
+  if(sel.value==="custom")document.getElementById("fitraCustom").style.display="block";
+  else document.getElementById("fitraCustom").style.display="none";
+  const saa=2.4;// صاع = ~2.4 كيلو
+  const perPerson=(saa*pricePerKg).toFixed(2);
+  const total=(perPerson*n).toFixed(2);
+  document.getElementById("fitraResult").innerHTML=`
+    <div style="background:var(--bg-main);border-radius:12px;padding:14px;">
+      <div class="calc-row"><span>📦 الصاع (كيلوجرام)</span><span style="font-weight:900;">${saa} كيلو</span></div>
+      <div class="calc-row"><span>💰 قيمة الفرد</span><span style="font-weight:900;color:var(--gold);">${perPerson} ريال</span></div>
+      <div class="calc-row"><span>👪 إجمالي الأسرة (${n} أفراد)</span><span style="font-weight:900;color:var(--gold);font-size:18px;">${total} ريال</span></div>
+      <p style="font-size:12px;color:var(--text-muted);margin-top:8px;">⏰ تُخرج قبل صلاة عيد الفطر</p>
+    </div>`;
+}
+const JARIYA=[
+  {icon:"🕌",n:"بناء مسجد أو المساهمة فيه",d:"أجره مستمر ما بقي المسجد"},
+  {icon:"💧",n:"حفر بئر أو إنشاء نقطة ماء",d:"كل شربة ماء تجري عليك حسنة"},
+  {icon:"📚",n:"وقف مصحف أو كتاب علم",d:"كل تلاوة أو قراءة في ميزانك"},
+  {icon:"🌴",n:"زرع شجرة أو حديقة عامة",d:"كل ما يُؤكل منها صدقة"},
+  {icon:"🏥",n:"بناء مستشفى أو عيادة",d:"كل مريض يُشفى في ميزانك"},
+  {icon:"🎓",n:"إنشاء مدرسة أو منحة علمية",d:"علم ينتفع به بعد موتك"},
+  {icon:"🤲",n:"كفالة يتيم",d:"أنت وكافل اليتيم في الجنة كهاتين"},
+];
+function buildJariya(){document.getElementById("jariyaList").innerHTML=JARIYA.map(j=>`
+  <div style="background:var(--bg-main);border-radius:12px;padding:14px;display:flex;gap:12px;">
+    <span style="font-size:26px;">${j.icon}</span><div>
+    <p style="font-weight:800;font-size:14px;">${j.n}</p>
+    <p style="font-size:12px;color:var(--gold);margin-top:2px;">${j.d}</p></div></div>`).join("");}
+const HIBA=[
+  {icon:"🎁",n:"الهبة للأبناء",d:"يجب التسوية بين الأبناء في العطاء"},
+  {icon:"💍",n:"هبة الزوج لزوجته",d:"جائزة ومستحبة وتُثبّت المودة"},
+  {icon:"🔙",n:"الرجوع في الهبة",d:"لا يحل للرجل أن يرجع في هبته إلا الوالد"},
+  {icon:"✅",n:"هبة المريض",d:"تصح من الثلث فقط إن كان مرضه مخوفاً"},
+];
+function buildHiba(){document.getElementById("hibaList").innerHTML=HIBA.map(h=>`
+  <div style="background:var(--bg-main);border-radius:12px;padding:14px;display:flex;gap:12px;">
+    <span style="font-size:24px;">${h.icon}</span><div>
+    <p style="font-weight:800;font-size:13px;">${h.n}</p>
+    <p style="font-size:12px;color:var(--text-muted);margin-top:2px;">${h.d}</p></div></div>`).join("");}
+const ST=[
+  {icon:"🤲",n:"الصدقة السرية",d:"تطفئ الخطيئة وتقي غضب الرب"},
+  {icon:"⏰",n:"الصدقة في الصحة والشح",d:"أفضل الصدقة — متفق عليه"},
+  {icon:"😊",n:"الابتسامة",d:"تبسمك في وجه أخيك صدقة"},
+  {icon:"💬",n:"الكلمة الطيبة",d:"صدقة"},
+  {icon:"🚶",n:"إماطة الأذى عن الطريق",d:"صدقة"},
+];
+document.getElementById("sadaqaTypes").innerHTML=ST.map(s=>`
+  <div style="background:var(--bg-main);border-radius:12px;padding:12px;display:flex;gap:10px;">
+    <span style="font-size:22px;">${s.icon}</span><div>
+    <p style="font-weight:800;font-size:13px;">${s.n}</p>
+    <p style="font-size:12px;color:var(--gold);margin-top:2px;">${s.d}</p></div></div>`).join("");
+document.getElementById("fitraType").addEventListener("change",calcFitra);
+calcFitra();
+</script></body></html>

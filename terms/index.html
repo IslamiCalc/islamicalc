@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="canonical" href="https://islamicalc.com/terms/">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📋</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+  <title>الشروط والأحكام | IslamiCalc</title>
+</head>
+<body>
+<nav class="navbar">
+  <a href="/" class="navbar-brand">
+    <div class="navbar-logo">☪</div>
+    <span class="navbar-title">IslamiCalc</span>
+  </a>
+  <ul class="navbar-menu" id="navMenu">
+    <li><a href="/">🏠 الرئيسية</a></li>
+    <li><a href="/zakat">🧮 الحاسبات</a></li>
+    <li><a href="/khatma">📖 القرآن</a></li>
+    <li><a href="/prayer">🕌 الصلاة</a></li>
+    <li><a href="/athkar">📿 الأذكار</a></li>
+    <li><a href="/arena">🏆 الأرينا</a></li>
+  </ul>
+  <div class="navbar-actions">
+    <button class="theme-btn" id="themeBtn">🌙</button>
+    <button class="login-btn" onclick="showToast('سجّل دخولك من الرئيسية','toast-gold')">دخول 🔵</button>
+    <button class="menu-toggle" id="menuToggle">☰</button>
+  </div>
+</nav>
+<main>
+<div style="max-width:720px;margin:0 auto;padding:24px 16px 80px;">
+
+  <div style="text-align:center;padding:32px 0 24px;">
+    <div style="font-size:64px;margin-bottom:12px;">📋</div>
+    <h1 style="font-size:28px;font-weight:900;margin-bottom:8px;">الشروط والأحكام</h1>
+    <p style="color:var(--text-muted);font-size:15px;">آخر تحديث: فبراير 2026</p>
+  </div>
+  <div style="background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.3);
+       border-radius:14px;padding:16px 20px;margin-bottom:20px;">
+    <p style="color:var(--gold);font-size:14px;line-height:1.7;">
+      ⚠️ باستخدامك لـ IslamiCalc توافق على هذه الشروط. إذا لم توافق، يرجى عدم استخدام الموقع.
+    </p>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:14px;">
+    <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:20px;">
+      <h2 style="font-size:16px;font-weight:900;margin-bottom:10px;">1️⃣ قبول الشروط</h2>
+      <p style="color:var(--text-secondary);font-size:14px;line-height:1.8;">
+        استخدامك لموقع IslamiCalc يعني موافقتك على هذه الشروط وسياسة الخصوصية.
+        الموقع مخصص للاستخدام الشخصي غير التجاري.
+      </p>
+    </div>
+    <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:20px;">
+      <h2 style="font-size:16px;font-weight:900;margin-bottom:10px;">2️⃣ الاستخدام المقبول</h2>
+      <ul style="color:var(--text-secondary);font-size:14px;line-height:2;padding-right:16px;">
+        <li>✅ استخدام الأدوات للأغراض الشخصية</li>
+        <li>✅ مشاركة الموقع مع الأهل والأصدقاء</li>
+        <li>❌ نسخ المحتوى أو إعادة نشره دون إذن</li>
+        <li>❌ استخدام الموقع تجارياً دون اتفاقية</li>
+        <li>❌ محاولة اختراق أو التلاعب بالموقع</li>
+      </ul>
+    </div>
+    <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:20px;">
+      <h2 style="font-size:16px;font-weight:900;margin-bottom:10px;">3️⃣ إخلاء المسؤولية الشرعية</h2>
+      <p style="color:var(--text-secondary);font-size:14px;line-height:1.8;">
+        المعلومات الشرعية للإرشاد العام فقط. <strong style="color:var(--text-primary);">لا تُغني عن استشارة عالم متخصص</strong>
+        في مسائل الزكاة والميراث والكفارات. IslamiCalc غير مسؤولة عن قرارات مبنية على معلومات الموقع دون استشارة متخصص.
+      </p>
+    </div>
+    <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:20px;">
+      <h2 style="font-size:16px;font-weight:900;margin-bottom:10px;">4️⃣ الملكية الفكرية</h2>
+      <p style="color:var(--text-secondary);font-size:14px;line-height:1.8;">
+        جميع محتويات الموقع (تصميم، كود، نصوص أصلية) ملك لـ IslamiCalc محمية بحقوق النشر.
+        النصوص القرآنية والأحاديث ملك للأمة الإسلامية ومصانة.
+      </p>
+    </div>
+    <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:20px;">
+      <h2 style="font-size:16px;font-weight:900;margin-bottom:10px;">5️⃣ القانون المطبق</h2>
+      <p style="color:var(--text-secondary);font-size:14px;line-height:1.8;">
+        تخضع هذه الشروط للأنظمة المعمول بها في المملكة العربية السعودية وأحكام الشريعة الإسلامية.
+        للتواصل: <a href="mailto:legal@islamicalc.com" style="color:var(--primary-light);">legal@islamicalc.com</a>
+      </p>
+    </div>
+  </div>
+
+</div>
+</main>
+<div class="toast" id="toast"></div>
+<script>
+const themeBtn=document.getElementById("themeBtn");
+const htmlEl=document.documentElement;
+(function(){const s=localStorage.getItem("theme")||"dark";htmlEl.setAttribute("data-theme",s);themeBtn.textContent=s==="dark"?"☀️":"🌙";})();
+themeBtn.addEventListener("click",()=>{const n=htmlEl.getAttribute("data-theme")==="dark"?"light":"dark";htmlEl.setAttribute("data-theme",n);localStorage.setItem("theme",n);themeBtn.textContent=n==="dark"?"☀️":"🌙";});
+document.getElementById("menuToggle").addEventListener("click",()=>{const m=document.getElementById("navMenu");m.classList.toggle("open");document.getElementById("menuToggle").textContent=m.classList.contains("open")?"✕":"☰";});
+function showToast(msg,type=""){const t=document.getElementById("toast");t.textContent=msg;t.className="toast show "+type;setTimeout(()=>t.classList.remove("show"),3000);}
+</script>
+</body>
+</html>

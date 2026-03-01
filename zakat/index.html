@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="حاسبة الزكاة الإسلامية — احسب زكاة الذهب والفضة والأموال والتجارة والأسهم بدقة وسهولة">
+  <meta name="keywords" content="حاسبة زكاة, زكاة الذهب, زكاة المال, نصاب الزكاة, كيف احسب الزكاة">
+  <meta property="og:title" content="حاسبة الزكاة | IslamiCalc">
+  <link rel="canonical" href="https://islamicalc.com/zakat/">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🕌</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+  <title>حاسبة الزكاة | IslamiCalc</title>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "حاسبة الزكاة الإسلامية",
+    "description": "احسب زكاة الذهب والفضة والأموال والتجارة بدقة شرعية",
+    "url": "https://islamicalc.com/zakat/"
+  }
+  </script>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="/" class="navbar-brand">
+    <div class="navbar-logo">☪</div>
+    <span class="navbar-title">IslamiCalc</span>
+  </a>
+  <ul class="navbar-menu" id="navMenu">
+    <li><a href="/">🏠 الرئيسية</a></li>
+    <li><a href="/zakat" class="active">🧮 الحاسبات</a></li>
+    <li><a href="/khatma">📖 القرآن</a></li>
+    <li><a href="/prayer">🕌 الصلاة</a></li>
+    <li><a href="/athkar">📿 الأذكار</a></li>
+    <li><a href="/arena">🏆 الأرينا</a></li>
+  </ul>
+  <div class="navbar-actions">
+    <button class="theme-btn" id="themeBtn">🌙</button>
+    <button class="lang-btn" id="langBtn">EN</button>
+    <button class="login-btn" id="loginBtn" onclick="openLoginModal()">دخول 🔵</button>
+    <button class="menu-toggle" id="menuToggle">☰</button>
+  </div>
+</nav>
+
+<main>
+<div class="calculator-page">
+
+  <div class="calc-header">
+    <span class="calc-icon">💰</span>
+    <h1 class="calc-title">حاسبة الزكاة</h1>
+    <p class="calc-desc">احسب زكاتك بدقة شرعية — الذهب والفضة والأموال والتجارة والأسهم</p>
+  </div>
+
+  <!-- تنبيه الحول -->
+  <div style="background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.25); border-radius:14px; padding:16px 20px; margin-bottom:24px; display:flex; gap:12px; align-items:flex-start;">
+    <span style="font-size:22px; flex-shrink:0;">⚠️</span>
+    <div>
+      <p style="font-weight:700; font-size:15px; margin-bottom:4px; color:var(--gold);">شرط الحول</p>
+      <p style="font-size:13px; color:var(--text-secondary); line-height:1.8;">
+        تجب الزكاة فقط إذا بلغ المال النصاب وحال عليه الحول (مرور سنة هجرية كاملة).
+        هذه الحاسبة تحسب المقدار الواجب — تأكد أن مالك حال عليه الحول قبل الإخراج.
+        <strong style="color:var(--gold);">المصدر: islamqa.info #207972</strong>
+      </p>
+    </div>
+  </div>
+
+  <!-- تبويبات -->
+  <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:24px; background:var(--bg-card); border:1px solid var(--border); border-radius:16px; padding:8px;">
+    <button class="zakat-tab active" data-tab="money"  onclick="switchTab('money')">💵 زكاة المال</button>
+    <button class="zakat-tab"        data-tab="gold"   onclick="switchTab('gold')">🥇 زكاة الذهب</button>
+    <button class="zakat-tab"        data-tab="silver" onclick="switchTab('silver')">🥈 زكاة الفضة</button>
+    <button class="zakat-tab"        data-tab="trade"  onclick="switchTab('trade')">🏪 زكاة التجارة</button>
+    <button class="zakat-tab"        data-tab="stocks" onclick="switchTab('stocks')">📈 زكاة الأسهم</button>
+  </div>
+
+  <!-- ===== تبويب المال ===== -->
+  <div id="tab-money" class="zakat-section">
+    <div class="calc-form">
+
+      <!-- شرح النصاب -->
+      <div style="background:rgba(26,86,219,0.08); border:1px solid rgba(26,86,219,0.2); border-radius:12px; padding:14px; margin-bottom:4px;">
+        <p style="font-size:13px; color:var(--text-secondary); line-height:1.8;">
+          📌 <strong>النصاب:</strong> يساوي قيمة 85 جرام ذهب عيار 24 بسعر اليوم تقريباً.
+          أدخل سعر جرام الذهب الحالي أو اتركه فارغاً لاستخدام التقدير التلقائي.
+          <strong style="color:var(--primary-light);">المصدر: islamqa.info #270751</strong>
+        </p>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">💰 سعر جرام الذهب عيار 24 الآن (اختياري)</label>
+        <div style="position:relative;">
+          <input type="number" class="form-input" id="goldPriceForNisab"
+                 placeholder="اتركه فارغاً للتقدير التلقائي (~275 ريال)" min="0" step="0.01" inputmode="decimal">
+          <span style="position:absolute; left:16px; top:50%; transform:translateY(-50%);
+                       color:var(--text-muted); font-size:13px;" id="currencyLabel">ريال</span>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">💵 المدخرات والأموال النقدية</label>
+        <input type="number" class="form-input" id="savings" placeholder="0" min="0" inputmode="decimal">
+      </div>
+      <div class="form-group">
+        <label class="form-label">🏦 الأموال في البنك (جارٍ + توفير)</label>
+        <input type="number" class="form-input" id="bank" placeholder="0" min="0" inputmode="decimal">
+      </div>
+      <div class="form-group">
+        <label class="form-label">💸 ديون لك (تتوقع استردادها)</label>
+        <input type="number" class="form-input" id="debtsFor" placeholder="0" min="0" inputmode="decimal">
+      </div>
+      <div class="form-group">
+        <label class="form-label">📤 ديون عليك (تُطرح من المال)</label>
+        <input type="number" class="form-input" id="debtsOn" placeholder="0" min="0" inputmode="decimal">
+      </div>
+      <div class="form-group">
+        <label class="form-label">💱 العملة</label>
+        <select class="form-select" id="currency" onchange="updateCurrency()">
+          <option value="SAR">🇸🇦 ريال سعودي (SAR)</option>
+          <option value="USD">🇺🇸 دولار أمريكي (USD)</option>
+          <option value="AED">🇦🇪 درهم إماراتي (AED)</option>
+          <option value="EGP">🇪🇬 جنيه مصري (EGP)</option>
+          <option value="KWD">🇰🇼 دينار كويتي (KWD)</option>
+          <option value="QAR">🇶🇦 ريال قطري (QAR)</option>
+          <option value="JOD">🇯🇴 دينار أردني (JOD)</option>
+          <option value="GBP">🇬🇧 جنيه إسترليني (GBP)</option>
+          <option value="EUR">🇪🇺 يورو (EUR)</option>
+        </select>
+      </div>
+      <button class="btn btn-gold btn-lg" style="width:100%;" onclick="calcMoneyZakat()">
+        🧮 احسب الزكاة
+      </button>
+    </div>
+
+    <div class="calc-result" id="result-money">
+      <div id="nisab-check" style="margin-bottom:16px; font-size:15px;"></div>
+      <div style="margin:0 0 16px; padding:16px; background:var(--bg-main); border-radius:12px;">
+        <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+          <span style="color:var(--text-muted); font-size:14px;">إجمالي المال الزكوي</span>
+          <span style="font-weight:800;" id="total-money-display">0</span>
+        </div>
+        <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+          <span style="color:var(--text-muted); font-size:14px;">النصاب المستخدم</span>
+          <span style="font-weight:700; color:var(--primary-light);" id="nisab-value">--</span>
+        </div>
+        <div style="display:flex; justify-content:space-between;">
+          <span style="color:var(--text-muted); font-size:14px;">نسبة الزكاة</span>
+          <span style="font-weight:700; color:var(--gold);">2.5٪ (ربع العشر)</span>
+        </div>
+      </div>
+      <div class="result-label">الزكاة الواجبة</div>
+      <div class="result-value" id="zakat-money" style="color:var(--gold);">0</div>
+      <div class="result-unit" id="currency-unit">ريال</div>
+      <div class="result-note" id="money-note"></div>
+      <div style="margin-top:16px; display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
+        <button class="btn btn-primary btn-sm" onclick="shareResult('money')">📤 شارك</button>
+        <button class="btn btn-outline btn-sm" onclick="resetForm('money')">🔄 إعادة</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== تبويب الذهب (مصحح) ===== -->
+  <div id="tab-gold" class="zakat-section" style="display:none;">
+    <div class="calc-form">
+
+      <div style="background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.25); border-radius:12px; padding:14px; margin-bottom:4px;">
+        <p style="font-size:13px; color:var(--text-secondary); line-height:1.8;">
+          📌 <strong>نصاب الذهب:</strong> 85 جراماً من الذهب <strong style="color:var(--gold);">الخالص (عيار 24)</strong>.
+          أي عيار آخر يُحوَّل أولاً إلى وزنه الخالص ثم يُقارَن بالنصاب.
+          <br>📐 <strong>المعادلة:</strong> الوزن الخالص = الوزن × (العيار ÷ 24)
+          <br><strong style="color:var(--gold);">المصدر: islamqa.info #214221</strong>
+        </p>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">⚖️ وزن الذهب الكلي (جرام)</label>
+        <input type="number" class="form-input" id="goldWeight"
+               placeholder="مثال: 120" min="0" step="0.01" inputmode="decimal">
+      </div>
+      <div class="form-group">
+        <label class="form-label">🏅 عيار الذهب</label>
+        <!-- ✅ الإصلاح: القيمة هي رقم العيار الحقيقي لا النسبة -->
+        <select class="form-select" id="goldKarat">
+          <option value="24">24 قيراط — ذهب خالص</option>
+          <option value="22" selected>22 قيراط</option>
+          <option value="21">21 قيراط</option>
+          <option value="18">18 قيراط</option>
+          <option value="14">14 قيراط</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">💵 سعر جرام الذهب بنفس العيار الآن</label>
+        <div style="position:relative;">
+          <input type="number" class="form-input" id="goldPrice"
+                 placeholder="مثال: 255 (للعيار 22)" min="0" step="0.01" inputmode="decimal">
+          <span style="position:absolute; left:16px; top:50%; transform:translateY(-50%);
+                       color:var(--text-muted); font-size:13px;">ريال/جرام</span>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">💍 الغرض من الذهب</label>
+        <select class="form-select" id="goldPurpose" onchange="toggleJewelryNote()">
+          <option value="savings">💰 للادخار أو الاستثمار — زكاته واجبة اتفاقاً</option>
+          <option value="jewelry">💍 للزينة الشخصية — فيه خلاف بين العلماء</option>
+        </select>
+      </div>
+
+      <!-- تنبيه ذهب الزينة -->
+      <div id="jewelry-note" style="display:none; background:rgba(239,68,68,0.08);
+           border:1px solid rgba(239,68,68,0.2); border-radius:12px; padding:14px;">
+        <p style="font-size:13px; color:var(--text-secondary); line-height:1.9;">
+          <strong style="color:var(--error);">خلاف العلماء في ذهب الزينة:</strong><br>
+          • <strong>الجمهور</strong> (مالك + الشافعي + أحمد): لا زكاة في ذهب الزينة المُستخدَم<br>
+          • <strong>الأحناف + ابن باز رحمه الله</strong>: تجب الزكاة احتياطاً<br>
+          ✅ <strong style="color:var(--gold);">الأحوط والأبرأ للذمة: إخراج الزكاة</strong><br>
+          <span style="color:var(--text-muted);">المصدر: binbaz.org.sa + islamqa.info #145545</span>
+        </p>
+      </div>
+
+      <button class="btn btn-gold btn-lg" style="width:100%;" onclick="calcGoldZakat()">
+        🥇 احسب زكاة الذهب
+      </button>
+    </div>
+
+    <div class="calc-result" id="result-gold">
+      <div style="font-size:36px; margin-bottom:8px;">🥇</div>
+      <div style="margin:0 0 16px; padding:16px; background:var(--bg-main); border-radius:12px; text-align:right;">
+        <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+          <span style="color:var(--text-muted); font-size:14px;">الوزن الكلي</span>
+          <span style="font-weight:700;" id="gold-total-weight">-- جرام</span>
+        </div>
+        <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+          <span style="color:var(--text-muted); font-size:14px;">الوزن الخالص (عيار 24)</span>
+          <span style="font-weight:800; color:var(--gold);" id="gold-pure-weight">-- جرام</span>
+        </div>
+        <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+          <span style="color:var(--text-muted); font-size:14px;">النصاب (85 جرام خالص)</span>
+          <span style="font-weight:700;" id="gold-nisab-status">--</span>
+        </div>
+        <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+          <span style="color:var(--text-muted); font-size:14px;">القيمة الإجمالية</span>
+          <span style="font-weight:700;" id="gold-total-value">-- ريال</span>
+        </div>
+        <div style="display:flex; justify-content:space-between;">
+          <span style="color:var(--text-muted); font-size:14px;">نسبة الزكاة</span>
+          <span style="font-weight:700; color:var(--gold);">2.5٪</span>
+        </div>
+      </div>
+      <div class="result-label">زكاة الذهب الواجبة</div>
+      <div class="result-value" id="zakat-gold" style="color:var(--gold);">0</div>
+      <div class="result-unit">ريال</div>
+      <div class="result-note" id="gold-note"></div>
+      <div style="margin-top:16px; display:flex; gap:10px; justify-content:center;">
+        <button class="btn btn-primary btn-sm" onclick="shareResult('gold')">📤 شارك</button>
+        <button class="btn btn-outline btn-sm" onclick="resetForm('gold')">🔄 إعادة</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== تبويب الفضة ===== -->
+  <div id="tab-silver" class="zakat-section" style="display:none;">
+    <div class="calc-form">
+      <div style="background:rgba(148,163,184,0.08); border:1px solid rgba(148,163,184,0.2); border-radius:12px; padding:14px; margin-bottom:4px;">
+        <p style="font-size:13px; color:var(--text-secondary); line-height:1.8;">
+          📌 <strong>نصاب الفضة:</strong> 595 جراماً من الفضة الخالصة (200 درهم شرعي).
+          <br><strong style="color:var(--primary-light);">المصدر: dorar.net الموسوعة الفقهية</strong>
+        </p>
+      </div>
+      <div class="form-group">
+        <label class="form-label">⚖️ وزن الفضة (جرام)</label>
+        <input type="number" class="form-input" id="silverWeight"
+               placeholder="مثال: 700" min="0" step="0.01" inputmode="decimal">
+      </div>
+      <div class="form-group">
+        <label class="form-label">💵 سعر جرام الفضة الآن (ريال)</label>
+        <input type="number" class="form-input" id="silverPrice"
+               placeholder="مثال: 3.5" min="0" step="0.01" inputmode="decimal">
+      </div>
+      <button class="btn btn-gold btn-lg" style="width:100%;" onclick="calcSilverZakat()">
+        🥈 احسب زكاة الفضة
+      </button>
+    </div>
+    <div class="calc-result" id="result-silver">
+      <div style="font-size:36px; margin-bottom:8px;">🥈</div>
+      <div style="margin:0 0 16px; padding:16px; background:var(--bg-main); border-radius:12px;">
+        <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+          <span style="color:var(--text-muted); font-size:14px;">وزن الفضة</span>
+          <span style="font-weight:700;" id="silver-weight-display">-- جرام</span>
+        </div>
+        <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+          <span style="color:var(--text-muted); font-size:14px;">النصاب (595 جرام)</span>
+          <span style="font-weight:700;" id="silver-nisab-status">--</span>
+        </div>
+        <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+          <span style="color:var(--text-muted); font-size:14px;">القيمة الإجمالية</span>
+          <span style="font-weight:700;" id="silver-total-value">-- ريال</span>
+        </div>
+        <div style="display:flex; justify-content:space-between;">
+          <span style="color:var(--text-muted); font-size:14px;">نسبة الزكاة</span>
+          <span style="font-weight:700; color:var(--gold);">2.5٪</span>
+        </div>
+      </div>
+      <div class="result-label">زكاة الفضة الواجبة</div>
+      <div class="result-value" id="zakat-silver" style="color:var(--gold);">0</div>
+      <div class="result-unit">ريال</div>
+      <div class="result-note" id="silver-note"></div>
+      <div style="margin-top:16px; display:flex; gap:10px; justify-content:center;">
+        <button class="btn btn-primary btn-sm" onclick="shareResult('silver')">📤 شارك</button>
+        <button class="btn btn-outline btn-sm" onclick="resetForm('silver')">🔄 إعادة</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== تبويب التجارة ===== -->
+  <div id="tab-trade" class="zakat-section" style="display:none;">
+    <div class="calc-form">
+      <div style="background:rgba(26,86,219,0.08); border:1px solid rgba(26,86,219,0.2); border-radius:12px; padding:14px; margin-bottom:4px;">
+        <p style="font-size:13px; color:var(--text-secondary); line-height:1.8;">
+          📌 <strong>وعاء زكاة التجارة:</strong> (قيمة البضاعة + النقد + الديون المتوقعة) − الديون عليك
+          <br><strong style="color:var(--primary-light);">المصدر: islamqa.info #22449</strong>
+        </p>
+      </div>
+      <div class="form-group">
+        <label class="form-label">📦 قيمة البضاعة (بسعر السوق الحالي)</label>
+        <input type="number" class="form-input" id="tradeGoods" placeholder="0" min="0" inputmode="decimal">
+      </div>
+      <div class="form-group">
+        <label class="form-label">💵 النقد في الصندوق والبنك</label>
+        <input type="number" class="form-input" id="tradeCash" placeholder="0" min="0" inputmode="decimal">
+      </div>
+      <div class="form-group">
+        <label class="form-label">📋 ديون للتحصيل (تتوقع استردادها)</label>
+        <input type="number" class="form-input" id="tradeDebtsFor" placeholder="0" min="0" inputmode="decimal">
+      </div>
+      <div class="form-group">
+        <label class="form-label">📤 ديون عليك (تُطرح من الوعاء)</label>
+        <input type="number" class="form-input" id="tradeDebtsOn" placeholder="0" min="0" inputmode="decimal">
+      </div>
+      <button class="btn btn-gold btn-lg" style="width:100%;" onclick="calcTradeZakat()">
+        🏪 احسب زكاة التجارة
+      </button>
+    </div>
+    <div class="calc-result" id="result-trade">
+      <div style="font-size:36px; margin-bottom:8px;">🏪</div>
+      <div style="margin:0 0 16px; padding:16px; background:var(--bg-main); border-radius:12px;">
+        <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+          <span style="color:var(--text-muted); font-size:14px;">وعاء الزكاة التجاري</span>
+          <span style="font-weight:800;" id="trade-total">-- ريال</span>
+        </div>
+        <div style="display:flex; justify-content:space-between;">
+          <span style="color:var(--text-muted); font-size:14px;">نسبة الزكاة</span>
+          <span style="font-weight:700; color:var(--gold);">2.5٪</span>
+        </div>
+      </div>
+      <div class="result-label">زكاة التجارة الواجبة</div>
+      <div class="result-value" id="zakat-trade" style="color:var(--gold);">0</div>
+      <div class="result-unit">ريال</div>
+      <div class="result-note" id="trade-note"></div>
+      <div style="margin-top:16px; display:flex; gap:10px; justify-content:center;">
+        <button class="btn btn-primary btn-sm" onclick="shareResult('trade')">📤 شارك</button>
+        <button class="btn btn-outline btn-sm" onclick="resetForm('trade')">🔄 إعادة</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== تبويب الأسهم ===== -->
+  <div id="tab-stocks" class="zakat-section" style="display:none;">
+    <div class="calc-form">
+      <div style="background:rgba(16,185,129,0.08); border:1px solid rgba(16,185,129,0.2); border-radius:12px; padding:14px; margin-bottom:4px;">
+        <p style="font-size:13px; color:var(--text-secondary); line-height:1.8;">
+          📌 <strong>أسهم المضاربة (للبيع):</strong> زكِّ على القيمة السوقية كاملةً × 2.5٪<br>
+          📌 <strong>أسهم الدخل (للتوزيعات):</strong> زكِّ على الأرباح الموزَّعة فقط × 2.5٪<br>
+          <strong style="color:var(--success);">المصدر: islamqa.info #125504</strong>
+        </p>
+      </div>
+      <div class="form-group">
+        <label class="form-label">📊 نوع الاحتفاظ بالأسهم</label>
+        <select class="form-select" id="stocksType">
+          <option value="trade">للمضاربة والبيع — زكاة على القيمة السوقية</option>
+          <option value="income">للتوزيعات والدخل — زكاة على الأرباح فقط</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">💰 القيمة السوقية الحالية للأسهم</label>
+        <input type="number" class="form-input" id="stocksValue" placeholder="0" min="0" inputmode="decimal">
+      </div>
+      <div class="form-group">
+        <label class="form-label">💵 أرباح التوزيعات المتراكمة (لم تُزكَّ)</label>
+        <input type="number" class="form-input" id="stocksDividends" placeholder="0" min="0" inputmode="decimal">
+      </div>
+      <button class="btn btn-gold btn-lg" style="width:100%;" onclick="calcStocksZakat()">
+        📈 احسب زكاة الأسهم
+      </button>
+    </div>
+    <div class="calc-result" id="result-stocks">
+      <div style="font-size:36px; margin-bottom:8px;">📈</div>
+      <div style="margin:0 0 16px; padding:16px; background:var(--bg-main); border-radius:12px;">
+        <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+          <span style="color:var(--text-muted); font-size:14px;">الوعاء الزكوي</span>
+          <span style="font-weight:800;" id="stocks-base">-- ريال</span>
+        </div>
+        <div style="display:flex; justify-content:space-between;">
+          <span style="color:var(--text-muted); font-size:14px;">نسبة الزكاة</span>
+          <span style="font-weight:700; color:var(--gold);">2.5٪</span>
+        </div>
+      </div>
+      <div class="result-label">زكاة الأسهم الواجبة</div>
+      <div class="result-value" id="zakat-stocks" style="color:var(--gold);">0</div>
+      <div class="result-unit">ريال</div>
+      <div class="result-note" id="stocks-note"></div>
+      <div style="margin-top:16px; display:flex; gap:10px; justify-content:center;">
+        <button class="btn btn-primary btn-sm" onclick="shareResult('stocks')">📤 شارك</button>
+        <button class="btn btn-outline btn-sm" onclick="resetForm('stocks')">🔄 إعادة</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== أسئلة فقهية ===== -->
+  <div style="background:var(--bg-card); border:1px solid var(--border); border-radius:16px; padding:24px; margin-top:24px;">
+    <h2 style="font-size:18px; font-weight:800; margin-bottom:16px;">📚 أسئلة فقهية شائعة</h2>
+    <div style="display:flex; flex-direction:column; gap:2px;">
+      <details style="cursor:pointer; border-bottom:1px solid var(--border); padding-bottom:8px;">
+        <summary style="font-weight:700; font-size:15px; padding:10px 0; color:var(--primary-light); list-style:none;">
+          ▸ ما هي شروط وجوب الزكاة؟
+        </summary>
+        <p style="font-size:14px; color:var(--text-secondary); line-height:1.9; padding:8px 0 4px;">
+          خمسة شروط: (1) الإسلام (2) الحرية (3) ملك النصاب كاملاً
+          (4) حولان الحول — مرور سنة هجرية كاملة (5) ألا تكون الديون المشكوك فيها.
+          <br><em style="color:var(--text-muted);">المصدر: الشرح الممتع — ابن عثيمين رحمه الله</em>
+        </p>
+      </details>
+      <details style="cursor:pointer; border-bottom:1px solid var(--border); padding-bottom:8px;">
+        <summary style="font-weight:700; font-size:15px; padding:10px 0; color:var(--primary-light); list-style:none;">
+          ▸ كيف أعرف نصاب المال بالريال السعودي؟
+        </summary>
+        <p style="font-size:14px; color:var(--text-secondary); line-height:1.9; padding:8px 0 4px;">
+          النصاب = 85 جرام ذهب × سعر الجرام عيار 24 اليوم.
+          مثال: إذا كان سعر الجرام 275 ريال → النصاب = 85 × 275 = 23,375 ريال.
+          يتغير النصاب مع سعر الذهب.
+          <br><em style="color:var(--text-muted);">المصدر: islamqa.info #270751</em>
+        </p>
+      </details>
+      <details style="cursor:pointer; border-bottom:1px solid var(--border); padding-bottom:8px;">
+        <summary style="font-weight:700; font-size:15px; padding:10px 0; color:var(--primary-light); list-style:none;">
+          ▸ هل يُزكَّى الراتب الشهري مباشرةً؟
+        </summary>
+        <p style="font-size:14px; color:var(--text-secondary); line-height:1.9; padding:8px 0 4px;">
+          الأصح أن الراتب لا يُزكَّى منفرداً عند استلامه، بل يُضاف إلى سائر أموالك
+          وتُحسب الزكاة مرةً واحدةً في السنة على مجموع ما بقي عندك.
+          <br><em style="color:var(--text-muted);">المصدر: islamqa.info #93007</em>
+        </p>
+      </details>
+      <details style="cursor:pointer;">
+        <summary style="font-weight:700; font-size:15px; padding:10px 0; color:var(--primary-light); list-style:none;">
+          ▸ هل تجب الزكاة على الذهب أقل من النصاب لو كانت قيمته كبيرة؟
+        </summary>
+        <p style="font-size:14px; color:var(--text-secondary); line-height:1.9; padding:8px 0 4px;">
+          لا. العبرة بالوزن لا بالقيمة. إذا كان وزنه الخالص أقل من 85 جراماً
+          فلا زكاة فيه بمفرده، لكن لو ضُمَّ إلى نقود وبلغ النصاب وجبت الزكاة.
+          <br><em style="color:var(--text-muted);">المصدر: islamqa.info #585436</em>
+        </p>
+      </details>
+    </div>
+  </div>
+
+</div>
+</main>
+
+<footer>
+  <div style="max-width:1200px; margin:0 auto;">
+    <div class="footer-bottom" style="border-top:none; padding-top:0;">
+      <a href="/" style="color:var(--primary-light); text-decoration:none; font-weight:700;">← العودة للرئيسية</a>
+      <span>© 2026 IslamiCalc</span>
+      <a href="/privacy" style="color:var(--text-muted); text-decoration:none;">الخصوصية</a>
+    </div>
+  </div>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<style>
+.zakat-tab {
+  flex:1; min-width:110px; padding:10px 12px;
+  background:transparent; border:none;
+  color:var(--text-muted); font-family:var(--font-arabic);
+  font-size:13px; font-weight:700; cursor:pointer;
+  border-radius:10px; transition:var(--transition);
+  white-space:nowrap;
+}
+.zakat-tab:hover  { background:var(--bg-card-hover); color:var(--text-primary); }
+.zakat-tab.active { background:var(--primary); color:white; }
+details summary { list-style:none; }
+details[open] summary { color:var(--gold); }
+</style>
+
+<script>
+// ===== ثوابت شرعية موثقة =====
+const ZAKAT_RATE     = 0.025;   // 2.5٪ = ربع العشر — متفق عليه
+const GOLD_NISAB_G   = 85;      // 85 جرام عيار 24 خالص — islamqa.info #214221
+const SILVER_NISAB_G = 595;     // 595 جرام فضة خالصة — dorar.net
+// نصاب المال = 85 جرام × سعر الجرام عيار 24 اليوم
+// إذا لم يدخل المستخدم سعر الذهب نستخدم تقديراً بناءً على العملة
+
+const NISAB_APPROX = {
+  SAR:23375, USD:6250, AED:22900,
+  EGP:205000, KWD:1920, QAR:22750,
+  JOD:4430, GBP:4950, EUR:5750
+};
+
+const CURRENCIES = {
+  SAR:"ريال", USD:"دولار", AED:"درهم",
+  EGP:"جنيه", KWD:"دينار", QAR:"ريال",
+  JOD:"دينار", GBP:"جنيه", EUR:"يورو"
+};
+
+let activeCurrency = "SAR";
+let activeTab = "money";
+
+// ===== أدوات مساعدة =====
+function fmt(n) {
+  if (isNaN(n) || n === null) return "0";
+  return Number(n.toFixed(2)).toLocaleString("ar-SA");
+}
+function getVal(id) {
+  const v = parseFloat(document.getElementById(id)?.value);
+  return isNaN(v) || v < 0 ? 0 : v;
+}
+function showToast(msg, type="") {
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.className = "toast show " + type;
+  setTimeout(() => t.classList.remove("show"), 3500);
+}
+function validate(...ids) {
+  for (const id of ids) {
+    const el = document.getElementById(id);
+    if (!el) continue;
+    if (parseFloat(el.value) < 0) {
+      el.style.borderColor = "var(--error)";
+      showToast("❌ لا تدخل أرقاماً سالبة", "toast-error");
+      return false;
+    }
+    el.style.borderColor = "";
+  }
+  return true;
+}
+
+// ===== تبديل التبويبات =====
+function switchTab(tab) {
+  document.querySelectorAll(".zakat-section").forEach(s => s.style.display = "none");
+  document.querySelectorAll(".zakat-tab").forEach(b => b.classList.remove("active"));
+  document.getElementById("tab-" + tab).style.display = "block";
+  document.querySelector(`[data-tab="${tab}"]`).classList.add("active");
+  document.querySelectorAll(".calc-result").forEach(r => r.classList.remove("show"));
+  activeTab = tab;
+}
+
+function updateCurrency() {
+  activeCurrency = document.getElementById("currency").value;
+  document.getElementById("currencyLabel").textContent  = CURRENCIES[activeCurrency];
+  document.getElementById("currency-unit").textContent  = CURRENCIES[activeCurrency];
+}
+
+function toggleJewelryNote() {
+  const v = document.getElementById("goldPurpose").value;
+  document.getElementById("jewelry-note").style.display = v === "jewelry" ? "block" : "none";
+}
+
+// ===== حساب نصاب المال =====
+function calcNisab() {
+  // نصاب = 85 جرام × سعر الجرام عيار 24
+  const goldPriceInput = getVal("goldPriceForNisab");
+  if (goldPriceInput > 0) return goldPriceInput * GOLD_NISAB_G;
+  return NISAB_APPROX[activeCurrency] || NISAB_APPROX.SAR;
+}
+
+// ===== زكاة المال =====
+function calcMoneyZakat() {
+  if (!validate("savings","bank","debtsFor","debtsOn")) return;
+  const savings  = getVal("savings");
+  const bank     = getVal("bank");
+  const dFor     = getVal("debtsFor");
+  const dOn      = getVal("debtsOn");
+  const unit     = CURRENCIES[activeCurrency];
+  const nisab    = calcNisab();
+  const total    = savings + bank + dFor - dOn;
+  // لو المجموع سالب (ديون أكثر من الأصول) → لا زكاة
+  const zakawi   = Math.max(total, 0);
+  const zakat    = zakawi >= nisab ? zakawi * ZAKAT_RATE : 0;
+
+  document.getElementById("total-money-display").textContent = fmt(zakawi) + " " + unit;
+  document.getElementById("nisab-value").textContent = fmt(nisab) + " " + unit;
+  document.getElementById("zakat-money").textContent = fmt(zakat);
+  document.getElementById("currency-unit").textContent = unit;
+
+  const check = document.getElementById("nisab-check");
+  check.innerHTML = zakawi >= nisab
+    ? `<span style="color:var(--success);font-weight:700;">✅ مالك بلغ النصاب — الزكاة واجبة (بشرط حولان الحول)</span>`
+    : `<span style="color:var(--warning);font-weight:700;">⚠️ مالك ${fmt(zakawi)} ${unit} أقل من النصاب ${fmt(nisab)} ${unit} — لا زكاة الآن</span>`;
+
+  document.getElementById("money-note").textContent = zakawi >= nisab
+    ? `الزكاة الواجبة ${fmt(zakat)} ${unit} — بارك الله في مالك`
+    : "تأكد من سعر الذهب الحالي لحساب النصاب بدقة أكبر";
+
+  document.getElementById("result-money").classList.add("show");
+  document.getElementById("result-money").scrollIntoView({behavior:"smooth",block:"nearest"});
+  if (zakawi >= nisab) showToast("✅ الزكاة: " + fmt(zakat) + " " + unit, "toast-gold");
+}
+
+// ===== زكاة الذهب (مصحح بالكامل) =====
+function calcGoldZakat() {
+  if (!validate("goldWeight","goldPrice")) return;
+  const weight    = getVal("goldWeight");
+  const price     = getVal("goldPrice");
+  // ✅ القيمة هي رقم العيار الحقيقي (24, 22, 21, 18, 14)
+  const karatNum  = parseInt(document.getElementById("goldKarat").value);
+
+  if (weight === 0 || price === 0) {
+    showToast("❌ أدخل الوزن والسعر", "toast-error"); return;
+  }
+
+  // ✅ الإصلاح الشرعي: تحويل الوزن إلى خالص عيار 24 أولاً
+  // الوزن الخالص = الوزن الكلي × (العيار ÷ 24)
+  const pureWeight   = weight * (karatNum / 24);
+  const totalValue   = weight * price;
+  const reachedNisab = pureWeight >= GOLD_NISAB_G;
+  // الزكاة تُحسب على القيمة الإجمالية للذهب (بسعر السوق)
+  const zakat        = reachedNisab ? totalValue * ZAKAT_RATE : 0;
+
+  document.getElementById("gold-total-weight").textContent = fmt(weight) + " جرام";
+  document.getElementById("gold-pure-weight").textContent  = fmt(pureWeight) + " جرام (عيار 24)";
+  document.getElementById("gold-total-value").textContent  = fmt(totalValue) + " ريال";
+  document.getElementById("zakat-gold").textContent        = fmt(zakat);
+
+  document.getElementById("gold-nisab-status").innerHTML = reachedNisab
+    ? `<span style="color:var(--success);">✅ بلغ النصاب (${fmt(pureWeight)} ≥ 85 جرام)</span>`
+    : `<span style="color:var(--warning);">⚠️ لم يبلغ النصاب (${fmt(pureWeight)} < 85 جرام)</span>`;
+
+  const purpose = document.getElementById("goldPurpose").value;
+  let note = "";
+  if (!reachedNisab) {
+    note = `الوزن الخالص ${fmt(pureWeight)} جرام أقل من نصاب 85 جرام — لا زكاة`;
+  } else if (purpose === "jewelry") {
+    note = `⚠️ ذهب الزينة فيه خلاف — الأحوط إخراج ${fmt(zakat)} ريال. استشر أهل العلم.`;
+  } else {
+    note = `بارك الله في مالك. الزكاة الواجبة ${fmt(zakat)} ريال`;
+  }
+  document.getElementById("gold-note").textContent = note;
+
+  document.getElementById("result-gold").classList.add("show");
+  document.getElementById("result-gold").scrollIntoView({behavior:"smooth",block:"nearest"});
+  if (reachedNisab) showToast("🥇 زكاة الذهب: " + fmt(zakat) + " ريال", "toast-gold");
+}
+
+// ===== زكاة الفضة =====
+function calcSilverZakat() {
+  if (!validate("silverWeight","silverPrice")) return;
+  const weight = getVal("silverWeight");
+  const price  = getVal("silverPrice");
+  if (weight === 0 || price === 0) {
+    showToast("❌ أدخل الوزن والسعر", "toast-error"); return;
+  }
+  const totalValue   = weight * price;
+  const reachedNisab = weight >= SILVER_NISAB_G;
+  const zakat        = reachedNisab ? totalValue * ZAKAT_RATE : 0;
+
+  document.getElementById("silver-weight-display").textContent = fmt(weight) + " جرام";
+  document.getElementById("silver-total-value").textContent    = fmt(totalValue) + " ريال";
+  document.getElementById("zakat-silver").textContent          = fmt(zakat);
+  document.getElementById("silver-nisab-status").innerHTML = reachedNisab
+    ? `<span style="color:var(--success);">✅ بلغ النصاب</span>`
+    : `<span style="color:var(--warning);">⚠️ لم يبلغ (${fmt(weight)} < 595 جرام)</span>`;
+  document.getElementById("silver-note").textContent = reachedNisab
+    ? `زكاة الفضة الواجبة ${fmt(zakat)} ريال`
+    : `فضتك ${fmt(weight)} جرام لم تبلغ نصاب 595 جرام — لا زكاة`;
+
+  document.getElementById("result-silver").classList.add("show");
+  document.getElementById("result-silver").scrollIntoView({behavior:"smooth",block:"nearest"});
+  if (reachedNisab) showToast("🥈 زكاة الفضة: " + fmt(zakat) + " ريال", "toast-gold");
+}
+
+// ===== زكاة التجارة =====
+function calcTradeZakat() {
+  if (!validate("tradeGoods","tradeCash","tradeDebtsFor","tradeDebtsOn")) return;
+  const goods  = getVal("tradeGoods");
+  const cash   = getVal("tradeCash");
+  const dFor   = getVal("tradeDebtsFor");
+  const dOn    = getVal("tradeDebtsOn");
+  const nisab  = NISAB_APPROX.SAR;
+  const total  = Math.max(goods + cash + dFor - dOn, 0);
+  const zakat  = total >= nisab ? total * ZAKAT_RATE : 0;
+
+  document.getElementById("trade-total").textContent = fmt(total) + " ريال";
+  document.getElementById("zakat-trade").textContent = fmt(zakat);
+  document.getElementById("trade-note").textContent  = total >= nisab
+    ? `زكاة التجارة الواجبة ${fmt(zakat)} ريال — بارك الله في تجارتك`
+    : `وعاء التجارة ${fmt(total)} ريال لم يبلغ النصاب — لا زكاة`;
+
+  document.getElementById("result-trade").classList.add("show");
+  document.getElementById("result-trade").scrollIntoView({behavior:"smooth",block:"nearest"});
+  if (total >= nisab) showToast("🏪 زكاة التجارة: " + fmt(zakat) + " ريال", "toast-gold");
+}
+
+// ===== زكاة الأسهم =====
+function calcStocksZakat() {
+  if (!validate("stocksValue","stocksDividends")) return;
+  const value     = getVal("stocksValue");
+  const dividends = getVal("stocksDividends");
+  const type      = document.getElementById("stocksType").value;
+  const nisab     = NISAB_APPROX.SAR;
+  // أسهم مضاربة: الوعاء = القيمة السوقية + الأرباح
+  // أسهم دخل: الوعاء = الأرباح فقط
+  const base  = type === "trade" ? value + dividends : dividends;
+  const zakat = base >= nisab ? base * ZAKAT_RATE : 0;
+
+  document.getElementById("stocks-base").textContent  = fmt(base) + " ريال";
+  document.getElementById("zakat-stocks").textContent = fmt(zakat);
+  document.getElementById("stocks-note").textContent  = base >= nisab
+    ? `زكاة الأسهم ${fmt(zakat)} ريال (${type==="trade"?"على القيمة السوقية":"على الأرباح فقط"})`
+    : `الوعاء ${fmt(base)} ريال لم يبلغ النصاب — لا زكاة`;
+
+  document.getElementById("result-stocks").classList.add("show");
+  document.getElementById("result-stocks").scrollIntoView({behavior:"smooth",block:"nearest"});
+  if (base >= nisab) showToast("📈 زكاة الأسهم: " + fmt(zakat) + " ريال", "toast-gold");
+}
+
+// ===== مشاركة النتيجة =====
+function shareResult(tab) {
+  const ids = { money:"zakat-money", gold:"zakat-gold",
+                silver:"zakat-silver", trade:"zakat-trade", stocks:"zakat-stocks" };
+  const val  = document.getElementById(ids[tab])?.textContent || "0";
+  const unit = tab === "money" ? (CURRENCIES[activeCurrency]||"ريال") : "ريال";
+  const text = `✅ حسبت زكاتي على IslamiCalc
+💰 المبلغ الواجب: ${val} ${unit}
+
+احسب زكاتك: https://islamicalc.com/zakat`;
+  if (navigator.share) {
+    navigator.share({ title: "حاسبة الزكاة — IslamiCalc", text });
+  } else {
+    navigator.clipboard?.writeText(text);
+    showToast("✅ تم نسخ النتيجة!", "toast-success");
+  }
+}
+
+// ===== إعادة التعيين =====
+function resetForm(tab) {
+  document.querySelectorAll("#tab-" + tab + " input")
+    .forEach(i => { i.value = ""; i.style.borderColor = ""; });
+  document.getElementById("result-" + tab).classList.remove("show");
+}
+
+// ===== Enter للحساب =====
+const calcFns = {
+  money:calcMoneyZakat, gold:calcGoldZakat,
+  silver:calcSilverZakat, trade:calcTradeZakat, stocks:calcStocksZakat
+};
+document.querySelectorAll(".form-input").forEach(input => {
+  input.addEventListener("keypress", e => {
+    if (e.key === "Enter") calcFns[activeTab]?.();
+  });
+});
+
+// ===== Theme =====
+const themeBtn = document.getElementById("themeBtn");
+const html = document.documentElement;
+function initTheme() {
+  const s = localStorage.getItem("theme") || "dark";
+  html.setAttribute("data-theme", s);
+  themeBtn.textContent = s === "dark" ? "☀️" : "🌙";
+}
+themeBtn.addEventListener("click", () => {
+  const n = html.getAttribute("data-theme") === "dark" ? "light" : "dark";
+  html.setAttribute("data-theme", n);
+  themeBtn.textContent = n === "dark" ? "☀️" : "🌙";
+  localStorage.setItem("theme", n);
+});
+
+// ===== Mobile Menu =====
+document.getElementById("menuToggle").addEventListener("click", () => {
+  const m = document.getElementById("navMenu");
+  m.classList.toggle("open");
+  document.getElementById("menuToggle").textContent = m.classList.contains("open") ? "✕" : "☰";
+});
+
+function openLoginModal() { showToast("🔵 سجّل دخولك من الصفحة الرئيسية","toast-gold"); }
+
+initTheme();
+</script>
+</body>
+</html>

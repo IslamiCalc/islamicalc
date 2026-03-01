@@ -1,0 +1,19 @@
+# IslamiCalc - robots.txt
+User-agent: *
+Allow: /
+
+# نسمح لكل محركات البحث بفهرسة الموقع
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+# نمنع فهرسة الصفحات الحساسة
+Disallow: /admin/
+Disallow: /api/
+Disallow: /.env
+Disallow: /firebase-config/
+
+# رابط خريطة الموقع
+Sitemap: https://islamicalc.com/sitemap.xml

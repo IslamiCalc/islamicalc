@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="dark">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>الأسماء الإسلامية | IslamiCalc</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../style.css">
+<style>
+.name-card{background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:16px;cursor:pointer;transition:.22s;}
+.name-card:hover{border-color:var(--gold);transform:translateY(-2px);}
+.badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:800;}
+.badge-loved{background:rgba(16,185,129,0.15);color:#10b981;}
+.badge-allowed{background:rgba(100,116,139,0.15);color:#94a3b8;}
+.badge-makruh{background:rgba(245,158,11,0.15);color:#f59e0b;}
+.badge-haram{background:rgba(239,68,68,0.15);color:#ef4444;}
+.filter-btn{background:var(--bg-main);border:1px solid var(--border);border-radius:20px;padding:6px 14px;font-size:12px;font-weight:700;cursor:pointer;font-family:var(--font-arabic);color:var(--text-muted);transition:.2s;white-space:nowrap;}
+.filter-btn.active,.filter-btn:hover{background:var(--gold);border-color:var(--gold);color:#000;}
+.letter-btn{background:var(--bg-main);border:1px solid var(--border);border-radius:8px;padding:5px 8px;font-size:13px;font-weight:700;cursor:pointer;font-family:var(--font-arabic);color:var(--text-muted);transition:.2s;min-width:34px;text-align:center;}
+.letter-btn.active,.letter-btn:hover{background:var(--primary);border-color:var(--primary);color:white;}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:1000;display:flex;align-items:center;justify-content:center;padding:16px;}
+.modal-box{background:var(--bg-card);border:1px solid var(--border);border-radius:20px;padding:26px;max-width:480px;width:100%;max-height:90vh;overflow-y:auto;}
+.fav-btn{background:none;border:none;font-size:22px;cursor:pointer;transition:.2s;}
+</style></head><body>
+<nav class="navbar">
+  <a href="../index.html" class="navbar-brand"><div class="navbar-logo">☪</div><span class="navbar-title">IslamiCalc</span></a>
+  <div class="navbar-actions"><button class="theme-btn" id="themeBtn">🌙</button></div>
+</nav>
+<main><div style="max-width:720px;margin:0 auto;padding:24px 16px 80px;">
+  <div style="text-align:center;padding:20px 0 14px;">
+    <div style="font-size:52px;margin-bottom:8px;">📖</div>
+    <h1 style="font-size:24px;font-weight:900;">الأسماء الإسلامية</h1>
+    <p style="color:var(--text-muted);font-size:13px;" id="countLabel">120 اسم • معاني وأحكام شرعية</p>
+  </div>
+
+  <!-- بحث -->
+  <input type="text" id="searchName" class="form-input" placeholder="🔍 ابحث بالاسم أو المعنى..." oninput="render()" style="margin-bottom:12px;">
+
+  <!-- فلاتر -->
+  <div style="display:flex;gap:8px;overflow-x:auto;padding-bottom:8px;margin-bottom:12px;scrollbar-width:none;">
+    <button class="filter-btn active" data-f="all" onclick="setFilter(this)">الكل</button>
+    <button class="filter-btn" data-f="male" onclick="setFilter(this)">👦 ذكور</button>
+    <button class="filter-btn" data-f="female" onclick="setFilter(this)">👧 إناث</button>
+    <button class="filter-btn" data-f="prophet" onclick="setFilter(this)">🕊️ أنبياء</button>
+    <button class="filter-btn" data-f="sahabi" onclick="setFilter(this)">⭐ صحابة</button>
+    <button class="filter-btn" data-f="loved" onclick="setFilter(this)">💚 محبوبة</button>
+    <button class="filter-btn" data-f="makruh" onclick="setFilter(this)">⚠️ مكروهة</button>
+    <button class="filter-btn" data-f="favs" onclick="setFilter(this)">💛 مفضلاتي</button>
+  </div>
+
+  <!-- حروف -->
+  <div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:14px;" id="letterGrid"></div>
+
+  <!-- شبكة الأسماء -->
+  <div id="namesGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;"></div>
+  <p id="emptyMsg" style="text-align:center;color:var(--text-muted);padding:40px;display:none;">لا توجد نتائج 🔍</p>
+</div></main>
+
+<!-- Modal -->
+<div class="modal-overlay" id="modal" style="display:none;" onclick="closeModal(event)">
+  <div class="modal-box" id="modalBox">
+    <button onclick="document.getElementById('modal').style.display='none'"
+      style="float:left;background:var(--bg-main);border:1px solid var(--border);border-radius:50%;width:30px;height:30px;cursor:pointer;color:var(--text-primary);">✕</button>
+    <div id="modalContent"></div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const themeBtn=document.getElementById("themeBtn");
+const htmlEl=document.documentElement;
+(function(){const s=localStorage.getItem("theme")||"dark";htmlEl.setAttribute("data-theme",s);themeBtn.textContent=s==="dark"?"☀️":"🌙";})();
+themeBtn.addEventListener("click",()=>{const n=htmlEl.getAttribute("data-theme")==="dark"?"light":"dark";htmlEl.setAttribute("data-theme",n);localStorage.setItem("theme",n);themeBtn.textContent=n==="dark"?"☀️":"🌙";});
+function showToast(m,t=""){const el=document.getElementById("toast");el.textContent=m;el.className="toast show "+(t||"");setTimeout(()=>el.classList.remove("show"),2500);}
+
+const NAMES=[
+  // ─── ذكور ───
+  {id:"muhammad",n:"محمد",g:"male",m:"المحمود كثيراً",r:"loved",tags:["prophet"]},
+  {id:"ahmad",n:"أحمد",g:"male",m:"أكثر حمداً",r:"loved",tags:["prophet"]},
+  {id:"ibrahim",n:"إبراهيم",g:"male",m:"أب الجماعة الكثيرة",r:"loved",tags:["prophet"]},
+  {id:"ismail",n:"إسماعيل",g:"male",m:"الله يسمع",r:"loved",tags:["prophet"]},
+  {id:"musa",n:"موسى",g:"male",m:"الماء والشجر",r:"loved",tags:["prophet"]},
+  {id:"isa",n:"عيسى",g:"male",m:"مشتق من عاش",r:"loved",tags:["prophet"]},
+  {id:"yusuf",n:"يوسف",g:"male",m:"الله يزيد ويضيف",r:"loved",tags:["prophet"]},
+  {id:"dawud",n:"داود",g:"male",m:"الحبيب",r:"loved",tags:["prophet"]},
+  {id:"sulayman",n:"سليمان",g:"male",m:"صغير السلام",r:"loved",tags:["prophet"]},
+  {id:"yahya",n:"يحيى",g:"male",m:"الحياة والنماء",r:"loved",tags:["prophet"]},
+  {id:"zakariya",n:"زكريا",g:"male",m:"الذكر الطاهر",r:"loved",tags:["prophet"]},
+  {id:"nuh",n:"نوح",g:"male",m:"السكينة والراحة",r:"loved",tags:["prophet"]},
+  {id:"hud",n:"هود",g:"male",m:"الرجل",r:"loved",tags:["prophet"]},
+  {id:"saleh",n:"صالح",g:"male",m:"الصالح المستقيم",r:"loved",tags:["prophet"]},
+  {id:"shuayb",n:"شعيب",g:"male",m:"المُشعب الداعي",r:"loved",tags:["prophet"]},
+  {id:"yunus",n:"يونس",g:"male",m:"الحمامة",r:"loved",tags:["prophet"]},
+  {id:"abubakar",n:"أبو بكر",g:"male",m:"أبو البكر الصغير",r:"loved",tags:["sahabi"]},
+  {id:"umar",n:"عمر",g:"male",m:"العمر والحياة",r:"loved",tags:["sahabi"]},
+  {id:"uthman",n:"عثمان",g:"male",m:"العثمان الغني",r:"loved",tags:["sahabi"]},
+  {id:"ali",n:"علي",g:"male",m:"العلي الرفيع",r:"loved",tags:["sahabi"]},
+  {id:"hamza",n:"حمزة",g:"male",m:"الأسد الشجاع",r:"loved",tags:["sahabi"]},
+  {id:"bilal",n:"بلال",g:"male",m:"الرطوبة والنداوة",r:"loved",tags:["sahabi"]},
+  {id:"salman",n:"سلمان",g:"male",m:"السليم الكامل",r:"loved",tags:["sahabi"]},
+  {id:"abdurrahman",n:"عبد الرحمن",g:"male",m:"عبد الرحمن",r:"loved",tags:["sahabi"]},
+  {id:"abdullah",n:"عبد الله",g:"male",m:"عبد الله",r:"loved",tags:["sahabi"]},
+  {id:"khalid",n:"خالد",g:"male",m:"الخالد الأبدي",r:"loved",tags:["sahabi"]},
+  {id:"talhah",n:"طلحة",g:"male",m:"شجرة الطلح",r:"loved",tags:["sahabi"]},
+  {id:"zubayr",n:"الزبير",g:"male",m:"الزبرة والقوة",r:"loved",tags:["sahabi"]},
+  {id:"anas",n:"أنس",g:"male",m:"الأنس والألفة",r:"allowed",tags:[]},
+  {id:"hasan",n:"حسن",g:"male",m:"الحسن الجميل",r:"loved",tags:[]},
+  {id:"husayn",n:"حسين",g:"male",m:"الحسين الجميل",r:"loved",tags:[]},
+  {id:"omar2",n:"عمر",g:"male",m:"المعمّر الطويل",r:"loved",tags:[]},
+  {id:"yasser",n:"ياسر",g:"male",m:"السهل اليسير",r:"allowed",tags:[]},
+  {id:"faris",n:"فارس",g:"male",m:"الفارس الشجاع",r:"allowed",tags:[]},
+  {id:"nasser",n:"ناصر",g:"male",m:"الناصر المنتصر",r:"allowed",tags:[]},
+  {id:"tariq",n:"طارق",g:"male",m:"النجم الطارق",r:"allowed",tags:[]},
+  {id:"mazen",n:"مازن",g:"male",m:"السحاب المطير",r:"allowed",tags:[]},
+  {id:"rayan",n:"ريان",g:"male",m:"الريّ والاكتفاء",r:"allowed",tags:[]},
+  {id:"zaid",n:"زيد",g:"male",m:"الزيادة والنماء",r:"loved",tags:["sahabi"]},
+  {id:"muawiya",n:"معاوية",g:"male",m:"المرتبط بالمعاوية",r:"allowed",tags:["sahabi"]},
+  {id:"amr",n:"عمرو",g:"male",m:"العمارة والبناء",r:"loved",tags:["sahabi"]},
+  {id:"saad",n:"سعد",g:"male",m:"السعادة واليمن",r:"loved",tags:["sahabi"]},
+  {id:"jaber",n:"جابر",g:"male",m:"الجابر المُصلح",r:"allowed",tags:["sahabi"]},
+  {id:"jabr",n:"جبريل",g:"male",m:"عبد الله",r:"loved",tags:[]},
+  {id:"mikael",n:"ميكائيل",g:"male",m:"من هو كالله",r:"loved",tags:[]},
+  {id:"idris2",n:"إدريس",g:"male",m:"المُدارِس",r:"loved",tags:["prophet"]},
+  {id:"sufyan",n:"سفيان",g:"male",m:"الخفيف السريع",r:"allowed",tags:[]},
+  {id:"sami",n:"سامي",g:"male",m:"الرفيع السامي",r:"allowed",tags:[]},
+  {id:"walid",n:"وليد",g:"male",m:"المولود الجديد",r:"allowed",tags:[]},
+  {id:"majid",n:"ماجد",g:"male",m:"المجيد الكريم",r:"allowed",tags:[]},
+  {id:"raed",n:"رائد",g:"male",m:"الرائد المكتشف",r:"allowed",tags:[]},
+  {id:"kareem",n:"كريم",g:"male",m:"الكريم النبيل",r:"allowed",tags:[]},
+  {id:"bashir",n:"بشير",g:"male",m:"المبشّر بالخير",r:"allowed",tags:[]},
+  {id:"mansoor",n:"منصور",g:"male",m:"المنصور المؤيَّد",r:"allowed",tags:[]},
+  {id:"harith",n:"الحارث",g:"male",m:"الحارث الزارع",r:"makruh",tags:[],note:"ذكر النبي ﷺ أن من أصدق الأسماء الحارث وهمام"},
+  {id:"hammam",n:"همام",g:"male",m:"العزيمة والهمة",r:"makruh",tags:[],note:"ذكره النبي ﷺ مع الحارث"},
+  {id:"harb",n:"حرب",g:"male",m:"الحرب",r:"makruh",tags:[],note:"يُكره لما يوحي به من الشر"},
+  {id:"murra",n:"مرة",g:"male",m:"المرارة",r:"makruh",tags:[],note:"يُكره لمعناه غير المحبوب"},
+  {id:"abduluzza",n:"عبد العزى",g:"male",m:"عبد العزى",r:"haram",tags:[],note:"تعبيد لغير الله محرّم"},
+  {id:"abdulkaaba",n:"عبد الكعبة",g:"male",m:"عبد الكعبة",r:"haram",tags:[],note:"لا يجوز"},
+
+  // ─── إناث ───
+  {id:"maryam",n:"مريم",g:"female",m:"الخادمة العابدة",r:"loved",tags:[]},
+  {id:"khadija",n:"خديجة",g:"female",m:"الولودة المبكرة",r:"loved",tags:["sahabi"]},
+  {id:"aisha",n:"عائشة",g:"female",m:"الحياة والنشاط",r:"loved",tags:["sahabi"]},
+  {id:"fatima",n:"فاطمة",g:"female",m:"المفطومة",r:"loved",tags:[]},
+  {id:"zaynab",n:"زينب",g:"female",m:"الزينة والعطر",r:"loved",tags:["sahabi"]},
+  {id:"asma",n:"أسماء",g:"female",m:"الأسماء العالية",r:"loved",tags:["sahabi"]},
+  {id:"hafsa",n:"حفصة",g:"female",m:"اللبؤة الشابة",r:"loved",tags:["sahabi"]},
+  {id:"sumayya",n:"سمية",g:"female",m:"العلو والرفعة",r:"loved",tags:["sahabi"]},
+  {id:"ruqayya",n:"رقية",g:"female",m:"الرقي والارتفاع",r:"loved",tags:[]},
+  {id:"umkulthum",n:"أم كلثوم",g:"female",m:"كنية",r:"loved",tags:[]},
+  {id:"safiyya",n:"صفية",g:"female",m:"الصافية النقية",r:"loved",tags:["sahabi"]},
+  {id:"sukayna",n:"سكينة",g:"female",m:"الهدوء والسكينة",r:"loved",tags:[]},
+  {id:"nour",n:"نور",g:"female",m:"النور والضياء",r:"allowed",tags:[]},
+  {id:"sara",n:"سارة",g:"female",m:"السيدة الشريفة",r:"loved",tags:[]},
+  {id:"layla",n:"ليلى",g:"female",m:"الليل والسواد",r:"allowed",tags:[]},
+  {id:"hana",n:"هناء",g:"female",m:"الهناء والسعادة",r:"allowed",tags:[]},
+  {id:"dina",n:"دينا",g:"female",m:"الديانة والإيمان",r:"allowed",tags:[]},
+  {id:"rana",n:"رنا",g:"female",m:"النظر بإعجاب",r:"allowed",tags:[]},
+  {id:"yara",n:"يارا",g:"female",m:"الربيع والزهر",r:"allowed",tags:[]},
+  {id:"lujain",n:"لجين",g:"female",m:"الفضة النقية",r:"allowed",tags:[]},
+  {id:"reema",n:"ريما",g:"female",m:"الظبي الأبيض",r:"allowed",tags:[]},
+  {id:"haya",n:"حياء",g:"female",m:"الحياء والعفة",r:"loved",tags:[]},
+  {id:"arwa",n:"أروى",g:"female",m:"الأوعال الجبلية",r:"allowed",tags:["sahabi"]},
+  {id:"salma",n:"سلمى",g:"female",m:"السلامة والأمان",r:"allowed",tags:["sahabi"]},
+  {id:"noura",n:"نورة",g:"female",m:"المضيئة المشرقة",r:"allowed",tags:[]},
+  {id:"hessa",n:"حصة",g:"female",m:"النصيب والحظ",r:"allowed",tags:[]},
+  {id:"amal",n:"أمل",g:"female",m:"الأمل والتطلع",r:"allowed",tags:[]},
+  {id:"iman",n:"إيمان",g:"female",m:"الإيمان باللّه",r:"loved",tags:[]},
+  {id:"hadeel",n:"هديل",g:"female",m:"صوت الحمام",r:"allowed",tags:[]},
+  {id:"razan",n:"رزان",g:"female",m:"الرصانة والحكمة",r:"allowed",tags:[]},
+  {id:"shaymaa",n:"شيماء",g:"female",m:"أصحاب الشامات",r:"allowed",tags:["sahabi"]},
+  {id:"afra",n:"عفراء",g:"female",m:"البيضاء",r:"allowed",tags:["sahabi"]},
+  {id:"reem",n:"ريم",g:"female",m:"الغزال الأبيض",r:"allowed",tags:[]},
+  {id:"ward",n:"ورد",g:"female",m:"الوردة الزهرة",r:"allowed",tags:[]},
+  {id:"shaden",n:"شادن",g:"female",m:"الغزال الصغير",r:"allowed",tags:[]},
+  {id:"abeer",n:"عبير",g:"female",m:"العطر الأريج",r:"allowed",tags:[]},
+  {id:"nada",n:"ندى",g:"female",m:"قطر الماء والكرم",r:"allowed",tags:[]},
+  {id:"jumana",n:"جمانة",g:"female",m:"الدرة والجوهرة",r:"allowed",tags:[]},
+  {id:"rahaf",n:"رهف",g:"female",m:"الرقيقة الناعمة",r:"allowed",tags:[]},
+  {id:"balqees",n:"بلقيس",g:"female",m:"ملكة سبأ",r:"allowed",tags:[]},
+  {id:"venus",n:"زهرة الزهرة",g:"female",m:"النجم — اسم الكوكب",r:"makruh",tags:[],note:"كراهة لأنه اسم كوكب قد يُعبد"},
+];
+
+const LETTERS=["أ","ب","ت","ث","ج","ح","خ","د","ذ","ر","ز","س","ش","ص","ض","ط","ظ","ع","غ","ف","ق","ك","ل","م","ن","ه","و","ي"];
+let curFilter="all", curLetter="", favs=JSON.parse(localStorage.getItem("nameFavs")||"[]");
+
+function buildLetters(){
+  const used=new Set(NAMES.map(n=>n.n[0]));
+  document.getElementById("letterGrid").innerHTML=
+    `<button class="letter-btn active" data-l="" onclick="setLetter(this)">الكل</button>`+
+    LETTERS.filter(l=>used.has(l)||[...used].some(u=>u===l)).map(l=>
+      `<button class="letter-btn" data-l="${l}" onclick="setLetter(this)">${l}</button>`).join("");
+}
+function setLetter(el){
+  document.querySelectorAll(".letter-btn").forEach(b=>b.classList.remove("active"));el.classList.add("active");
+  curLetter=el.dataset.l;render();
+}
+function setFilter(el){
+  document.querySelectorAll("[data-f]").forEach(b=>b.classList.remove("active"));el.classList.add("active");
+  curFilter=el.dataset.f;render();
+}
+function toggleFav(id,e){
+  e.stopPropagation();
+  if(favs.includes(id)) favs=favs.filter(f=>f!==id);
+  else favs.push(id);
+  localStorage.setItem("nameFavs",JSON.stringify(favs));
+  render();showToast(favs.includes(id)?"💛 أُضيف للمفضلة":"تم الإزالة من المفضلة");
+}
+const BADGE={loved:"badge-loved",allowed:"badge-allowed",makruh:"badge-makruh",haram:"badge-haram"};
+const BADGE_TXT={loved:"✅ محبوب",allowed:"⚪ مباح",makruh:"⚠️ مكروه",haram:"🚫 محرّم"};
+const COLOR={loved:"#10b981",allowed:"#94a3b8",makruh:"#f59e0b",haram:"#ef4444"};
+
+function render(){
+  const q=(document.getElementById("searchName").value||"").trim();
+  let list=NAMES.filter(n=>{
+    if(curFilter==="male") return n.g==="male";
+    if(curFilter==="female") return n.g==="female";
+    if(curFilter==="prophet") return n.tags.includes("prophet");
+    if(curFilter==="sahabi") return n.tags.includes("sahabi");
+    if(curFilter==="loved") return n.r==="loved";
+    if(curFilter==="makruh") return n.r==="makruh"||n.r==="haram";
+    if(curFilter==="favs") return favs.includes(n.id);
+    return true;
+  });
+  if(curLetter) list=list.filter(n=>n.n[0]===curLetter||n.n.startsWith(curLetter));
+  if(q) list=list.filter(n=>n.n.includes(q)||n.m.includes(q));
+  document.getElementById("countLabel").textContent=`${list.length} اسم • معاني وأحكام شرعية`;
+  document.getElementById("emptyMsg").style.display=list.length?"none":"block";
+  document.getElementById("namesGrid").innerHTML=list.map(n=>`
+    <div class="name-card" onclick="openName('${n.id}')">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px;">
+        <p style="font-size:18px;font-weight:900;">${n.n}</p>
+        <button class="fav-btn" onclick="toggleFav('${n.id}',event)">${favs.includes(n.id)?"💛":"🤍"}</button>
+      </div>
+      <p style="font-size:12px;color:var(--text-muted);margin-bottom:8px;">${n.m}</p>
+      <span class="badge ${BADGE[n.r]}">${BADGE_TXT[n.r]}</span>
+    </div>`).join("");
+}
+function openName(id){
+  const n=NAMES.find(x=>x.id===id);
+  document.getElementById("modalContent").innerHTML=`
+    <div style="text-align:center;margin-bottom:18px;">
+      <p style="font-size:42px;font-weight:900;margin-bottom:6px;">${n.n}</p>
+      <p style="color:var(--text-muted);font-size:14px;">${n.g==="male"?"👦 اسم ذكر":"👧 اسم أنثى"}</p>
+    </div>
+    <div style="background:var(--bg-main);border-radius:12px;padding:14px;margin-bottom:12px;">
+      <p style="font-size:13px;font-weight:700;color:var(--text-muted);margin-bottom:4px;">المعنى</p>
+      <p style="font-size:16px;font-weight:800;">${n.m}</p>
+    </div>
+    <div style="background:var(--bg-main);border-radius:12px;padding:14px;margin-bottom:12px;">
+      <p style="font-size:13px;font-weight:700;color:var(--text-muted);margin-bottom:6px;">الحكم الشرعي</p>
+      <span class="badge ${BADGE[n.r]}" style="font-size:14px;padding:6px 16px;">${BADGE_TXT[n.r]}</span>
+      ${n.note?`<p style="font-size:13px;color:var(--text-secondary);margin-top:10px;line-height:1.8;">${n.note}</p>`:""}
+    </div>
+    ${n.tags.length?`<div style="display:flex;gap:6px;flex-wrap:wrap;">
+      ${n.tags.map(t=>`<span style="background:rgba(99,102,241,0.1);color:var(--primary-light);border:1px solid rgba(99,102,241,0.2);border-radius:20px;padding:4px 12px;font-size:12px;font-weight:700;">${t==="prophet"?"🕊️ نبي":t==="sahabi"?"⭐ صحابي":t}</span>`).join("")}
+    </div>`:""}
+    <button onclick="toggleFav('${n.id}',{stopPropagation:()=>{}})" class="btn btn-primary" style="width:100%;margin-top:14px;">
+      ${favs.includes(n.id)?"💛 في المفضلة — اضغط للإزالة":"🤍 أضف للمفضلة"}
+    </button>`;
+  document.getElementById("modal").style.display="flex";
+}
+function closeModal(e){if(e.target===document.getElementById("modal"))document.getElementById("modal").style.display="none";}
+
+buildLetters();render();
+</script></body></html>

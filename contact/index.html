@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="canonical" href="https://islamicalc.com/contact/">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📧</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+  <title>تواصل معنا | IslamiCalc</title>
+</head>
+<body>
+<nav class="navbar">
+  <a href="/" class="navbar-brand">
+    <div class="navbar-logo">☪</div>
+    <span class="navbar-title">IslamiCalc</span>
+  </a>
+  <ul class="navbar-menu" id="navMenu">
+    <li><a href="/">🏠 الرئيسية</a></li>
+    <li><a href="/zakat">🧮 الحاسبات</a></li>
+    <li><a href="/khatma">📖 القرآن</a></li>
+    <li><a href="/prayer">🕌 الصلاة</a></li>
+    <li><a href="/athkar">📿 الأذكار</a></li>
+    <li><a href="/arena">🏆 الأرينا</a></li>
+  </ul>
+  <div class="navbar-actions">
+    <button class="theme-btn" id="themeBtn">🌙</button>
+    <button class="login-btn" onclick="showToast('سجّل دخولك من الرئيسية','toast-gold')">دخول 🔵</button>
+    <button class="menu-toggle" id="menuToggle">☰</button>
+  </div>
+</nav>
+<main>
+<div style="max-width:720px;margin:0 auto;padding:24px 16px 80px;">
+
+  <div style="text-align:center;padding:32px 0 24px;">
+    <div style="font-size:64px;margin-bottom:12px;">📧</div>
+    <h1 style="font-size:28px;font-weight:900;margin-bottom:8px;">تواصل معنا</h1>
+    <p style="color:var(--text-muted);font-size:15px;">نسعد بسماع آرائك واقتراحاتك</p>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;">
+    <a href="mailto:info@islamicalc.com" style="text-decoration:none;">
+      <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:20px;text-align:center;">
+        <div style="font-size:36px;margin-bottom:8px;">📧</div>
+        <p style="font-weight:700;color:var(--text-primary);">البريد الإلكتروني</p>
+        <p style="font-size:13px;color:var(--primary-light);">info@islamicalc.com</p>
+      </div>
+    </a>
+    <a href="https://twitter.com/islamicalc" target="_blank" style="text-decoration:none;">
+      <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:20px;text-align:center;">
+        <div style="font-size:36px;margin-bottom:8px;">🐦</div>
+        <p style="font-weight:700;color:var(--text-primary);">تويتر / X</p>
+        <p style="font-size:13px;color:var(--primary-light);">@IslamiCalc</p>
+      </div>
+    </a>
+  </div>
+  <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:24px;">
+    <h2 style="font-size:18px;font-weight:900;margin-bottom:20px;">✍️ أرسل رسالة</h2>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
+      <div>
+        <label style="display:block;font-size:13px;font-weight:700;margin-bottom:6px;color:var(--text-secondary);">الاسم</label>
+        <input type="text" id="contactName" class="form-input" placeholder="اسمك الكريم">
+      </div>
+      <div>
+        <label style="display:block;font-size:13px;font-weight:700;margin-bottom:6px;color:var(--text-secondary);">البريد الإلكتروني</label>
+        <input type="email" id="contactEmail" class="form-input" placeholder="email@example.com" dir="ltr">
+      </div>
+    </div>
+    <div style="margin-bottom:12px;">
+      <label style="display:block;font-size:13px;font-weight:700;margin-bottom:6px;color:var(--text-secondary);">الموضوع</label>
+      <select id="contactSubject" class="form-select">
+        <option value="">اختر الموضوع</option>
+        <option value="bug">🐛 إبلاغ عن خطأ</option>
+        <option value="suggest">💡 اقتراح ميزة</option>
+        <option value="shariah">📚 ملاحظة شرعية</option>
+        <option value="partner">🤝 شراكة</option>
+        <option value="other">💬 أخرى</option>
+      </select>
+    </div>
+    <div style="margin-bottom:20px;">
+      <label style="display:block;font-size:13px;font-weight:700;margin-bottom:6px;color:var(--text-secondary);">الرسالة</label>
+      <textarea id="contactMsg" class="form-input" rows="5"
+        style="resize:vertical;min-height:120px;" placeholder="اكتب رسالتك هنا..."></textarea>
+    </div>
+    <button onclick="sendContact()" class="btn btn-primary" style="width:100%;font-size:16px;">📤 إرسال الرسالة</button>
+    <p style="font-size:12px;color:var(--text-muted);text-align:center;margin-top:12px;">نرد خلال 24-48 ساعة إن شاء الله</p>
+  </div>
+  <script>
+  function sendContact(){
+    const name=document.getElementById("contactName").value.trim();
+    const email=document.getElementById("contactEmail").value.trim();
+    const msg=document.getElementById("contactMsg").value.trim();
+    if(!name||!email||!msg){showToast("❌ الرجاء ملء جميع الحقول");return;}
+    if(!email.includes("@")){showToast("❌ البريد غير صحيح");return;}
+    const subj=document.getElementById("contactSubject").value||"رسالة من IslamiCalc";
+    window.location.href="mailto:info@islamicalc.com?subject="+encodeURIComponent(subj)+"&body="+encodeURIComponent("الاسم: "+name+"
+البريد: "+email+"
+
+"+msg);
+    showToast("✅ سيتم فتح برنامج البريد");
+  }
+  </script>
+
+</div>
+</main>
+<div class="toast" id="toast"></div>
+<script>
+const themeBtn=document.getElementById("themeBtn");
+const htmlEl=document.documentElement;
+(function(){const s=localStorage.getItem("theme")||"dark";htmlEl.setAttribute("data-theme",s);themeBtn.textContent=s==="dark"?"☀️":"🌙";})();
+themeBtn.addEventListener("click",()=>{const n=htmlEl.getAttribute("data-theme")==="dark"?"light":"dark";htmlEl.setAttribute("data-theme",n);localStorage.setItem("theme",n);themeBtn.textContent=n==="dark"?"☀️":"🌙";});
+document.getElementById("menuToggle").addEventListener("click",()=>{const m=document.getElementById("navMenu");m.classList.toggle("open");document.getElementById("menuToggle").textContent=m.classList.contains("open")?"✕":"☰";});
+function showToast(msg,type=""){const t=document.getElementById("toast");t.textContent=msg;t.className="toast show "+type;setTimeout(()=>t.classList.remove("show"),3000);}
+</script>
+</body>
+</html>

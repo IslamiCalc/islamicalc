@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="canonical" href="https://islamicalc.com/fasting/">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌙</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+  <title>حاسبة الصيام | IslamiCalc</title>
+  <style>
+    .fast-card{background:var(--bg-card);border:1px solid var(--border);border-radius:18px;padding:24px;margin-bottom:16px;}
+    .type-btn{background:var(--bg-main);border:2px solid var(--border);border-radius:14px;padding:14px 10px;
+      text-align:center;cursor:pointer;transition:.2s;font-family:var(--font-arabic);}
+    .type-btn:hover{border-color:var(--primary);}
+    .type-btn.active{border-color:var(--gold);background:rgba(245,158,11,0.08);}
+    .type-btn .icon{font-size:28px;margin-bottom:6px;}
+    .type-btn .label{font-size:12px;font-weight:800;color:var(--text-primary);}
+    .result-hero{background:linear-gradient(135deg,#0f172a 0%,#1e1b4b 100%);
+      border:1px solid rgba(99,102,241,0.3);border-radius:18px;padding:28px;text-align:center;margin-bottom:16px;}
+    .progress-bar{background:var(--bg-main);border-radius:30px;height:12px;overflow:hidden;margin:8px 0;}
+    .progress-fill{background:linear-gradient(90deg,var(--primary),var(--gold));height:100%;border-radius:30px;transition:.5s;}
+    .stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+    .stat-box{background:var(--bg-main);border-radius:12px;padding:14px;text-align:center;}
+    .stat-num{font-size:22px;font-weight:900;color:var(--gold);}
+    .stat-lbl{font-size:11px;color:var(--text-muted);margin-top:2px;}
+    .rule-box{background:rgba(99,102,241,0.06);border:1px solid rgba(99,102,241,0.2);
+      border-radius:12px;padding:14px;margin-bottom:10px;}
+    .mukafir-btn{background:var(--bg-main);border:1px solid var(--border);border-radius:12px;
+      padding:12px;text-align:center;cursor:pointer;font-family:var(--font-arabic);transition:.2s;}
+    .mukafir-btn:hover{border-color:var(--primary);}
+    .mukafir-btn.active{border-color:var(--primary);background:rgba(99,102,241,0.1);}
+    .intention-card{background:linear-gradient(135deg,rgba(245,158,11,0.1),rgba(99,102,241,0.1));
+      border:1px solid rgba(245,158,11,0.3);border-radius:14px;padding:20px;text-align:center;}
+    .niyyah-text{font-size:18px;font-weight:700;line-height:2;color:var(--text-primary);margin-bottom:12px;}
+  </style>
+</head>
+<body>
+<nav class="navbar">
+  <a href="/" class="navbar-brand">
+    <div class="navbar-logo">☪</div>
+    <span class="navbar-title">IslamiCalc</span>
+  </a>
+  <ul class="navbar-menu" id="navMenu">
+    <li><a href="/">🏠 الرئيسية</a></li>
+    <li><a href="/zakat">🧮 الحاسبات</a></li>
+    <li><a href="/khatma">📖 القرآن</a></li>
+    <li><a href="/prayer">🕌 الصلاة</a></li>
+    <li><a href="/athkar">📿 الأذكار</a></li>
+    <li><a href="/arena">🏆 الأرينا</a></li>
+  </ul>
+  <div class="navbar-actions">
+    <button class="theme-btn" id="themeBtn">🌙</button>
+    <button class="login-btn" onclick="showToast('سجّل دخولك من الرئيسية','toast-gold')">دخول 🔵</button>
+    <button class="menu-toggle" id="menuToggle">☰</button>
+  </div>
+</nav>
+
+<main>
+<div style="max-width:680px;margin:0 auto;padding:24px 16px 80px;">
+
+  <!-- Header -->
+  <div style="text-align:center;padding:24px 0 20px;">
+    <div style="font-size:56px;margin-bottom:10px;">🌙</div>
+    <h1 style="font-size:26px;font-weight:900;margin-bottom:6px;">حاسبة الصيام</h1>
+    <p style="color:var(--text-muted);font-size:14px;">رمضان • القضاء • النذر • التطوع • الكفارة</p>
+  </div>
+
+  <!-- نوع الصيام -->
+  <div class="fast-card">
+    <h2 style="font-size:16px;font-weight:900;margin-bottom:14px;">اختر نوع الصيام</h2>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:4px;" id="typeGrid">
+      <div class="type-btn active" data-type="ramadan" onclick="selectType(this)">
+        <div class="icon">🌙</div><div class="label">رمضان</div>
+      </div>
+      <div class="type-btn" data-type="qadaa" onclick="selectType(this)">
+        <div class="icon">📋</div><div class="label">قضاء</div>
+      </div>
+      <div class="type-btn" data-type="nadr" onclick="selectType(this)">
+        <div class="icon">🤲</div><div class="label">نذر</div>
+      </div>
+      <div class="type-btn" data-type="tatawwu" onclick="selectType(this)">
+        <div class="icon">⭐</div><div class="label">تطوع</div>
+      </div>
+      <div class="type-btn" data-type="kafara" onclick="selectType(this)">
+        <div class="icon">⚖️</div><div class="label">كفارة</div>
+      </div>
+      <div class="type-btn" data-type="tracker" onclick="selectType(this)">
+        <div class="icon">📊</div><div class="label">متابعة</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- لوحة رمضان -->
+  <div id="panel-ramadan">
+    <div class="fast-card">
+      <h2 style="font-size:16px;font-weight:900;margin-bottom:14px;">📅 حاسبة رمضان</h2>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">
+        <div>
+          <label style="display:block;font-size:13px;font-weight:700;margin-bottom:6px;color:var(--text-muted);">أيام صمتها ✅</label>
+          <input type="number" id="ramFasted" class="form-input" min="0" max="30" placeholder="0" oninput="calcRamadan()">
+        </div>
+        <div>
+          <label style="display:block;font-size:13px;font-weight:700;margin-bottom:6px;color:var(--text-muted);">أيام أفطرتها ❌</label>
+          <input type="number" id="ramBroken" class="form-input" min="0" max="30" placeholder="0" oninput="calcRamadan()">
+        </div>
+      </div>
+      <div style="margin-bottom:16px;">
+        <label style="display:block;font-size:13px;font-weight:700;margin-bottom:6px;color:var(--text-muted);">سبب الفطر</label>
+        <select id="ramReason" class="form-select" onchange="calcRamadan()">
+          <option value="none">اختر السبب</option>
+          <option value="sick">🤒 مرض</option>
+          <option value="travel">✈️ سفر</option>
+          <option value="woman">🌸 أعذار المرأة</option>
+          <option value="deliberate">⚠️ إفطار متعمد</option>
+        </select>
+      </div>
+      <div id="ramResult"></div>
+    </div>
+  </div>
+
+  <!-- لوحة القضاء -->
+  <div id="panel-qadaa" style="display:none;">
+    <div class="fast-card">
+      <h2 style="font-size:16px;font-weight:900;margin-bottom:14px;">📋 حاسبة القضاء</h2>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">
+        <div>
+          <label style="display:block;font-size:13px;font-weight:700;margin-bottom:6px;color:var(--text-muted);">أيام القضاء</label>
+          <input type="number" id="qadaaDays" class="form-input" min="1" placeholder="مثال: 7" oninput="calcQadaa()">
+        </div>
+        <div>
+          <label style="display:block;font-size:13px;font-weight:700;margin-bottom:6px;color:var(--text-muted);">تريد تقضيها في</label>
+          <select id="qadaaPlan" class="form-select" onchange="calcQadaa()">
+            <option value="week">أسبوع واحد</option>
+            <option value="month">شهر واحد</option>
+            <option value="custom">حدد بنفسك</option>
+          </select>
+        </div>
+      </div>
+      <div id="qadaaCustomDiv" style="display:none;margin-bottom:16px;">
+        <label style="display:block;font-size:13px;font-weight:700;margin-bottom:6px;color:var(--text-muted);">أيام في الأسبوع للقضاء</label>
+        <input type="number" id="qadaaPerWeek" class="form-input" min="1" max="7" placeholder="مثال: 2" oninput="calcQadaa()">
+      </div>
+      <div id="qadaaResult"></div>
+    </div>
+    <div class="fast-card">
+      <h2 style="font-size:16px;font-weight:900;margin-bottom:12px;">📚 أحكام القضاء</h2>
+      <div class="rule-box"><p style="font-size:14px;line-height:1.8;color:var(--text-secondary);">
+        ✅ القضاء واجب على كل من أفطر في رمضان بعذر (مرض أو سفر أو أعذار المرأة).<br>
+        ✅ يجب قضاؤه قبل رمضان التالي — فإن أخّر بلا عذر أطعم مع القضاء.<br>
+        ✅ لا يشترط التتابع في قضاء رمضان بل يجوز التفريق.<br>
+        ✅ من مات وعليه قضاء صام عنه وليّه أو أُطعم عنه.
+      </p></div>
+    </div>
+  </div>
+
+  <!-- لوحة النذر -->
+  <div id="panel-nadr" style="display:none;">
+    <div class="fast-card">
+      <h2 style="font-size:16px;font-weight:900;margin-bottom:14px;">🤲 حاسبة النذر</h2>
+      <div style="margin-bottom:14px;">
+        <label style="display:block;font-size:13px;font-weight:700;margin-bottom:6px;color:var(--text-muted);">نوع النذر</label>
+        <select id="nadrType" class="form-select" onchange="calcNadr()">
+          <option value="days">عدد أيام محدد</option>
+          <option value="month">شهر كامل</option>
+          <option value="week">أسبوع كامل</option>
+          <option value="monday">كل اثنين</option>
+          <option value="thursday">كل خميس</option>
+        </select>
+      </div>
+      <div id="nadrDaysDiv" style="margin-bottom:14px;">
+        <label style="display:block;font-size:13px;font-weight:700;margin-bottom:6px;color:var(--text-muted);">عدد الأيام</label>
+        <input type="number" id="nadrDays" class="form-input" min="1" placeholder="مثال: 10" oninput="calcNadr()">
+      </div>
+      <div id="nadrResult"></div>
+    </div>
+    <div class="fast-card">
+      <h2 style="font-size:16px;font-weight:900;margin-bottom:12px;">📚 أحكام النذر</h2>
+      <div class="rule-box"><p style="font-size:14px;line-height:1.8;color:var(--text-secondary);">
+        ✅ النذر عبادة لا تجوز إلا لله — من نذر طاعة وجب الوفاء بها.<br>
+        ✅ من عجز عن الوفاء بنذره كفّارة يمين (إطعام 10 مساكين أو كسوتهم أو تحرير رقبة).<br>
+        ⚠️ النذر المطلق (لله عليّ صيام) يلزم الوفاء به ولو يوماً واحداً.
+      </p></div>
+    </div>
+  </div>
+
+  <!-- لوحة التطوع -->
+  <div id="panel-tatawwu" style="display:none;">
+    <div class="fast-card">
+      <h2 style="font-size:16px;font-weight:900;margin-bottom:14px;">⭐ أفضل أيام الصيام التطوعي</h2>
+      <div style="display:flex;flex-direction:column;gap:10px;" id="tatawwuList"></div>
+    </div>
+    <div class="fast-card">
+      <h2 style="font-size:16px;font-weight:900;margin-bottom:14px;">📅 مخطط أسبوعي</h2>
+      <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:6px;text-align:center;" id="weekPlan"></div>
+      <p style="font-size:12px;color:var(--text-muted);text-align:center;margin-top:10px;">اضغط على اليوم لتعليمه</p>
+    </div>
+  </div>
+
+  <!-- لوحة الكفارة -->
+  <div id="panel-kafara" style="display:none;">
+    <div class="fast-card">
+      <h2 style="font-size:16px;font-weight:900;margin-bottom:14px;">⚖️ حاسبة كفارة الإفطار</h2>
+      <div style="margin-bottom:14px;">
+        <label style="display:block;font-size:13px;font-weight:700;margin-bottom:10px;color:var(--text-muted);">سبب الكفارة</label>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;" id="kafaraTypeGrid">
+          <div class="mukafir-btn active" data-k="jima" onclick="selectKafara(this)">
+            <div style="font-size:24px;margin-bottom:4px;">⚠️</div>
+            <p style="font-size:13px;font-weight:700;">إفطار برمضان<br><span style="font-size:11px;color:var(--text-muted);">بالجماع</span></p>
+          </div>
+          <div class="mukafir-btn" data-k="eat" onclick="selectKafara(this)">
+            <div style="font-size:24px;margin-bottom:4px;">🍽️</div>
+            <p style="font-size:13px;font-weight:700;">إفطار متعمد<br><span style="font-size:11px;color:var(--text-muted);">بأكل أو شرب</span></p>
+          </div>
+        </div>
+      </div>
+      <div id="kafaraResult"></div>
+    </div>
+  </div>
+
+  <!-- لوحة المتابعة -->
+  <div id="panel-tracker" style="display:none;">
+    <div class="fast-card">
+      <h2 style="font-size:16px;font-weight:900;margin-bottom:14px;">📊 متابعة صيامي</h2>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:16px;">
+        <div>
+          <label style="display:block;font-size:12px;font-weight:700;margin-bottom:6px;color:var(--text-muted);">رمضان</label>
+          <input type="number" id="trRam" class="form-input" min="0" max="30" placeholder="0" oninput="calcTracker()">
+        </div>
+        <div>
+          <label style="display:block;font-size:12px;font-weight:700;margin-bottom:6px;color:var(--text-muted);">قضاء</label>
+          <input type="number" id="trQadaa" class="form-input" min="0" placeholder="0" oninput="calcTracker()">
+        </div>
+        <div>
+          <label style="display:block;font-size:12px;font-weight:700;margin-bottom:6px;color:var(--text-muted);">تطوع</label>
+          <input type="number" id="trTat" class="form-input" min="0" placeholder="0" oninput="calcTracker()">
+        </div>
+      </div>
+      <div id="trackerResult"></div>
+    </div>
+  </div>
+
+  <!-- نية الصيام -->
+  <div class="intention-card">
+    <h2 style="font-size:16px;font-weight:900;margin-bottom:14px;">🤲 نية الصيام</h2>
+    <div id="niyyahText" class="niyyah-text"></div>
+    <button onclick="copyNiyyah()" class="btn" style="background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);
+      color:var(--text-primary);padding:10px 24px;border-radius:30px;font-family:var(--font-arabic);font-weight:700;">
+      📋 نسخ النية
+    </button>
+  </div>
+
+</div>
+</main>
+<div class="toast" id="toast"></div>
+
+<script>
+// ─── Theme & Nav ───
+const themeBtn=document.getElementById("themeBtn");
+const htmlEl=document.documentElement;
+(function(){const s=localStorage.getItem("theme")||"dark";htmlEl.setAttribute("data-theme",s);themeBtn.textContent=s==="dark"?"☀️":"🌙";})();
+themeBtn.addEventListener("click",()=>{const n=htmlEl.getAttribute("data-theme")==="dark"?"light":"dark";htmlEl.setAttribute("data-theme",n);localStorage.setItem("theme",n);themeBtn.textContent=n==="dark"?"☀️":"🌙";});
+document.getElementById("menuToggle").addEventListener("click",()=>{const m=document.getElementById("navMenu");m.classList.toggle("open");document.getElementById("menuToggle").textContent=m.classList.contains("open")?"✕":"☰";});
+function showToast(msg,type=""){const t=document.getElementById("toast");t.textContent=msg;t.className="toast show "+(type||"");setTimeout(()=>t.classList.remove("show"),3000);}
+
+// ─── State ───
+let currentType="ramadan";
+const NIYYAH={
+  ramadan:"نويت صوم غدٍ عن أداء فريضة رمضان هذه السنة لله تعالى",
+  qadaa:"نويت صوم غدٍ قضاءً عن فريضة رمضان الماضي لله تعالى",
+  nadr:"نويت صوم غدٍ وفاءً بنذري لله تعالى",
+  tatawwu:"نويت صوم غدٍ تطوعاً لله تعالى",
+  kafara:"نويت صوم غدٍ كفارةً لله تعالى",
+  tracker:"نويت صوم غدٍ لله تعالى",
+};
+
+// ─── Type selection ───
+function selectType(el){
+  document.querySelectorAll(".type-btn").forEach(b=>b.classList.remove("active"));
+  el.classList.add("active");
+  currentType=el.dataset.type;
+  ["ramadan","qadaa","nadr","tatawwu","kafara","tracker"].forEach(t=>{
+    document.getElementById("panel-"+t).style.display=t===currentType?"block":"none";
+  });
+  updateNiyyah();
+  if(currentType==="tatawwu") buildTatawwu();
+  if(currentType==="kafara") calcKafara();
+}
+
+// ─── Niyyah ───
+function updateNiyyah(){
+  document.getElementById("niyyahText").textContent=NIYYAH[currentType]||NIYYAH.tatawwu;
+}
+function copyNiyyah(){
+  const txt=document.getElementById("niyyahText").textContent;
+  navigator.clipboard.writeText(txt).then(()=>showToast("✅ تم نسخ النية"));
+}
+
+// ─── RAMADAN CALC ───
+function calcRamadan(){
+  const fasted=parseInt(document.getElementById("ramFasted").value)||0;
+  const broken=parseInt(document.getElementById("ramBroken").value)||0;
+  const reason=document.getElementById("ramReason").value;
+  const remaining=30-fasted-broken;
+  const pct=Math.round((fasted/30)*100);
+  const el=document.getElementById("ramResult");
+  if(fasted===0&&broken===0){el.innerHTML="";return;}
+  let rulingHTML="";
+  if(reason==="deliberate"){
+    rulingHTML=`<div style="background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.3);
+      border-radius:12px;padding:14px;margin-top:12px;">
+      <p style="color:#ef4444;font-weight:700;font-size:14px;">⚠️ الإفطار المتعمد في رمضان كبيرة من الكبائر</p>
+      <p style="color:var(--text-muted);font-size:13px;margin-top:6px;line-height:1.8;">
+        يجب القضاء مع التوبة الصادقة. وعند الإفطار بالجماع تجب الكفارة المغلّظة أيضاً.
+      </p></div>`;
+  } else if(reason!=="none"){
+    const excuse={sick:"المرض",travel:"السفر",woman:"أعذار المرأة"};
+    rulingHTML=`<div style="background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.3);
+      border-radius:12px;padding:14px;margin-top:12px;">
+      <p style="color:var(--success);font-weight:700;font-size:14px;">✅ الفطر بسبب ${excuse[reason]} مباح شرعاً</p>
+      <p style="color:var(--text-muted);font-size:13px;margin-top:6px;line-height:1.8;">
+        يجب قضاء ${broken} يوم${broken>1?"اً":""} قبل رمضان القادم إن شاء الله.
+      </p></div>`;
+  }
+  el.innerHTML=`
+    <div style="margin-bottom:14px;">
+      <div style="display:flex;justify-content:space-between;font-size:13px;font-weight:700;margin-bottom:4px;">
+        <span>تقدمك في رمضان</span><span style="color:var(--gold);">${pct}%</span>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
+    </div>
+    <div class="stat-grid">
+      <div class="stat-box"><div class="stat-num" style="color:var(--success);">${fasted}</div><div class="stat-lbl">✅ صمتها</div></div>
+      <div class="stat-box"><div class="stat-num" style="color:#ef4444;">${broken}</div><div class="stat-lbl">❌ أفطرتها</div></div>
+      <div class="stat-box"><div class="stat-num">${Math.max(0,remaining)}</div><div class="stat-lbl">⏳ متبقية</div></div>
+    </div>
+    ${broken>0?`<div style="background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.3);
+      border-radius:12px;padding:14px;margin-top:12px;">
+      <p style="font-weight:700;font-size:14px;">📋 أيام القضاء: <span style="color:var(--gold);">${broken} يوم</span></p>
+    </div>`:""}
+    ${rulingHTML}
+  `;
+}
+
+// ─── QADAA CALC ───
+function calcQadaa(){
+  const days=parseInt(document.getElementById("qadaaDays").value)||0;
+  const plan=document.getElementById("qadaaPlan").value;
+  document.getElementById("qadaaCustomDiv").style.display=plan==="custom"?"block":"none";
+  if(!days){document.getElementById("qadaaResult").innerHTML="";return;}
+  let perWeek=plan==="week"?days:plan==="month"?Math.ceil(days/4):parseInt(document.getElementById("qadaaPerWeek").value)||1;
+  const weeks=Math.ceil(days/perWeek);
+  document.getElementById("qadaaResult").innerHTML=`
+    <div class="result-hero">
+      <p style="color:rgba(255,255,255,0.7);font-size:13px;margin-bottom:8px;">خطة القضاء</p>
+      <p style="font-size:28px;font-weight:900;color:white;margin-bottom:4px;">${days} أيام</p>
+      <p style="color:rgba(255,255,255,0.7);font-size:14px;">${perWeek} أيام/أسبوع → ستنتهي في ${weeks} أسبوع${weeks>1?"":""}
+      (≈ ${Math.ceil(weeks/4)} شهر)</p>
+    </div>
+    <div class="stat-grid">
+      <div class="stat-box"><div class="stat-num">${days}</div><div class="stat-lbl">إجمالي الأيام</div></div>
+      <div class="stat-box"><div class="stat-num">${perWeek}</div><div class="stat-lbl">أيام/أسبوع</div></div>
+      <div class="stat-box"><div class="stat-num">${weeks}</div><div class="stat-lbl">أسابيع</div></div>
+    </div>
+  `;
+}
+
+// ─── NADR CALC ───
+function calcNadr(){
+  const type=document.getElementById("nadrType").value;
+  document.getElementById("nadrDaysDiv").style.display=type==="days"?"block":"none";
+  let text="",days=0;
+  if(type==="days"){days=parseInt(document.getElementById("nadrDays").value)||0;text=days+" يوم نذر";}
+  else if(type==="month"){days=30;text="شهر كامل (30 يوم)";}
+  else if(type==="week"){days=7;text="أسبوع كامل (7 أيام)";}
+  else if(type==="monday"){text="كل اثنين — مستمر";days=-1;}
+  else if(type==="thursday"){text="كل خميس — مستمر";days=-1;}
+  if(!days&&type==="days"){document.getElementById("nadrResult").innerHTML="";return;}
+  document.getElementById("nadrResult").innerHTML=`
+    <div class="result-hero">
+      <p style="color:rgba(255,255,255,0.7);font-size:13px;margin-bottom:6px;">نذرك</p>
+      <p style="font-size:22px;font-weight:900;color:white;">${text}</p>
+      ${days>0?`<p style="color:rgba(255,255,255,0.6);font-size:13px;margin-top:6px;">≈ ${Math.ceil(days/7)} أسابيع</p>`:""}
+    </div>
+    <div class="rule-box">
+      <p style="font-size:13px;color:var(--text-secondary);line-height:1.8;">
+        ⚠️ الوفاء بالنذر واجب. إن عجزت كفّارة يمين: إطعام 10 مساكين.
+      </p>
+    </div>
+  `;
+}
+
+// ─── KAFARA CALC ───
+let kafaraType="jima";
+function selectKafara(el){
+  document.querySelectorAll(".mukafir-btn").forEach(b=>b.classList.remove("active"));
+  el.classList.add("active");
+  kafaraType=el.dataset.k;
+  calcKafara();
+}
+function calcKafara(){
+  const isJima=kafaraType==="jima";
+  document.getElementById("kafaraResult").innerHTML=`
+    <div style="background:rgba(239,68,68,0.06);border:1px solid rgba(239,68,68,0.2);
+      border-radius:14px;padding:20px;margin-bottom:12px;">
+      <p style="font-weight:900;font-size:15px;margin-bottom:14px;color:var(--text-primary);">
+        ${isJima?"⚠️ الكفارة المغلّظة (الجماع في رمضان)":"🍽️ الإفطار المتعمد"}
+      </p>
+      ${isJima?`
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div style="display:flex;gap:10px;align-items:flex-start;">
+            <span style="background:var(--primary);color:white;border-radius:50%;width:24px;height:24px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0;">1</span>
+            <div><p style="font-weight:700;">تحرير رقبة</p><p style="font-size:12px;color:var(--text-muted);">إن وجد — وإلا انتقل للثاني</p></div>
+          </div>
+          <div style="display:flex;gap:10px;align-items:flex-start;">
+            <span style="background:var(--primary);color:white;border-radius:50%;width:24px;height:24px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0;">2</span>
+            <div><p style="font-weight:700;">صيام شهرين متتابعين</p><p style="font-size:12px;color:var(--text-muted);">= 60 يوماً متواصلاً بلا انقطاع — إن عجز انتقل للثالث</p></div>
+          </div>
+          <div style="display:flex;gap:10px;align-items:flex-start;">
+            <span style="background:var(--primary);color:white;border-radius:50%;width:24px;height:24px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0;">3</span>
+            <div><p style="font-weight:700;">إطعام 60 مسكيناً</p><p style="font-size:12px;color:var(--text-muted);">مدّ من طعام (≈ 750 جرام) لكل مسكين</p></div>
+          </div>
+        </div>
+      `:`
+        <div class="rule-box">
+          <p style="font-size:14px;line-height:1.8;color:var(--text-secondary);">
+            الإفطار المتعمد بلا عذر (بأكل أو شرب) يوجب:<br>
+            ✅ التوبة الصادقة الفورية<br>
+            ✅ قضاء ذلك اليوم<br>
+            ⚠️ لا تجب الكفارة المغلّظة إلا بالجماع عند جمهور العلماء.
+          </p>
+        </div>
+      `}
+    </div>
+    <a href="/kafara" class="btn btn-primary" style="display:block;text-align:center;text-decoration:none;">
+      ⚖️ حاسبة الكفارات التفصيلية
+    </a>
+  `;
+}
+
+// ─── TATAWWU ───
+const TATAWWU_DAYS=[
+  {icon:"🌙",name:"الاثنين والخميس",reward:"يُرفع فيهما الأعمال — كان النبي ﷺ يصومهما",hadith:"رواه الترمذي"},
+  {icon:"⭐",name:"أيام البيض (13-14-15 هجري)",reward:"كصيام الدهر",hadith:"رواه أبو داود"},
+  {icon:"🏔️",name:"يوم عرفة (9 ذو الحجة)",reward:"يكفّر سنتين: الماضية والقادمة",hadith:"رواه مسلم"},
+  {icon:"✡️",name:"يوم عاشوراء (10 محرم)",reward:"يكفّر السنة الماضية",hadith:"رواه مسلم"},
+  {icon:"🌟",name:"ست من شوال",reward:"كمن صام الدهر كله",hadith:"رواه مسلم"},
+  {icon:"📅",name:"يوم الاثنين فقط",reward:"يوم وُلد فيه النبي ﷺ وأُنزل عليه الوحي",hadith:"رواه مسلم"},
+  {icon:"📅",name:"داود ﷺ (يوم ويوم)",reward:"أفضل الصيام عند الله",hadith:"متفق عليه"},
+];
+const WEEK_DAYS=["الأحد","الاثنين","الثلاثاء","الأربعاء","الخميس","الجمعة","السبت"];
+let weekMarked=JSON.parse(localStorage.getItem("fastWeek")||"[]");
+
+function buildTatawwu(){
+  document.getElementById("tatawwuList").innerHTML=TATAWWU_DAYS.map(d=>`
+    <div style="background:var(--bg-main);border-radius:12px;padding:14px;display:flex;gap:12px;align-items:flex-start;">
+      <span style="font-size:28px;">${d.icon}</span>
+      <div>
+        <p style="font-weight:700;font-size:14px;">${d.name}</p>
+        <p style="font-size:13px;color:var(--gold);margin:2px 0;">${d.reward}</p>
+        <p style="font-size:11px;color:var(--text-muted);">${d.hadith}</p>
+      </div>
+    </div>`).join("");
+
+  const grid=document.getElementById("weekPlan");
+  grid.innerHTML=WEEK_DAYS.map((d,i)=>`
+    <div onclick="toggleWeekDay(${i},this)" style="background:${weekMarked.includes(i)?"var(--primary)":"var(--bg-main)"};
+      border-radius:10px;padding:10px 4px;cursor:pointer;transition:.2s;border:1px solid ${weekMarked.includes(i)?"var(--primary)":"var(--border)"};">
+      <div style="font-size:11px;font-weight:700;color:${weekMarked.includes(i)?"white":"var(--text-muted)"};">${d.slice(0,3)}</div>
+      <div style="font-size:18px;margin-top:4px;">${weekMarked.includes(i)?"✅":"○"}</div>
+    </div>`).join("");
+}
+function toggleWeekDay(i,el){
+  const idx=weekMarked.indexOf(i);
+  if(idx>-1) weekMarked.splice(idx,1); else weekMarked.push(i);
+  localStorage.setItem("fastWeek",JSON.stringify(weekMarked));
+  buildTatawwu();
+  showToast(weekMarked.includes(i)?"✅ تم تعليم اليوم":"○ تم إلغاء التعليم");
+}
+
+// ─── TRACKER ───
+function calcTracker(){
+  const ram=parseInt(document.getElementById("trRam").value)||0;
+  const qadaa=parseInt(document.getElementById("trQadaa").value)||0;
+  const tat=parseInt(document.getElementById("trTat").value)||0;
+  const total=ram+qadaa+tat;
+  if(!total){document.getElementById("trackerResult").innerHTML="";return;}
+  document.getElementById("trackerResult").innerHTML=`
+    <div class="result-hero">
+      <p style="color:rgba(255,255,255,0.7);font-size:13px;margin-bottom:4px;">إجمالي أيام صيامك</p>
+      <p style="font-size:40px;font-weight:900;color:white;">${total}</p>
+      <p style="color:rgba(255,255,255,0.6);font-size:13px;">يوماً صمته لله تعالى 🤲</p>
+    </div>
+    <div class="stat-grid">
+      <div class="stat-box"><div class="stat-num" style="color:var(--primary);">${ram}</div><div class="stat-lbl">🌙 رمضان</div></div>
+      <div class="stat-box"><div class="stat-num" style="color:var(--gold);">${qadaa}</div><div class="stat-lbl">📋 قضاء</div></div>
+      <div class="stat-box"><div class="stat-num" style="color:var(--success);">${tat}</div><div class="stat-lbl">⭐ تطوع</div></div>
+    </div>
+  `;
+}
+
+// ─── Init ───
+updateNiyyah();
+calcKafara();
+</script>
+</body>
+</html>

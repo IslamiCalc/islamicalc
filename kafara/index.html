@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="dark">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>حاسبة الكفارات | IslamiCalc</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../style.css">
+<style>.card{background:var(--bg-card);border:1px solid var(--border);border-radius:18px;padding:22px;margin-bottom:14px;}
+.type-btn{background:var(--bg-main);border:2px solid var(--border);border-radius:14px;padding:12px 6px;text-align:center;cursor:pointer;transition:.2s;font-family:var(--font-arabic);}
+.type-btn.active{border-color:var(--gold);background:rgba(245,158,11,0.08);}
+.step-box{display:flex;gap:12px;align-items:flex-start;background:var(--bg-main);border-radius:12px;padding:14px;margin-bottom:8px;}
+.step-num{background:var(--primary);color:white;border-radius:50%;width:26px;height:26px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;flex-shrink:0;}
+.hadith-box{background:rgba(245,158,11,0.06);border-right:3px solid var(--gold);padding:12px 14px;border-radius:0 10px 10px 0;margin:10px 0;}
+.calc-row{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--border);font-size:13px;}
+.calc-row:last-child{border-bottom:none;}</style></head><body>
+<nav class="navbar">
+  <a href="../index.html" class="navbar-brand"><div class="navbar-logo">☪</div><span class="navbar-title">IslamiCalc</span></a>
+  <div class="navbar-actions"><button class="theme-btn" id="themeBtn">🌙</button></div>
+</nav>
+<main><div style="max-width:660px;margin:0 auto;padding:24px 16px 80px;">
+  <div style="text-align:center;padding:20px 0 14px;"><div style="font-size:52px;margin-bottom:8px;">⚖️</div>
+  <h1 style="font-size:24px;font-weight:900;">حاسبة الكفارات</h1>
+  <p style="color:var(--text-muted);font-size:13px;">يمين • ظهار • قتل خطأ • إفطار رمضان • نذر</p></div>
+
+  <div class="card">
+    <h2 style="font-size:15px;font-weight:900;margin-bottom:12px;">اختر نوع الكفارة</h2>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;">
+      <div class="type-btn active" data-k="yamin" onclick="sel(this)"><div style="font-size:24px;margin-bottom:4px;">🤝</div><div style="font-size:11px;font-weight:800;">كفارة اليمين</div></div>
+      <div class="type-btn" data-k="zihar" onclick="sel(this)"><div style="font-size:24px;margin-bottom:4px;">💍</div><div style="font-size:11px;font-weight:800;">الظهار</div></div>
+      <div class="type-btn" data-k="qatl" onclick="sel(this)"><div style="font-size:24px;margin-bottom:4px;">😔</div><div style="font-size:11px;font-weight:800;">قتل الخطأ</div></div>
+      <div class="type-btn" data-k="iftar" onclick="sel(this)"><div style="font-size:24px;margin-bottom:4px;">🌙</div><div style="font-size:11px;font-weight:800;">إفطار رمضان</div></div>
+      <div class="type-btn" data-k="nadr" onclick="sel(this)"><div style="font-size:24px;margin-bottom:4px;">🤲</div><div style="font-size:11px;font-weight:800;">كفارة النذر</div></div>
+      <div class="type-btn" data-k="ihram" onclick="sel(this)"><div style="font-size:24px;margin-bottom:4px;">🕋</div><div style="font-size:11px;font-weight:800;">محظورات الإحرام</div></div>
+    </div>
+  </div>
+
+  <div id="panel-yamin" class="card">
+    <h2 style="font-size:15px;font-weight:900;margin-bottom:8px;">🤝 كفارة اليمين</h2>
+    <div class="hadith-box"><p style="font-size:13px;color:var(--gold);font-weight:700;">﴿ فَكَفَّارَتُهُ إِطْعَامُ عَشَرَةِ مَسَاكِينَ أَوْ كِسْوَتُهُمْ أَوْ تَحْرِيرُ رَقَبَةٍ ﴾ — المائدة: 89</p></div>
+    <div class="step-box"><div class="step-num">1</div><div><p style="font-weight:800;">إطعام 10 مساكين</p><p style="font-size:12px;color:var(--text-muted);">مدّ (750 جرام) لكل مسكين</p></div></div>
+    <div class="step-box"><div class="step-num">أو</div><div><p style="font-weight:800;">كسوة 10 مساكين</p></div></div>
+    <div class="step-box"><div class="step-num">أو</div><div><p style="font-weight:800;">صيام 3 أيام</p><p style="font-size:12px;color:var(--text-muted);">لمن عجز عن الإطعام والكسوة</p></div></div>
+    <div style="margin-top:14px;">
+      <label style="display:block;font-size:12px;font-weight:700;margin-bottom:6px;color:var(--text-muted);">سعر كيلو الأرز (ريال)</label>
+      <input type="number" id="yr" class="form-input" value="3" oninput="calcY()">
+      <div id="yr2" style="margin-top:10px;"></div>
+    </div>
+  </div>
+
+  <div id="panel-zihar" class="card" style="display:none;">
+    <h2 style="font-size:15px;font-weight:900;margin-bottom:8px;">💍 كفارة الظهار</h2>
+    <div class="step-box"><div class="step-num">1</div><div><p style="font-weight:800;">تحرير رقبة</p><p style="font-size:12px;color:var(--text-muted);">غير متاح → انتقل للثاني</p></div></div>
+    <div class="step-box"><div class="step-num">2</div><div><p style="font-weight:800;">صيام شهرين متتابعين = 60 يوماً</p></div></div>
+    <div class="step-box"><div class="step-num">3</div><div><p style="font-weight:800;">إطعام 60 مسكيناً</p>
+      <input type="number" id="zr" class="form-input" value="3" style="margin-top:8px;" oninput="calcZ()">
+      <div id="zr2"></div></div></div>
+  </div>
+
+  <div id="panel-qatl" class="card" style="display:none;">
+    <h2 style="font-size:15px;font-weight:900;margin-bottom:8px;">😔 كفارة قتل الخطأ</h2>
+    <div class="step-box"><div class="step-num">1</div><div><p style="font-weight:800;">الدية</p><p style="font-size:12px;color:var(--text-muted);">100 ناقة أو ما يعادلها — تُسلَّم لأهل المقتول</p></div></div>
+    <div class="step-box"><div class="step-num">2</div><div><p style="font-weight:800;">تحرير رقبة</p><p style="font-size:12px;color:var(--text-muted);">غير متاح → انتقل للصيام</p></div></div>
+    <div class="step-box"><div class="step-num">3</div><div><p style="font-weight:800;">صيام شهرين متتابعين = 60 يوماً</p></div></div>
+  </div>
+
+  <div id="panel-iftar" class="card" style="display:none;">
+    <h2 style="font-size:15px;font-weight:900;margin-bottom:8px;">🌙 كفارة إفطار رمضان بالجماع</h2>
+    <div class="step-box"><div class="step-num">1</div><div><p style="font-weight:800;">تحرير رقبة</p><p style="font-size:12px;color:var(--text-muted);">غير متاح → الثاني</p></div></div>
+    <div class="step-box"><div class="step-num">2</div><div><p style="font-weight:800;">صيام شهرين متتابعين = 60 يوماً</p></div></div>
+    <div class="step-box"><div class="step-num">3</div><div><p style="font-weight:800;">إطعام 60 مسكيناً</p>
+      <input type="number" id="ir" class="form-input" value="3" style="margin-top:8px;" oninput="calcI()">
+      <div id="ir2"></div></div></div>
+  </div>
+
+  <div id="panel-nadr" class="card" style="display:none;">
+    <h2 style="font-size:15px;font-weight:900;margin-bottom:8px;">🤲 كفارة النذر = كفارة اليمين</h2>
+    <div class="hadith-box"><p style="font-size:13px;color:var(--text-secondary);">«كفارة النذر كفارة اليمين» — رواه مسلم</p></div>
+    <div class="step-box"><div class="step-num">أو</div><div><p style="font-weight:800;">إطعام 10 مساكين أو كسوتهم أو صيام 3 أيام</p></div></div>
+  </div>
+
+  <div id="panel-ihram" class="card" style="display:none;">
+    <h2 style="font-size:15px;font-weight:900;margin-bottom:12px;">🕋 كفارة محظورات الإحرام</h2>
+    <div id="ihramList"></div>
+  </div>
+
+  <div style="background:rgba(245,158,11,0.06);border:1px solid rgba(245,158,11,0.2);border-radius:14px;padding:14px;">
+    <p style="font-size:12px;color:var(--text-secondary);line-height:1.8;">📚 هذه المعلومات للإرشاد العام — يُنصح بمراجعة عالم في المسائل المعقدة.</p>
+  </div>
+</div></main>
+<div class="toast" id="toast"></div>
+<script>
+const themeBtn=document.getElementById("themeBtn");
+const htmlEl=document.documentElement;
+(function(){const s=localStorage.getItem("theme")||"dark";htmlEl.setAttribute("data-theme",s);themeBtn.textContent=s==="dark"?"☀️":"🌙";})();
+themeBtn.addEventListener("click",()=>{const n=htmlEl.getAttribute("data-theme")==="dark"?"light":"dark";htmlEl.setAttribute("data-theme",n);localStorage.setItem("theme",n);themeBtn.textContent=n==="dark"?"☀️":"🌙";});
+
+function sel(el){
+  document.querySelectorAll(".type-btn").forEach(b=>b.classList.remove("active"));el.classList.add("active");
+  const k=el.dataset.k;
+  ["yamin","zihar","qatl","iftar","nadr","ihram"].forEach(p=>document.getElementById("panel-"+p).style.display=p===k?"block":"none");
+  if(k==="ihram")buildIhram();
+}
+function calcY(){const r=parseFloat(document.getElementById("yr").value)||3;const t=(10*0.75*r).toFixed(1);document.getElementById("yr2").innerHTML=`<div style="background:var(--bg-card);border-radius:10px;padding:10px;"><div class="calc-row"><span>التكلفة التقريبية</span><span style="font-weight:900;color:var(--gold);">${t} ريال</span></div></div>`;}
+function calcZ(){const r=parseFloat(document.getElementById("zr").value)||3;const t=(60*0.75*r).toFixed(1);document.getElementById("zr2").innerHTML=`<div style="background:var(--bg-card);border-radius:10px;padding:8px;margin-top:6px;"><p style="font-size:13px;font-weight:800;color:var(--gold);">${t} ريال تقريباً</p></div>`;}
+function calcI(){const r=parseFloat(document.getElementById("ir").value)||3;const t=(60*0.75*r).toFixed(1);document.getElementById("ir2").innerHTML=`<div style="background:var(--bg-card);border-radius:10px;padding:8px;margin-top:6px;"><p style="font-size:13px;font-weight:800;color:var(--gold);">${t} ريال تقريباً</p></div>`;}
+const IH=[{icon:"✂️",n:"حلق الشعر",k:"فدية: صيام 3 أيام أو إطعام 6 مساكين أو ذبح شاة"},{icon:"🧴",n:"استعمال الطيب",k:"فدية: صيام 3 أيام أو إطعام 6 مساكين أو ذبح شاة"},{icon:"👔",n:"لبس المخيط للرجل",k:"فدية: صيام 3 أيام أو إطعام 6 مساكين أو ذبح شاة"},{icon:"🐦",n:"صيد البر",k:"جزاء المثل من النعم أو إطعام أو صيام"},{icon:"💑",n:"الجماع قبل التحلل الأول",k:"بدنة — يفسد الحج ويجب إتمامه والقضاء"},{icon:"🌿",n:"قطع شجر الحرم",k:"صغيرة: شاة — كبيرة: بقرة"}];
+function buildIhram(){document.getElementById("ihramList").innerHTML=IH.map(i=>`<div style="background:var(--bg-main);border-radius:12px;padding:12px;display:flex;gap:10px;align-items:flex-start;margin-bottom:8px;"><span style="font-size:24px;">${i.icon}</span><div><p style="font-weight:800;font-size:13px;">${i.n}</p><p style="font-size:12px;color:var(--gold);">${i.k}</p></div></div>`).join("");}
+calcY();
+</script></body></html>

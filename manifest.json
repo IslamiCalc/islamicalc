@@ -1,0 +1,44 @@
+{
+  "name": "إسلامي كالك",
+  "short_name": "IslamiCalc",
+  "description": "منصة إسلامية شاملة - حاسبات وأدوات وأذكار ومسابقات دينية",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#1a56db",
+  "orientation": "portrait-primary",
+  "lang": "ar",
+  "dir": "rtl",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%231a56db'/><text y='.9em' font-size='70' x='15'>☪</text></svg>",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["education", "lifestyle", "religion"],
+  "screenshots": [],
+  "shortcuts": [
+    {
+      "name": "حاسبة الزكاة",
+      "url": "/zakat",
+      "description": "احسب زكاتك بسرعة"
+    },
+    {
+      "name": "أوقات الصلاة",
+      "url": "/prayer",
+      "description": "اعرف وقت الصلاة القادمة"
+    },
+    {
+      "name": "الأرينا",
+      "url": "/arena",
+      "description": "العب وتحدَّ أصدقاءك"
+    },
+    {
+      "name": "أذكار الصباح",
+      "url": "/athkar",
+      "description": "ابدأ يومك بذكر الله"
+    }
+  ]
+}
