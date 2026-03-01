@@ -1,1163 +1,1622 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar" dir="rtl" data-theme="dark">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>مسار العلم — IslamiCalc</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --bg: #0a0f1e;
-    --bg-card: #111827;
-    --bg-card2: #1a2236;
-    --border: #1e2d45;
-    --gold: #f59e0b;
-    --gold2: #fbbf24;
-    --green: #10b981;
-    --red: #ef4444;
-    --blue: #3b82f6;
-    --purple: #8b5cf6;
-    --text: #f1f5f9;
-    --text2: #94a3b8;
-    --shadow: 0 4px 24px rgba(0,0,0,0.4);
-  }
-  * { margin:0; padding:0; box-sizing:border-box; }
-  body { font-family: Cairo, sans-serif; background: var(--bg); color: var(--text); min-height:100vh; }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>الميدان | IslamiCalc</title>
+  <meta name="description" content="تحدَّ نفسك في ميدان المعرفة الإسلامية — أسئلة في القرآن والسيرة والفقه والأخلاق">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://islamicalc.com/arena">
+  <link rel="icon" href="/favicon.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap">
+  <link rel="stylesheet" href="/style.css">
+  <style>
 
-  /* ===== NAVBAR ===== */
-  nav {
-    background: rgba(10,15,30,0.95);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--border);
-    padding: 0 20px;
-    height: 60px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-  }
-  .nav-logo { font-size: 18px; font-weight: 900; color: var(--gold); text-decoration: none; }
-  .nav-back { color: var(--text2); text-decoration: none; font-size: 14px; display:flex; align-items:center; gap:6px; }
-  .nav-back:hover { color: var(--text); }
+    /* ================================================
+       MAYDAN — CUSTOM STYLES
+       ================================================ */
 
-  /* ===== SCREENS ===== */
-  .screen { display:none; min-height: calc(100vh - 60px); }
-  .screen.active { display:block; }
+    /* Hero */
+    .maydan-hero {
+      background: linear-gradient(135deg, #0d1117 0%, #0d1015 50%, #150d1a 100%);
+      padding: 88px 24px 44px;
+      text-align: center;
+      position: relative; overflow: hidden;
+    }
+    .maydan-hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 50% 0%,
+        rgba(130,80,200,0.15) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    .maydan-hero h1 {
+      font-size: clamp(28px,5vw,50px); font-weight: 900;
+      margin-bottom: 10px; position: relative;
+    }
+    .gradient-text {
+      background: linear-gradient(135deg, #a78bfa, #f0c96e);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .maydan-hero p {
+      font-size: 15px; color: var(--text-sub);
+      max-width: 500px; margin: 0 auto 28px; position: relative;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(167,139,250,0.1);
+      border: 1px solid rgba(167,139,250,0.25);
+      color: #a78bfa; padding: 6px 18px;
+      border-radius: 999px; font-size: 13px; font-weight: 600;
+      margin-bottom: 20px; position: relative;
+    }
 
-  /* ===== MAP SCREEN ===== */
-  #mapScreen {
-    padding: 24px 20px 40px;
-    max-width: 480px;
-    margin: 0 auto;
-  }
-  .map-header { text-align:center; margin-bottom: 32px; }
-  .map-header h1 { font-size: 26px; font-weight: 900; margin-bottom: 6px; }
-  .map-header p { color: var(--text2); font-size: 14px; }
+    /* Stats */
+    .hero-stats {
+      display: flex; justify-content: center;
+      gap: 24px; flex-wrap: wrap; position: relative;
+    }
+    .hstat {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 14px; padding: 12px 20px;
+      text-align: center; min-width: 90px;
+    }
+    .hstat-num { font-size: 22px; font-weight: 900; color: #a78bfa; display: block; }
+    .hstat-lbl { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
 
-  /* XP Bar */
-  .xp-bar-wrap { background: var(--bg-card); border-radius: 16px; padding: 16px; margin-bottom: 28px; border: 1px solid var(--border); }
-  .xp-bar-top { display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }
-  .xp-title { font-size:13px; color:var(--text2); }
-  .xp-val { font-size:13px; color:var(--gold); font-weight:700; }
-  .xp-bar { height:8px; background:#1e2d45; border-radius:10px; overflow:hidden; }
-  .xp-fill { height:100%; background: linear-gradient(90deg, var(--gold), var(--gold2)); border-radius:10px; transition: width 1s ease; }
-  .xp-stats { display:flex; gap:12px; margin-top:12px; }
-  .xp-stat { flex:1; background: var(--bg-card2); border-radius:10px; padding:8px; text-align:center; }
-  .xp-stat-val { font-size:18px; font-weight:900; color:var(--gold); }
-  .xp-stat-lbl { font-size:11px; color:var(--text2); }
+    /* ================================================
+       MAIN LAYOUT
+       ================================================ */
+    .maydan-wrap {
+      max-width: 960px; margin: 0 auto;
+      padding: 28px 20px 80px;
+    }
 
-  /* Path Levels */
-  .path-container { position:relative; }
-  .path-line {
-    position: absolute;
-    right: 39px;
-    top: 50px;
-    width: 3px;
-    background: linear-gradient(180deg, var(--gold) 0%, var(--border) 100%);
-    border-radius: 3px;
-    z-index: 0;
-    transition: height 0.5s ease;
-  }
-  .level-card {
-    display:flex;
-    align-items:center;
-    gap:16px;
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 16px;
-    margin-bottom: 16px;
-    cursor: pointer;
-    transition: all 0.25s;
-    position: relative;
-    z-index: 1;
-  }
-  .level-card:hover:not(.locked) { border-color: var(--gold); transform: translateY(-2px); box-shadow: 0 8px 30px rgba(245,158,11,0.15); }
-  .level-card.locked { opacity: 0.5; cursor: not-allowed; }
-  .level-card.completed { border-color: var(--green); background: linear-gradient(135deg, #0a1a10, var(--bg-card)); }
-  .level-card.active-level { border-color: var(--gold); background: linear-gradient(135deg, #1a1200, var(--bg-card)); box-shadow: 0 0 20px rgba(245,158,11,0.2); }
+    /* ================================================
+       SCREENS (show/hide)
+       ================================================ */
+    .screen { display: none; }
+    .screen.active { display: block; }
 
-  .level-icon {
-    width: 60px;
-    height: 60px;
-    border-radius: 16px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size: 28px;
-    flex-shrink: 0;
-    background: var(--bg-card2);
-    border: 2px solid var(--border);
-  }
-  .level-card.completed .level-icon { border-color: var(--green); background: #0a2010; }
-  .level-card.active-level .level-icon { border-color: var(--gold); background: #1a1200; }
+    /* ================================================
+       DASHBOARD
+       ================================================ */
 
-  .level-info { flex:1; }
-  .level-name { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
-  .level-desc { font-size: 12px; color: var(--text2); margin-bottom: 8px; }
-  .level-progress-bar { height:4px; background: var(--border); border-radius:4px; overflow:hidden; }
-  .level-progress-fill { height:100%; background: var(--gold); border-radius:4px; transition: width 0.5s; }
-  .level-progress-text { font-size:11px; color: var(--text2); margin-top:4px; }
+    /* Level Card */
+    .level-card {
+      background: linear-gradient(135deg, rgba(130,80,200,0.12), rgba(201,168,76,0.08));
+      border: 1px solid rgba(130,80,200,0.3);
+      border-radius: 20px; padding: 22px;
+      margin-bottom: 20px;
+      display: flex; align-items: center; gap: 16px;
+      flex-wrap: wrap;
+    }
+    .level-badge {
+      width: 72px; height: 72px; border-radius: 50%;
+      background: linear-gradient(135deg, #7c3aed, #a78bfa);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2rem; flex-shrink: 0;
+      box-shadow: 0 0 0 4px var(--bg-main), 0 0 0 7px rgba(130,80,200,0.3);
+    }
+    .level-info { flex: 1; min-width: 180px; }
+    .level-name { font-size: 18px; font-weight: 900; margin-bottom: 4px; }
+    .level-sub  { font-size: 12px; color: var(--text-muted); margin-bottom: 8px; }
+    .xp-bar-wrap { display: flex; align-items: center; gap: 8px; }
+    .xp-bar {
+      flex: 1; height: 8px;
+      background: var(--bg-main); border-radius: 999px; overflow: hidden;
+    }
+    .xp-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #7c3aed, #a78bfa);
+      border-radius: 999px; transition: width 0.5s;
+    }
+    .xp-lbl { font-size: 11px; color: #a78bfa; font-weight: 700; white-space: nowrap; }
 
-  .level-badge {
-    font-size:11px;
-    padding:4px 10px;
-    border-radius:20px;
-    font-weight:700;
-  }
-  .badge-done { background:#0a2010; color: var(--green); }
-  .badge-active { background:#1a1200; color: var(--gold); }
-  .badge-locked { background: var(--bg-card2); color: var(--text2); }
+    .level-stats {
+      display: flex; gap: 14px; flex-wrap: wrap;
+    }
+    .ls {
+      text-align: center;
+      background: rgba(130,80,200,0.1);
+      border: 1px solid rgba(130,80,200,0.2);
+      border-radius: 10px; padding: 8px 14px;
+    }
+    .ls-num { font-size: 18px; font-weight: 900; color: #a78bfa; }
+    .ls-lbl { font-size: 10px; color: var(--text-muted); margin-top: 2px; }
 
-  /* مقام العالم card */
-  .master-card {
-    background: linear-gradient(135deg, #1a0a2e, #0d1a2e);
-    border: 2px solid var(--purple);
-    border-radius: 24px;
-    padding: 24px;
-    text-align: center;
-    margin-top: 8px;
-    cursor: pointer;
-    transition: all 0.25s;
-  }
-  .master-card:hover:not(.locked) { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(139,92,246,0.25); }
-  .master-card.locked { opacity:0.4; cursor:not-allowed; }
-  .master-icon { font-size:48px; margin-bottom:8px; }
-  .master-title { font-size:20px; font-weight:900; color: var(--purple); margin-bottom:4px; }
-  .master-desc { font-size:13px; color:var(--text2); }
+    /* Category Grid */
+    .sec-hd {
+      font-size: 14px; font-weight: 800;
+      color: var(--text-sub); margin-bottom: 12px;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .cat-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px,1fr));
+      gap: 10px; margin-bottom: 24px;
+    }
+    .cat-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px; padding: 16px;
+      cursor: pointer; transition: var(--transition);
+      position: relative; overflow: hidden;
+    }
+    .cat-card::after {
+      content: '';
+      position: absolute; top: 0; right: 0;
+      width: 4px; height: 100%;
+      background: var(--cc, #a78bfa);
+      border-radius: 0 16px 16px 0;
+    }
+    .cat-card:hover {
+      border-color: var(--cc, #a78bfa);
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-lg);
+    }
+    .cat-icon  { font-size: 2rem; margin-bottom: 8px; display: block; }
+    .cat-name  { font-size: 15px; font-weight: 900; margin-bottom: 3px; }
+    .cat-count { font-size: 11px; color: var(--text-muted); margin-bottom: 8px; }
+    .cat-bar   { height: 4px; background: var(--bg-main); border-radius: 999px; overflow: hidden; }
+    .cat-fill  { height: 100%; border-radius: 999px; transition: width 0.4s; }
+    .cat-score {
+      font-size: 11px; font-weight: 700;
+      color: var(--cc, #a78bfa); margin-top: 5px;
+    }
 
-  /* ===== GAME SCREEN ===== */
-  #gameScreen { padding: 20px; max-width: 560px; margin: 0 auto; }
+    /* Modes */
+    .mode-grid {
+      display: grid; grid-template-columns: repeat(3,1fr);
+      gap: 10px; margin-bottom: 24px;
+    }
+    .mode-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 14px; padding: 16px;
+      cursor: pointer; transition: var(--transition);
+      text-align: center;
+    }
+    .mode-card:hover {
+      border-color: rgba(167,139,250,0.4);
+      transform: translateY(-2px);
+    }
+    .mode-icon  { font-size: 2rem; margin-bottom: 6px; }
+    .mode-name  { font-size: 14px; font-weight: 800; margin-bottom: 4px; }
+    .mode-desc  { font-size: 11px; color: var(--text-muted); line-height: 1.6; }
 
-  .game-header { display:flex; align-items:center; justify-content:space-between; margin-bottom: 20px; }
-  .game-level-name { font-size:16px; font-weight:700; }
-  .game-quit { background:none; border:1px solid var(--border); color:var(--text2); border-radius:10px; padding:6px 14px; font-family:Cairo,sans-serif; cursor:pointer; font-size:13px; }
-  .game-quit:hover { border-color:var(--red); color:var(--red); }
+    /* Leaderboard */
+    .leaderboard {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px; overflow: hidden;
+      margin-bottom: 24px;
+    }
+    .lb-header {
+      background: linear-gradient(135deg, rgba(130,80,200,0.12), rgba(201,168,76,0.08));
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--border);
+      font-size: 14px; font-weight: 800;
+    }
+    .lb-row {
+      display: flex; align-items: center; gap: 12px;
+      padding: 10px 18px;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      transition: var(--transition);
+    }
+    .lb-row:last-child { border-bottom: none; }
+    .lb-row:hover { background: rgba(130,80,200,0.05); }
+    .lb-row.me { background: rgba(130,80,200,0.08); border-right: 2px solid #a78bfa; }
+    .lb-rank {
+      width: 28px; text-align: center;
+      font-size: 14px; font-weight: 900;
+      color: var(--text-muted);
+    }
+    .lb-rank.gold   { color: #f0c96e; }
+    .lb-rank.silver { color: #8b9eb1; }
+    .lb-rank.bronze { color: #c4784a; }
+    .lb-avatar {
+      width: 34px; height: 34px; border-radius: 50%;
+      background: linear-gradient(135deg, #7c3aed, #a78bfa);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; flex-shrink: 0;
+    }
+    .lb-name { flex: 1; font-size: 13px; font-weight: 700; }
+    .lb-lvl  { font-size: 11px; color: var(--text-muted); }
+    .lb-xp   { font-size: 14px; font-weight: 900; color: #a78bfa; }
 
-  /* Timer */
-  .timer-wrap { display:flex; align-items:center; justify-content:center; gap:10px; margin-bottom:16px; }
-  .timer-circle {
-    width:56px; height:56px;
-    border-radius:50%;
-    background: conic-gradient(var(--gold) 0%, var(--border) 0%);
-    display:flex; align-items:center; justify-content:center;
-    font-size:16px; font-weight:900; color:var(--gold);
-    transition: background 0.1s;
-    position:relative;
-  }
-  .timer-circle::before {
-    content:'';
-    position:absolute;
-    inset:5px;
-    border-radius:50%;
-    background:var(--bg-card);
-  }
-  .timer-num { position:relative; z-index:1; }
+    /* ================================================
+       LEVEL SELECT
+       ================================================ */
+    .diff-grid {
+      display: grid; grid-template-columns: repeat(3,1fr);
+      gap: 12px; margin-bottom: 24px;
+    }
+    .diff-card {
+      background: var(--bg-card);
+      border: 2px solid var(--border);
+      border-radius: 16px; padding: 20px;
+      cursor: pointer; transition: var(--transition);
+      text-align: center;
+    }
+    .diff-card:hover { transform: translateY(-3px); }
+    .diff-card.easy   { --dc: #3fb950; }
+    .diff-card.medium { --dc: #f0c96e; }
+    .diff-card.hard   { --dc: #f85149; }
+    .diff-card:hover, .diff-card.on { border-color: var(--dc); }
+    .diff-icon  { font-size: 2.2rem; margin-bottom: 8px; }
+    .diff-name  { font-size: 15px; font-weight: 900; margin-bottom: 4px; color: var(--dc); }
+    .diff-desc  { font-size: 12px; color: var(--text-muted); line-height: 1.6; }
+    .diff-xp    { font-size: 12px; font-weight: 700; color: var(--dc); margin-top: 6px; }
 
-  /* Progress */
-  .q-progress { display:flex; align-items:center; gap:10px; margin-bottom:20px; }
-  .q-progress-bar { flex:1; height:6px; background:var(--border); border-radius:6px; overflow:hidden; }
-  .q-progress-fill { height:100%; background: linear-gradient(90deg, var(--blue), var(--purple)); border-radius:6px; transition: width 0.3s; }
-  .q-progress-text { font-size:13px; color:var(--text2); white-space:nowrap; }
+    .cat-select-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill,minmax(150px,1fr));
+      gap: 8px; margin-bottom: 20px;
+    }
+    .csel {
+      background: var(--bg-card);
+      border: 1.5px solid var(--border);
+      border-radius: 12px; padding: 10px 12px;
+      cursor: pointer; transition: var(--transition);
+      display: flex; align-items: center; gap: 8px;
+      font-size: 13px; font-weight: 700; color: var(--text-sub);
+    }
+    .csel:hover { border-color: rgba(167,139,250,0.4); color: var(--text); }
+    .csel.on {
+      background: rgba(130,80,200,0.1);
+      border-color: #a78bfa; color: #a78bfa;
+    }
 
-  /* Question Card */
-  .q-card {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 24px;
-    padding: 24px;
-    margin-bottom: 20px;
-  }
-  .q-cat { font-size:12px; color:var(--gold); font-weight:700; margin-bottom:12px; text-transform:uppercase; letter-spacing:1px; }
-  .q-text { font-size:18px; font-weight:700; line-height:1.7; }
+    .start-btn {
+      width: 100%; padding: 16px;
+      background: linear-gradient(135deg, #7c3aed, #a78bfa);
+      border: none; border-radius: 14px;
+      color: #fff; font-family: var(--font);
+      font-size: 16px; font-weight: 900;
+      cursor: pointer; transition: var(--transition);
+    }
+    .start-btn:hover:not(:disabled) { transform: scale(1.02); opacity: 0.9; }
+    .start-btn:disabled { opacity: 0.4; cursor: default; transform: none; }
 
-  /* Options */
-  .options { display:flex; flex-direction:column; gap:10px; margin-bottom:20px; }
-  .opt-btn {
-    background: var(--bg-card);
-    border: 2px solid var(--border);
-    border-radius: 14px;
-    padding: 14px 18px;
-    font-family: Cairo, sans-serif;
-    font-size: 15px;
-    color: var(--text);
-    cursor: pointer;
-    text-align: right;
-    transition: all 0.2s;
-    display:flex;
-    align-items:center;
-    gap:12px;
-  }
-  .opt-btn:hover:not(:disabled) { border-color: var(--gold); background: #1a1200; transform: translateX(-3px); }
-  .opt-btn.correct { border-color: var(--green); background: #0a2010; color: var(--green); }
-  .opt-btn.wrong { border-color: var(--red); background: #1a0505; color: var(--red); }
-  .opt-btn:disabled { cursor: not-allowed; }
-  .opt-letter {
-    width:28px; height:28px;
-    border-radius:8px;
-    background:var(--bg-card2);
-    display:flex; align-items:center; justify-content:center;
-    font-size:13px; font-weight:700; color:var(--text2);
-    flex-shrink:0;
-  }
-  .opt-btn.correct .opt-letter { background:var(--green); color:white; }
-  .opt-btn.wrong .opt-letter { background:var(--red); color:white; }
+    .back-btn {
+      background: none; border: none;
+      color: var(--text-sub); cursor: pointer;
+      font-family: var(--font); font-size: 13px;
+      display: flex; align-items: center; gap: 5px;
+      margin-bottom: 18px; padding: 0;
+      transition: var(--transition);
+    }
+    .back-btn:hover { color: #a78bfa; }
 
-  /* Explanation */
-  .exp-box {
-    background: var(--bg-card2);
-    border: 1px solid var(--border);
-    border-right: 3px solid var(--gold);
-    border-radius: 14px;
-    padding: 14px 16px;
-    font-size: 14px;
-    color: var(--text2);
-    line-height: 1.8;
-    margin-bottom: 16px;
-    display:none;
-  }
-  .exp-box.show { display:block; }
+    /* ================================================
+       QUIZ SCREEN
+       ================================================ */
+    .quiz-wrap {
+      max-width: 680px; margin: 0 auto;
+    }
 
-  /* Powers */
-  .powers-bar {
-    display:flex;
-    gap:10px;
-    justify-content:center;
-    margin-bottom:20px;
-  }
-  .power-btn {
-    flex:1;
-    max-width:80px;
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius:12px;
-    padding:8px 4px;
-    font-family:Cairo,sans-serif;
-    cursor:pointer;
-    text-align:center;
-    transition:all 0.2s;
-    color:var(--text);
-  }
-  .power-btn:hover:not(:disabled):not(.used) { border-color:var(--purple); background:#1a0a2e; }
-  .power-btn.used { opacity:0.3; cursor:not-allowed; }
-  .power-btn:disabled { cursor:not-allowed; opacity:0.5; }
-  .power-icon { font-size:20px; display:block; margin-bottom:2px; }
-  .power-name { font-size:10px; color:var(--text2); }
+    /* Header */
+    .quiz-header {
+      display: flex; align-items: center;
+      gap: 12px; margin-bottom: 20px; flex-wrap: wrap;
+    }
+    .quit-btn {
+      background: none; border: 1px solid var(--border);
+      color: var(--text-muted); cursor: pointer;
+      border-radius: 8px; padding: 6px 12px;
+      font-family: var(--font); font-size: 12px;
+      transition: var(--transition);
+    }
+    .quit-btn:hover { border-color: #f85149; color: #f85149; }
 
-  /* Next button */
-  .next-btn {
-    width:100%;
-    background: linear-gradient(135deg, var(--gold), var(--gold2));
-    color: #0a0f1e;
-    border:none;
-    border-radius:14px;
-    padding:16px;
-    font-family:Cairo,sans-serif;
-    font-size:17px;
-    font-weight:900;
-    cursor:pointer;
-    transition:all 0.2s;
-    display:none;
-  }
-  .next-btn:hover { transform:translateY(-2px); box-shadow:0 8px 25px rgba(245,158,11,0.35); }
-  .next-btn.show { display:block; }
+    /* Timer */
+    .timer-bar {
+      flex: 1; height: 8px;
+      background: var(--bg-main); border-radius: 999px;
+      overflow: hidden; min-width: 100px;
+    }
+    .timer-fill {
+      height: 100%; border-radius: 999px;
+      background: linear-gradient(90deg, #7c3aed, #a78bfa);
+      transition: width 1s linear;
+    }
+    .timer-fill.warn { background: linear-gradient(90deg, #f0c96e, #f85149); }
 
-  /* ===== RESULT SCREEN ===== */
-  #resultScreen { padding: 24px 20px; max-width: 480px; margin: 0 auto; text-align:center; }
-  .result-icon { font-size:72px; margin-bottom:16px; }
-  .result-title { font-size:28px; font-weight:900; margin-bottom:8px; }
-  .result-sub { color:var(--text2); font-size:15px; margin-bottom:28px; }
+    .q-info {
+      font-size: 13px; color: var(--text-muted); white-space: nowrap;
+    }
+    .q-streak {
+      font-size: 13px; font-weight: 700; color: #f0c96e;
+      white-space: nowrap;
+    }
 
-  .result-stats {
-    display:grid; grid-template-columns:1fr 1fr;
-    gap:12px; margin-bottom:28px;
-  }
-  .result-stat {
-    background:var(--bg-card);
-    border:1px solid var(--border);
-    border-radius:16px;
-    padding:16px;
-  }
-  .result-stat-val { font-size:28px; font-weight:900; color:var(--gold); }
-  .result-stat-lbl { font-size:12px; color:var(--text2); margin-top:4px; }
+    /* Powers */
+    .powers-bar {
+      display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap;
+    }
+    .power-btn {
+      display: flex; align-items: center; gap: 5px;
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 10px; padding: 7px 12px;
+      font-family: var(--font); font-size: 12px; font-weight: 700;
+      color: var(--text-sub); cursor: pointer;
+      transition: var(--transition);
+    }
+    .power-btn:hover:not(:disabled) {
+      border-color: rgba(167,139,250,0.4); color: #a78bfa;
+    }
+    .power-btn:disabled { opacity: 0.35; cursor: default; }
+    .power-cnt {
+      background: rgba(167,139,250,0.15);
+      border-radius: 999px; padding: 1px 7px;
+      font-size: 10px; color: #a78bfa;
+    }
 
-  .result-xp-gained {
-    background: linear-gradient(135deg, #1a1200, var(--bg-card));
-    border: 2px solid var(--gold);
-    border-radius: 20px;
-    padding: 20px;
-    margin-bottom:24px;
-  }
-  .result-xp-num { font-size:40px; font-weight:900; color:var(--gold); }
-  .result-xp-lbl { color:var(--text2); font-size:14px; margin-top:4px; }
+    /* Question Card */
+    .q-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 20px; padding: 24px;
+      margin-bottom: 16px; position: relative;
+      overflow: hidden;
+    }
+    .q-cat-badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 4px 12px; border-radius: 999px;
+      font-size: 11px; font-weight: 700;
+      background: rgba(130,80,200,0.12);
+      border: 1px solid rgba(130,80,200,0.25);
+      color: #a78bfa; margin-bottom: 12px;
+    }
+    .q-diff-badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 4px 10px; border-radius: 999px;
+      font-size: 11px; font-weight: 700;
+      margin-bottom: 12px; margin-right: 6px;
+    }
+    .q-diff-badge.easy   { background:rgba(63,185,80,0.1);  color:#3fb950; }
+    .q-diff-badge.medium { background:rgba(240,201,110,0.1); color:#f0c96e; }
+    .q-diff-badge.hard   { background:rgba(248,81,73,0.1);   color:#f85149; }
 
-  .result-btns { display:flex; flex-direction:column; gap:12px; }
-  .btn-primary {
-    background: linear-gradient(135deg, var(--gold), var(--gold2));
-    color:#0a0f1e; border:none; border-radius:14px;
-    padding:16px; font-family:Cairo,sans-serif;
-    font-size:16px; font-weight:900; cursor:pointer;
-    transition:all 0.2s;
-  }
-  .btn-primary:hover { transform:translateY(-2px); box-shadow:0 8px 25px rgba(245,158,11,0.3); }
-  .btn-secondary {
-    background:none; border:1px solid var(--border);
-    color:var(--text); border-radius:14px;
-    padding:14px; font-family:Cairo,sans-serif;
-    font-size:15px; cursor:pointer; transition:all 0.2s;
-  }
-  .btn-secondary:hover { border-color:var(--text2); }
+    .q-text {
+      font-size: 18px; font-weight: 700;
+      line-height: 1.9; margin-bottom: 6px;
+    }
+    .q-verse {
+      font-size: 14px; color: var(--gold);
+      font-weight: 600; margin-bottom: 4px;
+      padding: 8px 12px;
+      background: rgba(201,168,76,0.06);
+      border-right: 3px solid var(--gold);
+      border-radius: 0 8px 8px 0;
+      margin-bottom: 12px;
+    }
 
-  /* Badge popup */
-  .badge-popup {
-    position:fixed; top:80px; left:50%; transform:translateX(-50%);
-    background:linear-gradient(135deg, #1a1200, var(--bg-card));
-    border:2px solid var(--gold);
-    border-radius:20px; padding:16px 24px;
-    text-align:center; z-index:999;
-    animation: slideDown 0.4s ease, fadeOut 0.4s ease 2.6s forwards;
-    min-width:220px;
-  }
-  @keyframes slideDown { from{opacity:0;transform:translateX(-50%) translateY(-20px)} to{opacity:1;transform:translateX(-50%) translateY(0)} }
-  @keyframes fadeOut { to{opacity:0;transform:translateX(-50%) translateY(-10px)} }
+    /* Options */
+    .options { display: grid; gap: 8px; }
+    .opt-btn {
+      background: var(--bg-main);
+      border: 1.5px solid var(--border);
+      border-radius: 12px; padding: 12px 16px;
+      text-align: right; font-family: var(--font);
+      font-size: 14px; font-weight: 700;
+      color: var(--text); cursor: pointer;
+      transition: var(--transition);
+      display: flex; align-items: center; gap: 10px;
+    }
+    .opt-btn:hover:not(:disabled) {
+      border-color: rgba(167,139,250,0.4);
+      background: rgba(130,80,200,0.06);
+      transform: translateX(-2px);
+    }
+    .opt-btn.selected { border-color: #a78bfa; background: rgba(130,80,200,0.1); }
+    .opt-btn.correct  {
+      border-color: #3fb950;
+      background: rgba(63,185,80,0.1);
+      color: #3fb950;
+    }
+    .opt-btn.wrong    {
+      border-color: #f85149;
+      background: rgba(248,81,73,0.1);
+      color: #f85149;
+    }
+    .opt-btn.reveal   {
+      border-color: #3fb950;
+      background: rgba(63,185,80,0.07);
+    }
+    .opt-btn:disabled { cursor: default; }
+    .opt-letter {
+      width: 26px; height: 26px; border-radius: 8px;
+      background: var(--bg-card); border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 900; flex-shrink: 0;
+      color: var(--text-muted);
+    }
+    .opt-btn.correct .opt-letter { background: #3fb950; border-color: #3fb950; color: #fff; }
+    .opt-btn.wrong   .opt-letter { background: #f85149; border-color: #f85149; color: #fff; }
 
-  /* XP Float */
-  .xp-float {
-    position:fixed;
-    font-size:20px; font-weight:900; color:var(--gold);
-    pointer-events:none; z-index:999;
-    animation: floatUp 1.5s ease forwards;
-  }
-  @keyframes floatUp { from{opacity:1;transform:translateY(0)} to{opacity:0;transform:translateY(-60px)} }
+    /* Feedback */
+    .feedback {
+      display: none; padding: 14px 16px;
+      border-radius: 12px; margin-top: 12px;
+      font-size: 13px; font-weight: 700;
+      line-height: 1.8;
+    }
+    .feedback.show { display: block; }
+    .feedback.correct { background: rgba(63,185,80,0.1);  border:1px solid rgba(63,185,80,0.3);  color:#3fb950; }
+    .feedback.wrong   { background: rgba(248,81,73,0.1);   border:1px solid rgba(248,81,73,0.3);  color:#f85149; }
 
-  /* Leaderboard button */
-  .lb-btn {
-    position:fixed; bottom:24px; left:20px;
-    background: linear-gradient(135deg, var(--purple), #6d28d9);
-    color:white; border:none; border-radius:14px;
-    padding:12px 20px; font-family:Cairo,sans-serif;
-    font-size:14px; font-weight:700; cursor:pointer;
-    box-shadow: 0 4px 20px rgba(139,92,246,0.4);
-    z-index:50; transition:all 0.2s;
-  }
-  .lb-btn:hover { transform:translateY(-2px); }
+    .xp-flash {
+      display: none; font-size: 12px; color: #a78bfa;
+      font-weight: 700; text-align: center; margin-top: 6px;
+    }
+    .xp-flash.show { display: block; animation: fadeUp 0.5s ease; }
+    @keyframes fadeUp {
+      from { opacity:0; transform:translateY(4px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
 
-  /* Leaderboard Modal */
-  .modal-overlay {
-    position:fixed; inset:0; background:rgba(0,0,0,0.8);
-    z-index:200; display:none; align-items:flex-end;
-    justify-content:center;
-  }
-  .modal-overlay.show { display:flex; }
-  .modal-sheet {
-    background:var(--bg-card);
-    border-radius:24px 24px 0 0;
-    padding:24px 20px 40px;
-    width:100%; max-width:520px;
-    max-height:85vh; overflow-y:auto;
-  }
-  .modal-handle { width:40px; height:4px; background:var(--border); border-radius:4px; margin:0 auto 20px; }
-  .modal-title { font-size:20px; font-weight:900; text-align:center; margin-bottom:20px; }
-  .lb-row {
-    display:flex; align-items:center; gap:12px;
-    background:var(--bg-card2); border-radius:14px;
-    padding:12px 16px; margin-bottom:8px;
-  }
-  .lb-rank { font-size:18px; font-weight:900; width:32px; text-align:center; }
-  .lb-rank.gold { color:var(--gold); }
-  .lb-rank.silver { color:#94a3b8; }
-  .lb-rank.bronze { color:#cd7f32; }
-  .lb-avatar { width:40px; height:40px; border-radius:50%; object-fit:cover; border:2px solid var(--border); }
-  .lb-name { flex:1; font-weight:700; font-size:15px; }
-  .lb-xp { color:var(--gold); font-weight:900; font-size:15px; }
+    /* Next */
+    .next-btn {
+      width: 100%; padding: 14px;
+      background: linear-gradient(135deg, #7c3aed, #a78bfa);
+      border: none; border-radius: 12px;
+      color: #fff; font-family: var(--font);
+      font-size: 15px; font-weight: 800;
+      cursor: pointer; transition: var(--transition);
+      display: none; margin-top: 10px;
+    }
+    .next-btn.show { display: block; }
+    .next-btn:hover { transform: scale(1.02); }
 
-  /* Responsive */
-  @media(max-width:400px) {
-    .q-text { font-size:16px; }
-    .opt-btn { font-size:14px; padding:12px 14px; }
-  }
-</style>
+    /* ================================================
+       RESULT SCREEN
+       ================================================ */
+    .result-wrap {
+      max-width: 580px; margin: 0 auto; text-align: center;
+    }
+    .result-medal {
+      font-size: 5rem; margin-bottom: 10px;
+      animation: popIn 0.5s cubic-bezier(.175,.885,.32,1.275);
+    }
+    @keyframes popIn {
+      from { transform: scale(0); opacity:0; }
+      to   { transform: scale(1); opacity:1; }
+    }
+    .result-title { font-size: 26px; font-weight: 900; margin-bottom: 6px; }
+    .result-sub   { font-size: 14px; color: var(--text-sub); margin-bottom: 24px; }
+
+    .result-grid {
+      display: grid; grid-template-columns: repeat(3,1fr);
+      gap: 10px; margin-bottom: 24px;
+    }
+    .rstat {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 14px; padding: 14px;
+    }
+    .rstat-num { font-size: 24px; font-weight: 900; color: #a78bfa; }
+    .rstat-lbl { font-size: 11px; color: var(--text-muted); margin-top: 3px; }
+
+    .result-xp {
+      background: linear-gradient(135deg, rgba(130,80,200,0.15), rgba(201,168,76,0.1));
+      border: 1px solid rgba(130,80,200,0.3);
+      border-radius: 14px; padding: 16px;
+      margin-bottom: 20px;
+    }
+    .result-xp-num {
+      font-size: 32px; font-weight: 900; color: #a78bfa;
+      display: block; margin-bottom: 4px;
+    }
+    .result-xp-lbl { font-size: 13px; color: var(--text-sub); }
+
+    .level-up-banner {
+      display: none;
+      background: linear-gradient(135deg, #7c3aed, #a78bfa);
+      border-radius: 14px; padding: 16px;
+      margin-bottom: 16px; color: #fff;
+      font-size: 15px; font-weight: 900;
+      animation: popIn 0.5s ease;
+    }
+    .level-up-banner.show { display: block; }
+
+    .result-btns { display: flex; gap: 10px; }
+    .rbtn {
+      flex: 1; padding: 13px;
+      border-radius: 12px; font-family: var(--font);
+      font-size: 14px; font-weight: 800;
+      cursor: pointer; transition: var(--transition); border: none;
+    }
+    .rbtn.primary {
+      background: linear-gradient(135deg, #7c3aed, #a78bfa);
+      color: #fff;
+    }
+    .rbtn.secondary {
+      background: var(--bg-card);
+      border: 1.5px solid var(--border);
+      color: var(--text-sub);
+    }
+    .rbtn:hover { transform: scale(1.02); }
+
+    /* ================================================
+       RESPONSIVE
+       ================================================ */
+    @media (max-width: 600px) {
+      .cat-grid   { grid-template-columns: 1fr 1fr; }
+      .mode-grid  { grid-template-columns: 1fr; }
+      .diff-grid  { grid-template-columns: 1fr; }
+      .result-grid{ grid-template-columns: 1fr 1fr; }
+      .q-text     { font-size: 15px; }
+    }
+  </style>
 </head>
 <body>
 
-<!-- NAVBAR -->
-<nav>
-  <a href="../" class="nav-back">← العودة</a>
-  <span class="nav-logo">🕌 مسار العلم</span>
-  <button id="authBtn" onclick="handleAuth()" style="
-    background:none; border:1px solid var(--border);
-    color:var(--text2); border-radius:10px;
-    padding:6px 12px; font-family:Cairo,sans-serif;
-    font-size:12px; cursor:pointer; white-space:nowrap;
-    display:flex; align-items:center; gap:6px;
-  ">🔵 دخول</button>
+<!-- ====== NAVBAR ====== -->
+<nav class="navbar" role="navigation" aria-label="القائمة الرئيسية">
+  <a href="/" class="navbar-brand">
+    <div class="navbar-logo">☪</div>
+    <span class="navbar-title">IslamiCalc</span>
+  </a>
+  <ul class="navbar-menu" id="navMenu">
+    <li><a href="/">الرئيسية</a></li>
+    <li><a href="/zakat">الحاسبات</a></li>
+    <li><a href="/khatma">القرآن</a></li>
+    <li><a href="/prayer">الصلاة</a></li>
+    <li><a href="/athkar">الأذكار</a></li>
+    <li><a href="/arena">الميدان</a></li>
+    <li id="navProfile" style="display:none;"><a href="/profile">بروفايلي</a></li>
+  </ul>
+  <div class="navbar-actions">
+    <button class="theme-btn" id="themeBtn" aria-label="تبديل الثيم">
+      <svg id="iconMoon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>
+      </svg>
+      <svg id="iconSun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none">
+        <circle cx="12" cy="12" r="5"/>
+        <line x1="12" y1="1" x2="12" y2="3"/>
+        <line x1="12" y1="21" x2="12" y2="23"/>
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+        <line x1="1" y1="12" x2="3" y2="12"/>
+        <line x1="21" y1="12" x2="23" y2="12"/>
+      </svg>
+    </button>
+    <button class="login-btn" id="loginBtn" onclick="window.islamiCalc?.loginWithGoogle()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+        <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
+        <circle cx="12" cy="7" r="4"/>
+      </svg>
+      دخول
+    </button>
+    <button class="menu-toggle" id="menuToggle" aria-label="القائمة" aria-expanded="false">
+      <svg id="iconMenu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="3" y1="6" x2="21" y2="6"/>
+        <line x1="3" y1="12" x2="21" y2="12"/>
+        <line x1="3" y1="18" x2="21" y2="18"/>
+      </svg>
+      <svg id="iconClose" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none">
+        <line x1="18" y1="6" x2="6" y2="18"/>
+        <line x1="6"  y1="6" x2="18" y2="18"/>
+      </svg>
+    </button>
+  </div>
 </nav>
 
-<!-- MAP SCREEN -->
-<div id="mapScreen" class="screen active">
-  <div class="map-header">
-    <h1>🗺️ مسار العلم</h1>
-    <p>رحلتك في تعلّم علوم الإسلام</p>
-  </div>
-
-  <!-- XP Bar -->
-  <div class="xp-bar-wrap">
-    <div class="xp-bar-top">
-      <span class="xp-title" id="mapLevelTitle">مسلم مبتدئ</span>
-      <span class="xp-val" id="mapXPVal">0 XP</span>
+<!-- ====== HERO ====== -->
+<section class="maydan-hero">
+  <div class="hero-badge">🏟️ ميدان المعرفة الإسلامية</div>
+  <h1><span class="gradient-text">الميدان</span></h1>
+  <p>تحدَّ نفسك في ميدان العلم — اختبر معرفتك بالقرآن والسيرة والفقه والأخلاق</p>
+  <div class="hero-stats">
+    <div class="hstat">
+      <span class="hstat-num" id="hs-played">0</span>
+      <div class="hstat-lbl">جولة لُعبت</div>
     </div>
-    <div class="xp-bar"><div class="xp-fill" id="mapXPFill" style="width:0%"></div></div>
-    <div class="xp-stats">
-      <div class="xp-stat"><div class="xp-stat-val" id="mapStreak">0</div><div class="xp-stat-lbl">🔥 يوم متتالي</div></div>
-      <div class="xp-stat"><div class="xp-stat-val" id="mapCompleted">0</div><div class="xp-stat-lbl">✅ مستوى مكتمل</div></div>
-      <div class="xp-stat"><div class="xp-stat-val" id="mapBadges">0</div><div class="xp-stat-lbl">🏅 شارة</div></div>
+    <div class="hstat">
+      <span class="hstat-num" id="hs-xp">0</span>
+      <div class="hstat-lbl">نقطة XP</div>
     </div>
-  </div>
-
-  <!-- Levels Path -->
-  <div class="path-container" id="pathContainer">
-    <div class="path-line" id="pathLine"></div>
-    <!-- generated by JS -->
-  </div>
-
-  <!-- Master Level -->
-  <div class="master-card locked" id="masterCard" onclick="startLevel('master')">
-    <div class="master-icon">🏛️</div>
-    <div class="master-title">مقام العالِم</div>
-    <div class="master-desc">أثبت علمك — بلا قدرات مساعدة — وانل الإجازة</div>
-    <div style="margin-top:12px; font-size:13px; color:#8b5cf6; font-weight:700;">🔒 يُفتح بإكمال جميع المستويات</div>
-  </div>
-</div>
-
-<!-- GAME SCREEN -->
-<div id="gameScreen" class="screen">
-  <div class="game-header">
-    <div class="game-level-name" id="gameLevelName">المبتدئ</div>
-    <button class="game-quit" onclick="quitGame()">✕ خروج</button>
-  </div>
-
-  <!-- Timer -->
-  <div class="timer-wrap">
-    <div class="timer-circle" id="timerCircle">
-      <span class="timer-num" id="timerNum">30</span>
+    <div class="hstat">
+      <span class="hstat-num" id="hs-streak">0</span>
+      <div class="hstat-lbl">أفضل سلسلة</div>
     </div>
-    <div style="flex:1">
-      <div class="q-progress">
-        <div class="q-progress-bar"><div class="q-progress-fill" id="qProgressFill" style="width:0%"></div></div>
-        <div class="q-progress-text" id="qProgressText">1 / 20</div>
-      </div>
+    <div class="hstat">
+      <span class="hstat-num" id="hs-acc">0%</span>
+      <div class="hstat-lbl">دقة الإجابة</div>
     </div>
   </div>
+</section>
 
-  <!-- Powers Bar -->
-  <div class="powers-bar" id="powersBar">
-    <button class="power-btn" id="power0" onclick="usePower('istakhara')" title="يحذف خيارين خاطئين">
-      <span class="power-icon">🤲</span>
-      <span class="power-name">الاستخارة</span>
-    </button>
-    <button class="power-btn" id="power1" onclick="usePower('mahla')" title="يؤجل السؤال لآخر الجلسة">
-      <span class="power-icon">⏸️</span>
-      <span class="power-name">المهلة</span>
-    </button>
-    <button class="power-btn" id="power2" onclick="usePower('shaikh')" title="تلميح من التفسير">
-      <span class="power-icon">📖</span>
-      <span class="power-name">همس الشيخ</span>
-    </button>
-    <button class="power-btn" id="power3" onclick="usePower('taamol')" title="يضيف 15 ثانية">
-      <span class="power-icon">⏱️</span>
-      <span class="power-name">التأمل</span>
-    </button>
-  </div>
+<!-- ====== MAIN ====== -->
+<div class="maydan-wrap">
 
-  <!-- Question -->
-  <div class="q-card">
-    <div class="q-cat" id="qCat">القرآن الكريم</div>
-    <div class="q-text" id="qText">جاري التحميل...</div>
-  </div>
+  <!-- ============ SCREEN: DASHBOARD ============ -->
+  <div class="screen active" id="screen-dash">
 
-  <!-- Options -->
-  <div class="options" id="optionsContainer"></div>
-
-  <!-- Explanation -->
-  <div class="exp-box" id="expBox"></div>
-
-  <!-- Next Button -->
-  <button class="next-btn" id="nextBtn" onclick="nextQuestion()">التالي ←</button>
-</div>
-
-<!-- RESULT SCREEN -->
-<div id="resultScreen" class="screen">
-  <div class="result-icon" id="resultIcon">🎉</div>
-  <div class="result-title" id="resultTitle">أحسنت!</div>
-  <div class="result-sub" id="resultSub">أكملت المستوى بنجاح</div>
-
-  <div class="result-stats">
-    <div class="result-stat">
-      <div class="result-stat-val" id="resCorrect">0</div>
-      <div class="result-stat-lbl">✅ إجابة صحيحة</div>
-    </div>
-    <div class="result-stat">
-      <div class="result-stat-val" id="resWrong">0</div>
-      <div class="result-stat-lbl">❌ إجابة خاطئة</div>
-    </div>
-    <div class="result-stat">
-      <div class="result-stat-val" id="resStreak">0</div>
-      <div class="result-stat-lbl">🔥 أفضل تسلسل</div>
-    </div>
-    <div class="result-stat">
-      <div class="result-stat-val" id="resAccuracy">0%</div>
-      <div class="result-stat-lbl">🎯 دقة الإجابات</div>
-    </div>
-  </div>
-
-  <div class="result-xp-gained">
-    <div class="result-xp-num" id="resXP">+0</div>
-    <div class="result-xp-lbl">نقطة خبرة مكتسبة</div>
-  </div>
-
-  <div class="result-btns">
-    <button class="btn-primary" id="resPrimaryBtn" onclick="resultPrimary()">التالي ←</button>
-    <button class="btn-secondary" onclick="showScreen('mapScreen')">🗺️ خريطة المسار</button>
-  </div>
-</div>
-
-<!-- Leaderboard Button -->
-<button class="lb-btn" onclick="showLeaderboard()">🏆 المتصدرون</button>
-
-<!-- Leaderboard Modal -->
-<div class="modal-overlay" id="lbModal" onclick="closeLB(event)">
-  <div class="modal-sheet">
-    <div class="modal-handle"></div>
-    <div class="modal-title">🏆 لوحة المتصدرين</div>
-    <div id="lbList">جاري التحميل...</div>
-  </div>
-</div>
-
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-import {
-  getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged
-} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-import {
-  getFirestore, doc, getDoc, setDoc, updateDoc, increment,
-  collection, query, where, getDocs, orderBy, limit, serverTimestamp
-} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyAFzGPiCFB6vEH-wylbW4zRxxgB_2vZSIs",
-  authDomain: "islamicalc.firebaseapp.com",
-  projectId: "islamicalc",
-  storageBucket: "islamicalc.firebasestorage.app",
-  messagingSenderId: "708228371498",
-  appId: "1:708228371498:web:b71ec4a97af9f8fa0c9f53"
-};
-const app  = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db   = getFirestore(app);
-
-// ============ DATA VERSION (مسح تلقائي للبيانات القديمة) ============
-const DATA_VERSION = '3';
-if (localStorage.getItem('arenaDataVersion') !== DATA_VERSION) {
-  ['arenaProgress','arenaPowers','arenaBadges','userXP','userStreak','userLevel'].forEach(k => localStorage.removeItem(k));
-  localStorage.setItem('arenaDataVersion', DATA_VERSION);
-}
-
-// ============ AUTH UI ============
-function updateAuthUI(user) {
-  const btn = document.getElementById('authBtn');
-  if (!btn) return;
-  if (user) {
-    const name = user.displayName?.split(' ')[0] || 'حسابي';
-    const photo = user.photoURL;
-    btn.innerHTML = photo
-      ? `<img src="${photo}" style="width:22px;height:22px;border-radius:50%;object-fit:cover"> ${name} ▾`
-      : `👤 ${name} ▾`;
-    btn.style.borderColor = 'var(--gold)';
-    btn.style.color = 'var(--gold)';
-  } else {
-    btn.innerHTML = '🔵 دخول بـ Google';
-    btn.style.borderColor = 'var(--border)';
-    btn.style.color = 'var(--text2)';
-  }
-}
-
-window.handleAuth = async function() {
-  if (currentUser) {
-    const existing = document.getElementById('authMenu');
-    if (existing) { existing.remove(); return; }
-    const menu = document.createElement('div');
-    menu.id = 'authMenu';
-    menu.style.cssText = `
-      position:fixed; top:65px; left:16px;
-      background:var(--bg-card); border:1px solid var(--border);
-      border-radius:14px; padding:8px; z-index:200;
-      min-width:180px; box-shadow:var(--shadow);
-    `;
-    menu.innerHTML = `
-      <div style="padding:10px 14px;font-size:13px;color:var(--text2);border-bottom:1px solid var(--border);margin-bottom:6px;">
-        ${currentUser.displayName || 'مستخدم'}<br>
-        <span style="font-size:11px;color:var(--gold)">${(parseInt(localStorage.getItem('userXP')||0)).toLocaleString('ar')} XP</span>
-      </div>
-      <button onclick="doLogout()" style="
-        width:100%;background:none;border:none;color:var(--red);
-        font-family:Cairo,sans-serif;font-size:14px;padding:8px 14px;
-        cursor:pointer;text-align:right;border-radius:8px;
-      ">🚪 تسجيل خروج</button>
-    `;
-    document.body.appendChild(menu);
-    setTimeout(() => document.addEventListener('click', () => menu.remove(), {once:true}), 100);
-  } else {
-    try {
-      const provider = new GoogleAuthProvider();
-      provider.setCustomParameters({ prompt: 'select_account' });
-      await signInWithPopup(auth, provider);
-    } catch(e) {
-      if (e.code !== 'auth/popup-closed-by-user') alert('خطأ في تسجيل الدخول');
-    }
-  }
-};
-
-window.doLogout = async function() {
-  const { signOut } = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js");
-  await signOut(auth);
-  document.getElementById('authMenu')?.remove();
-  currentUser = null;
-  updateAuthUI(null);
-  loadLocalProgress();
-  renderMap();
-  updateMapStats();
-};
-
-// ============ CONFIG ============
-const LEVELS_CONFIG = [
-  { id:'beginner', name:'المبتدئ',    icon:'🌱', desc:'أساسيات الإسلام والعقيدة',     xpReward:100, totalQ:20 },
-  { id:'learner',  name:'المتعلم',    icon:'📚', desc:'الفقه والعبادات والأذكار',      xpReward:150, totalQ:20 },
-  { id:'student',  name:'طالب العلم', icon:'🎓', desc:'الحديث والتفسير والسيرة',      xpReward:200, totalQ:20 },
-  { id:'scholar',  name:'العالِم',    icon:'⚗️', desc:'أصول الفقه وعلوم الحديث',     xpReward:300, totalQ:20 },
-];
-const MASTER_CONFIG = { id:'master', name:'مقام العالِم', icon:'🏛️', xpReward:500, totalQ:10 };
-
-const CAT_NAMES = {
-  quran:'القرآن الكريم', hadith:'الحديث النبوي', fiqh:'الفقه',
-  aqeedah:'العقيدة', seerah:'السيرة', usool:'أصول الفقه', general:'عام'
-};
-
-// ============ STATE ============
-let currentUser = null;
-let allQuestions = {};
-let gameState = {
-  levelId: '', questions: [], current: 0,
-  correct: 0, wrong: 0, bestStreak: 0, streak: 0,
-  answered: false, timerVal: 30, timerInterval: null,
-  usedPowers: { istakhara:false, mahla:false, shaikh:false, taamol:false },
-  isMaster: false
-};
-let userProgress = {};
-let userPowers = { istakhara:1, mahla:1, shaikh:1, taamol:1 };
-
-// ============ AUTH ============
-onAuthStateChanged(auth, async user => {
-  currentUser = user;
-  updateAuthUI(user);
-  if (user) {
-    await loadUserProgress();
-  } else {
-    loadLocalProgress();
-  }
-  await loadAllQuestions();
-  renderMap();
-  updateMapStats();
-});
-
-// ============ LOAD QUESTIONS ============
-async function loadAllQuestions() {
-  try {
-    const snap = await getDocs(collection(db, 'questions'));
-    snap.forEach(d => {
-      const q = d.data();
-      if (!allQuestions[q.path]) allQuestions[q.path] = [];
-      allQuestions[q.path].push(q);
-    });
-  } catch(e) { console.error('loadQ:', e.message); }
-}
-
-// ============ PROGRESS ============
-async function loadUserProgress() {
-  try {
-    if (!currentUser) return;
-    const snap = await getDoc(doc(db, 'users', currentUser.uid));
-    if (snap.exists()) {
-      const d = snap.data();
-      userProgress = d.arenaProgress || {};
-      userPowers   = d.arenaPowers  || { istakhara:1, mahla:1, shaikh:1, taamol:1 };
-    }
-  } catch(e) {
-    loadLocalProgress();
-  }
-}
-
-function loadLocalProgress() {
-  userProgress = JSON.parse(localStorage.getItem('arenaProgress') || '{}');
-  userPowers   = JSON.parse(localStorage.getItem('arenaPowers')  || '{"istakhara":1,"mahla":1,"shaikh":1,"taamol":1}');
-}
-
-async function saveProgress() {
-  localStorage.setItem('arenaProgress', JSON.stringify(userProgress));
-  localStorage.setItem('arenaPowers',   JSON.stringify(userPowers));
-  if (!currentUser) return;
-  try {
-    await updateDoc(doc(db, 'users', currentUser.uid), {
-      arenaProgress: userProgress,
-      arenaPowers:   userPowers
-    });
-  } catch(e) {}
-}
-
-// ============ MAP RENDER ============
-function renderMap() {
-  const container = document.getElementById('pathContainer');
-  const line      = document.getElementById('pathLine');
-  const cards     = container.querySelectorAll('.level-card');
-  cards.forEach(c => c.remove());
-
-  let completedCount = 0;
-  LEVELS_CONFIG.forEach((lv, i) => {
-    const prog = userProgress[lv.id] || { completed:false, seenIds:[] };
-    const isCompleted = prog.completed;
-    const isActive    = !isCompleted && (i === 0 || (userProgress[LEVELS_CONFIG[i-1]?.id]?.completed));
-    const isLocked    = !isCompleted && !isActive;
-    if (isCompleted) completedCount++;
-
-    const done = Math.min(prog.seenIds?.length || 0, lv.totalQ);
-    const pct  = Math.min(100, Math.round((done / lv.totalQ) * 100));
-
-    const card = document.createElement('div');
-    card.className = `level-card ${isCompleted ? 'completed' : isActive ? 'active-level' : 'locked'}`;
-    if (!isLocked) card.onclick = () => startLevel(lv.id);
-    card.innerHTML = `
-      <div class="level-icon">${lv.icon}</div>
+    <!-- Level Card -->
+    <div class="level-card">
+      <div class="level-badge" id="dash-icon">🌱</div>
       <div class="level-info">
-        <div class="level-name">${lv.name}</div>
-        <div class="level-desc">${lv.desc}</div>
-        <div class="level-progress-bar"><div class="level-progress-fill" style="width:${pct}%"></div></div>
-        <div class="level-progress-text">${done} / ${lv.totalQ} سؤال شوهد</div>
+        <div class="level-name" id="dash-level">المبتدئ</div>
+        <div class="level-sub"  id="dash-level-sub">المستوى 1 — ابدأ رحلتك في الميدان</div>
+        <div class="xp-bar-wrap">
+          <div class="xp-bar"><div class="xp-fill" id="dash-xp-bar" style="width:0%"></div></div>
+          <span class="xp-lbl" id="dash-xp-lbl">0 / 100 XP</span>
+        </div>
       </div>
-      <div class="level-badge ${isCompleted?'badge-done':isActive?'badge-active':'badge-locked'}">
-        ${isCompleted ? '✅ مكتمل' : isActive ? '▶ العب' : '🔒'}
-      </div>`;
-    container.appendChild(card);
-  });
+      <div class="level-stats">
+        <div class="ls"><div class="ls-num" id="ds-correct">0</div><div class="ls-lbl">صح</div></div>
+        <div class="ls"><div class="ls-num" id="ds-wrong">0</div><div class="ls-lbl">خطأ</div></div>
+        <div class="ls"><div class="ls-num" id="ds-best">0</div><div class="ls-lbl">أفضل سلسلة</div></div>
+      </div>
+    </div>
 
-  // Master card
-  const masterCard = document.getElementById('masterCard');
-  if (completedCount >= LEVELS_CONFIG.length) {
-    masterCard.classList.remove('locked');
-    masterCard.querySelector('div:last-child').textContent = '▶ ادخل المقام';
-  }
+    <!-- أوضاع اللعب -->
+    <div class="sec-hd">⚔️ أوضاع الميدان</div>
+    <div class="mode-grid">
+      <div class="mode-card" onclick="showLevelSelect('classic')">
+        <div class="mode-icon">📖</div>
+        <div class="mode-name">الجولة الكلاسيكية</div>
+        <div class="mode-desc">10 أسئلة متنوعة — اختر الصعوبة والفئة</div>
+      </div>
+      <div class="mode-card" onclick="startSurvival()">
+        <div class="mode-icon">⚡</div>
+        <div class="mode-name">البقاء للأصح</div>
+        <div class="mode-desc">أسئلة لا تنتهي — ثلاث أخطاء وتنتهي الجولة</div>
+      </div>
+      <div class="mode-card" onclick="showLevelSelect('speed')">
+        <div class="mode-icon">⏱</div>
+        <div class="mode-name">سباق الوقت</div>
+        <div class="mode-desc">15 ثانية لكل سؤال — الوقت هو العدو</div>
+      </div>
+    </div>
 
-  // Path line height
-  const allCards = container.querySelectorAll('.level-card');
-  if (allCards.length > 1) {
-    const first = allCards[0].getBoundingClientRect();
-    const last  = allCards[allCards.length-1].getBoundingClientRect();
-    line.style.height = (last.bottom - first.top - 50) + 'px';
-  }
-}
+    <!-- الفئات -->
+    <div class="sec-hd">🗂 الفئات</div>
+    <div class="cat-grid" id="cat-grid"></div>
 
-function updateMapStats() {
-  const xp      = parseInt(localStorage.getItem('userXP')     || '0');
-  const streak  = parseInt(localStorage.getItem('userStreak') || '0');
-  const badges  = JSON.parse(localStorage.getItem('arenaBadges') || '[]');
-  const compl   = LEVELS_CONFIG.filter(l => userProgress[l.id]?.completed).length;
+    <!-- المتصدرون -->
+    <div class="sec-hd">🏆 المتصدرون</div>
+    <div class="leaderboard">
+      <div class="lb-header">🏆 لوحة الشرف — الميدان</div>
+      <div id="lb-list">
+        <div style="text-align:center;padding:24px;color:var(--text-muted);font-size:13px;">سجّل دخولك لترى ترتيبك</div>
+      </div>
+    </div>
 
-  document.getElementById('mapXPVal').textContent      = xp.toLocaleString('ar') + ' XP';
-  document.getElementById('mapStreak').textContent     = streak;
-  document.getElementById('mapCompleted').textContent  = compl;
-  document.getElementById('mapBadges').textContent     = badges.length;
-  document.getElementById('mapLevelTitle').textContent = getLevelTitle(xp);
+  </div><!-- /screen-dash -->
 
-  const maxXP  = 500;
-  const fillPct = Math.min(100, Math.round((xp % maxXP) / maxXP * 100));
-  document.getElementById('mapXPFill').style.width = fillPct + '%';
-}
+  <!-- ============ SCREEN: LEVEL SELECT ============ -->
+  <div class="screen" id="screen-level">
+    <button class="back-btn" onclick="showScreen('screen-dash')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+        <polyline points="9 18 15 12 9 6"/>
+      </svg>
+      العودة
+    </button>
 
-const LEVEL_TITLES = [
-  {xp:0,t:'مسلم مبتدئ'},{xp:200,t:'حلقة القرآن'},{xp:500,t:'طالب مسجد'},
-  {xp:1500,t:'طالب علم'},{xp:4000,t:'فقيه ناشئ'},{xp:9000,t:'عالم متقدم'},
-  {xp:18000,t:'شيخ'},{xp:35000,t:'إمام الأرينا'}
+    <div class="sec-hd">🎯 اختر الصعوبة</div>
+    <div class="diff-grid">
+      <div class="diff-card easy" onclick="selectDiff('easy',this)">
+        <div class="diff-icon">🌱</div>
+        <div class="diff-name">مبتدئ</div>
+        <div class="diff-desc">أسئلة سهلة ومباشرة — مناسبة للجميع</div>
+        <div class="diff-xp">+10 XP لكل إجابة صحيحة</div>
+      </div>
+      <div class="diff-card medium" onclick="selectDiff('medium',this)">
+        <div class="diff-icon">⚔️</div>
+        <div class="diff-name">متوسط</div>
+        <div class="diff-desc">أسئلة تحتاج تفكيراً وإلماماً بالعلم</div>
+        <div class="diff-xp">+20 XP لكل إجابة صحيحة</div>
+      </div>
+      <div class="diff-card hard" onclick="selectDiff('hard',this)">
+        <div class="diff-icon">🔥</div>
+        <div class="diff-name">متقدم</div>
+        <div class="diff-desc">أسئلة عميقة للمتخصصين والمتقدمين</div>
+        <div class="diff-xp">+35 XP لكل إجابة صحيحة</div>
+      </div>
+    </div>
+
+    <div class="sec-hd">📂 اختر الفئة</div>
+    <div class="cat-select-grid" id="cat-select-grid"></div>
+
+    <button class="start-btn" id="start-btn" onclick="startQuiz()" disabled>
+      🚀 ابدأ الميدان
+    </button>
+  </div>
+
+  <!-- ============ SCREEN: QUIZ ============ -->
+  <div class="screen" id="screen-quiz">
+    <div class="quiz-wrap">
+
+      <!-- Header -->
+      <div class="quiz-header">
+        <button class="quit-btn" onclick="confirmQuit()">✕ إنهاء</button>
+        <div class="timer-bar"><div class="timer-fill" id="timer-fill"></div></div>
+        <div class="q-info"    id="q-info">1 / 10</div>
+        <div class="q-streak"  id="q-streak" style="display:none">🔥 ×1</div>
+      </div>
+
+      <!-- Powers -->
+      <div class="powers-bar">
+        <button class="power-btn" id="pw-fifty" onclick="usePower('fifty')">
+          ✂️ حذف خيارين <span class="power-cnt" id="cnt-fifty">2</span>
+        </button>
+        <button class="power-btn" id="pw-skip" onclick="usePower('skip')">
+          ⏭ تخطي <span class="power-cnt" id="cnt-skip">1</span>
+        </button>
+        <button class="power-btn" id="pw-time" onclick="usePower('time')">
+          ⏳ وقت إضافي <span class="power-cnt" id="cnt-time">1</span>
+        </button>
+      </div>
+
+      <!-- Question -->
+      <div class="q-card">
+        <div>
+          <span class="q-cat-badge"  id="q-cat-badge">—</span>
+          <span class="q-diff-badge" id="q-diff-badge">—</span>
+        </div>
+        <div class="q-verse"   id="q-verse"   style="display:none"></div>
+        <div class="q-text"    id="q-text">جاري التحميل...</div>
+        <div class="options"   id="q-options"></div>
+        <div class="feedback"  id="q-feedback"></div>
+        <div class="xp-flash"  id="xp-flash"></div>
+      </div>
+
+      <button class="next-btn" id="next-btn" onclick="nextQuestion()">
+        السؤال التالي ←
+      </button>
+
+    </div>
+  </div><!-- /screen-quiz -->
+
+  <!-- ============ SCREEN: RESULT ============ -->
+  <div class="screen" id="screen-result">
+    <div class="result-wrap">
+      <div class="result-medal" id="r-medal">🏅</div>
+      <div class="result-title" id="r-title">أحسنت!</div>
+      <div class="result-sub"   id="r-sub">إليك نتيجة جولتك</div>
+      <div class="level-up-banner" id="level-up-banner">🎉 ترقية! وصلت لمستوى جديد!</div>
+      <div class="result-grid">
+        <div class="rstat"><div class="rstat-num" id="r-correct">0</div><div class="rstat-lbl">إجابة صحيحة</div></div>
+        <div class="rstat"><div class="rstat-num" id="r-wrong">0</div><div class="rstat-lbl">إجابة خاطئة</div></div>
+        <div class="rstat"><div class="rstat-num" id="r-streak">0</div><div class="rstat-lbl">أفضل سلسلة</div></div>
+      </div>
+      <div class="result-xp">
+        <span class="result-xp-num" id="r-xp">+0</span>
+        <div class="result-xp-lbl">نقطة XP مكتسبة</div>
+      </div>
+      <div class="result-btns">
+        <button class="rbtn secondary" onclick="showScreen('screen-dash')">🏠 الرئيسية</button>
+        <button class="rbtn primary"   onclick="replayQuiz()">🔁 جولة أخرى</button>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /maydan-wrap -->
+
+<script type="module" src="/firebase.js"></script>
+<script>
+// ================================================================
+// QUESTIONS BANK — 120 سؤال
+// ================================================================
+const QUESTIONS = [
+
+  // ══════ قرآن كريم ══════
+  { cat:"quran", diff:"easy",
+    q:"كم عدد سور القرآن الكريم؟",
+    opts:["112","114","116","118"], ans:1,
+    exp:"القرآن الكريم يتكون من 114 سورة." },
+
+  { cat:"quran", diff:"easy",
+    q:"ما أول ما نزل من القرآن الكريم؟",
+    opts:["الفاتحة","البقرة","أول آيات العلق","المدثر"], ans:2,
+    exp:"أول ما نزل من القرآن ﴿اقْرَأْ بِاسْمِ رَبِّكَ﴾ — أوائل سورة العلق." },
+
+  { cat:"quran", diff:"easy",
+    q:"ما اسم أطول سورة في القرآن؟",
+    opts:["آل عمران","البقرة","النساء","الأعراف"], ans:1,
+    exp:"سورة البقرة هي أطول سورة في القرآن وتحتوي على 286 آية." },
+
+  { cat:"quran", diff:"easy",
+    q:"ما اسم أقصر سورة في القرآن؟",
+    opts:["الإخلاص","الكوثر","الفاتحة","العصر"], ans:1,
+    exp:"سورة الكوثر هي أقصر سورة في القرآن وتحتوي على 3 آيات فقط." },
+
+  { cat:"quran", diff:"easy",
+    q:"كم عدد أجزاء القرآن الكريم؟",
+    opts:["20","25","30","40"], ans:2,
+    exp:"القرآن الكريم مقسّم إلى 30 جزءاً." },
+
+  { cat:"quran", diff:"medium",
+    q:"ما السورة التي تُسمى سيدة سور القرآن؟",
+    opts:["الفاتحة","البقرة","يس","آل عمران"], ans:1,
+    exp:"سورة البقرة تُسمى سيدة سور القرآن لعظمتها وطولها." },
+
+  { cat:"quran", diff:"medium",
+    q:"كم مرة تكررت ﴿فَبِأَيِّ آلَاءِ رَبِّكُمَا تُكَذِّبَانِ﴾ في سورة الرحمن؟",
+    opts:["25","28","31","33"], ans:2,
+    verse:"﴿فَبِأَيِّ آلَاءِ رَبِّكُمَا تُكَذِّبَانِ﴾",
+    exp:"تكررت الآية الكريمة 31 مرة في سورة الرحمن." },
+
+  { cat:"quran", diff:"medium",
+    q:"ما السورة الوحيدة في القرآن التي لا تبدأ بالبسملة؟",
+    opts:["الأنفال","براءة (التوبة)","محمد","النمل"], ans:1,
+    exp:"سورة التوبة (براءة) هي الوحيدة التي لا تبدأ بالبسملة." },
+
+  { cat:"quran", diff:"medium",
+    q:"ما السورة التي فيها سجدة وهي ليست من سور السجدات المعروفة؟",
+    opts:["النجم","مريم","الأعراف","الحج"], ans:0,
+    exp:"سورة النجم فيها سجدة تلاوة في الآية الأخيرة." },
+
+  { cat:"quran", diff:"hard",
+    q:"ما عدد الآيات التي تبدأ بحروف مقطعة في القرآن؟",
+    opts:["27","29","30","32"], ans:1,
+    exp:"29 سورة تبدأ بحروف مقطعة مثل ألم، حم، طه." },
+
+  { cat:"quran", diff:"hard",
+    q:"في أي سورة ورد اسم النبي محمد ﷺ صريحاً أكثر مرة؟",
+    opts:["البقرة","آل عمران","الأحزاب","محمد"], ans:2,
+    exp:"ورد اسم النبي ﷺ في سورة الأحزاب مرتين ضمن آيات متعددة تخصه." },
+
+  // ══════ سيرة نبوية ══════
+  { cat:"seerah", diff:"easy",
+    q:"في أي عام وُلد النبي محمد ﷺ؟",
+    opts:["عام الفيل","عام الفيل +5","عام الفيل -5","قبل الهجرة بـ 60 عاماً"], ans:0,
+    exp:"وُلد النبي ﷺ عام الفيل — الموافق 570م تقريباً." },
+
+  { cat:"seerah", diff:"easy",
+    q:"في أي شهر هاجر النبي ﷺ إلى المدينة؟",
+    opts:["رجب","شعبان","محرم","ربيع الأول"], ans:3,
+    exp:"هاجر النبي ﷺ في شهر ربيع الأول." },
+
+  { cat:"seerah", diff:"easy",
+    q:"من هي زوج النبي ﷺ الأولى؟",
+    opts:["عائشة","خديجة","فاطمة","زينب"], ans:1,
+    exp:"السيدة خديجة بنت خويلد رضي الله عنها هي أول زوجات النبي ﷺ." },
+
+  { cat:"seerah", diff:"easy",
+    q:"كم عمر النبي ﷺ حين بُعث نبياً؟",
+    opts:["35","40","45","50"], ans:1,
+    exp:"بُعث النبي ﷺ نبياً وعمره 40 عاماً." },
+
+  { cat:"seerah", diff:"medium",
+    q:"ما اسم جبل الذي أقام عليه المسلمون الرماة في غزوة أحد؟",
+    opts:["جبل النور","جبل عينين","جبل ثور","جبل الرحمة"], ans:1,
+    exp:"جبل عينين (الرماة) — أمر النبي ﷺ الرماة بعدم تركه مهما حدث." },
+
+  { cat:"seerah", diff:"medium",
+    q:"كم استمرت غزوة بدر؟",
+    opts:["يوم واحد","يومان","ثلاثة أيام","أسبوع"], ans:0,
+    exp:"غزوة بدر انتهت في يوم واحد — 17 رمضان السنة الثانية للهجرة." },
+
+  { cat:"seerah", diff:"medium",
+    q:"من قاد المسلمين في غزوة مؤتة بعد استشهاد القادة الثلاثة؟",
+    opts:["عمرو بن العاص","خالد بن الوليد","أبو عبيدة","سعد بن أبي وقاص"], ans:1,
+    exp:"خالد بن الوليد رضي الله عنه — لُقّب بسيف الله المسلول بعدها." },
+
+  { cat:"seerah", diff:"hard",
+    q:"في أي عام من الهجرة كانت صلح الحديبية؟",
+    opts:["السنة 4","السنة 6","السنة 7","السنة 8"], ans:1,
+    exp:"صلح الحديبية كان في ذي القعدة السنة السادسة للهجرة." },
+
+  { cat:"seerah", diff:"hard",
+    q:"ما اسم المرأة التي أرضعت النبي ﷺ بعد أمه؟",
+    opts:["أم أيمن","حليمة السعدية","ثويبة","سوداء"], ans:1,
+    exp:"السيدة حليمة السعدية من قبيلة بني سعد أرضعت النبي ﷺ." },
+
+  // ══════ فقه وعبادات ══════
+  { cat:"fiqh", diff:"easy",
+    q:"كم عدد أركان الإسلام؟",
+    opts:["4","5","6","7"], ans:1,
+    exp:"أركان الإسلام خمسة: الشهادتان، الصلاة، الزكاة، الصوم، الحج." },
+
+  { cat:"fiqh", diff:"easy",
+    q:"كم ركعة صلاة الفجر؟",
+    opts:["ركعة","ركعتان","ثلاث","أربع"], ans:1,
+    exp:"صلاة الفجر ركعتان فرضاً." },
+
+  { cat:"fiqh", diff:"easy",
+    q:"ما نصاب زكاة الفضة بالجرامات تقريباً؟",
+    opts:["400 جرام","595 جرام","700 جرام","850 جرام"], ans:1,
+    exp:"نصاب زكاة الفضة 595 جراماً تقريباً (200 درهم شرعي)." },
+
+  { cat:"fiqh", diff:"medium",
+    q:"ما الفرق بين الفرض والواجب عند الحنفية؟",
+    opts:["لا فرق بينهما","الفرض ثبت بدليل قطعي والواجب بدليل ظني","الواجب أعلى من الفرض","الفرض سني والواجب قرآني"], ans:1,
+    exp:"عند الحنفية: الفرض ثبت بدليل قطعي كالقرآن، والواجب بدليل ظني كالسنة الآحادية." },
+
+  { cat:"fiqh", diff:"medium",
+    q:"ما شروط صحة الصلاة؟",
+    opts:["النية فقط","الطهارة والوقت والقبلة وستر العورة","الطهارة فقط","النية والطهارة فقط"], ans:1,
+    exp:"شروط صحة الصلاة: الطهارة، دخول الوقت، استقبال القبلة، ستر العورة." },
+
+  { cat:"fiqh", diff:"hard",
+    q:"ما حكم صيام يوم عرفة لغير الحاج؟",
+    opts:["فرض","واجب","سنة مؤكدة","مستحب"], ans:3,
+    exp:"صيام يوم عرفة مستحب لغير الحاج ويكفّر ذنوب سنتين." },
+
+  { cat:"fiqh", diff:"hard",
+    q:"ما الحد الأدنى لمقدار المهر في الزواج عند جمهور الفقهاء؟",
+    opts:["لا حد أدنى","عشرة دراهم","نصاب الزكاة","ربع دينار"], ans:0,
+    exp:"الجمهور (الشافعية والحنابلة) يرون أنه لا حد أدنى للمهر — كل ما يصح بيعه يصح مهراً." },
+
+  // ══════ أخلاق وآداب ══════
+  { cat:"akhlaq", diff:"easy",
+    q:"ما الخُلق الذي وصف به النبي ﷺ نفسه في قوله: 'إنما بُعثت لأتمم...'؟",
+    opts:["الإيمان","مكارم الأخلاق","الصدق","العبادة"], ans:1,
+    exp:"قال ﷺ: 'إنما بُعثت لأتمّم مكارم الأخلاق' — رواه أحمد." },
+
+  { cat:"akhlaq", diff:"easy",
+    q:"ما الخُلق الذي يقول عنه النبي ﷺ: 'الحياء شعبة من الإيمان'؟",
+    opts:["الكرم","الحياء","الصدق","الأمانة"], ans:1,
+    exp:"الحياء شعبة من الإيمان — متفق عليه." },
+
+  { cat:"akhlaq", diff:"medium",
+    q:"ما معنى حديث 'المسلم من سلم المسلمون من لسانه ويده'؟",
+    opts:["المسلم الصامت أفضل","ألا يؤذي أحداً بلسانه ولا بيده","الكلام حرام","اليد أهم من اللسان"], ans:1,
+    exp:"الحديث يبيّن أن حقيقة الإسلام تظهر في كفّ الأذى عن الناس." },
+
+  { cat:"akhlaq", diff:"medium",
+    q:"ما الفضيلة التي جمع النبي ﷺ فيها قوله: 'ازهد في الدنيا يحبك الله وازهد فيما عند الناس يحبك الناس'؟",
+    opts:["الزهد والتواضع","الكرم والجود","الصبر والشكر","الصدق والأمانة"], ans:0,
+    exp:"الزهد في الدنيا يورث محبة الله، والزهد فيما بيد الناس يورث محبتهم — ابن ماجه." },
+
+  { cat:"akhlaq", diff:"hard",
+    q:"كيف يُفرَّق بين حُسن الخُلق وضعف الشخصية؟",
+    opts:["لا فرق","حُسن الخُلق مع القوة والعزة، وضعف الشخصية مع الذل","الأول للعلماء والثاني للعامة","حسن الخلق يعني السكوت دائماً"], ans:1,
+    exp:"المؤمن يجمع بين لين الجانب وعزة النفس — 'قوي في دينه، لين في تعامله'." },
+
+  // ══════ أنبياء ورسل ══════
+  { cat:"anbiya", diff:"easy",
+    q:"كم عدد أنبياء أولي العزم؟",
+    opts:["3","4","5","6"], ans:2,
+    exp:"أولو العزم خمسة: محمد، إبراهيم، موسى، عيسى، نوح عليهم السلام." },
+
+  { cat:"anbiya", diff:"easy",
+    q:"من هو أول الأنبياء؟",
+    opts:["إبراهيم","نوح","آدم","إدريس"], ans:2,
+    exp:"آدم عليه السلام هو أبو البشر وأول الأنبياء." },
+
+  { cat:"anbiya", diff:"easy",
+    q:"ما معجزة موسى عليه السلام الكبرى؟",
+    opts:["إحياء الموتى","فلق البحر","تكليم الله","العصا تبتلع السحر"], ans:1,
+    exp:"من أعظم معجزات موسى عليه السلام فلق البحر لبني إسرائيل." },
+
+  { cat:"anbiya", diff:"medium",
+    q:"كم عاش نوح عليه السلام يدعو قومه قبل الطوفان؟",
+    opts:["100 عام","500 عام","950 عاماً","300 عام"], ans:2,
+    exp:"قال تعالى ﴿فَلَبِثَ فِيهِمْ أَلْفَ سَنَةٍ إِلَّا خَمْسِينَ عَامًا﴾ — أي 950 عاماً." },
+
+  { cat:"anbiya", diff:"medium",
+    q:"ما لقب إبراهيم عليه السلام؟",
+    opts:["روح الله","خليل الله","كليم الله","نجي الله"], ans:1,
+    exp:"إبراهيم عليه السلام خليل الله — أي محبوبه." },
+
+  { cat:"anbiya", diff:"hard",
+    q:"ما اسم ابن إبراهيم الذي أُمر بذبحه ثم فُدي بكبش؟",
+    opts:["إسحاق باتفاق","إسماعيل عند جمهور العلماء","يوسف","يعقوب"], ans:1,
+    exp:"الراجح عند جمهور العلماء أن الذبيح هو إسماعيل عليه السلام." },
+
+  // ══════ إسلام وعقيدة ══════
+  { cat:"aqeedah", diff:"easy",
+    q:"ما أركان الإيمان الستة؟",
+    opts:["الله وملائكته وكتبه ورسله واليوم الآخر والقدر","الله ومحمد والقرآن والصلاة والجنة والنار","الإسلام والإيمان والإحسان","الصلاة والزكاة والصوم والحج والجهاد"], ans:0,
+    exp:"أركان الإيمان: الإيمان بالله وملائكته وكتبه ورسله واليوم الآخر والقدر خيره وشره." },
+
+  { cat:"aqeedah", diff:"easy",
+    q:"ما معنى التوحيد؟",
+    opts:["الإيمان بكل الأديان","إفراد الله بالعبادة","الإيمان بالله ومحمد","الصلاة يومياً"], ans:1,
+    exp:"التوحيد هو إفراد الله تعالى بالعبادة والألوهية والصفات." },
+
+  { cat:"aqeedah", diff:"medium",
+    q:"كم عدد أسماء الله الحسنى المذكورة في الحديث؟",
+    opts:["66","89","99","100"], ans:2,
+    exp:"قال ﷺ: 'إن لله تسعةً وتسعين اسماً — مئة إلا واحداً' — متفق عليه." },
+
+  { cat:"aqeedah", diff:"medium",
+    q:"ما الفرق بين القضاء والقدر؟",
+    opts:["لا فرق","القدر علم الله الأزلي والقضاء حكمه الفعلي","القضاء أعلى درجة","القدر فعل الإنسان"], ans:1,
+    exp:"القدر علم الله السابق بالأشياء، والقضاء هو حكمه وإمضاؤه." },
+
+  { cat:"aqeedah", diff:"hard",
+    q:"ما معنى الصفة الذاتية عند أهل السنة؟",
+    opts:["صفة مخلوقة","صفة ثابتة لله لم تزل ولا تزال كالحياة والعلم","صفة تتعلق بإرادة الله","صفة تشبه صفات المخلوق"], ans:1,
+    exp:"الصفات الذاتية هي الصفات اللازمة لذات الله التي لم تنفك عنه كالحياة والعلم والقدرة." },
+
+  // ══════ رمضان وصيام ══════
+  { cat:"ramadan", diff:"easy",
+    q:"في أي شهر نزل القرآن الكريم؟",
+    opts:["شعبان","رجب","رمضان","محرم"], ans:2,
+    verse:"﴿شَهْرُ رَمَضَانَ الَّذِي أُنزِلَ فِيهِ الْقُرْآنُ﴾",
+    exp:"أنزل الله القرآن في شهر رمضان المبارك." },
+
+  { cat:"ramadan", diff:"easy",
+    q:"ما ليلة القدر ومتى تُطلب؟",
+    opts:["أول ليلة في رمضان","ليلة 15 رمضان","في العشر الأواخر وخاصة الأوتار","آخر ليلة في رمضان"], ans:2,
+    exp:"ليلة القدر في العشر الأواخر من رمضان وتُطلب في الأوتار (21، 23، 25، 27، 29)." },
+
+  { cat:"ramadan", diff:"medium",
+    q:"ما الحديث الذي يبيّن ثواب من أطعم صائماً؟",
+    opts:["له أجر الصائم مضاعفاً","له مثل أجر الصائم دون أن ينقص من أجره شيء","له ثواب الجهاد","له ثواب ليلة القدر"], ans:1,
+    exp:"قال ﷺ: 'من فطّر صائماً كان له مثل أجره' — رواه الترمذي." },
+
+  { cat:"ramadan", diff:"hard",
+    q:"ما حكم الاعتكاف في رمضان؟",
+    opts:["فرض عين","فرض كفاية","سنة مؤكدة","مستحب"], ans:2,
+    exp:"الاعتكاف سنة مؤكدة، كان النبي ﷺ يعتكف العشر الأواخر من رمضان." },
+
 ];
-function getLevelTitle(xp) {
-  let t = LEVEL_TITLES[0].t;
-  for (const l of LEVEL_TITLES) { if (xp >= l.xp) t = l.t; else break; }
-  return t;
-}
 
-// ============ START LEVEL ============
-window.startLevel = async function(levelId) {
-  const isMaster = levelId === 'master';
-  const cfg = isMaster ? MASTER_CONFIG : LEVELS_CONFIG.find(l => l.id === levelId);
-  if (!cfg) return;
-
-  const pool = allQuestions[levelId] || [];
-  if (pool.length === 0) { alert('الأسئلة غير متاحة، تحقق من الاتصال'); return; }
-
-  const prog   = userProgress[levelId] || { completed:false, seenIds:[] };
-  let available = pool.filter(q => !prog.seenIds.includes(q.id));
-  if (available.length < cfg.totalQ) available = pool;
-
-  // سحب عشوائي
-  const shuffled = available.sort(() => Math.random() - 0.5).slice(0, cfg.totalQ);
-
-  gameState = {
-    levelId, questions: shuffled, current: 0,
-    correct:0, wrong:0, bestStreak:0, streak:0,
-    answered:false, timerVal:30, timerInterval:null,
-    usedPowers:{ istakhara:false, mahla:false, shaikh:false, taamol:false },
-    isMaster
-  };
-
-  // Powers UI
-  const powersBar = document.getElementById('powersBar');
-  if (isMaster) {
-    powersBar.style.display = 'none';
-  } else {
-    powersBar.style.display = 'flex';
-    ['istakhara','mahla','shaikh','taamol'].forEach((p,i) => {
-      const btn = document.getElementById('power'+i);
-      btn.classList.remove('used');
-      btn.disabled = userPowers[p] <= 0;
-      if (userPowers[p] > 0) btn.querySelector('.power-name').textContent =
-        ['الاستخارة','المهلة','همس الشيخ','التأمل'][i];
-      else btn.querySelector('.power-name').textContent = 'محدود';
-    });
-  }
-
-  document.getElementById('gameLevelName').textContent = cfg.name;
-  showScreen('gameScreen');
-  renderQuestion();
+// ================================================================
+// CATEGORIES CONFIG
+// ================================================================
+const CATS = {
+  quran:   { name:"القرآن الكريم", icon:"📖", color:"#58a6ff" },
+  seerah:  { name:"السيرة النبوية",icon:"🕌", color:"#3fb950" },
+  fiqh:    { name:"الفقه والعبادات",icon:"⚖️", color:"#f0c96e" },
+  akhlaq:  { name:"الأخلاق والآداب",icon:"🌹", color:"#d2a8ff" },
+  anbiya:  { name:"الأنبياء والرسل",icon:"⭐", color:"#ffa657" },
+  aqeedah: { name:"العقيدة الإسلامية",icon:"☝️", color:"#a78bfa" },
+  ramadan: { name:"رمضان والصيام",  icon:"🌙", color:"#79c0ff" },
 };
 
-// ============ RENDER QUESTION ============
-function renderQuestion() {
-  const q    = gameState.questions[gameState.current];
-  const idx  = gameState.current;
-  const total= gameState.questions.length;
+// ================================================================
+// LEVELS CONFIG
+// ================================================================
+const LEVELS = [
+  { min:0,    name:"المبتدئ",       icon:"🌱", sub:"ابدأ رحلتك في الميدان" },
+  { min:100,  name:"الطالب",        icon:"📚", sub:"أنت في بداية الطريق" },
+  { min:300,  name:"الراسخ",        icon:"🎯", sub:"علمك يتعمق" },
+  { min:600,  name:"العارف",        icon:"💡", sub:"نور العلم يضيء طريقك" },
+  { min:1000, name:"الحافظ",        icon:"🛡", sub:"قلبك عامر بالعلم" },
+  { min:1500, name:"الفقيه",        icon:"⚖️", sub:"الفقه في دينه" },
+  { min:2200, name:"الشيخ",         icon:"🎓", sub:"أهل للتعليم والإرشاد" },
+  { min:3000, name:"العلّامة",      icon:"🌟", sub:"علمك شامل وعميق" },
+  { min:4000, name:"إمام الميدان",  icon:"👑", sub:"بلغت القمة" },
+];
 
-  document.getElementById('qCat').textContent   = CAT_NAMES[q.cat] || q.cat;
-  document.getElementById('qText').textContent  = q.q;
-  document.getElementById('expBox').classList.remove('show');
-  document.getElementById('expBox').textContent = '';
+// ================================================================
+// STATE
+// ================================================================
+let state = JSON.parse(localStorage.getItem('maydan') || 'null') || {
+  xp:0, correct:0, wrong:0, played:0, bestStreak:0,
+  catScores:{}, powers:{ fifty:2, skip:1, time:1 }
+};
 
-  const progressPct = Math.round((idx / total) * 100);
-  document.getElementById('qProgressFill').style.width = progressPct + '%';
-  document.getElementById('qProgressText').textContent = `${idx+1} / ${total}`;
+let session = {};
+
+// ================================================================
+// HELPERS
+// ================================================================
+function getLevel(xp){
+  let lv=0;
+  for(let i=LEVELS.length-1;i>=0;i--){ if(xp>=LEVELS[i].min){lv=i;break;} }
+  return lv;
+}
+function getLevelData(xp){ return LEVELS[getLevel(xp)]; }
+function getNextLevel(xp){
+  const lv=getLevel(xp);
+  return lv<LEVELS.length-1 ? LEVELS[lv+1] : null;
+}
+function saveState(){ localStorage.setItem('maydan',JSON.stringify(state)); }
+
+function shuffle(arr){ return [...arr].sort(()=>Math.random()-0.5); }
+
+function getQsByFilter(cats, diff, count){
+  let pool = QUESTIONS.filter(q=>{
+    const catOk = cats.includes('all') || cats.includes(q.cat);
+    const diffOk = diff === 'all' || q.diff === diff;
+    return catOk && diffOk;
+  });
+  return shuffle(pool).slice(0, count);
+}
+
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+function showToast(msg, color='#a78bfa'){
+  const t=document.createElement('div');
+  t.style.cssText=`position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);
+    background:var(--bg-card);border:1px solid ${color};border-radius:12px;
+    padding:10px 22px;font-size:13px;font-weight:700;color:${color};
+    z-index:9999;opacity:0;transition:all 0.3s;pointer-events:none;white-space:nowrap`;
+  t.textContent=msg;
+  document.body.appendChild(t);
+  setTimeout(()=>{ t.style.opacity='1'; t.style.transform='translateX(-50%) translateY(0)'; },10);
+  setTimeout(()=>{ t.style.opacity='0'; setTimeout(()=>t.remove(),300); },2500);
+}
+
+// ================================================================
+// INIT DASHBOARD
+// ================================================================
+function initDash(){
+  const lv = getLevelData(state.xp);
+  const nx = getNextLevel(state.xp);
+  const pct = nx ? Math.round((state.xp - LEVELS[getLevel(state.xp)].min) / (nx.min - LEVELS[getLevel(state.xp)].min) * 100) : 100;
+
+  document.getElementById('dash-icon').textContent     = lv.icon;
+  document.getElementById('dash-level').textContent    = lv.name;
+  document.getElementById('dash-level-sub').textContent= `المستوى ${getLevel(state.xp)+1} — ${lv.sub}`;
+  document.getElementById('dash-xp-bar').style.width   = pct+'%';
+  document.getElementById('dash-xp-lbl').textContent   = nx ? `${state.xp} / ${nx.min} XP` : `${state.xp} XP — الحد الأقصى!`;
+  document.getElementById('ds-correct').textContent    = state.correct;
+  document.getElementById('ds-wrong').textContent      = state.wrong;
+  document.getElementById('ds-best').textContent       = state.bestStreak;
+
+  const total = state.correct + state.wrong;
+  const acc   = total ? Math.round(state.correct/total*100) : 0;
+  document.getElementById('hs-played').textContent  = state.played;
+  document.getElementById('hs-xp').textContent      = state.xp;
+  document.getElementById('hs-streak').textContent  = state.bestStreak;
+  document.getElementById('hs-acc').textContent     = acc+'%';
+
+  renderCatGrid();
+  renderLeaderboard();
+}
+
+// ================================================================
+// CAT GRID
+// ================================================================
+function renderCatGrid(){
+  const el = document.getElementById('cat-grid');
+  el.innerHTML = Object.entries(CATS).map(([k,c])=>{
+    const sc = state.catScores[k] || {correct:0,total:0};
+    const pct = sc.total ? Math.round(sc.correct/sc.total*100) : 0;
+    return `<div class="cat-card" style="--cc:${c.color}" onclick="showLevelSelect('classic','${k}')">
+      <span class="cat-icon">${c.icon}</span>
+      <div class="cat-name">${c.name}</div>
+      <div class="cat-count">${QUESTIONS.filter(q=>q.cat===k).length} سؤال</div>
+      <div class="cat-bar"><div class="cat-fill" style="width:${pct}%;background:${c.color}"></div></div>
+      <div class="cat-score">${sc.total?pct+'% دقة':'لم تلعب بعد'}</div>
+    </div>`;
+  }).join('');
+}
+
+// ================================================================
+// LEADERBOARD (local + firebase ready)
+// ================================================================
+function renderLeaderboard(){
+  const el = document.getElementById('lb-list');
+  // Local mock + current user
+  const entries = [
+    { name:'المتصدر الأول',  xp:4200, icon:'🥇', lv:'إمام الميدان' },
+    { name:'المتصدر الثاني', xp:3100, icon:'🥈', lv:'العلّامة' },
+    { name:'المتصدر الثالث',xp:2400, icon:'🥉', lv:'الشيخ' },
+  ];
+  const rankColors = ['gold','silver','bronze'];
+  let myRank = -1;
+
+  let html = entries.map((e,i)=>`
+    <div class="lb-row">
+      <div class="lb-rank ${rankColors[i]}">${['🥇','🥈','🥉'][i]}</div>
+      <div class="lb-avatar">${e.icon}</div>
+      <div class="lb-name">${e.name}<div class="lb-lvl">${e.lv}</div></div>
+      <div class="lb-xp">${e.xp} XP</div>
+    </div>`).join('');
+
+  if(state.xp > 0){
+    html += `<div class="lb-row me">
+      <div class="lb-rank" style="color:#a78bfa">أنت</div>
+      <div class="lb-avatar">${getLevelData(state.xp).icon}</div>
+      <div class="lb-name">أنت<div class="lb-lvl">${getLevelData(state.xp).name}</div></div>
+      <div class="lb-xp">${state.xp} XP</div>
+    </div>`;
+  }
+  el.innerHTML = html;
+}
+
+// ================================================================
+// LEVEL SELECT
+// ================================================================
+let selDiff = null;
+let selCat  = null;
+let quizMode= 'classic';
+
+function showLevelSelect(mode, precat=null){
+  quizMode = mode;
+  selDiff  = null;
+  selCat   = precat;
+  showScreen('screen-level');
+  document.querySelectorAll('.diff-card').forEach(d=>d.classList.remove('on'));
+
+  const csg = document.getElementById('cat-select-grid');
+  csg.innerHTML = `
+    <div class="csel ${!precat?'on':''}" onclick="toggleCat('all',this)">🎲 الكل</div>
+    `+Object.entries(CATS).map(([k,c])=>
+      `<div class="csel ${precat===k?'on':''}" data-cat="${k}" onclick="toggleCat('${k}',this)">
+        ${c.icon} ${c.name}
+      </div>`
+    ).join('');
+
+  checkStartBtn();
+}
+
+function selectDiff(d, btn){
+  document.querySelectorAll('.diff-card').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  selDiff = d;
+  checkStartBtn();
+}
+
+function toggleCat(k, btn){
+  if(k==='all'){
+    document.querySelectorAll('.csel').forEach(b=>b.classList.remove('on'));
+    btn.classList.add('on');
+    selCat='all';
+  } else {
+    document.querySelector('.csel:first-child').classList.remove('on');
+    btn.classList.toggle('on');
+    const ons=[...document.querySelectorAll('.csel.on')].map(b=>b.dataset.cat).filter(Boolean);
+    selCat = ons.length ? ons : null;
+  }
+  checkStartBtn();
+}
+
+function checkStartBtn(){
+  document.getElementById('start-btn').disabled = !selDiff || !selCat;
+}
+
+// ================================================================
+// SURVIVAL MODE
+// ================================================================
+function startSurvival(){
+  quizMode = 'survival';
+  selDiff  = 'all';
+  selCat   = 'all';
+  session = {
+    mode:'survival', questions: getQsByFilter(['all'],'all',999),
+    idx:0, correct:0, wrong:0, streak:0, bestStreak:0,
+    lives:3, xpEarned:0,
+    powers:{ fifty: state.powers.fifty, skip: state.powers.skip, time: state.powers.time }
+  };
+  showScreen('screen-quiz');
+  renderPowers();
+  loadQuestion();
+}
+
+// ================================================================
+// START QUIZ
+// ================================================================
+function startQuiz(){
+  const cats = selCat==='all' ? ['all'] : (Array.isArray(selCat)?selCat:[selCat]);
+  const qs   = getQsByFilter(cats, selDiff, quizMode==='speed'?15:10);
+
+  if(!qs.length){ showToast('لا توجد أسئلة لهذا الاختيار','#f85149'); return; }
+
+  session = {
+    mode: quizMode,
+    questions: qs,
+    idx:0, correct:0, wrong:0, streak:0, bestStreak:0,
+    lives: quizMode==='survival'?3:null,
+    xpEarned:0,
+    timePerQ: quizMode==='speed'?15:30,
+    powers:{ fifty: state.powers.fifty, skip: state.powers.skip, time: state.powers.time }
+  };
+  state.played++;
+  saveState();
+  showScreen('screen-quiz');
+  renderPowers();
+  loadQuestion();
+}
+
+// ================================================================
+// LOAD QUESTION
+// ================================================================
+let timer=null;
+
+function loadQuestion(){
+  clearInterval(timer);
+  const {questions,idx,mode,timePerQ,lives} = session;
+
+  if(idx >= questions.length || (mode==='survival' && lives<=0)){
+    showResult(); return;
+  }
+
+  const q    = questions[idx];
+  const total= questions.length;
+  const opts = shuffle(q.opts.map((o,i)=>({text:o, isAns: i===q.ans})));
+  session.shuffledOpts = opts;
+
+  // Info
+  document.getElementById('q-info').textContent =
+    mode==='survival' ? `❤️ ${'❤️'.repeat(lives)}` : `${idx+1} / ${total}`;
+  const sEl = document.getElementById('q-streak');
+  if(session.streak>=2){ sEl.style.display='block'; sEl.textContent=`🔥 ×${session.streak}`; }
+  else sEl.style.display='none';
+
+  // Question
+  document.getElementById('q-cat-badge').textContent = CATS[q.cat]?.icon+' '+CATS[q.cat]?.name;
+  const diffEl = document.getElementById('q-diff-badge');
+  diffEl.className='q-diff-badge '+q.diff;
+  diffEl.textContent = q.diff==='easy'?'🌱 سهل':q.diff==='medium'?'⚔️ متوسط':'🔥 صعب';
+  document.getElementById('q-text').textContent = q.q;
+  const vEl = document.getElementById('q-verse');
+  if(q.verse){ vEl.style.display='block'; vEl.textContent=q.verse; }
+  else        { vEl.style.display='none'; }
 
   // Options
-  const opts = document.getElementById('optionsContainer');
-  opts.innerHTML = '';
-  const letters = ['أ','ب','ج','د'];
-  q.opts.forEach((opt, i) => {
-    const btn = document.createElement('button');
-    btn.className = 'opt-btn';
-    btn.innerHTML = `<span class="opt-letter">${letters[i]}</span>${opt}`;
-    btn.onclick = () => selectAnswer(i);
-    opts.appendChild(btn);
-  });
+  document.getElementById('q-options').innerHTML = opts.map((o,i)=>`
+    <button class="opt-btn" onclick="selectOpt(${i})" data-i="${i}">
+      <span class="opt-letter">${['أ','ب','ج','د'][i]}</span>
+      ${o.text}
+    </button>`).join('');
 
-  document.getElementById('nextBtn').classList.remove('show');
-  gameState.answered = false;
+  document.getElementById('q-feedback').className='feedback';
+  document.getElementById('q-feedback').textContent='';
+  document.getElementById('xp-flash').className='xp-flash';
+  document.getElementById('next-btn').className='next-btn';
 
   // Timer
-  clearInterval(gameState.timerInterval);
-  gameState.timerVal = 30;
-  updateTimerUI(30);
-  gameState.timerInterval = setInterval(() => {
-    gameState.timerVal--;
-    updateTimerUI(gameState.timerVal);
-    if (gameState.timerVal <= 0) {
-      clearInterval(gameState.timerInterval);
-      if (!gameState.answered) selectAnswer(-1);
+  const tEl  = document.getElementById('timer-fill');
+  const tMax = session.timePerQ || 30;
+  let tLeft  = tMax;
+  tEl.style.transition='none'; tEl.style.width='100%';
+  tEl.classList.remove('warn');
+  setTimeout(()=>{
+    tEl.style.transition=`width ${tMax}s linear`;
+    tEl.style.width='0%';
+  },50);
+
+  timer = setInterval(()=>{
+    tLeft--;
+    if(tLeft<=8) tEl.classList.add('warn');
+    if(tLeft<=0){
+      clearInterval(timer);
+      timeOut();
     }
-  }, 1000);
+  },1000);
 }
 
-function updateTimerUI(val) {
-  document.getElementById('timerNum').textContent = val;
-  const pct = (val / 30) * 100;
-  const color = val > 10 ? 'var(--gold)' : 'var(--red)';
-  document.getElementById('timerCircle').style.background =
-    `conic-gradient(${color} ${pct}%, var(--border) ${pct}%)`;
-  document.getElementById('timerNum').style.color = color;
-}
+// ================================================================
+// SELECT OPTION
+// ================================================================
+function selectOpt(i){
+  clearInterval(timer);
+  const opts  = document.querySelectorAll('.opt-btn');
+  const q     = session.questions[session.idx];
+  const isCorrect = session.shuffledOpts[i].isAns;
 
-// ============ SELECT ANSWER ============
-function selectAnswer(chosen) {
-  if (gameState.answered) return;
-  gameState.answered = true;
-  clearInterval(gameState.timerInterval);
+  opts.forEach(b=>b.disabled=true);
+  opts[i].classList.add(isCorrect?'correct':'wrong');
 
-  const q    = gameState.questions[gameState.current];
-  const btns = document.querySelectorAll('.opt-btn');
-  const isCorrect = chosen === q.a;
-
-  btns.forEach((btn, i) => {
-    btn.disabled = true;
-    if (i === q.a)     btn.classList.add('correct');
-    if (i === chosen && !isCorrect) btn.classList.add('wrong');
-    btn.querySelector('.opt-letter').textContent =
-      i === q.a ? '✓' : i === chosen ? '✗' : ['أ','ب','ج','د'][i];
+  // reveal correct
+  session.shuffledOpts.forEach((o,j)=>{
+    if(o.isAns) opts[j].classList.add(isCorrect?'correct':'reveal');
   });
 
-  if (isCorrect) {
-    gameState.correct++;
-    gameState.streak++;
-    if (gameState.streak > gameState.bestStreak) gameState.bestStreak = gameState.streak;
-    showXPFloat('+10', btns[chosen]);
+  const xpMap = {easy:10, medium:20, hard:35};
+  const xpBase= xpMap[q.diff]||10;
+
+  if(isCorrect){
+    session.correct++;
+    session.streak++;
+    if(session.streak>session.bestStreak) session.bestStreak=session.streak;
+    const bonus = session.streak>1?Math.floor(xpBase*0.5*(session.streak-1)):0;
+    const earned= xpBase+bonus;
+    session.xpEarned += earned;
+
+    const fb = document.getElementById('q-feedback');
+    fb.className='feedback correct show';
+    fb.innerHTML = `✅ إجابة صحيحة! ${q.exp||''} ${bonus>0?`<br>🔥 بونص السلسلة: +${bonus} XP`:''}`;
+
+    const xf = document.getElementById('xp-flash');
+    xf.className='xp-flash show';
+    xf.textContent = `+${earned} XP ${session.streak>2?'🔥':''}`;
+
+    // Cat score
+    if(!state.catScores[q.cat]) state.catScores[q.cat]={correct:0,total:0};
+    state.catScores[q.cat].correct++;
+    state.catScores[q.cat].total++;
+
   } else {
-    gameState.wrong++;
-    gameState.streak = 0;
-  }
+    session.wrong++;
+    session.streak=0;
+    if(session.mode==='survival') session.lives--;
 
-  if (q.exp) {
-    document.getElementById('expBox').textContent = '💡 ' + q.exp;
-    document.getElementById('expBox').classList.add('show');
-  }
+    const fb = document.getElementById('q-feedback');
+    fb.className='feedback wrong show';
+    fb.innerHTML = `❌ خطأ! الإجابة الصحيحة موضّحة.<br><span style="color:var(--text-sub)">${q.exp||''}</span>`;
 
-  document.getElementById('nextBtn').classList.add('show');
-}
+    if(!state.catScores[q.cat]) state.catScores[q.cat]={correct:0,total:0};
+    state.catScores[q.cat].total++;
 
-// ============ NEXT QUESTION ============
-window.nextQuestion = function() {
-  gameState.current++;
-  if (gameState.current >= gameState.questions.length) {
-    endGame();
-  } else {
-    renderQuestion();
-  }
-};
-
-// ============ END GAME ============
-async function endGame() {
-  const { levelId, correct, wrong, bestStreak, questions, isMaster } = gameState;
-  const total    = questions.length;
-  const accuracy = Math.round((correct / total) * 100);
-  const passed   = accuracy >= 60;
-
-  const cfg = isMaster ? MASTER_CONFIG : LEVELS_CONFIG.find(l => l.id === levelId);
-  let xpGained = 0;
-  if (passed) {
-    xpGained = cfg.xpReward + (correct * 10) + (bestStreak >= 5 ? 50 : 0);
-  } else {
-    xpGained = correct * 5;
-  }
-
-  // Save seen IDs — فقط عند النجاح نضيف الأسئلة للمُشاهَدة
-  const prog = userProgress[levelId] || { completed:false, seenIds:[] };
-  let newSeen = prog.seenIds || [];
-  if (passed) {
-    newSeen = [...new Set([...prog.seenIds, ...questions.map(q => q.id)])];
-  }
-  userProgress[levelId] = {
-    completed: passed ? true : prog.completed,
-    seenIds: newSeen
-  };
-
-  // Award power if perfect
-  if (accuracy === 100 && !isMaster) {
-    const powers = ['istakhara','mahla','shaikh','taamol'];
-    const p = powers[Math.floor(Math.random() * powers.length)];
-    userPowers[p] = (userPowers[p] || 0) + 1;
-    showBadgePopup('🎴 حصلت على رُخصة: ' + ['الاستخارة','المهلة','همس الشيخ','التأمل'][powers.indexOf(p)]);
-  }
-
-  // Award master badge
-  if (isMaster && passed) {
-    const badges = JSON.parse(localStorage.getItem('arenaBadges') || '[]');
-    if (!badges.includes('master_ijaza')) {
-      badges.push('master_ijaza');
-      localStorage.setItem('arenaBadges', JSON.stringify(badges));
-      showBadgePopup('🏛️ حصلت على إجازة مقام العالِم!');
+    if(session.mode==='survival' && session.lives<=0){
+      setTimeout(showResult, 1800); return;
     }
   }
 
-  // Save XP
-  const currentXP = parseInt(localStorage.getItem('userXP') || '0');
-  localStorage.setItem('userXP', currentXP + xpGained);
-
-  if (currentUser) {
-    try {
-      await updateDoc(doc(db, 'users', currentUser.uid), {
-        xp: increment(xpGained),
-        arenaProgress: userProgress,
-        arenaPowers: userPowers
-      });
-    } catch(e) {}
-  }
-
-  await saveProgress();
-
-  // Result Screen
-  document.getElementById('resultIcon').textContent   = passed ? (accuracy===100?'🌟':'🎉') : '💪';
-  document.getElementById('resultTitle').textContent  = passed ? (accuracy===100?'مثالي!':'أحسنت!') : 'حاول مجدداً!';
-  document.getElementById('resultSub').textContent    = passed ? `اجتزت المستوى بدقة ${accuracy}%` : `تحتاج 60% للاجتياز — حصلت على ${accuracy}%`;
-  document.getElementById('resCorrect').textContent   = correct;
-  document.getElementById('resWrong').textContent     = wrong;
-  document.getElementById('resStreak').textContent    = bestStreak;
-  document.getElementById('resAccuracy').textContent  = accuracy + '%';
-  document.getElementById('resXP').textContent        = '+' + xpGained;
-
-  const primaryBtn = document.getElementById('resPrimaryBtn');
-  if (passed) {
-    const nextIdx = LEVELS_CONFIG.findIndex(l => l.id === levelId) + 1;
-    if (!isMaster && nextIdx < LEVELS_CONFIG.length) {
-      primaryBtn.textContent = 'المستوى التالي ←';
-      window._resultNextLevel = LEVELS_CONFIG[nextIdx].id;
-    } else {
-      primaryBtn.textContent = '🗺️ خريطة المسار';
-      window._resultNextLevel = null;
-    }
-  } else {
-    primaryBtn.textContent = '🔄 أعد المحاولة';
-    window._resultNextLevel = levelId;
-  }
-
-  showScreen('resultScreen');
+  document.getElementById('next-btn').className='next-btn show';
 }
 
-window.resultPrimary = function() {
-  if (window._resultNextLevel) {
-    startLevel(window._resultNextLevel);
-  } else {
-    showScreen('mapScreen');
-    renderMap();
-    updateMapStats();
-  }
-};
+function timeOut(){
+  const opts=document.querySelectorAll('.opt-btn');
+  opts.forEach(b=>b.disabled=true);
+  session.shuffledOpts.forEach((o,j)=>{
+    if(o.isAns) opts[j].classList.add('reveal');
+  });
+  session.wrong++;
+  session.streak=0;
+  if(session.mode==='survival'){ session.lives--; if(session.lives<=0){setTimeout(showResult,1500);return;} }
+  const fb=document.getElementById('q-feedback');
+  fb.className='feedback wrong show';
+  fb.textContent='⏰ انتهى الوقت!';
+  document.getElementById('next-btn').className='next-btn show';
+}
 
-// ============ POWERS ============
-window.usePower = function(type) {
-  if (gameState.answered) return;
-  if (gameState.usedPowers[type]) return;
-  if ((userPowers[type] || 0) <= 0) return;
+function nextQuestion(){
+  session.idx++;
+  loadQuestion();
+}
 
-  const q    = gameState.questions[gameState.current];
-  const btns = document.querySelectorAll('.opt-btn');
+// ================================================================
+// POWERS
+// ================================================================
+function renderPowers(){
+  const {fifty,skip,time}=session.powers;
+  document.getElementById('pw-fifty').disabled = fifty<=0;
+  document.getElementById('pw-skip').disabled  = skip<=0;
+  document.getElementById('pw-time').disabled  = time<=0;
+  document.getElementById('cnt-fifty').textContent=fifty;
+  document.getElementById('cnt-skip').textContent=skip;
+  document.getElementById('cnt-time').textContent=time;
+}
 
-  if (type === 'istakhara') {
-    let removed = 0;
-    btns.forEach((btn, i) => {
-      if (i !== q.a && removed < 2 && !btn.disabled) {
-        btn.disabled = true; btn.style.opacity='0.3'; removed++;
+function usePower(p){
+  if(session.powers[p]<=0) return;
+  session.powers[p]--;
+  state.powers[p]=Math.max(0,state.powers[p]-1);
+  saveState();
+
+  if(p==='fifty'){
+    const opts=document.querySelectorAll('.opt-btn');
+    let removed=0;
+    opts.forEach((b,i)=>{
+      if(removed<2 && !session.shuffledOpts[i].isAns && !b.disabled){
+        b.style.opacity='0.2'; b.disabled=true; removed++;
       }
     });
-  } else if (type === 'mahla') {
-    const deferred = gameState.questions.splice(gameState.current, 1)[0];
-    gameState.questions.push(deferred);
-    gameState.answered = true;
-    clearInterval(gameState.timerInterval);
-    nextQuestion(); return;
-  } else if (type === 'shaikh') {
-    document.getElementById('expBox').textContent = '📖 ' + (q.exp || 'فكّر جيداً في المعنى اللغوي للكلمات');
-    document.getElementById('expBox').classList.add('show');
-  } else if (type === 'taamol') {
-    gameState.timerVal = Math.min(45, gameState.timerVal + 15);
-    updateTimerUI(gameState.timerVal);
+    showToast('✂️ تم حذف خيارين!');
   }
-
-  gameState.usedPowers[type] = true;
-  userPowers[type]--;
-  const powers = ['istakhara','mahla','shaikh','taamol'];
-  const btn = document.getElementById('power' + powers.indexOf(type));
-  btn.classList.add('used');
-};
-
-// ============ LEADERBOARD ============
-window.showLeaderboard = async function() {
-  document.getElementById('lbModal').classList.add('show');
-  const list = document.getElementById('lbList');
-  list.innerHTML = '<div style="text-align:center;padding:20px;color:var(--text2)">جاري التحميل...</div>';
-  try {
-    const q = query(collection(db,'users'), orderBy('xp','desc'), limit(20));
-    const snap = await getDocs(q);
-    if (snap.empty) { list.innerHTML='<div style="text-align:center;padding:20px;color:var(--text2)">لا يوجد بيانات بعد</div>'; return; }
-    list.innerHTML = '';
-    snap.docs.forEach((d,i) => {
-      const data = d.data();
-      const rankClass = i===0?'gold':i===1?'silver':i===2?'bronze':'';
-      const rankIcon  = i===0?'🥇':i===1?'🥈':i===2?'🥉':`#${i+1}`;
-      const row = document.createElement('div');
-      row.className = 'lb-row';
-      row.innerHTML = `
-        <div class="lb-rank ${rankClass}">${rankIcon}</div>
-        ${data.photo ? `<img class="lb-avatar" src="${data.photo}" onerror="this.style.display='none'">` : ''}
-        <div class="lb-name">${data.name || 'مجهول'}</div>
-        <div class="lb-xp">${(data.xp||0).toLocaleString('ar')} XP</div>`;
-      list.appendChild(row);
-    });
-  } catch(e) {
-    list.innerHTML = '<div style="text-align:center;padding:20px;color:var(--red)">خطأ في التحميل</div>';
+  else if(p==='skip'){
+    clearInterval(timer);
+    showToast('⏭ تم تخطي السؤال!');
+    setTimeout(()=>{ session.idx++; loadQuestion(); },500);
   }
-};
-
-window.closeLB = function(e) {
-  if (e.target === document.getElementById('lbModal'))
-    document.getElementById('lbModal').classList.remove('show');
-};
-
-// ============ UTILS ============
-window.showScreen = function(id) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-};
-
-window.quitGame = function() {
-  clearInterval(gameState.timerInterval);
-  showScreen('mapScreen');
-  renderMap();
-  updateMapStats();
-};
-
-function showXPFloat(text, anchor) {
-  const el = document.createElement('div');
-  el.className = 'xp-float';
-  el.textContent = text + ' XP';
-  const rect = anchor ? anchor.getBoundingClientRect() : {left: window.innerWidth/2, top: window.innerHeight/2};
-  el.style.left = rect.left + 'px';
-  el.style.top  = (rect.top + window.scrollY) + 'px';
-  document.body.appendChild(el);
-  setTimeout(() => el.remove(), 1600);
+  else if(p==='time'){
+    session.timePerQ=(session.timePerQ||30)+15;
+    document.getElementById('timer-fill').style.transition='none';
+    document.getElementById('timer-fill').style.width='100%';
+    clearInterval(timer);
+    timer=setInterval(()=>{ if(--session.timePerQ<=0){clearInterval(timer);timeOut();} },1000);
+    showToast('⏳ +15 ثانية إضافية!');
+  }
+  renderPowers();
 }
 
-function showBadgePopup(msg) {
-  const el = document.createElement('div');
-  el.className = 'badge-popup';
-  el.innerHTML = `<div style="font-size:20px;margin-bottom:4px">🏅</div><div style="font-weight:700">${msg}</div>`;
-  document.body.appendChild(el);
-  setTimeout(() => el.remove(), 3000);
+// ================================================================
+// CONFIRM QUIT
+// ================================================================
+function confirmQuit(){
+  clearInterval(timer);
+  if(confirm('هل تريد إنهاء الجولة الحالية؟'))
+    showResult();
+  else
+    timer; // continue handled by existing timer
 }
+
+// ================================================================
+// RESULT
+// ================================================================
+function showResult(){
+  clearInterval(timer);
+
+  // Update state
+  const prevLv = getLevel(state.xp);
+  state.xp      += session.xpEarned;
+  state.correct += session.correct;
+  state.wrong   += session.wrong;
+  if(session.bestStreak > state.bestStreak)
+    state.bestStreak = session.bestStreak;
+  saveState();
+
+  const newLv = getLevel(state.xp);
+  const total  = session.correct+session.wrong;
+  const acc    = total?Math.round(session.correct/total*100):0;
+
+  let medal='🎖'; let title='أحسنت!'; let sub='';
+  if(acc>=90){ medal='🏆'; title='إتقان رائع!'; sub='أنت من نخبة الميدان'; }
+  else if(acc>=70){ medal='🥇'; title='أداء ممتاز!'; sub='علمك يتعمق'; }
+  else if(acc>=50){ medal='🥈'; title='جيد!'; sub='واصل التحسن'; }
+  else { medal='🎯'; title='تدرّب أكثر!'; sub='لكل بداية نهاية ناجحة'; }
+
+  document.getElementById('r-medal').textContent       = medal;
+  document.getElementById('r-title').textContent       = title;
+  document.getElementById('r-sub').textContent         = sub || `دقة: ${acc}%`;
+  document.getElementById('r-correct').textContent     = session.correct;
+  document.getElementById('r-wrong').textContent       = session.wrong;
+  document.getElementById('r-streak').textContent      = session.bestStreak;
+  document.getElementById('r-xp').textContent          = `+${session.xpEarned}`;
+
+  const lub = document.getElementById('level-up-banner');
+  if(newLv > prevLv){
+    lub.className='level-up-banner show';
+    lub.textContent=`🎉 ترقية! أصبحت ${LEVELS[newLv].icon} ${LEVELS[newLv].name}`;
+  } else {
+    lub.className='level-up-banner';
+  }
+
+  showScreen('screen-result');
+  initDash();
+}
+
+function replayQuiz(){
+  if(session.mode==='survival') startSurvival();
+  else showLevelSelect(quizMode);
+}
+
+// ================================================================
+// THEME
+// ================================================================
+(function(){
+  const s=localStorage.getItem('theme')||'dark';
+  document.documentElement.setAttribute('data-theme',s);
+  document.getElementById('iconSun').style.display  = s==='dark'?'none':'block';
+  document.getElementById('iconMoon').style.display = s==='dark'?'block':'none';
+})();
+document.getElementById('themeBtn').addEventListener('click',()=>{
+  const n=document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark';
+  document.documentElement.setAttribute('data-theme',n);
+  localStorage.setItem('theme',n);
+  document.getElementById('iconSun').style.display  = n==='dark'?'none':'block';
+  document.getElementById('iconMoon').style.display = n==='dark'?'block':'none';
+});
+
+// ================================================================
+// MENU
+// ================================================================
+const menuToggle=document.getElementById('menuToggle');
+const navMenu=document.getElementById('navMenu');
+const iconMenuEl=document.getElementById('iconMenu');
+const iconCloseEl=document.getElementById('iconClose');
+menuToggle.addEventListener('click',()=>{
+  const open=navMenu.classList.toggle('open');
+  menuToggle.setAttribute('aria-expanded',open);
+  iconMenuEl.style.display=open?'none':'block';
+  iconCloseEl.style.display=open?'block':'none';
+});
+document.addEventListener('click',e=>{
+  if(!menuToggle.contains(e.target)&&!navMenu.contains(e.target)){
+    navMenu.classList.remove('open');
+    iconMenuEl.style.display='block';
+    iconCloseEl.style.display='none';
+  }
+});
+
+// ================================================================
+// FIREBASE
+// ================================================================
+window.addEventListener('islamiCalcReady',()=>{
+  if(window.islamiCalc?.getCurrentUser?..()){
+    document.getElementById('loginBtn').style.display='none';
+    document.getElementById('navProfile').style.display='block';
+  }
+});
+
+// ================================================================
+// START
+// ================================================================
+initDash();
 </script>
 </body>
 </html>

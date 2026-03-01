@@ -3,666 +3,1047 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="أذكار الصباح والمساء وأذكار النوم والاستيقاظ والسفر — مع عداد تسبيح تفاعلي">
-  <link rel="canonical" href="https://islamicalc.com/athkar/">
-  <link rel="manifest" href="/manifest.json">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📿</text></svg>">
+  <title>الأذكار | IslamiCalc</title>
+  <meta name="description" content="أذكار الصباح والمساء وبعد الصلاة وأذكار النوم مع عداد تسبيح تفاعلي">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://islamicalc.com/athkar">
+  <link rel="icon" href="/favicon.ico">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap">
   <link rel="stylesheet" href="/style.css">
-  <title>أذكار | IslamiCalc</title>
+  <style>
+
+    /* ===== هيدر ===== */
+    .page-hero {
+      background: linear-gradient(135deg, #0d1117 0%, #0d1a0d 50%, #1a1a0d 100%);
+      padding: 96px 24px 52px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .page-hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 70% 60% at 50% 0%,
+        rgba(45,106,79,0.2) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(201,168,76,0.1);
+      border: 1px solid rgba(201,168,76,0.25);
+      color: var(--gold); padding: 6px 18px;
+      border-radius: 999px; font-size: 13px; font-weight: 600;
+      margin-bottom: 20px; position: relative;
+    }
+    .page-hero h1 {
+      font-size: clamp(28px,5vw,48px); font-weight: 900;
+      margin-bottom: 12px; position: relative;
+    }
+    .gradient-text {
+      background: linear-gradient(135deg, #40916c, #c9a84c);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .page-hero p {
+      font-size: 15px; color: var(--text-sub);
+      max-width: 500px; margin: 0 auto 24px; position: relative;
+    }
+    .hero-stats {
+      display: flex; justify-content: center;
+      gap: 32px; flex-wrap: wrap; position: relative;
+    }
+    .hero-stat-num { font-size: 2rem; font-weight: 900; color: var(--gold); display: block; }
+    .hero-stat-lbl { font-size: 12px; color: var(--text-muted); }
+
+    /* ===== تبويبات ===== */
+    .tabs-bar {
+      max-width: 860px; margin: 32px auto 0;
+      padding: 0 20px;
+      display: flex; gap: 6px; flex-wrap: wrap; justify-content: center;
+    }
+    .tab-btn {
+      display: flex; align-items: center; gap: 7px;
+      padding: 10px 20px;
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 999px; color: var(--text-sub);
+      font-family: var(--font); font-size: 13px; font-weight: 700;
+      cursor: pointer; transition: var(--transition); white-space: nowrap;
+    }
+    .tab-btn.active {
+      background: rgba(45,106,79,0.18);
+      border-color: var(--primary);
+      color: var(--primary-light);
+    }
+    .tab-btn:hover:not(.active) {
+      border-color: rgba(45,106,79,0.3);
+      color: var(--text);
+    }
+
+    /* ===== لوحة المحتوى ===== */
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    .athkar-wrap {
+      max-width: 780px; margin: 36px auto 80px;
+      padding: 0 20px;
+    }
+
+    /* ===== بطاقة الذكر ===== */
+    .dhikr-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 24px;
+      margin-bottom: 14px;
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+    .dhikr-card::after {
+      content: '';
+      position: absolute; top: 0; right: 0;
+      width: 4px; height: 100%;
+      background: linear-gradient(180deg, #40916c, #c9a84c);
+      border-radius: 0 20px 20px 0;
+    }
+    .dhikr-card.done {
+      border-color: rgba(45,106,79,0.4);
+      background: rgba(45,106,79,0.05);
+    }
+    .dhikr-card.done::after {
+      background: #40916c;
+    }
+
+    .dhikr-num {
+      font-size: 11px; font-weight: 800;
+      color: var(--gold); margin-bottom: 10px;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .dhikr-text {
+      font-size: 20px; font-weight: 700;
+      line-height: 2.1; color: var(--text);
+      margin-bottom: 10px;
+      font-family: 'Tajawal', sans-serif;
+    }
+    .dhikr-translation {
+      font-size: 13px; color: var(--text-sub);
+      line-height: 1.8; margin-bottom: 14px;
+      padding-right: 12px;
+      border-right: 2px solid rgba(201,168,76,0.3);
+    }
+    .dhikr-source {
+      font-size: 11px; color: var(--text-muted);
+      margin-bottom: 14px;
+    }
+
+    /* شريط التقدم */
+    .dhikr-footer {
+      display: flex; align-items: center;
+      gap: 12px; flex-wrap: wrap;
+    }
+    .progress-bar {
+      flex: 1; min-width: 100px;
+      background: var(--bg-main);
+      border-radius: 999px; height: 7px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #40916c, #c9a84c);
+      border-radius: 999px;
+      transition: width 0.3s ease;
+    }
+    .count-display {
+      font-size: 13px; font-weight: 800;
+      color: var(--gold); white-space: nowrap;
+      min-width: 52px; text-align: center;
+    }
+    .count-btn {
+      width: 42px; height: 42px;
+      background: linear-gradient(135deg, rgba(45,106,79,0.2), rgba(201,168,76,0.15));
+      border: 1.5px solid rgba(45,106,79,0.35);
+      border-radius: 12px; color: var(--primary-light);
+      font-size: 20px; font-weight: 900;
+      cursor: pointer; transition: var(--transition);
+      display: flex; align-items: center; justify-content: center;
+      user-select: none;
+    }
+    .count-btn:hover {
+      background: rgba(45,106,79,0.35);
+      transform: scale(1.08);
+    }
+    .count-btn:active { transform: scale(0.95); }
+    .reset-btn {
+      width: 32px; height: 32px;
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 8px; color: var(--text-muted);
+      font-size: 14px; cursor: pointer;
+      transition: var(--transition);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .reset-btn:hover { border-color: #f85149; color: #f85149; }
+
+    .done-badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      background: rgba(45,106,79,0.15);
+      border: 1px solid rgba(45,106,79,0.3);
+      color: #40916c; padding: 4px 12px;
+      border-radius: 999px; font-size: 12px; font-weight: 700;
+    }
+
+    /* ===== شريط التقدم الكلي ===== */
+    .overall-progress {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 18px 20px;
+      margin-bottom: 20px;
+      display: flex; align-items: center; gap: 14px;
+    }
+    .overall-progress-info { flex: 1; }
+    .overall-progress-title {
+      font-size: 14px; font-weight: 700; margin-bottom: 6px;
+    }
+    .overall-progress-bar {
+      background: var(--bg-main);
+      border-radius: 999px; height: 8px;
+      overflow: hidden;
+    }
+    .overall-progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #40916c, #c9a84c);
+      border-radius: 999px;
+      transition: width 0.5s ease;
+    }
+    .overall-pct {
+      font-size: 22px; font-weight: 900;
+      color: var(--gold); white-space: nowrap;
+    }
+
+    .reset-all-btn {
+      display: flex; align-items: center; gap: 6px;
+      padding: 8px 16px;
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 999px; color: var(--text-muted);
+      font-family: var(--font); font-size: 12px;
+      font-weight: 600; cursor: pointer;
+      transition: var(--transition); margin-bottom: 16px;
+    }
+    .reset-all-btn:hover { border-color: #f85149; color: #f85149; }
+
+    /* ===== عداد التسبيح ===== */
+    .tasbih-wrap {
+      max-width: 400px; margin: 40px auto 80px;
+      padding: 0 20px; text-align: center;
+    }
+    .tasbih-selector {
+      display: flex; gap: 8px; flex-wrap: wrap;
+      justify-content: center; margin-bottom: 28px;
+    }
+    .tasbih-opt {
+      padding: 8px 18px;
+      background: var(--bg-card); border: 1.5px solid var(--border);
+      border-radius: 999px; color: var(--text-sub);
+      font-family: var(--font); font-size: 13px; font-weight: 700;
+      cursor: pointer; transition: var(--transition);
+    }
+    .tasbih-opt.active {
+      background: rgba(45,106,79,0.18);
+      border-color: var(--primary);
+      color: var(--primary-light);
+    }
+
+    .tasbih-circle {
+      width: 240px; height: 240px;
+      border-radius: 50%;
+      background: var(--bg-card);
+      border: 3px solid var(--border);
+      margin: 0 auto 28px;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      cursor: pointer; transition: var(--transition);
+      position: relative; user-select: none;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+    }
+    .tasbih-circle:hover {
+      border-color: rgba(45,106,79,0.5);
+      box-shadow: 0 12px 40px rgba(45,106,79,0.15);
+      transform: scale(1.02);
+    }
+    .tasbih-circle:active { transform: scale(0.97); }
+    .tasbih-circle.pulse {
+      animation: pulse 0.15s ease;
+    }
+    @keyframes pulse {
+      0%   { transform: scale(1); }
+      50%  { transform: scale(1.06); }
+      100% { transform: scale(1); }
+    }
+
+    /* SVG ring */
+    .tasbih-ring {
+      position: absolute; inset: -3px;
+      width: calc(100% + 6px); height: calc(100% + 6px);
+    }
+    .tasbih-ring-bg   { fill: none; stroke: var(--border); stroke-width: 4; }
+    .tasbih-ring-fill {
+      fill: none;
+      stroke: url(#tasbihGrad);
+      stroke-width: 4;
+      stroke-linecap: round;
+      transition: stroke-dashoffset 0.3s ease;
+      transform: rotate(-90deg);
+      transform-origin: 50% 50%;
+    }
+
+    .tasbih-count {
+      font-size: 64px; font-weight: 900;
+      color: var(--text); line-height: 1;
+      position: relative; z-index: 1;
+    }
+    .tasbih-label {
+      font-size: 14px; color: var(--text-sub);
+      position: relative; z-index: 1;
+      margin-top: 4px;
+    }
+    .tasbih-target-lbl {
+      font-size: 12px; color: var(--gold);
+      margin-top: 2px; position: relative; z-index: 1;
+    }
+
+    .tasbih-actions {
+      display: flex; gap: 10px;
+      justify-content: center; flex-wrap: wrap;
+    }
+    .tasbih-btn {
+      padding: 12px 24px;
+      border-radius: 999px;
+      font-family: var(--font); font-size: 14px;
+      font-weight: 700; cursor: pointer;
+      transition: var(--transition); border: none;
+    }
+    .tasbih-btn.primary {
+      background: linear-gradient(135deg, #40916c, #c9a84c);
+      color: #fff;
+    }
+    .tasbih-btn.secondary {
+      background: var(--bg-card);
+      border: 1.5px solid var(--border);
+      color: var(--text-sub);
+    }
+    .tasbih-btn:hover { transform: translateY(-2px); opacity: 0.9; }
+
+    .tasbih-text-display {
+      font-size: 22px; font-weight: 700;
+      color: var(--gold); margin-bottom: 10px;
+      line-height: 1.8;
+    }
+    .tasbih-rounds {
+      font-size: 13px; color: var(--text-muted);
+      margin-top: 8px;
+    }
+
+    /* ===== Toast ===== */
+    .toast {
+      position: fixed; bottom: 28px; left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px; padding: 12px 24px;
+      font-size: 14px; font-weight: 700;
+      color: var(--text); z-index: 9999;
+      opacity: 0; transition: all 0.3s;
+      pointer-events: none; white-space: nowrap;
+    }
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    @media (max-width: 600px) {
+      .dhikr-text { font-size: 17px; }
+      .tasbih-circle { width: 200px; height: 200px; }
+      .tasbih-count { font-size: 52px; }
+    }
+  </style>
 </head>
 <body>
 
-<nav class="navbar">
+<!-- Navbar -->
+<nav class="navbar" role="navigation" aria-label="القائمة الرئيسية">
   <a href="/" class="navbar-brand">
     <div class="navbar-logo">☪</div>
     <span class="navbar-title">IslamiCalc</span>
   </a>
   <ul class="navbar-menu" id="navMenu">
-    <li><a href="/">🏠 الرئيسية</a></li>
-    <li><a href="/zakat">🧮 الحاسبات</a></li>
-    <li><a href="/khatma">📖 القرآن</a></li>
-    <li><a href="/prayer">🕌 الصلاة</a></li>
-    <li><a href="/athkar" class="active">📿 الأذكار</a></li>
-    <li><a href="/arena">🏆 الأرينا</a></li>
+    <li><a href="/">الرئيسية</a></li>
+    <li><a href="/zakat">الحاسبات</a></li>
+    <li><a href="/khatma">القرآن</a></li>
+    <li><a href="/prayer">الصلاة</a></li>
+    <li><a href="/athkar">الأذكار</a></li>
+    <li><a href="/arena">الأرينا</a></li>
+    <li id="navProfile" style="display:none;"><a href="/profile">بروفايلي</a></li>
   </ul>
   <div class="navbar-actions">
-    <button class="theme-btn" id="themeBtn">🌙</button>
-    <button class="login-btn" id="loginBtn" onclick="openLoginModal()">دخول 🔵</button>
-    <button class="menu-toggle" id="menuToggle">☰</button>
+    <button class="theme-btn" id="themeBtn" aria-label="تبديل الثيم">
+      <svg id="iconMoon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>
+      </svg>
+      <svg id="iconSun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none">
+        <circle cx="12" cy="12" r="5"/>
+        <line x1="12" y1="1" x2="12" y2="3"/>
+        <line x1="12" y1="21" x2="12" y2="23"/>
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+        <line x1="1" y1="12" x2="3" y2="12"/>
+        <line x1="21" y1="12" x2="23" y2="12"/>
+      </svg>
+    </button>
+    <button class="login-btn" id="loginBtn" onclick="window.islamiCalc?.loginWithGoogle()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+        <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/>
+      </svg>
+      دخول
+    </button>
+    <button class="menu-toggle" id="menuToggle" aria-label="القائمة" aria-expanded="false">
+      <svg id="iconMenu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="3" y1="6" x2="21" y2="6"/>
+        <line x1="3" y1="12" x2="21" y2="12"/>
+        <line x1="3" y1="18" x2="21" y2="18"/>
+      </svg>
+      <svg id="iconClose" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none">
+        <line x1="18" y1="6" x2="6" y2="18"/>
+        <line x1="6"  y1="6" x2="18" y2="18"/>
+      </svg>
+    </button>
   </div>
 </nav>
 
-<main>
-<div style="max-width:680px; margin:0 auto; padding:20px 16px 80px;">
-
-  <!-- Header -->
-  <div style="text-align:center; padding:28px 0 20px;">
-    <div style="font-size:60px; margin-bottom:10px;">📿</div>
-    <h1 style="font-size:26px; font-weight:900; margin-bottom:6px;">الأذكار</h1>
-    <p style="color:var(--text-muted); font-size:14px;">
-      أذكار موثقة من السنة النبوية الشريفة
-    </p>
+<!-- هيدر -->
+<section class="page-hero">
+  <div class="hero-badge">🌿 أذكار موثوقة من السنة النبوية</div>
+  <h1><span class="gradient-text">الأذكار</span> والتسبيح</h1>
+  <p>أذكار الصباح والمساء وبعد الصلاة وأذكار النوم — مع عداد تسبيح تفاعلي</p>
+  <div class="hero-stats">
+    <div><span class="hero-stat-num">100+</span><div class="hero-stat-lbl">ذكر وتسبيح</div></div>
+    <div><span class="hero-stat-num">4</span><div class="hero-stat-lbl">أقسام</div></div>
+    <div><span class="hero-stat-num">💾</span><div class="hero-stat-lbl">يحفظ تقدمك</div></div>
   </div>
+</section>
 
-  <!-- ===== تبويبات الأذكار ===== -->
-  <div style="display:flex; gap:6px; flex-wrap:wrap; margin-bottom:24px;
-              background:var(--bg-card); border:1px solid var(--border);
-              border-radius:16px; padding:8px;">
-    <button class="athkar-tab active" data-cat="sabah"   onclick="showCat('sabah')">🌅 الصباح</button>
-    <button class="athkar-tab"        data-cat="masaa"   onclick="showCat('masaa')">🌆 المساء</button>
-    <button class="athkar-tab"        data-cat="nawm"    onclick="showCat('nawm')">🌙 النوم</button>
-    <button class="athkar-tab"        data-cat="sahwa"   onclick="showCat('sahwa')">☀️ الاستيقاظ</button>
-    <button class="athkar-tab"        data-cat="salah"   onclick="showCat('salah')">🕌 بعد الصلاة</button>
-    <button class="athkar-tab"        data-cat="safar"   onclick="showCat('safar')">✈️ السفر</button>
-    <button class="athkar-tab"        data-cat="tasbih"  onclick="showCat('tasbih')">📿 التسبيح</button>
-  </div>
+<!-- تبويبات -->
+<div class="tabs-bar">
+  <button class="tab-btn active" id="tab-sabah" onclick="switchTab('sabah',this)">
+    🌅 الصباح
+  </button>
+  <button class="tab-btn" id="tab-masaa" onclick="switchTab('masaa',this)">
+    🌆 المساء
+  </button>
+  <button class="tab-btn" id="tab-salah" onclick="switchTab('salah',this)">
+    🕌 بعد الصلاة
+  </button>
+  <button class="tab-btn" id="tab-nawm" onclick="switchTab('nawm',this)">
+    🌙 النوم
+  </button>
+  <button class="tab-btn" id="tab-tasbih" onclick="switchTab('tasbih',this)">
+    📿 عداد التسبيح
+  </button>
+</div>
 
-  <!-- ===== محتوى الأذكار ===== -->
-  <div id="athkarContent"></div>
+<!-- ===== محتوى الأقسام ===== -->
+<div class="tab-panel active" id="panel-sabah">
+  <div class="athkar-wrap" id="wrap-sabah"></div>
+</div>
+<div class="tab-panel" id="panel-masaa">
+  <div class="athkar-wrap" id="wrap-masaa"></div>
+</div>
+<div class="tab-panel" id="panel-salah">
+  <div class="athkar-wrap" id="wrap-salah"></div>
+</div>
+<div class="tab-panel" id="panel-nawm">
+  <div class="athkar-wrap" id="wrap-nawm"></div>
+</div>
 
-  <!-- ===== عداد التسبيح ===== -->
-  <div id="tasbihSection" style="display:none;">
-    <div style="background:var(--bg-card); border:1px solid var(--border);
-         border-radius:20px; padding:32px 24px; text-align:center;">
-
-      <!-- اختيار الذكر -->
-      <div style="display:flex; gap:8px; flex-wrap:wrap; justify-content:center; margin-bottom:24px;">
-        <button class="tasbih-select active" onclick="selectTasbih('سبحان الله',33,this)">سبحان الله</button>
-        <button class="tasbih-select" onclick="selectTasbih('الحمد لله',33,this)">الحمد لله</button>
-        <button class="tasbih-select" onclick="selectTasbih('الله أكبر',34,this)">الله أكبر</button>
-        <button class="tasbih-select" onclick="selectTasbih('لا إله إلا الله',100,this)">لا إله إلا الله</button>
-        <button class="tasbih-select" onclick="selectTasbih('اللهم صلِّ على محمد',100,this)">الصلاة على النبي ﷺ</button>
-        <button class="tasbih-select" onclick="selectTasbih('أستغفر الله',100,this)">الاستغفار</button>
-      </div>
-
-      <!-- النص الحالي -->
-      <div style="font-family:'Amiri',serif; font-size:32px; font-weight:700;
-           color:var(--gold); margin-bottom:8px; line-height:1.5;" id="tasbihText">
-        سبحان الله
-      </div>
-      <div style="font-size:14px; color:var(--text-muted); margin-bottom:28px;" id="tasbihTarget">
-        الهدف: 33 مرة
-      </div>
-
-      <!-- العداد الدائري -->
-      <div style="position:relative; width:180px; height:180px; margin:0 auto 28px;">
-        <svg width="180" height="180" style="transform:rotate(-90deg);">
-          <circle cx="90" cy="90" r="80" fill="none" stroke="var(--border)" stroke-width="12"/>
-          <circle id="progressCircle" cx="90" cy="90" r="80" fill="none"
-                  stroke="var(--gold)" stroke-width="12"
-                  stroke-dasharray="502" stroke-dashoffset="502"
-                  style="transition:stroke-dashoffset 0.3s ease;"/>
+<!-- ===== عداد التسبيح ===== -->
+<div class="tab-panel" id="panel-tasbih">
+  <div class="tasbih-wrap">
+    <div class="tasbih-selector" id="tasbihSelector"></div>
+    <div class="tasbih-text-display" id="tasbihText">سبحان الله</div>
+    <div style="position:relative;display:inline-block;">
+      <div class="tasbih-circle" id="tasbihCircle" onclick="tapTasbih()">
+        <svg class="tasbih-ring" viewBox="0 0 246 246">
+          <defs>
+            <linearGradient id="tasbihGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%"   stop-color="#40916c"/>
+              <stop offset="100%" stop-color="#c9a84c"/>
+            </linearGradient>
+          </defs>
+          <circle class="tasbih-ring-bg"   cx="123" cy="123" r="118"/>
+          <circle class="tasbih-ring-fill" id="tasbihRing"
+                  cx="123" cy="123" r="118"
+                  stroke-dasharray="741.42"
+                  stroke-dashoffset="741.42"/>
         </svg>
-        <div style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
-             text-align:center;">
-          <div id="tasbihCount" style="font-size:56px; font-weight:900; color:var(--gold);
-               line-height:1;">0</div>
-          <div id="tasbihTargetNum" style="font-size:14px; color:var(--text-muted);">/ 33</div>
-        </div>
-      </div>
-
-      <!-- زر العد -->
-      <button id="tasbihBtn" onclick="countTasbih()"
-        style="width:100%; max-width:280px; height:72px; background:var(--gold);
-               color:#1a1a1a; font-size:22px; font-weight:900; border:none;
-               border-radius:20px; cursor:pointer; font-family:var(--font-arabic);
-               transition:transform 0.1s, box-shadow 0.1s;
-               box-shadow:0 8px 24px rgba(245,158,11,0.4);"
-        onmousedown="this.style.transform='scale(0.96)'"
-        onmouseup="this.style.transform='scale(1)'"
-        ontouchstart="this.style.transform='scale(0.96)'; countTasbih();"
-        ontouchend="this.style.transform='scale(1)';">
-        اضغط للتسبيح
-      </button>
-
-      <!-- أزرار التحكم -->
-      <div style="display:flex; gap:12px; justify-content:center; margin-top:16px;">
-        <button onclick="resetTasbih()" class="btn btn-outline btn-sm">🔄 إعادة</button>
-        <button onclick="toggleVibrate()" class="btn btn-outline btn-sm" id="vibrateBtn">
-          📳 الاهتزاز: تشغيل
-        </button>
-      </div>
-
-      <!-- إحصائيات الجلسة -->
-      <div style="margin-top:24px; padding:16px; background:var(--bg-main);
-           border-radius:12px; display:flex; gap:16px; justify-content:center; flex-wrap:wrap;">
-        <div style="text-align:center;">
-          <div id="totalSession" style="font-size:24px; font-weight:900; color:var(--primary-light);">0</div>
-          <div style="font-size:12px; color:var(--text-muted);">إجمالي الجلسة</div>
-        </div>
-        <div style="text-align:center;">
-          <div id="roundsCount" style="font-size:24px; font-weight:900; color:var(--success);">0</div>
-          <div style="font-size:12px; color:var(--text-muted);">جولات مكتملة</div>
-        </div>
-        <div style="text-align:center;">
-          <div id="totalAllTime" style="font-size:24px; font-weight:900; color:var(--gold);">0</div>
-          <div style="font-size:12px; color:var(--text-muted);">كل الأوقات</div>
-        </div>
+        <div class="tasbih-count" id="tasbihCount">0</div>
+        <div class="tasbih-label">اضغط للتسبيح</div>
+        <div class="tasbih-target-lbl" id="tasbihTargetLbl">الهدف: 33</div>
       </div>
     </div>
+    <div class="tasbih-rounds" id="tasbihRounds">الجولة: 1</div>
+    <br>
+    <div class="tasbih-actions">
+      <button class="tasbih-btn secondary" onclick="resetTasbih()">🔄 إعادة</button>
+      <button class="tasbih-btn primary"   onclick="vibrateTasbih()">📳 اهتزاز</button>
+    </div>
   </div>
-
 </div>
-</main>
 
-<div class="toast" id="toast"></div>
-
-<style>
-.athkar-tab {
-  flex:1; min-width:90px; padding:9px 10px;
-  background:transparent; border:none;
-  color:var(--text-muted); font-family:var(--font-arabic);
-  font-size:13px; font-weight:700; cursor:pointer;
-  border-radius:10px; transition:var(--transition); white-space:nowrap;
-}
-.athkar-tab:hover  { background:var(--bg-card-hover); color:var(--text-primary); }
-.athkar-tab.active { background:var(--primary); color:white; }
-
-.zikr-card {
-  background:var(--bg-card); border:1px solid var(--border);
-  border-radius:16px; padding:20px; margin-bottom:14px;
-  transition:var(--transition);
-}
-.zikr-card:hover { border-color:var(--primary); }
-
-.zikr-arabic {
-  font-family:'Amiri',serif; font-size:22px; font-weight:700;
-  color:var(--text-primary); line-height:1.9;
-  text-align:center; margin-bottom:12px;
-  padding-bottom:12px; border-bottom:1px solid var(--border);
-}
-.zikr-trans {
-  font-size:13px; color:var(--text-secondary); line-height:1.8;
-  margin-bottom:10px;
-}
-.zikr-meta {
-  display:flex; justify-content:space-between; align-items:center;
-  flex-wrap:wrap; gap:8px;
-}
-.zikr-source { font-size:12px; color:var(--text-muted); }
-.zikr-repeat {
-  background:var(--primary); color:white;
-  border:none; border-radius:20px; padding:4px 14px;
-  font-size:13px; font-weight:700; font-family:var(--font-arabic);
-  cursor:pointer; transition:var(--transition);
-}
-.zikr-repeat:hover  { background:var(--primary-dark); }
-.zikr-repeat.done   { background:var(--success); }
-.zikr-counter {
-  font-size:13px; color:var(--gold); font-weight:700; min-width:40px; text-align:center;
-}
-
-.tasbih-select {
-  padding:8px 14px; background:var(--bg-main);
-  border:1px solid var(--border); border-radius:20px;
-  font-size:13px; font-family:var(--font-arabic); color:var(--text-secondary);
-  cursor:pointer; transition:var(--transition); white-space:nowrap;
-}
-.tasbih-select:hover  { border-color:var(--gold); color:var(--gold); }
-.tasbih-select.active { background:var(--gold); color:#1a1a1a; border-color:var(--gold); font-weight:700; }
-</style>
-
+<div id="toast" class="toast"></div>
+<script type="module" src="/firebase.js"></script>
 <script>
-// ===== بيانات الأذكار (موثقة من السنة) =====
-const ATHKAR = {
+// ================================================================
+// بيانات الأذكار
+// المصدر: حصن المسلم — سعيد بن علي بن وهف القحطاني
+// ================================================================
 
+const ATHKAR = {
   sabah: [
     {
-      arabic: "أَعُوذُ بِاللَّهِ مِنَ الشَّيْطَانِ الرَّجِيمِ\nاللَّهُ لَا إِلَٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ...",
-      trans:  "آية الكرسي — أعظم آية في القرآن",
-      source: "البخاري | من قرأها في الصباح حُفظ حتى المساء",
-      count:  1
+      text: "أَعُوذُ بِاللهِ مِنَ الشَّيْطَانِ الرَّجِيمِ\nاللهُ لاَ إِلَهَ إِلاَّ هُوَ الْحَيُّ الْقَيُّومُ، لاَ تَأْخُذُهُ سِنَةٌ وَلاَ نَوْمٌ، لَهُ مَا فِي السَّمَاوَاتِ وَمَا فِي الأَرْضِ، مَن ذَا الَّذِي يَشْفَعُ عِنْدَهُ إِلاَّ بِإِذْنِهِ، يَعْلَمُ مَا بَيْنَ أَيْدِيهِمْ وَمَا خَلْفَهُمْ، وَلاَ يُحِيطُونَ بِشَيْءٍ مِنْ عِلْمِهِ إِلاَّ بِمَا شَاءَ، وَسِعَ كُرْسِيُّهُ السَّمَاوَاتِ وَالأَرْضَ، وَلاَ يَؤُودُهُ حِفْظُهُمَا وَهُوَ الْعَلِيُّ الْعَظِيمُ",
+      translation: "آية الكرسي — من قرأها حين يصبح أُجير من الجن حتى يمسي",
+      source: "البخاري — يقرأ مرة واحدة",
+      count: 1
     },
     {
-      arabic: "أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلَّهِ، وَالْحَمْدُ لِلَّهِ، لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ",
-      trans:  "أصبحنا وأصبح الملك لله",
-      source: "مسلم | ذكر الصباح",
-      count:  1
+      text: "بِسْمِ اللهِ الرَّحْمَنِ الرَّحِيمِ\nقُلْ هُوَ اللهُ أَحَدٌ، اللهُ الصَّمَدُ، لَمْ يَلِدْ وَلَمْ يُولَدْ، وَلَمْ يَكُن لَّهُ كُفُوًا أَحَدٌ",
+      translation: "سورة الإخلاص — تعدل ثلث القرآن",
+      source: "أبو داود — تقرأ 3 مرات",
+      count: 3
     },
     {
-      arabic: "اللَّهُمَّ بِكَ أَصْبَحْنَا، وَبِكَ أَمْسَيْنَا، وَبِكَ نَحْيَا، وَبِكَ نَمُوتُ، وَإِلَيْكَ النُّشُورُ",
-      trans:  "اللهم بك أصبحنا",
-      source: "الترمذي | حسن صحيح",
-      count:  1
+      text: "أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلَّهِ، وَالْحَمْدُ لِلَّهِ، لاَ إِلَهَ إِلاَّ اللهُ وَحْدَهُ لاَ شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ",
+      translation: "نستقبل الصباح معلنين أن الملك كله لله وحده",
+      source: "مسلم — مرة واحدة",
+      count: 1
     },
     {
-      arabic: "سُبْحَانَ اللَّهِ وَبِحَمْدِهِ",
-      trans:  "سبحان الله وبحمده — من قالها مئة مرة حُطَّت خطاياه وإن كانت مثل زبد البحر",
-      source: "البخاري ومسلم",
-      count:  100
+      text: "اللَّهُمَّ بِكَ أَصْبَحْنَا، وَبِكَ أَمْسَيْنَا، وَبِكَ نَحْيَا، وَبِكَ نَمُوتُ وَإِلَيْكَ النُّشُورُ",
+      translation: "توكيد أن الحياة كلها بيد الله — حياةً وموتاً وبعثاً",
+      source: "الترمذي — مرة واحدة",
+      count: 1
     },
     {
-      arabic: "اللَّهُمَّ أَنْتَ رَبِّي لَا إِلَهَ إِلَّا أَنْتَ، خَلَقْتَنِي وَأَنَا عَبْدُكَ، وَأَنَا عَلَى عَهْدِكَ وَوَعْدِكَ مَا اسْتَطَعْتُ، أَعُوذُ بِكَ مِنْ شَرِّ مَا صَنَعْتُ، أَبُوءُ لَكَ بِنِعْمَتِكَ عَلَيَّ، وَأَبُوءُ لَكَ بِذَنْبِي فَاغْفِرْ لِي فَإِنَّهُ لَا يَغْفِرُ الذُّنُوبَ إِلَّا أَنْتَ",
-      trans:  "سيد الاستغفار — أفضل الاستغفار",
-      source: "البخاري | من قاله صباحاً موقناً فمات من يومه دخل الجنة",
-      count:  1
+      text: "اللَّهُمَّ أَنْتَ رَبِّي لاَ إِلَهَ إِلاَّ أَنْتَ، خَلَقْتَنِي وَأَنَا عَبْدُكَ، وَأَنَا عَلَى عَهْدِكَ وَوَعْدِكَ مَا اسْتَطَعْتُ، أَعُوذُ بِكَ مِنْ شَرِّ مَا صَنَعْتُ، أَبُوءُ لَكَ بِنِعْمَتِكَ عَلَيَّ، وَأَبُوءُ بِذَنْبِي فَاغْفِرْ لِي فَإِنَّهُ لاَ يَغْفِرُ الذُّنُوبَ إِلاَّ أَنْتَ",
+      translation: "سيد الاستغفار — من قاله موقناً فمات من يومه دخل الجنة",
+      source: "البخاري — مرة واحدة",
+      count: 1
     },
     {
-      arabic: "اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَافِيَةَ فِي الدُّنْيَا وَالآخِرَةِ",
-      trans:  "الدعاء بالعافية",
-      source: "ابن ماجه | صحيح",
-      count:  1
+      text: "اللَّهُمَّ عَافِنِي فِي بَدَنِي، اللَّهُمَّ عَافِنِي فِي سَمْعِي، اللَّهُمَّ عَافِنِي فِي بَصَرِي، لاَ إِلَهَ إِلاَّ أَنْتَ",
+      translation: "دعاء العافية في البدن والسمع والبصر",
+      source: "أبو داود — 3 مرات",
+      count: 3
     },
     {
-      arabic: "اللَّهُمَّ عَافِنِي فِي بَدَنِي، اللَّهُمَّ عَافِنِي فِي سَمْعِي، اللَّهُمَّ عَافِنِي فِي بَصَرِي، لَا إِلَهَ إِلَّا أَنْتَ",
-      trans:  "الدعاء بالعافية في البدن والسمع والبصر",
-      source: "أبو داود | حسن",
-      count:  3
+      text: "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْكُفْرِ وَالْفَقْرِ، وَأَعُوذُ بِكَ مِنْ عَذَابِ الْقَبْرِ، لاَ إِلَهَ إِلاَّ أَنْتَ",
+      translation: "الاستعاذة من الكفر والفقر وعذاب القبر",
+      source: "أبو داود — 3 مرات",
+      count: 3
     },
     {
-      arabic: "بِسْمِ اللَّهِ الَّذِي لَا يَضُرُّ مَعَ اسْمِهِ شَيْءٌ فِي الْأَرْضِ وَلَا فِي السَّمَاءِ وَهُوَ السَّمِيعُ الْعَلِيمُ",
-      trans:  "من قالها ثلاثاً لم يضره شيء حتى يُمسي",
-      source: "أبو داود والترمذي | صحيح",
-      count:  3
+      text: "اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَفْوَ وَالْعَافِيَةَ فِي الدُّنْيَا وَالآخِرَةِ، اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَفْوَ وَالْعَافِيَةَ فِي دِينِي وَدُنْيَايَ وَأَهْلِي وَمَالِي",
+      translation: "طلب العافية الشاملة في الدنيا والآخرة",
+      source: "ابن ماجه — مرة واحدة",
+      count: 1
     },
     {
-      arabic: "رَضِيتُ بِاللَّهِ رَبًّا، وَبِالْإِسْلَامِ دِينًا، وَبِمُحَمَّدٍ ﷺ نَبِيًّا",
-      trans:  "من قالها ثلاثاً كان حقاً على الله أن يُرضيه",
-      source: "أبو داود والترمذي | صحيح",
-      count:  3
+      text: "حَسْبِيَ اللهُ لاَ إِلَهَ إِلاَّ هُوَ عَلَيْهِ تَوَكَّلْتُ وَهُوَ رَبُّ الْعَرْشِ الْعَظِيمِ",
+      translation: "من قالها سبعاً كفاه الله ما أهمّه من أمر الدنيا والآخرة",
+      source: "أبو داود — 7 مرات",
+      count: 7
     },
     {
-      arabic: "يَا حَيُّ يَا قَيُّومُ بِرَحْمَتِكَ أَسْتَغِيثُ، أَصْلِحْ لِي شَأْنِي كُلَّهُ، وَلَا تَكِلْنِي إِلَى نَفْسِي طَرْفَةَ عَيْنٍ",
-      trans:  "يا حي يا قيوم",
-      source: "الحاكم | صحيح الإسناد",
-      count:  1
-    },
+      text: "سُبْحَانَ اللهِ وَبِحَمْدِهِ",
+      translation: "من قالها مئة مرة حُطّت خطاياه وإن كانت مثل زبد البحر",
+      source: "البخاري ومسلم — 100 مرة",
+      count: 100
+    }
   ],
 
   masaa: [
     {
-      arabic: "أَمْسَيْنَا وَأَمْسَى الْمُلْكُ لِلَّهِ، وَالْحَمْدُ لِلَّهِ، لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ",
-      trans:  "أمسينا وأمسى الملك لله",
-      source: "مسلم | ذكر المساء",
-      count:  1
+      text: "أَعُوذُ بِاللهِ مِنَ الشَّيْطَانِ الرَّجِيمِ\nاللهُ لاَ إِلَهَ إِلاَّ هُوَ الْحَيُّ الْقَيُّومُ...",
+      translation: "آية الكرسي — من قرأها حين يمسي أُجير من الجن حتى يصبح",
+      source: "البخاري — مرة واحدة",
+      count: 1
     },
     {
-      arabic: "اللَّهُمَّ بِكَ أَمْسَيْنَا، وَبِكَ أَصْبَحْنَا، وَبِكَ نَحْيَا، وَبِكَ نَمُوتُ، وَإِلَيْكَ الْمَصِيرُ",
-      trans:  "اللهم بك أمسينا",
-      source: "الترمذي | حسن صحيح",
-      count:  1
+      text: "أَمْسَيْنَا وَأَمْسَى الْمُلْكُ لِلَّهِ، وَالْحَمْدُ لِلَّهِ، لاَ إِلَهَ إِلاَّ اللهُ وَحْدَهُ لاَ شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ",
+      translation: "نستقبل المساء معلنين أن الملك كله لله",
+      source: "مسلم — مرة واحدة",
+      count: 1
     },
     {
-      arabic: "اللَّهُمَّ مَا أَمْسَى بِي مِنْ نِعْمَةٍ أَوْ بِأَحَدٍ مِنْ خَلْقِكَ فَمِنْكَ وَحْدَكَ لَا شَرِيكَ لَكَ، فَلَكَ الْحَمْدُ وَلَكَ الشُّكْرُ",
-      trans:  "شكر نعم المساء",
-      source: "أبو داود | حسن",
-      count:  1
+      text: "اللَّهُمَّ بِكَ أَمْسَيْنَا، وَبِكَ أَصْبَحْنَا، وَبِكَ نَحْيَا، وَبِكَ نَمُوتُ وَإِلَيْكَ الْمَصِيرُ",
+      translation: "توكيد التوكل على الله في المساء",
+      source: "الترمذي — مرة واحدة",
+      count: 1
     },
     {
-      arabic: "أَعُوذُ بِكَلِمَاتِ اللَّهِ التَّامَّاتِ مِنْ شَرِّ مَا خَلَقَ",
-      trans:  "من قالها ثلاثاً لم يضره حُمَةٌ تلك الليلة",
-      source: "مسلم | صحيح",
-      count:  3
+      text: "اللَّهُمَّ مَا أَمْسَى بِي مِنْ نِعْمَةٍ أَوْ بِأَحَدٍ مِنْ خَلْقِكَ فَمِنْكَ وَحْدَكَ لاَ شَرِيكَ لَكَ، فَلَكَ الْحَمْدُ وَلَكَ الشُّكْرُ",
+      translation: "شكر الله على نعمه — من قالها فقد أدى شكر مسائه",
+      source: "أبو داود — مرة واحدة",
+      count: 1
     },
     {
-      arabic: "بِسْمِ اللَّهِ الَّذِي لَا يَضُرُّ مَعَ اسْمِهِ شَيْءٌ فِي الْأَرْضِ وَلَا فِي السَّمَاءِ وَهُوَ السَّمِيعُ الْعَلِيمُ",
-      trans:  "من قالها ثلاثاً لم يضره شيء حتى يُصبح",
-      source: "أبو داود والترمذي | صحيح",
-      count:  3
+      text: "اللَّهُمَّ إِنِّي أَمْسَيْتُ أُشْهِدُكَ، وَأُشْهِدُ حَمَلَةَ عَرْشِكَ، وَمَلاَئِكَتَكَ، وَجَمِيعَ خَلْقِكَ، أَنَّكَ أَنْتَ اللهُ لاَ إِلَهَ إِلاَّ أَنْتَ وَحْدَكَ لاَ شَرِيكَ لَكَ، وَأَنَّ مُحَمَّدًا عَبْدُكَ وَرَسُولُكَ",
+      translation: "إشهاد الله وملائكته على التوحيد — أعتق الله ربعه من النار",
+      source: "أبو داود — 4 مرات",
+      count: 4
     },
     {
-      arabic: "سُبْحَانَ اللَّهِ وَبِحَمْدِهِ",
-      trans:  "مئة مرة — حُطَّت خطاياه وإن كانت مثل زبد البحر",
-      source: "البخاري ومسلم",
-      count:  100
+      text: "اللَّهُمَّ عَافِنِي فِي بَدَنِي، اللَّهُمَّ عَافِنِي فِي سَمْعِي، اللَّهُمَّ عَافِنِي فِي بَصَرِي، لاَ إِلَهَ إِلاَّ أَنْتَ",
+      translation: "دعاء العافية في البدن والسمع والبصر",
+      source: "أبو داود — 3 مرات",
+      count: 3
     },
     {
-      arabic: "اللَّهُمَّ إِنِّي أَمْسَيْتُ أُشْهِدُكَ وَأُشْهِدُ حَمَلَةَ عَرْشِكَ وَمَلَائِكَتَكَ وَجَمِيعَ خَلْقِكَ أَنَّكَ أَنْتَ اللَّهُ لَا إِلَهَ إِلَّا أَنْتَ وَحْدَكَ لَا شَرِيكَ لَكَ وَأَنَّ مُحَمَّدًا عَبْدُكَ وَرَسُولُكَ",
-      trans:  "أشهدك وأشهد حملة عرشك — أعتق الله ربعه من النار",
-      source: "أبو داود | حسن",
-      count:  4
-    },
-  ],
-
-  nawm: [
-    {
-      arabic: "بِاسْمِكَ اللَّهُمَّ أَمُوتُ وَأَحْيَا",
-      trans:  "باسمك اللهم أموت وأحيا",
-      source: "البخاري | عند النوم",
-      count:  1
+      text: "أَعُوذُ بِكَلِمَاتِ اللهِ التَّامَّاتِ مِنْ شَرِّ مَا خَلَقَ",
+      translation: "من قالها ثلاثاً لم يضره لدغ شيء تلك الليلة",
+      source: "مسلم — 3 مرات",
+      count: 3
     },
     {
-      arabic: "اللَّهُمَّ قِنِي عَذَابَكَ يَوْمَ تَبْعَثُ عِبَادَكَ",
-      trans:  "اللهم قني عذابك — ثلاث مرات",
-      source: "أبو داود والترمذي | صحيح",
-      count:  3
+      text: "بِسْمِ اللهِ الَّذِي لاَ يَضُرُّ مَعَ اسْمِهِ شَيْءٌ فِي الأَرْضِ وَلاَ فِي السَّمَاءِ وَهُوَ السَّمِيعُ الْعَلِيمُ",
+      translation: "من قالها ثلاثاً لم تصبه فجأة بلاء حتى يصبح",
+      source: "أبو داود — 3 مرات",
+      count: 3
     },
     {
-      arabic: "آيَةُ الْكُرْسِيِّ: اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ...",
-      trans:  "من قرأها عند النوم لم يزل عليه من الله حافظ ولا يقربه شيطان حتى يصبح",
-      source: "البخاري | أصح حديث",
-      count:  1
-    },
-    {
-      arabic: "سُبْحَانَ اللَّهِ (33) • الْحَمْدُ لِلَّهِ (33) • اللَّهُ أَكْبَرُ (34)",
-      trans:  "التسبيح قبل النوم — خير من خادم",
-      source: "البخاري ومسلم — فاطمة رضي الله عنها",
-      count:  1
-    },
-    {
-      arabic: "الم تَنزِيلُ الكِتَابِ... (السجدة) • تَبَارَكَ الَّذِي بِيَدِهِ الْمُلْكُ (الملك)",
-      trans:  "قراءة سورة السجدة والملك — سنة النبي ﷺ كل ليلة",
-      source: "الترمذي | صحيح",
-      count:  1
-    },
-    {
-      arabic: "اللَّهُمَّ إِنَّكَ خَلَقْتَ نَفْسِي وَأَنْتَ تَوَفَّاهَا، لَكَ مَمَاتُهَا وَمَحْيَاهَا، إِنْ أَحْيَيْتَهَا فَاحْفَظْهَا، وَإِنْ أَمَتَّهَا فَاغْفِرْ لَهَا",
-      trans:  "دعاء النوم",
-      source: "مسلم | صحيح",
-      count:  1
-    },
-  ],
-
-  sahwa: [
-    {
-      arabic: "الْحَمْدُ لِلَّهِ الَّذِي أَحْيَانَا بَعْدَ مَا أَمَاتَنَا وَإِلَيْهِ النُّشُورُ",
-      trans:  "الحمد لله الذي أحيانا بعد ما أماتنا",
-      source: "البخاري | عند الاستيقاظ",
-      count:  1
-    },
-    {
-      arabic: "لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ، وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ، سُبْحَانَ اللَّهِ وَالْحَمْدُ لِلَّهِ وَلَا إِلَهَ إِلَّا اللَّهُ وَاللَّهُ أَكْبَرُ وَلَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللَّهِ",
-      trans:  "من قاله عند الاستيقاظ ثم دعا غُفر له",
-      source: "البخاري | صحيح",
-      count:  1
-    },
-    {
-      arabic: "الْحَمْدُ لِلَّهِ الَّذِي عَافَانِي فِي جَسَدِي، وَرَدَّ عَلَيَّ رُوحِي، وَأَذِنَ لِي بِذِكْرِهِ",
-      trans:  "الحمد لله الذي عافاني في جسدي",
-      source: "الترمذي | حسن",
-      count:  1
-    },
+      text: "حَسْبِيَ اللهُ لاَ إِلَهَ إِلاَّ هُوَ عَلَيْهِ تَوَكَّلْتُ وَهُوَ رَبُّ الْعَرْشِ الْعَظِيمِ",
+      translation: "كفاه الله ما أهمّه من أمر الدنيا والآخرة",
+      source: "أبو داود — 7 مرات",
+      count: 7
+    }
   ],
 
   salah: [
     {
-      arabic: "أَسْتَغْفِرُ اللَّهَ",
-      trans:  "الاستغفار بعد السلام — ثلاث مرات",
-      source: "مسلم | صحيح",
-      count:  3
+      text: "أَسْتَغْفِرُ اللهَ",
+      translation: "الاستغفار بعد الصلاة — رفع الدرجات ومحو الخطايا",
+      source: "مسلم — 3 مرات",
+      count: 3
     },
     {
-      arabic: "اللَّهُمَّ أَنْتَ السَّلَامُ وَمِنْكَ السَّلَامُ، تَبَارَكْتَ يَا ذَا الْجَلَالِ وَالْإِكْرَامِ",
-      trans:  "اللهم أنت السلام",
-      source: "مسلم | صحيح",
-      count:  1
+      text: "اللَّهُمَّ أَنْتَ السَّلاَمُ وَمِنْكَ السَّلاَمُ، تَبَارَكْتَ ذَا الْجَلاَلِ وَالإِكْرَامِ",
+      translation: "السلام اسم من أسماء الله — تنزيه الله عن كل نقص",
+      source: "مسلم — مرة واحدة",
+      count: 1
     },
     {
-      arabic: "لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ",
-      trans:  "لا إله إلا الله وحده",
-      source: "البخاري ومسلم",
-      count:  1
+      text: "لاَ إِلَهَ إِلاَّ اللهُ وَحْدَهُ لاَ شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ",
+      translation: "كلمة التوحيد — من قالها بعد كل صلاة غُفر له وإن كان مثل زبد البحر",
+      source: "البخاري ومسلم — مرة واحدة",
+      count: 1
     },
     {
-      arabic: "سُبْحَانَ اللَّهِ (33) • الْحَمْدُ لِلَّهِ (33) • اللَّهُ أَكْبَرُ (33)\nثُمَّ: لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ",
-      trans:  "تكملة المئة — غُفرت ذنوبه وإن كانت مثل زبد البحر",
-      source: "مسلم | صحيح",
-      count:  1
+      text: "سُبْحَانَ اللهِ",
+      translation: "تنزيه الله عن كل نقص",
+      source: "مسلم — 33 مرة",
+      count: 33
     },
     {
-      arabic: "آيَةُ الْكُرْسِيِّ دُبُرَ كُلِّ صَلَاةٍ مَكْتُوبَةٍ",
-      trans:  "من قرأ آية الكرسي دبر كل صلاة لم يمنعه من دخول الجنة إلا أن يموت",
-      source: "النسائي | صحيح",
-      count:  1
+      text: "الْحَمْدُ لِلَّهِ",
+      translation: "الثناء على الله بالنعم الظاهرة والباطنة",
+      source: "مسلم — 33 مرة",
+      count: 33
     },
     {
-      arabic: "اللَّهُمَّ أَعِنِّي عَلَى ذِكْرِكَ وَشُكْرِكَ وَحُسْنِ عِبَادَتِكَ",
-      trans:  "اللهم أعني على ذكرك وشكرك — أوصى به النبي ﷺ معاذاً",
-      source: "أبو داود | صحيح",
-      count:  1
+      text: "اللهُ أَكْبَرُ",
+      translation: "الله أكبر من كل شيء — ختام التسبيح",
+      source: "مسلم — 33 مرة",
+      count: 33
     },
+    {
+      text: "اللَّهُمَّ لاَ مَانِعَ لِمَا أَعْطَيْتَ، وَلاَ مُعْطِيَ لِمَا مَنَعْتَ، وَلاَ يَنْفَعُ ذَا الْجَدِّ مِنْكَ الْجَدُّ",
+      translation: "الإقرار بأن العطاء والمنع بيد الله وحده",
+      source: "البخاري ومسلم — مرة واحدة",
+      count: 1
+    },
+    {
+      text: "آيَةُ الْكُرْسِيِّ — اللهُ لاَ إِلَهَ إِلاَّ هُوَ الْحَيُّ الْقَيُّومُ...",
+      translation: "من قرأها دبر كل صلاة لم يمنعه من دخول الجنة إلا الموت",
+      source: "النسائي — مرة واحدة",
+      count: 1
+    }
   ],
 
-  safar: [
+  nawm: [
     {
-      arabic: "اللَّهُ أَكْبَرُ، اللَّهُ أَكْبَرُ، اللَّهُ أَكْبَرُ، سُبْحَانَ الَّذِي سَخَّرَ لَنَا هَذَا وَمَا كُنَّا لَهُ مُقْرِنِينَ، وَإِنَّا إِلَى رَبِّنَا لَمُنْقَلِبُونَ",
-      trans:  "دعاء ركوب الدابة (السيارة والطائرة)",
-      source: "مسلم | صحيح",
-      count:  1
+      text: "بِاسْمِكَ اللَّهُمَّ أَمُوتُ وَأَحْيَا",
+      translation: "تسليم النفس لله عند النوم — النوم كالموت والاستيقاظ كالبعث",
+      source: "البخاري — مرة واحدة",
+      count: 1
     },
     {
-      arabic: "اللَّهُمَّ إِنَّا نَسْأَلُكَ فِي سَفَرِنَا هَذَا الْبِرَّ وَالتَّقْوَى، وَمِنَ الْعَمَلِ مَا تَرْضَى، اللَّهُمَّ هَوِّنْ عَلَيْنَا سَفَرَنَا هَذَا وَاطْوِ عَنَّا بُعْدَهُ",
-      trans:  "دعاء السفر",
-      source: "مسلم | صحيح",
-      count:  1
+      text: "اللَّهُمَّ قِنِي عَذَابَكَ يَوْمَ تَبْعَثُ عِبَادَكَ",
+      translation: "سؤال الله الوقاية من عذاب يوم القيامة",
+      source: "أبو داود — 3 مرات",
+      count: 3
     },
     {
-      arabic: "اللَّهُمَّ أَنْتَ الصَّاحِبُ فِي السَّفَرِ، وَالْخَلِيفَةُ فِي الْأَهْلِ",
-      trans:  "اللهم أنت الصاحب في السفر",
-      source: "مسلم | صحيح",
-      count:  1
+      text: "بِسْمِكَ رَبِّي وَضَعْتُ جَنْبِي، وَبِكَ أَرْفَعُهُ، فَإِنْ أَمْسَكْتَ نَفْسِي فَارْحَمْهَا، وَإِنْ أَرْسَلْتَهَا فَاحْفَظْهَا بِمَا تَحْفَظُ بِهِ عِبَادَكَ الصَّالِحِينَ",
+      translation: "تسليم كامل لله — طلب الرحمة في النوم والحفظ في اليقظة",
+      source: "البخاري ومسلم — مرة واحدة",
+      count: 1
     },
     {
-      arabic: "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنْ وَعْثَاءِ السَّفَرِ وَكَآبَةِ الْمُنْظَرِ وَسُوءِ الْمُنْقَلَبِ فِي الْمَالِ وَالْأَهْلِ وَالْوَلَدِ",
-      trans:  "الاستعاذة من مشقة السفر",
-      source: "مسلم | صحيح",
-      count:  1
+      text: "اللَّهُمَّ إِنَّكَ خَلَقْتَ نَفْسِي وَأَنْتَ تَوَفَّاهَا، لَكَ مَمَاتُهَا وَمَحْيَاهَا، إِنْ أَحْيَيْتَهَا فَاحْفَظْهَا، وَإِنْ أَمَتَّهَا فَاغْفِرْ لَهَا",
+      translation: "الإقرار بأن الحياة والموت بيد الله — طلب المغفرة",
+      source: "مسلم — مرة واحدة",
+      count: 1
     },
     {
-      arabic: "اللَّهُمَّ بَارِكْ لَنَا فِيهِ وَأَطْعِمْنَا خَيْرًا مِنْهُ",
-      trans:  "دعاء عند دخول بلد جديد",
-      source: "الترمذي | حسن",
-      count:  1
+      text: "سُبْحَانَ اللهِ",
+      translation: "ثلاث وثلاثون تسبيحة قبل النوم",
+      source: "البخاري ومسلم — 33 مرة",
+      count: 33
     },
-  ],
+    {
+      text: "الْحَمْدُ لِلَّهِ",
+      translation: "ثلاث وثلاثون تحميدة قبل النوم",
+      source: "البخاري ومسلم — 33 مرة",
+      count: 33
+    },
+    {
+      text: "اللهُ أَكْبَرُ",
+      translation: "أربع وثلاثون تكبيرة قبل النوم — خير لك من خادم",
+      source: "البخاري ومسلم — 34 مرة",
+      count: 34
+    },
+    {
+      text: "قُلْ هُوَ اللهُ أَحَدٌ — قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ — قُلْ أَعُوذُ بِرَبِّ النَّاسِ",
+      translation: "المعوذات — ينفث في يديه ويمسح بهما جسده ثلاث مرات",
+      source: "البخاري — 3 مرات",
+      count: 3
+    },
+    {
+      text: "آيَةُ الْكُرْسِيِّ — اللهُ لاَ إِلَهَ إِلاَّ هُوَ الْحَيُّ الْقَيُّومُ...",
+      translation: "من قرأها عند النوم لم يزل عليه من الله حافظ ولا يقربه الشيطان",
+      source: "البخاري — مرة واحدة",
+      count: 1
+    }
+  ]
 };
 
-// ===== متغيرات التسبيح =====
-let tasbihCount    = 0;
-let tasbihTarget   = 33;
-let tasbihRounds   = 0;
-let tasbihSession  = 0;
-let vibrateOn      = true;
-let allTimeTotal   = parseInt(localStorage.getItem("tasbihAllTime") || "0");
-let currentCat     = "sabah";
-// عدادات كل ذكر
-let zikrCounters   = {};
+// ================================================================
+// بيانات التسبيح
+// ================================================================
+const TASBIH_LIST = [
+  { text: "سُبْحَانَ اللهِ",                      target: 33  },
+  { text: "الْحَمْدُ لِلَّهِ",                    target: 33  },
+  { text: "اللهُ أَكْبَرُ",                        target: 34  },
+  { text: "لاَ إِلَهَ إِلاَّ اللهُ",               target: 100 },
+  { text: "سُبْحَانَ اللهِ وَبِحَمْدِهِ",          target: 100 },
+  { text: "أَسْتَغْفِرُ اللهَ",                    target: 100 },
+  { text: "لاَ حَوْلَ وَلاَ قُوَّةَ إِلاَّ بِاللهِ", target: 100 },
+];
 
-// ===== عرض فئة =====
-function showCat(cat) {
-  currentCat = cat;
-  document.querySelectorAll(".athkar-tab").forEach(b => b.classList.remove("active"));
-  document.querySelector(`[data-cat="${cat}"]`).classList.add("active");
+let tasbihIndex   = 0;
+let tasbihCount   = 0;
+let tasbihRounds  = 1;
+let vibrateOn     = true;
 
-  const content    = document.getElementById("athkarContent");
-  const tasbihSec  = document.getElementById("tasbihSection");
+// ================================================================
+// حالة الأذكار (localStorage)
+// ================================================================
+function getState(section) {
+  try { return JSON.parse(localStorage.getItem("athkar_" + section)) || {}; }
+  catch { return {}; }
+}
+function saveState(section, state) {
+  localStorage.setItem("athkar_" + section, JSON.stringify(state));
+}
 
-  if (cat === "tasbih") {
-    content.style.display   = "none";
-    tasbihSec.style.display = "block";
-    return;
-  }
-  tasbihSec.style.display = "none";
-  content.style.display   = "block";
+// ================================================================
+// بناء قسم الأذكار
+// ================================================================
+function buildSection(section) {
+  const wrap  = document.getElementById("wrap-" + section);
+  const data  = ATHKAR[section];
+  const state = getState(section);
 
-  const list = ATHKAR[cat];
-  if (!list) { content.innerHTML = "<p style=\"color:var(--text-muted);text-align:center;\">قريباً...</p>"; return; }
+  const completed = Object.values(state).filter(v => v >= 1).length;
+  const total     = data.length;
+  const pct       = total ? Math.round((completed / total) * 100) : 0;
 
-  if (!zikrCounters[cat]) zikrCounters[cat] = new Array(list.length).fill(0);
-
-  let html = "";
-  list.forEach((z, i) => {
-    const done    = zikrCounters[cat][i] >= z.count;
-    const current = zikrCounters[cat][i];
-    html += `
-    <div class="zikr-card ${done ? "done-card" : ""}" id="zikr-${cat}-${i}">
-      <div class="zikr-arabic">${z.arabic.replace(/\n/g,"<br>")}</div>
-      <div class="zikr-trans">${z.trans}</div>
-      <div class="zikr-meta">
-        <span class="zikr-source">📚 ${z.source}</span>
-        <div style="display:flex; align-items:center; gap:8px;">
-          <span class="zikr-counter" id="zcnt-${cat}-${i}">
-            ${z.count > 1 ? current + " / " + z.count : (done ? "✅" : "○")}
-          </span>
-          <button class="zikr-repeat ${done ? "done" : ""}"
-                  id="zbtn-${cat}-${i}"
-                  onclick="countZikr('${cat}',${i},${z.count})">
-            ${done ? "✅ تم" : z.count > 1 ? "× " + z.count : "تم"}
-          </button>
+  wrap.innerHTML = `
+    <div class="overall-progress">
+      <div class="overall-progress-info">
+        <div class="overall-progress-title">التقدم الكلي — ${completed} / ${total} ذكر مكتمل</div>
+        <div class="overall-progress-bar">
+          <div class="overall-progress-fill" style="width:${pct}%"></div>
         </div>
       </div>
-    </div>`;
-  });
-
-  // تقدم الجلسة
-  const done  = zikrCounters[cat].filter((c, i) => c >= list[i].count).length;
-  const total = list.length;
-  const pct   = Math.round((done / total) * 100);
-  html = `
-    <div style="background:var(--bg-card); border:1px solid var(--border);
-         border-radius:14px; padding:14px 18px; margin-bottom:16px;
-         display:flex; align-items:center; gap:14px;">
-      <div style="flex:1;">
-        <div style="font-size:14px; font-weight:700; margin-bottom:6px;">
-          التقدم: ${done} / ${total} ذكر
-        </div>
-        <div style="height:8px; background:var(--bg-main); border-radius:10px; overflow:hidden;">
-          <div style="height:100%; width:${pct}%; background:var(--gold);
-               border-radius:10px; transition:width 0.4s;"></div>
-        </div>
-      </div>
-      <div style="font-size:22px; font-weight:900; color:var(--gold);">${pct}٪</div>
-      ${pct === 100 ? "<div style=\"font-size:28px;\">🎉</div>" : ""}
+      <div class="overall-pct">${pct}%</div>
     </div>
-    <button onclick="resetCat('${cat}')" class="btn btn-outline btn-sm"
-            style="width:100%; margin-bottom:16px;">🔄 إعادة تعيين الأذكار</button>
-  ` + html;
-
-  content.innerHTML = html;
+    <button class="reset-all-btn" onclick="resetSection('${section}')">
+      🔄 إعادة تعيين الكل
+    </button>
+    ${data.map((d, i) => buildDhikrCard(d, i, section, state)).join("")}
+  `;
 }
 
-// ===== عد الذكر =====
-function countZikr(cat, idx, target) {
-  if (!zikrCounters[cat]) zikrCounters[cat] = [];
-  if (!zikrCounters[cat][idx]) zikrCounters[cat][idx] = 0;
+function buildDhikrCard(d, i, section, state) {
+  const current = state[i] || 0;
+  const done    = current >= d.count;
+  const pct     = Math.min((current / d.count) * 100, 100);
 
-  if (zikrCounters[cat][idx] >= target) return;
-  zikrCounters[cat][idx]++;
+  return `
+    <div class="dhikr-card ${done ? "done" : ""}" id="card-${section}-${i}">
+      <div class="dhikr-num">
+        ${done ? "✅" : `📿`} الذكر ${i + 1}
+        ${d.count > 1 ? `<span style="color:var(--text-muted);font-weight:400;">× ${d.count}</span>` : ""}
+      </div>
+      <div class="dhikr-text">${d.text.replace(/\n/g, "<br>")}</div>
+      <div class="dhikr-translation">${d.translation}</div>
+      <div class="dhikr-source">📚 ${d.source}</div>
+      <div class="dhikr-footer">
+        ${done
+          ? `<div class="done-badge">✅ مكتمل</div>
+             <button class="reset-btn" onclick="resetDhikr('${section}',${i})" title="إعادة">↺</button>`
+          : `<div class="progress-bar">
+               <div class="progress-fill" id="fill-${section}-${i}" style="width:${pct}%"></div>
+             </div>
+             <div class="count-display" id="cnt-${section}-${i}">${current} / ${d.count}</div>
+             <button class="count-btn" onclick="tapDhikr('${section}',${i})">+</button>
+             <button class="reset-btn" onclick="resetDhikr('${section}',${i})" title="إعادة">↺</button>`
+        }
+      </div>
+    </div>
+  `;
+}
 
-  const current = zikrCounters[cat][idx];
-  const done    = current >= target;
-  const cntEl   = document.getElementById(`zcnt-${cat}-${idx}`);
-  const btnEl   = document.getElementById(`zbtn-${cat}-${idx}`);
-  const card    = document.getElementById(`zikr-${cat}-${idx}`);
+function tapDhikr(section, i) {
+  const data    = ATHKAR[section];
+  const d       = data[i];
+  const state   = getState(section);
+  state[i]      = (state[i] || 0) + 1;
+  saveState(section, state);
 
-  if (cntEl) cntEl.textContent = target > 1 ? current + " / " + target : (done ? "✅" : "○");
-  if (done) {
-    if (btnEl)  { btnEl.textContent = "✅ تم"; btnEl.classList.add("done"); }
-    if (card)   { card.style.borderColor = "var(--success)"; card.style.background = "rgba(16,185,129,0.05)"; }
-    showToast("✅ أحسنت! أكملت الذكر 🤍");
-    // تحديث التقدم
-    setTimeout(() => showCat(cat), 100);
+  if (state[i] >= d.count) {
+    showToast("✅ أحسنت! اكتمل الذكر");
+    buildSection(section);
+  } else {
+    const pct = Math.min((state[i] / d.count) * 100, 100);
+    const fill = document.getElementById(`fill-${section}-${i}`);
+    const cnt  = document.getElementById(`cnt-${section}-${i}`);
+    if (fill) fill.style.width = pct + "%";
+    if (cnt)  cnt.textContent  = `${state[i]} / ${d.count}`;
+
+    // تحديث التقدم الكلي
+    updateOverall(section);
   }
+
   // اهتزاز خفيف
-  if (navigator.vibrate) navigator.vibrate(30);
+  if (vibrateOn && navigator.vibrate) navigator.vibrate(30);
 }
 
-// ===== إعادة الفئة =====
-function resetCat(cat) {
-  zikrCounters[cat] = [];
-  showCat(cat);
+function resetDhikr(section, i) {
+  const state = getState(section);
+  delete state[i];
+  saveState(section, state);
+  buildSection(section);
 }
 
-// ===== التسبيح =====
-function selectTasbih(text, target, btn) {
-  document.querySelectorAll(".tasbih-select").forEach(b => b.classList.remove("active"));
+function resetSection(section) {
+  saveState(section, {});
+  buildSection(section);
+  showToast("🔄 تمت إعادة التعيين");
+}
+
+function updateOverall(section) {
+  const data      = ATHKAR[section];
+  const state     = getState(section);
+  const completed = Object.values(state).filter(v => v >= 1).length;
+  const total     = data.length;
+  const pct       = total ? Math.round((completed / total) * 100) : 0;
+
+  const wrap = document.getElementById("wrap-" + section);
+  const fillEl = wrap?.querySelector(".overall-progress-fill");
+  const pctEl  = wrap?.querySelector(".overall-pct");
+  const titleEl= wrap?.querySelector(".overall-progress-title");
+  if (fillEl)  fillEl.style.width  = pct + "%";
+  if (pctEl)   pctEl.textContent   = pct + "%";
+  if (titleEl) titleEl.textContent = `التقدم الكلي — ${completed} / ${total} ذكر مكتمل`;
+}
+
+// ================================================================
+// تبويبات
+// ================================================================
+let builtSections = { sabah: false, masaa: false, salah: false, nawm: false };
+
+function switchTab(name, btn) {
+  document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+  document.querySelectorAll(".tab-panel").forEach(p => p.classList.remove("active"));
   btn.classList.add("active");
-  tasbihTarget = target;
-  document.getElementById("tasbihText").textContent    = text;
-  document.getElementById("tasbihTarget").textContent  = "الهدف: " + target + " مرة";
-  document.getElementById("tasbihTargetNum").textContent = "/ " + target;
-  resetTasbih();
+  document.getElementById("panel-" + name).classList.add("active");
+
+  if (name !== "tasbih" && !builtSections[name]) {
+    buildSection(name);
+    builtSections[name] = true;
+  }
 }
 
-function countTasbih() {
+// ================================================================
+// عداد التسبيح
+// ================================================================
+function buildTasbihSelector() {
+  const sel = document.getElementById("tasbihSelector");
+  sel.innerHTML = TASBIH_LIST.map((t, i) => `
+    <button class="tasbih-opt ${i === 0 ? "active" : ""}"
+            onclick="selectTasbih(${i}, this)">
+      ${t.text.split(" ").slice(0, 3).join(" ")}
+    </button>
+  `).join("");
+}
+
+function selectTasbih(i, btn) {
+  tasbihIndex = i;
+  tasbihCount = 0;
+  tasbihRounds = 1;
+  document.querySelectorAll(".tasbih-opt").forEach(b => b.classList.remove("active"));
+  btn.classList.add("active");
+  updateTasbihUI();
+}
+
+function tapTasbih() {
+  const t = TASBIH_LIST[tasbihIndex];
   tasbihCount++;
-  tasbihSession++;
-  allTimeTotal++;
 
-  localStorage.setItem("tasbihAllTime", allTimeTotal);
-
-  document.getElementById("tasbihCount").textContent   = tasbihCount;
-  document.getElementById("totalSession").textContent  = tasbihSession;
-  document.getElementById("totalAllTime").textContent  = allTimeTotal;
-
-  // دائرة التقدم
-  const circumference = 2 * Math.PI * 80; // 502
-  const pct     = Math.min(tasbihCount / tasbihTarget, 1);
-  const offset  = circumference * (1 - pct);
-  document.getElementById("progressCircle").style.strokeDashoffset = offset;
-
-  // اهتزاز
-  if (vibrateOn && navigator.vibrate) navigator.vibrate(25);
-
-  // اكتمال الجولة
-  if (tasbihCount >= tasbihTarget) {
+  if (tasbihCount > t.target) {
+    tasbihCount = 1;
     tasbihRounds++;
-    document.getElementById("roundsCount").textContent = tasbihRounds;
-    showToast("🎉 أحسنت! أكملت جولة — " + tasbihRounds + " جولة", "toast-gold");
-    // إعادة العداد بعد ثانية
-    setTimeout(() => {
-      tasbihCount = 0;
-      document.getElementById("tasbihCount").textContent = 0;
-      document.getElementById("progressCircle").style.strokeDashoffset = circumference;
-    }, 800);
+    showToast(`🎉 الجولة ${tasbihRounds} — بارك الله فيك!`);
   }
+
+  const circle = document.getElementById("tasbihCircle");
+  circle.classList.remove("pulse");
+  void circle.offsetWidth;
+  circle.classList.add("pulse");
+
+  if (vibrateOn && navigator.vibrate) navigator.vibrate(20);
+
+  updateTasbihUI();
+
+  if (tasbihCount === t.target) {
+    showToast("✅ اكتمل التسبيح — بارك الله فيك!");
+  }
+}
+
+function updateTasbihUI() {
+  const t      = TASBIH_LIST[tasbihIndex];
+  const pct    = tasbihCount / t.target;
+  const circ   = 2 * Math.PI * 118;
+  const offset = circ - (circ * pct);
+
+  document.getElementById("tasbihCount").textContent    = tasbihCount;
+  document.getElementById("tasbihText").textContent     = t.text;
+  document.getElementById("tasbihTargetLbl").textContent= `الهدف: ${t.target}`;
+  document.getElementById("tasbihRounds").textContent   = `الجولة: ${tasbihRounds}`;
+  document.getElementById("tasbihRing").style.strokeDashoffset = offset;
 }
 
 function resetTasbih() {
   tasbihCount  = 0;
-  tasbihRounds = 0;
-  tasbihSession = 0;
-  document.getElementById("tasbihCount").textContent   = 0;
-  document.getElementById("roundsCount").textContent   = 0;
-  document.getElementById("totalSession").textContent  = 0;
-  document.getElementById("progressCircle").style.strokeDashoffset = 502;
+  tasbihRounds = 1;
+  updateTasbihUI();
 }
 
-function toggleVibrate() {
+function vibrateTasbih() {
   vibrateOn = !vibrateOn;
-  document.getElementById("vibrateBtn").textContent =
-    "📳 الاهتزاز: " + (vibrateOn ? "تشغيل" : "إيقاف");
+  showToast(vibrateOn ? "📳 الاهتزاز مفعّل" : "🔕 الاهتزاز معطّل");
 }
 
-// ===== Toast =====
-function showToast(msg, type="") {
+// ================================================================
+// Toast
+// ================================================================
+let toastTimer;
+function showToast(msg) {
   const t = document.getElementById("toast");
   t.textContent = msg;
-  t.className = "toast show " + type;
-  setTimeout(() => t.classList.remove("show"), 3000);
+  t.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove("show"), 2500);
 }
 
-// ===== Theme =====
-const themeBtn = document.getElementById("themeBtn");
-const html     = document.documentElement;
-function initTheme() {
+// ================================================================
+// Theme
+// ================================================================
+const themeBtn  = document.getElementById("themeBtn");
+const iconSun   = document.getElementById("iconSun");
+const iconMoon  = document.getElementById("iconMoon");
+
+(function(){
   const s = localStorage.getItem("theme") || "dark";
-  html.setAttribute("data-theme", s);
-  themeBtn.textContent = s === "dark" ? "☀️" : "🌙";
-}
+  document.documentElement.setAttribute("data-theme", s);
+  iconSun.style.display  = s === "dark" ? "none"  : "block";
+  iconMoon.style.display = s === "dark" ? "block" : "none";
+})();
+
 themeBtn.addEventListener("click", () => {
-  const n = html.getAttribute("data-theme") === "dark" ? "light" : "dark";
-  html.setAttribute("data-theme", n); localStorage.setItem("theme", n);
-  themeBtn.textContent = n === "dark" ? "☀️" : "🌙";
+  const n = document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark";
+  document.documentElement.setAttribute("data-theme", n);
+  localStorage.setItem("theme", n);
+  iconSun.style.display  = n === "dark" ? "none"  : "block";
+  iconMoon.style.display = n === "dark" ? "block" : "none";
 });
 
-// ===== Mobile Menu =====
-document.getElementById("menuToggle").addEventListener("click", () => {
-  const m = document.getElementById("navMenu");
-  m.classList.toggle("open");
-  document.getElementById("menuToggle").textContent = m.classList.contains("open") ? "✕" : "☰";
+// ================================================================
+// Menu Toggle
+// ================================================================
+const menuToggle  = document.getElementById("menuToggle");
+const navMenu     = document.getElementById("navMenu");
+const iconMenuEl  = document.getElementById("iconMenu");
+const iconCloseEl = document.getElementById("iconClose");
+
+menuToggle.addEventListener("click", () => {
+  const open = navMenu.classList.toggle("open");
+  menuToggle.setAttribute("aria-expanded", open);
+  iconMenuEl.style.display  = open ? "none"  : "block";
+  iconCloseEl.style.display = open ? "block" : "none";
 });
 
-function openLoginModal() { showToast("🔵 سجّل دخولك من الرئيسية","toast-gold"); }
+document.addEventListener("click", (e) => {
+  if (!menuToggle.contains(e.target) && !navMenu.contains(e.target)) {
+    navMenu.classList.remove("open");
+    iconMenuEl.style.display  = "block";
+    iconCloseEl.style.display = "none";
+  }
+});
 
-// تحميل allTime من localStorage
-document.getElementById("totalAllTime").textContent = allTimeTotal;
+// ================================================================
+// Firebase
+// ================================================================
+window.addEventListener("islamiCalcReady", () => {
+  if (window.islamiCalc?.getCurrentUser?.()) {
+    document.getElementById("loginBtn").style.display   = "none";
+    document.getElementById("navProfile").style.display = "block";
+  }
+});
 
-// عرض الصباح افتراضياً
-showCat("sabah");
-initTheme();
+// ================================================================
+// تهيئة
+// ================================================================
+buildSection("sabah");
+builtSections.sabah = true;
+buildTasbihSelector();
+updateTasbihUI();
 </script>
 </body>
 </html>

@@ -3,570 +3,1223 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>بروفايل المستخدم | IslamiCalc</title>
+  <title>بروفايلي | IslamiCalc</title>
+  <meta name="description" content="بروفايلك الشخصي في IslamiCalc — إحصائياتك وإنجازاتك ومستواك">
   <meta name="robots" content="noindex">
+  <link rel="canonical" href="https://islamicalc.com/profile">
   <link rel="icon" href="/favicon.ico">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap">
   <link rel="stylesheet" href="/style.css">
   <style>
-    /* ===== متغيرات خاصة بالبروفايل ===== */
-    :root[data-theme="dark"] {
-      --profile-bg:    #0f0f1a;
-      --card-bg:       #1a1a2e;
-      --card-border:   rgba(201,168,76,0.15);
-      --gold:          #c9a84c;
-      --gold-light:    #f0d080;
-      --primary:       #2d6a4f;
-      --primary-light: #40916c;
-      --text:          #e8e8f0;
-      --text-muted:    #8888aa;
-      --success:       #10b981;
-      --error:         #ef4444;
-    }
-    :root[data-theme="light"] {
-      --profile-bg:    #f0f4f0;
-      --card-bg:       #ffffff;
-      --card-border:   rgba(45,106,79,0.2);
-      --gold:          #b8860b;
-      --gold-light:    #d4a017;
-      --primary:       #2d6a4f;
-      --primary-light: #40916c;
-      --text:          #1a1a2e;
-      --text-muted:    #555577;
-      --success:       #10b981;
-      --error:         #ef4444;
-    }
 
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    /* ================================================
+       PROFILE — CUSTOM STYLES
+       ================================================ */
 
-    body {
-      font-family: 'Tajawal', sans-serif;
-      background: var(--profile-bg);
-      color: var(--text);
-      min-height: 100vh;
-    }
-
-    /* ===== هيدر البروفايل ===== */
+    /* Hero */
     .profile-hero {
-      background: linear-gradient(135deg, #0f1923 0%, #1a2e1a 50%, #1a1a2e 100%);
-      padding: 80px 20px 40px;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
+      background: linear-gradient(135deg, #0d1117 0%, #0d1015 40%, #0d1a0d 100%);
+      padding: 88px 24px 44px;
+      position: relative; overflow: hidden;
     }
     .profile-hero::before {
       content: '';
       position: absolute; inset: 0;
-      background: radial-gradient(ellipse at 50% 0%, rgba(201,168,76,0.12) 0%, transparent 60%);
+      background: radial-gradient(ellipse 70% 60% at 30% 50%,
+        rgba(45,106,79,0.12) 0%, transparent 60%);
       pointer-events: none;
     }
-    .profile-avatar-wrap {
-      position: relative;
-      display: inline-block;
-      margin-bottom: 16px;
+
+    .profile-top {
+      max-width: 860px; margin: 0 auto;
+      display: flex; align-items: center;
+      gap: 24px; flex-wrap: wrap; position: relative;
     }
+    .profile-avatar-wrap { position: relative; flex-shrink: 0; }
     .profile-avatar {
-      width: 100px; height: 100px;
-      border-radius: 50%;
-      border: 4px solid var(--gold);
-      object-fit: cover;
-      display: block;
+      width: 96px; height: 96px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), #a78bfa);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2.8rem;
+      box-shadow: 0 0 0 4px var(--bg-main), 0 0 0 7px rgba(45,106,79,0.3);
     }
     .profile-level-badge {
-      position: absolute;
-      bottom: -4px; left: -4px;
-      background: var(--gold);
-      color: #1a1a2e;
-      font-weight: 800;
-      font-size: 0.75rem;
-      padding: 3px 8px;
-      border-radius: 20px;
-      white-space: nowrap;
+      position: absolute; bottom: -4px; right: -4px;
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 999px; padding: 2px 9px;
+      font-size: 10px; font-weight: 800; color: var(--gold);
     }
+
+    .profile-info { flex: 1; min-width: 200px; }
     .profile-name {
-      font-size: 1.6rem;
-      font-weight: 800;
-      margin-bottom: 4px;
+      font-size: 24px; font-weight: 900; margin-bottom: 4px;
     }
-    .profile-title {
-      color: var(--gold);
-      font-size: 0.95rem;
-      margin-bottom: 16px;
-      font-weight: 500;
+    .profile-handle {
+      font-size: 13px; color: var(--text-muted); margin-bottom: 10px;
     }
-    .profile-country {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 20px;
-      padding: 4px 14px;
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      margin-bottom: 24px;
+    .profile-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+    .ptag {
+      padding: 3px 10px; border-radius: 999px;
+      font-size: 11px; font-weight: 700;
+      background: rgba(45,106,79,0.1);
+      border: 1px solid rgba(45,106,79,0.25);
+      color: var(--primary-light);
     }
 
-    /* ===== شريط XP ===== */
-    .xp-bar-section {
-      max-width: 400px;
-      margin: 0 auto;
-      padding: 0 20px;
+    .profile-actions { display: flex; gap: 8px; align-items: flex-start; flex-wrap: wrap; }
+    .profile-edit-btn {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      color: var(--text-sub); cursor: pointer;
+      border-radius: 10px; padding: 8px 16px;
+      font-family: var(--font); font-size: 13px;
+      font-weight: 700; transition: var(--transition);
     }
-    .xp-bar-header {
-      display: flex;
-      justify-content: space-between;
-      font-size: 0.8rem;
-      color: var(--text-muted);
-      margin-bottom: 6px;
+    .profile-edit-btn:hover { border-color: var(--primary); color: var(--primary-light); }
+    .logout-btn {
+      background: transparent;
+      border: 1px solid rgba(248,81,73,0.3);
+      color: #f85149; cursor: pointer;
+      border-radius: 10px; padding: 8px 14px;
+      font-family: var(--font); font-size: 13px;
+      transition: var(--transition);
     }
-    .xp-bar-track {
-      background: rgba(255,255,255,0.1);
-      border-radius: 10px;
-      height: 10px;
-      overflow: hidden;
+    .logout-btn:hover { background: rgba(248,81,73,0.08); }
+
+    /* XP Bar */
+    .profile-xp-row {
+      max-width: 860px; margin: 20px auto 0; position: relative;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px; padding: 16px 20px;
     }
-    .xp-bar-fill {
+    .pxp-top {
+      display: flex; justify-content: space-between;
+      align-items: center; margin-bottom: 10px;
+    }
+    .pxp-title { font-size: 14px; font-weight: 800; }
+    .pxp-num   { font-size: 13px; color: var(--gold); font-weight: 700; }
+    .pxp-bar   { height: 10px; background: var(--bg-main); border-radius: 999px; overflow: hidden; }
+    .pxp-fill  {
       height: 100%;
-      background: linear-gradient(90deg, var(--primary), var(--gold));
-      border-radius: 10px;
-      transition: width 1s cubic-bezier(0.4,0,0.2,1);
-      width: 0%;
+      background: linear-gradient(90deg, var(--primary), #a78bfa);
+      border-radius: 999px; transition: width 1s ease;
+    }
+    .pxp-labels {
+      display: flex; justify-content: space-between;
+      margin-top: 6px; font-size: 11px; color: var(--text-muted);
     }
 
-    /* ===== شبكة الإحصاء ===== */
-    .stats-grid {
+    /* ================================================
+       BODY
+       ================================================ */
+    .profile-body {
+      max-width: 860px; margin: 0 auto;
+      padding: 28px 20px 80px;
+    }
+
+    .sec-hd {
+      font-size: 14px; font-weight: 800;
+      color: var(--text-sub); margin-bottom: 12px;
+      display: flex; align-items: center; gap: 6px;
+    }
+
+    /* ================================================
+       STATS GRID
+       ================================================ */
+    .stats-grid-4 {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-      max-width: 600px;
-      margin: 28px auto 0;
-      padding: 0 20px;
+      grid-template-columns: repeat(4,1fr);
+      gap: 10px; margin-bottom: 24px;
     }
     .stat-card {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 16px;
-      padding: 16px 10px;
-      text-align: center;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px; padding: 16px 12px;
+      text-align: center; position: relative;
+      overflow: hidden;
     }
-    .stat-icon { font-size: 1.6rem; margin-bottom: 6px; display: block; }
-    .stat-value {
-      font-size: 1.4rem;
-      font-weight: 800;
-      color: var(--gold);
-      display: block;
+    .stat-card::after {
+      content: '';
+      position: absolute; bottom: 0; left: 0; right: 0;
+      height: 3px; background: var(--sc, var(--gold));
     }
-    .stat-label {
-      font-size: 0.72rem;
-      color: var(--text-muted);
-      margin-top: 2px;
+    .stat-icon { font-size: 1.6rem; margin-bottom: 6px; }
+    .stat-num  { font-size: 22px; font-weight: 900; color: var(--sc, var(--gold)); }
+    .stat-lbl  { font-size: 11px; color: var(--text-muted); margin-top: 3px; }
+
+    /* ================================================
+       ACTIVITY HEATMAP
+       ================================================ */
+    .heatmap-wrap {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px; padding: 18px;
+      margin-bottom: 24px; overflow-x: auto;
+    }
+    .heatmap-title {
+      font-size: 13px; font-weight: 800;
+      margin-bottom: 12px;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .heatmap-streak { font-size: 12px; color: var(--gold); font-weight: 700; }
+    .heatmap-grid {
+      display: flex; gap: 3px;
+    }
+    .hm-col { display: flex; flex-direction: column; gap: 3px; }
+    .hm-cell {
+      width: 13px; height: 13px; border-radius: 3px;
+      background: var(--bg-main);
+      transition: var(--transition); cursor: pointer;
+    }
+    .hm-cell[data-v="1"] { background: rgba(45,106,79,0.3); }
+    .hm-cell[data-v="2"] { background: rgba(45,106,79,0.55); }
+    .hm-cell[data-v="3"] { background: rgba(45,106,79,0.75); }
+    .hm-cell[data-v="4"] { background: var(--primary); }
+    .hm-cell:hover       { transform: scale(1.3); }
+    .hm-months {
+      display: flex; gap: 3px; margin-bottom: 4px;
+      font-size: 9px; color: var(--text-muted);
+    }
+    .hm-legend {
+      display: flex; align-items: center; gap: 5px;
+      margin-top: 8px; font-size: 10px; color: var(--text-muted);
+      justify-content: flex-end;
+    }
+    .hm-legend-cell {
+      width: 11px; height: 11px; border-radius: 2px;
     }
 
-    /* ===== المحتوى الرئيسي ===== */
-    .profile-content {
-      max-width: 700px;
-      margin: 0 auto;
-      padding: 28px 16px 60px;
-      display: flex;
-      flex-direction: column;
-      gap: 24px;
-    }
-
-    .section-card {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 20px;
-      padding: 22px;
-    }
-    .section-title {
-      font-size: 1rem;
-      font-weight: 700;
-      margin-bottom: 16px;
-      color: var(--gold);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    /* ===== شبكة الأوسمة ===== */
-    .badges-grid {
+    /* ================================================
+       MODULE PROGRESS
+       ================================================ */
+    .modules-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-      gap: 10px;
+      grid-template-columns: repeat(2,1fr);
+      gap: 10px; margin-bottom: 24px;
     }
-    .badge-item {
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 14px;
-      padding: 12px 8px;
-      text-align: center;
-      transition: transform 0.2s, border-color 0.2s;
+    .module-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 14px; padding: 16px;
     }
-    .badge-item.earned {
-      border-color: rgba(201,168,76,0.35);
-      background: rgba(201,168,76,0.06);
+    .mod-top {
+      display: flex; align-items: center;
+      gap: 10px; margin-bottom: 10px;
     }
-    .badge-item.earned:hover { transform: translateY(-3px); }
-    .badge-icon   { font-size: 1.8rem; display: block; margin-bottom: 5px; }
-    .badge-label  { font-size: 0.72rem; font-weight: 700; }
-    .badge-desc   { font-size: 0.65rem; color: var(--text-muted); margin-top: 2px; }
-    .badge-item:not(.earned) { opacity: 0.35; filter: grayscale(1); }
+    .mod-icon {
+      width: 40px; height: 40px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem; flex-shrink: 0;
+    }
+    .mod-name  { font-size: 14px; font-weight: 800; }
+    .mod-sub   { font-size: 11px; color: var(--text-muted); margin-top: 1px; }
+    .mod-bar   { height: 6px; background: var(--bg-main); border-radius: 999px; overflow: hidden; }
+    .mod-fill  { height: 100%; border-radius: 999px; transition: width 0.8s; }
+    .mod-stats {
+      display: flex; justify-content: space-between;
+      margin-top: 8px; font-size: 11px; color: var(--text-muted);
+    }
+    .mod-pct { font-weight: 800; color: var(--mc, var(--gold)); }
+    .mod-link {
+      display: inline-flex; align-items: center; gap: 4px;
+      margin-top: 10px; font-size: 12px; font-weight: 700;
+      color: var(--mc, var(--gold));
+      text-decoration: none; transition: var(--transition);
+    }
+    .mod-link:hover { opacity: 0.75; }
 
-    /* ===== شريط التقدم اليومي ===== */
+    /* ================================================
+       ACHIEVEMENTS
+       ================================================ */
+    .achv-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill,minmax(160px,1fr));
+      gap: 10px; margin-bottom: 24px;
+    }
+    .achv-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 14px; padding: 14px;
+      text-align: center; transition: var(--transition);
+      position: relative; overflow: hidden;
+    }
+    .achv-card.unlocked {
+      border-color: rgba(201,168,76,0.35);
+      background: rgba(201,168,76,0.04);
+    }
+    .achv-card.unlocked:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+    .achv-card.locked { opacity: 0.45; filter: grayscale(0.6); }
+    .achv-icon  { font-size: 2.2rem; margin-bottom: 6px; display: block; }
+    .achv-name  { font-size: 12px; font-weight: 800; margin-bottom: 3px; }
+    .achv-desc  { font-size: 10px; color: var(--text-muted); line-height: 1.6; }
+    .achv-badge {
+      position: absolute; top: 8px; left: 8px;
+      background: var(--gold); color: #000;
+      font-size: 9px; font-weight: 900;
+      border-radius: 999px; padding: 2px 7px;
+    }
+
+    /* ================================================
+       RECENT ACTIVITY
+       ================================================ */
+    .activity-list {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px; overflow: hidden;
+      margin-bottom: 24px;
+    }
+    .activity-hd {
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(45,106,79,0.05);
+      font-size: 14px; font-weight: 800;
+    }
     .activity-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 10px 0;
-      border-bottom: 1px solid rgba(255,255,255,0.05);
-      font-size: 0.9rem;
+      display: flex; align-items: center;
+      gap: 12px; padding: 11px 18px;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
     }
     .activity-row:last-child { border-bottom: none; }
-    .activity-val {
-      font-weight: 700;
-      color: var(--primary-light);
-      font-size: 1rem;
+    .act-icon {
+      width: 36px; height: 36px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem; flex-shrink: 0;
+    }
+    .act-text { flex: 1; font-size: 13px; font-weight: 600; }
+    .act-sub  { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+    .act-time { font-size: 11px; color: var(--text-muted); white-space: nowrap; }
+    .act-xp   { font-size: 12px; font-weight: 800; color: #a78bfa; white-space: nowrap; }
+
+    /* ================================================
+       SETTINGS
+       ================================================ */
+    .settings-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px; overflow: hidden;
+      margin-bottom: 24px;
+    }
+    .settings-hd {
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--border);
+      font-size: 14px; font-weight: 800;
+    }
+    .setting-row {
+      display: flex; align-items: center;
+      gap: 12px; padding: 13px 18px;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+    .setting-row:last-child { border-bottom: none; }
+    .setting-icon { font-size: 1.3rem; width: 28px; text-align: center; }
+    .setting-info { flex: 1; }
+    .setting-name { font-size: 13px; font-weight: 700; }
+    .setting-sub  { font-size: 11px; color: var(--text-muted); margin-top: 1px; }
+
+    /* Toggle */
+    .toggle {
+      width: 44px; height: 24px; border-radius: 999px;
+      background: var(--bg-main); border: 1px solid var(--border);
+      cursor: pointer; position: relative;
+      transition: background 0.3s; flex-shrink: 0;
+    }
+    .toggle.on { background: var(--primary); border-color: var(--primary); }
+    .toggle::after {
+      content: '';
+      position: absolute; top: 3px; right: 3px;
+      width: 16px; height: 16px; border-radius: 50%;
+      background: #fff; transition: transform 0.3s;
+    }
+    .toggle.on::after { transform: translateX(-20px); }
+
+    /* Select */
+    .setting-select {
+      background: var(--bg-main);
+      border: 1px solid var(--border);
+      color: var(--text); border-radius: 8px;
+      padding: 5px 10px; font-family: var(--font);
+      font-size: 12px; cursor: pointer;
+      outline: none;
     }
 
-    /* ===== Streak Calendar ===== */
-    .streak-info {
-      display: flex;
-      justify-content: space-around;
-      padding: 10px 0;
+    /* ================================================
+       SIGN IN GATE
+       ================================================ */
+    #gate {
+      display: none;
+      max-width: 500px; margin: 80px auto;
+      text-align: center; padding: 0 20px;
     }
-    .streak-box {
-      text-align: center;
+    #gate.show { display: block; }
+    .gate-icon  { font-size: 4rem; margin-bottom: 16px; }
+    .gate-title { font-size: 22px; font-weight: 900; margin-bottom: 8px; }
+    .gate-sub   { font-size: 14px; color: var(--text-sub); margin-bottom: 24px; line-height: 1.7; }
+    .gate-btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 14px 32px;
+      background: linear-gradient(135deg, var(--primary), #56d364);
+      border: none; border-radius: 14px; color: #fff;
+      font-family: var(--font); font-size: 15px; font-weight: 800;
+      cursor: pointer; transition: var(--transition);
     }
-    .streak-num {
-      font-size: 2rem;
-      font-weight: 800;
-    }
-    .streak-num.fire { color: #ff7849; }
-    .streak-num.star { color: var(--gold); }
-    .streak-sub { font-size: 0.78rem; color: var(--text-muted); }
+    .gate-btn:hover { transform: scale(1.03); opacity: 0.9; }
 
-    /* ===== أزرار ===== */
-    .btn-logout {
-      width: 100%;
-      padding: 14px;
-      border-radius: 14px;
-      background: rgba(239,68,68,0.1);
-      border: 1px solid rgba(239,68,68,0.3);
-      color: #ef4444;
-      font-family: inherit;
-      font-size: 1rem;
-      font-weight: 700;
-      cursor: pointer;
-      transition: background 0.2s;
+    /* ================================================
+       EDIT MODAL
+       ================================================ */
+    .edit-modal {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.8);
+      z-index: 9998; display: flex;
+      align-items: center; justify-content: center;
+      padding: 20px;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.3s;
+      backdrop-filter: blur(6px);
     }
-    .btn-logout:hover { background: rgba(239,68,68,0.2); }
+    .edit-modal.open { opacity: 1; pointer-events: all; }
+    .edit-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 20px; padding: 28px;
+      width: 100%; max-width: 420px;
+      transform: scale(0.94); transition: transform 0.3s;
+    }
+    .edit-modal.open .edit-box { transform: scale(1); }
+    .edit-title {
+      font-size: 18px; font-weight: 900;
+      margin-bottom: 20px;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .edit-close {
+      background: none; border: 1px solid var(--border);
+      color: var(--text-muted); cursor: pointer;
+      border-radius: 8px; padding: 3px 10px; font-size: 13px;
+    }
+    .edit-label {
+      font-size: 12px; font-weight: 700;
+      color: var(--text-muted); margin-bottom: 5px; display: block;
+    }
+    .edit-input {
+      width: 100%; padding: 10px 14px;
+      background: var(--bg-main);
+      border: 1.5px solid var(--border);
+      border-radius: 10px; color: var(--text);
+      font-family: var(--font); font-size: 14px;
+      outline: none; transition: var(--transition);
+      margin-bottom: 14px; box-sizing: border-box;
+    }
+    .edit-input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-glow); }
+    .avatar-grid {
+      display: flex; flex-wrap: wrap;
+      gap: 8px; margin-bottom: 16px;
+    }
+    .av-opt {
+      width: 44px; height: 44px; border-radius: 10px;
+      border: 2px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.5rem; cursor: pointer; transition: var(--transition);
+    }
+    .av-opt.on { border-color: var(--primary); background: rgba(45,106,79,0.1); }
+    .av-opt:hover { border-color: var(--primary); }
+    .save-btn {
+      width: 100%; padding: 12px;
+      background: linear-gradient(135deg, var(--primary), #56d364);
+      border: none; border-radius: 10px; color: #fff;
+      font-family: var(--font); font-size: 14px; font-weight: 800;
+      cursor: pointer; transition: var(--transition);
+    }
+    .save-btn:hover { transform: scale(1.02); }
 
-    /* ===== حالة عدم تسجيل الدخول ===== */
-    .not-logged {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 60vh;
-      text-align: center;
-      gap: 16px;
-      padding: 40px 20px;
-    }
-    .not-logged-icon { font-size: 4rem; }
-    .not-logged h2   { font-size: 1.4rem; font-weight: 700; }
-    .not-logged p    { color: var(--text-muted); font-size: 0.95rem; }
-    .btn-login {
-      padding: 14px 36px;
-      background: linear-gradient(135deg, var(--primary), var(--primary-light));
-      color: #fff;
-      border: none;
-      border-radius: 14px;
-      font-family: inherit;
-      font-size: 1rem;
-      font-weight: 700;
-      cursor: pointer;
-      transition: opacity 0.2s;
-    }
-    .btn-login:hover { opacity: 0.9; }
-
-    /* ===== Loading ===== */
-    .profile-loading {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 60vh;
-      gap: 16px;
-    }
-    .spinner {
-      width: 44px; height: 44px;
-      border: 4px solid rgba(255,255,255,0.1);
-      border-top-color: var(--gold);
-      border-radius: 50%;
-      animation: spin 0.8s linear infinite;
-    }
-    @keyframes spin { to { transform: rotate(360deg); } }
-
-    @media (max-width: 480px) {
-      .stats-grid { grid-template-columns: repeat(3, 1fr); gap: 8px; }
-      .stat-value { font-size: 1.1rem; }
-      .badges-grid { grid-template-columns: repeat(auto-fill, minmax(85px, 1fr)); }
+    /* ================================================
+       RESPONSIVE
+       ================================================ */
+    @media (max-width: 640px) {
+      .stats-grid-4  { grid-template-columns: repeat(2,1fr); }
+      .modules-grid  { grid-template-columns: 1fr; }
+      .achv-grid     { grid-template-columns: repeat(2,1fr); }
+      .profile-top   { flex-direction: column; align-items: flex-start; gap: 16px; }
     }
   </style>
 </head>
 <body>
 
-<!-- Navbar من الملف الرئيسي سيُدرج هنا لاحقاً — حالياً نضع زر رجوع بسيط -->
-<nav style="position:fixed;top:0;right:0;left:0;height:60px;background:var(--card-bg,#1a1a2e);
-            border-bottom:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;
-            padding:0 20px;z-index:100;gap:12px;">
-  <a href="/" style="color:var(--gold,#c9a84c);text-decoration:none;font-size:1.4rem;">☪</a>
-  <span style="font-weight:700;font-size:1rem;">IslamiCalc</span>
-  <a href="/" style="margin-right:auto;color:var(--text-muted,#888);font-size:0.9rem;text-decoration:none;">
-    ← الرئيسية
+<!-- NAVBAR -->
+<nav class="navbar" role="navigation" aria-label="القائمة الرئيسية">
+  <a href="/" class="navbar-brand">
+    <div class="navbar-logo">☪</div>
+    <span class="navbar-title">IslamiCalc</span>
   </a>
+  <ul class="navbar-menu" id="navMenu">
+    <li><a href="/">الرئيسية</a></li>
+    <li><a href="/zakat">الحاسبات</a></li>
+    <li><a href="/khatma">القرآن</a></li>
+    <li><a href="/prayer">الصلاة</a></li>
+    <li><a href="/athkar">الأذكار</a></li>
+    <li><a href="/arena">الميدان</a></li>
+    <li id="navProfile" style="display:none;"><a href="/profile">بروفايلي</a></li>
+  </ul>
+  <div class="navbar-actions">
+    <button class="theme-btn" id="themeBtn" aria-label="تبديل الثيم">
+      <svg id="iconMoon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>
+      </svg>
+      <svg id="iconSun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none">
+        <circle cx="12" cy="12" r="5"/>
+        <line x1="12" y1="1" x2="12" y2="3"/>
+        <line x1="12" y1="21" x2="12" y2="23"/>
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+        <line x1="1" y1="12" x2="3" y2="12"/>
+        <line x1="21" y1="12" x2="23" y2="12"/>
+      </svg>
+    </button>
+    <button class="login-btn" id="loginBtn" onclick="window.islamiCalc?.loginWithGoogle()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+        <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
+        <circle cx="12" cy="7" r="4"/>
+      </svg>
+      دخول
+    </button>
+    <button class="menu-toggle" id="menuToggle" aria-label="القائمة" aria-expanded="false">
+      <svg id="iconMenu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="3" y1="6" x2="21" y2="6"/>
+        <line x1="3" y1="12" x2="21" y2="12"/>
+        <line x1="3" y1="18" x2="21" y2="18"/>
+      </svg>
+      <svg id="iconClose" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none">
+        <line x1="18" y1="6" x2="6" y2="18"/>
+        <line x1="6"  y1="6" x2="18" y2="18"/>
+      </svg>
+    </button>
+  </div>
 </nav>
 
-<!-- ===== حالة التحميل ===== -->
-<div id="profileLoading" class="profile-loading" style="padding-top:60px;">
-  <div class="spinner"></div>
-  <div style="color:var(--text-muted);">جاري تحميل البروفايل...</div>
-</div>
-
-<!-- ===== حالة عدم تسجيل الدخول ===== -->
-<div id="notLogged" class="not-logged" style="display:none;padding-top:60px;">
-  <div class="not-logged-icon">🔐</div>
-  <h2>سجّل دخولك أولاً</h2>
-  <p>لعرض بروفايلك وإحصائياتك وأوسمتك</p>
-  <button class="btn-login" onclick="window.islamiCalc?.loginWithGoogle()">
-    تسجيل الدخول بـ Google
+<!-- SIGN IN GATE -->
+<div id="gate">
+  <div class="gate-icon">🔐</div>
+  <div class="gate-title">سجّل دخولك أولاً</div>
+  <div class="gate-sub">سجّل دخولك بحساب Google لتتمكن من متابعة تقدمك وإنجازاتك عبر أجهزتك المختلفة</div>
+  <button class="gate-btn" onclick="window.islamiCalc?.loginWithGoogle()">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
+      <circle cx="12" cy="7" r="4"/>
+    </svg>
+    الدخول بحساب Google
   </button>
 </div>
 
-<!-- ===== محتوى البروفايل ===== -->
-<div id="profileContent" style="display:none;padding-top:60px;">
+<!-- PROFILE CONTENT -->
+<div id="profile-content" style="display:none;">
 
-  <!-- هيدر البروفايل -->
-  <div class="profile-hero">
-    <div class="profile-avatar-wrap">
-      <img id="pAvatar" class="profile-avatar" src="" alt="صورة المستخدم" onerror="this.src='https://ui-avatars.com/api/?name=User&background=2d6a4f&color=fff&size=100'">
-      <div id="pLevelBadge" class="profile-level-badge">Lv. 1</div>
-    </div>
-    <div id="pName"    class="profile-name">جاري التحميل...</div>
-    <div id="pTitle"   class="profile-title">مسلم مبتدئ</div>
-    <div id="pCountry" class="profile-country">🌍 --</div>
-
-    <div class="xp-bar-section">
-      <div class="xp-bar-header">
-        <span id="pXPText">0 XP</span>
-        <span id="pNextLevel">المستوى القادم</span>
+  <!-- Hero -->
+  <section class="profile-hero">
+    <div class="profile-top">
+      <div class="profile-avatar-wrap">
+        <div class="profile-avatar" id="p-avatar">🕌</div>
+        <div class="profile-level-badge" id="p-level-badge">Lv.1</div>
       </div>
-      <div class="xp-bar-track">
-        <div class="xp-bar-fill" id="pXPBar"></div>
+      <div class="profile-info">
+        <div class="profile-name"    id="p-name">مستخدم IslamiCalc</div>
+        <div class="profile-handle"  id="p-email">—</div>
+        <div class="profile-tags"    id="p-tags"></div>
+      </div>
+      <div class="profile-actions">
+        <button class="profile-edit-btn" onclick="openEdit()">✏️ تعديل البروفايل</button>
+        <button class="logout-btn" onclick="doLogout()">تسجيل الخروج</button>
       </div>
     </div>
-
-    <div class="stats-grid">
-      <div class="stat-card">
-        <span class="stat-icon">⭐</span>
-        <span class="stat-value" id="pXP">0</span>
-        <div class="stat-label">نقاط XP</div>
+    <!-- XP Bar -->
+    <div class="profile-xp-row">
+      <div class="pxp-top">
+        <span class="pxp-title" id="p-level-name">المبتدئ</span>
+        <span class="pxp-num"   id="p-xp-num">0 / 100 XP</span>
       </div>
-      <div class="stat-card">
-        <span class="stat-icon">📊</span>
-        <span class="stat-value" id="pLevel">1</span>
-        <div class="stat-label">المستوى</div>
+      <div class="pxp-bar">
+        <div class="pxp-fill" id="p-xp-fill" style="width:0%"></div>
       </div>
-      <div class="stat-card">
-        <span class="stat-icon">🏅</span>
-        <span class="stat-value" id="pBadgeCount">0</span>
-        <div class="stat-label">وسام</div>
+      <div class="pxp-labels">
+        <span id="p-xp-cur">المستوى الحالي</span>
+        <span id="p-xp-next">المستوى التالي</span>
       </div>
     </div>
-  </div>
+  </section>
 
-  <!-- محتوى البروفايل -->
-  <div class="profile-content">
+  <!-- Body -->
+  <div class="profile-body">
 
-    <!-- الـ Streak -->
-    <div class="section-card">
-      <div class="section-title">🔥 الاستمرارية</div>
-      <div class="streak-info">
-        <div class="streak-box">
-          <div class="streak-num fire" id="pStreak">0</div>
-          <div class="streak-sub">Streak الحالي</div>
-        </div>
-        <div class="streak-box">
-          <div class="streak-num star" id="pLongestStreak">0</div>
-          <div class="streak-sub">أطول Streak</div>
-        </div>
+    <!-- Stats -->
+    <div class="sec-hd">📊 إحصائياتك الكلية</div>
+    <div class="stats-grid-4">
+      <div class="stat-card" style="--sc:#f0c96e">
+        <div class="stat-icon">⭐</div>
+        <div class="stat-num" id="st-xp">0</div>
+        <div class="stat-lbl">نقطة XP</div>
       </div>
-    </div>
-
-    <!-- الإنجازات والنشاط -->
-    <div class="section-card">
-      <div class="section-title">📈 إحصائيات النشاط</div>
-      <div id="activityList">
-        <div class="activity-row">
-          <span>📖 ختمات القرآن المكتملة</span>
-          <span class="activity-val" id="pKhatma">0</span>
-        </div>
-        <div class="activity-row">
-          <span>📿 مرات إتمام الأذكار</span>
-          <span class="activity-val" id="pAthkar">0</span>
-        </div>
-        <div class="activity-row">
-          <span>🏆 انتصارات التحديات</span>
-          <span class="activity-val" id="pQuizWins">0</span>
-        </div>
-        <div class="activity-row">
-          <span>❓ أسئلة يومية صحيحة</span>
-          <span class="activity-val" id="pDailyQ">0</span>
-        </div>
-        <div class="activity-row">
-          <span>📅 تاريخ الانضمام</span>
-          <span class="activity-val" id="pJoined">--</span>
-        </div>
+      <div class="stat-card" style="--sc:#3fb950">
+        <div class="stat-icon">✅</div>
+        <div class="stat-num" id="st-correct">0</div>
+        <div class="stat-lbl">إجابة صحيحة</div>
+      </div>
+      <div class="stat-card" style="--sc:#58a6ff">
+        <div class="stat-icon">📖</div>
+        <div class="stat-num" id="st-surahs">0</div>
+        <div class="stat-lbl">سورة مكتملة</div>
+      </div>
+      <div class="stat-card" style="--sc:#a78bfa">
+        <div class="stat-icon">🔥</div>
+        <div class="stat-num" id="st-streak">0</div>
+        <div class="stat-lbl">أفضل سلسلة</div>
+      </div>
+      <div class="stat-card" style="--sc:#ffa657">
+        <div class="stat-icon">🎮</div>
+        <div class="stat-num" id="st-played">0</div>
+        <div class="stat-lbl">جولة لُعبت</div>
+      </div>
+      <div class="stat-card" style="--sc:#79c0ff">
+        <div class="stat-icon">📄</div>
+        <div class="stat-num" id="st-pages">0</div>
+        <div class="stat-lbl">صفحة مقروءة</div>
+      </div>
+      <div class="stat-card" style="--sc:#56d364">
+        <div class="stat-icon">🌿</div>
+        <div class="stat-num" id="st-athkar">0</div>
+        <div class="stat-lbl">ذكر مكتمل</div>
+      </div>
+      <div class="stat-card" style="--sc:#d2a8ff">
+        <div class="stat-icon">🎯</div>
+        <div class="stat-num" id="st-acc">0%</div>
+        <div class="stat-lbl">دقة الإجابة</div>
       </div>
     </div>
 
-    <!-- الأوسمة -->
-    <div class="section-card">
-      <div class="section-title">🏅 الأوسمة والشارات</div>
-      <div class="badges-grid" id="pBadgesGrid">
-        <!-- تُولَّد بـ JavaScript -->
+    <!-- Heatmap -->
+    <div class="sec-hd">📅 نشاطك — آخر 12 أسبوع</div>
+    <div class="heatmap-wrap">
+      <div class="heatmap-title">
+        <span>سجل النشاط اليومي</span>
+        <span class="heatmap-streak" id="hm-streak">🔥 0 يوم متتالي</span>
+      </div>
+      <div id="heatmap-grid" class="heatmap-grid"></div>
+      <div class="hm-legend">
+        <span>أقل</span>
+        <div class="hm-legend-cell" style="background:var(--bg-main)"></div>
+        <div class="hm-legend-cell" style="background:rgba(45,106,79,0.3)"></div>
+        <div class="hm-legend-cell" style="background:rgba(45,106,79,0.55)"></div>
+        <div class="hm-legend-cell" style="background:rgba(45,106,79,0.75)"></div>
+        <div class="hm-legend-cell" style="background:var(--primary)"></div>
+        <span>أكثر</span>
       </div>
     </div>
 
-    <!-- تسجيل الخروج -->
-    <button class="btn-logout" onclick="window.islamiCalc?.logoutUser().then(()=>window.location='/')">
-      تسجيل الخروج 👋
-    </button>
+    <!-- Modules -->
+    <div class="sec-hd">📦 تقدمك في الأقسام</div>
+    <div class="modules-grid">
+      <div class="module-card">
+        <div class="mod-top">
+          <div class="mod-icon" style="background:rgba(201,168,76,0.1)">📖</div>
+          <div>
+            <div class="mod-name">ختمة القرآن</div>
+            <div class="mod-sub" id="mod-khatma-sub">0 / 114 سورة</div>
+          </div>
+        </div>
+        <div class="mod-bar">
+          <div class="mod-fill" id="mod-khatma-fill" style="background:linear-gradient(90deg,#c9a84c,#f0c96e);width:0%"></div>
+        </div>
+        <div class="mod-stats">
+          <span id="mod-khatma-pages">0 صفحة مكتملة</span>
+          <span class="mod-pct" style="--mc:#c9a84c" id="mod-khatma-pct">0%</span>
+        </div>
+        <a href="/khatma" class="mod-link" style="--mc:#c9a84c">
+          متابعة القراءة
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12">
+            <polyline points="15 18 9 12 15 6"/>
+          </svg>
+        </a>
+      </div>
 
+      <div class="module-card">
+        <div class="mod-top">
+          <div class="mod-icon" style="background:rgba(63,185,80,0.1)">🌿</div>
+          <div>
+            <div class="mod-name">الأذكار</div>
+            <div class="mod-sub" id="mod-athkar-sub">لم تبدأ بعد</div>
+          </div>
+        </div>
+        <div class="mod-bar">
+          <div class="mod-fill" id="mod-athkar-fill" style="background:linear-gradient(90deg,var(--primary),#56d364);width:0%"></div>
+        </div>
+        <div class="mod-stats">
+          <span id="mod-athkar-cats">0 / 4 أقسام</span>
+          <span class="mod-pct" style="--mc:#3fb950" id="mod-athkar-pct">0%</span>
+        </div>
+        <a href="/athkar" class="mod-link" style="--mc:#3fb950">
+          فتح الأذكار
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12">
+            <polyline points="15 18 9 12 15 6"/>
+          </svg>
+        </a>
+      </div>
+
+      <div class="module-card">
+        <div class="mod-top">
+          <div class="mod-icon" style="background:rgba(167,139,250,0.1)">🏟️</div>
+          <div>
+            <div class="mod-name">الميدان</div>
+            <div class="mod-sub" id="mod-maydan-sub">0 جولة لُعبت</div>
+          </div>
+        </div>
+        <div class="mod-bar">
+          <div class="mod-fill" id="mod-maydan-fill" style="background:linear-gradient(90deg,#7c3aed,#a78bfa);width:0%"></div>
+        </div>
+        <div class="mod-stats">
+          <span id="mod-maydan-correct">0 إجابة صحيحة</span>
+          <span class="mod-pct" style="--mc:#a78bfa" id="mod-maydan-pct">0%</span>
+        </div>
+        <a href="/arena" class="mod-link" style="--mc:#a78bfa">
+          دخول الميدان
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12">
+            <polyline points="15 18 9 12 15 6"/>
+          </svg>
+        </a>
+      </div>
+
+      <div class="module-card">
+        <div class="mod-top">
+          <div class="mod-icon" style="background:rgba(88,166,255,0.1)">🕌</div>
+          <div>
+            <div class="mod-name">قصص الأنبياء</div>
+            <div class="mod-sub">25 نبياً ورسولاً</div>
+          </div>
+        </div>
+        <div class="mod-bar">
+          <div class="mod-fill" style="background:linear-gradient(90deg,#3d6b9e,#58a6ff);width:100%"></div>
+        </div>
+        <div class="mod-stats">
+          <span>25 / 25 قصة</span>
+          <span class="mod-pct" style="--mc:#58a6ff">100%</span>
+        </div>
+        <a href="/prophets" class="mod-link" style="--mc:#58a6ff">
+          استعراض الأنبياء
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12">
+            <polyline points="15 18 9 12 15 6"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+
+    <!-- Achievements -->
+    <div class="sec-hd">🏆 الإنجازات</div>
+    <div class="achv-grid" id="achv-grid"></div>
+
+    <!-- Recent Activity -->
+    <div class="sec-hd">🕐 النشاط الأخير</div>
+    <div class="activity-list">
+      <div class="activity-hd">آخر الأنشطة</div>
+      <div id="activity-list-inner"></div>
+    </div>
+
+    <!-- Settings -->
+    <div class="sec-hd">⚙️ الإعدادات</div>
+    <div class="settings-card">
+      <div class="settings-hd">إعدادات التطبيق</div>
+
+      <div class="setting-row">
+        <div class="setting-icon">🌙</div>
+        <div class="setting-info">
+          <div class="setting-name">الثيم الداكن</div>
+          <div class="setting-sub">تبديل بين الوضع الداكن والفاتح</div>
+        </div>
+        <div class="toggle" id="toggle-theme" onclick="toggleTheme(this)"></div>
+      </div>
+
+      <div class="setting-row">
+        <div class="setting-icon">📳</div>
+        <div class="setting-info">
+          <div class="setting-name">الاهتزاز</div>
+          <div class="setting-sub">اهتزاز عند التفاعل مع الأذكار والميدان</div>
+        </div>
+        <div class="toggle on" id="toggle-vibrate" onclick="toggleSetting('vibrate',this)"></div>
+      </div>
+
+      <div class="setting-row">
+        <div class="setting-icon">🔔</div>
+        <div class="setting-info">
+          <div class="setting-name">تذكير الأذكار</div>
+          <div class="setting-sub">تذكير يومي بأذكار الصباح والمساء</div>
+        </div>
+        <div class="toggle" id="toggle-notif" onclick="toggleSetting('notif',this)"></div>
+      </div>
+
+      <div class="setting-row">
+        <div class="setting-icon">🔤</div>
+        <div class="setting-info">
+          <div class="setting-name">حجم الخط</div>
+          <div class="setting-sub">حجم خط القارئ القرآني</div>
+        </div>
+        <select class="setting-select" id="font-size-sel" onchange="setFontSize(this.value)">
+          <option value="small">صغير</option>
+          <option value="medium" selected>متوسط</option>
+          <option value="large">كبير</option>
+        </select>
+      </div>
+
+      <div class="setting-row">
+        <div class="setting-icon">🗑</div>
+        <div class="setting-info">
+          <div class="setting-name">إعادة تعيين كل البيانات</div>
+          <div class="setting-sub">حذف جميع بيانات التقدم المحلية</div>
+        </div>
+        <button class="logout-btn" onclick="resetAllData()" style="font-size:12px;padding:6px 12px;">إعادة تعيين</button>
+      </div>
+    </div>
+
+  </div><!-- /profile-body -->
+</div><!-- /profile-content -->
+
+<!-- EDIT MODAL -->
+<div class="edit-modal" id="edit-modal">
+  <div class="edit-box">
+    <div class="edit-title">
+      ✏️ تعديل البروفايل
+      <button class="edit-close" onclick="closeEdit()">✕ إغلاق</button>
+    </div>
+    <label class="edit-label">الاسم المعروض</label>
+    <input class="edit-input" id="edit-name" type="text" placeholder="اكتب اسمك..." maxlength="30">
+    <label class="edit-label">اختر الأفاتار</label>
+    <div class="avatar-grid" id="avatar-grid"></div>
+    <button class="save-btn" onclick="saveProfile()">💾 حفظ التغييرات</button>
   </div>
 </div>
 
-<!-- Toast -->
-<div id="toast" class="toast"></div>
-
-<!-- Firebase -->
 <script type="module" src="/firebase.js"></script>
-
 <script>
-  // تهيئة الثيم
-  const saved = localStorage.getItem("theme") || "dark";
-  document.documentElement.setAttribute("data-theme", saved);
 
-  // الانتظار حتى يصبح المستخدم جاهزاً
-  let profileLoaded = false;
+// ================================================================
+// LEVELS
+// ================================================================
+const LEVELS=[
+  {min:0,    name:"المبتدئ",      icon:"🌱"},
+  {min:100,  name:"الطالب",       icon:"📚"},
+  {min:300,  name:"الراسخ",       icon:"🎯"},
+  {min:600,  name:"العارف",       icon:"💡"},
+  {min:1000, name:"الحافظ",       icon:"🛡"},
+  {min:1500, name:"الفقيه",       icon:"⚖️"},
+  {min:2200, name:"الشيخ",        icon:"🎓"},
+  {min:3000, name:"العلّامة",     icon:"🌟"},
+  {min:4000, name:"إمام الميدان", icon:"👑"},
+];
 
-  window.addEventListener("userReady", (e) => {
-    if (profileLoaded) return;
-    profileLoaded = true;
-    renderProfile(e.detail);
-  });
+const AVATARS=["🕌","🌙","⭐","📖","🤲","🌿","☪","🏔","🌊","🦅","🌺","🎯","⚔️","🔱","💎"];
 
-  window.addEventListener("userSignedOut", () => {
-    document.getElementById("profileLoading").style.display = "none";
-    document.getElementById("profileContent").style.display  = "none";
-    document.getElementById("notLogged").style.display       = "flex";
-  });
+// ================================================================
+// ACHIEVEMENTS
+// ================================================================
+const ACHIEVEMENTS=[
+  { id:"first_game",  icon:"🎮", name:"أول خطوة",        desc:"العب أول جولة في الميدان",        check:s=>s.maydan?.played>=1 },
+  { id:"streak5",     icon:"🔥", name:"سلسلة النار",     desc:"حقق سلسلة 5 إجابات صحيحة",       check:s=>s.maydan?.bestStreak>=5 },
+  { id:"streak10",    icon:"⚡", name:"البرق",            desc:"حقق سلسلة 10 إجابات متتالية",    check:s=>s.maydan?.bestStreak>=10 },
+  { id:"xp100",       icon:"🌱", name:"أول مئة",         desc:"اجمع 100 نقطة XP",                check:s=>s.maydan?.xp>=100 },
+  { id:"xp1000",      icon:"💫", name:"ألف نقطة",        desc:"اجمع 1000 نقطة XP",               check:s=>s.maydan?.xp>=1000 },
+  { id:"khatma_10",   icon:"📖", name:"عاشر السور",      desc:"أكمل 10 سور في الختمة",           check:s=>Object.keys(s.khatma||{}).length>=10 },
+  { id:"khatma_full", icon:"🏆", name:"الختمة الكاملة",  desc:"أكمل ختمة القرآن كاملاً",         check:s=>Object.keys(s.khatma||{}).length>=114 },
+  { id:"athkar_sabah",icon:"🌅", name:"أذكار الصباح",    desc:"أكمل أذكار الصباح كاملةً",         check:s=>calcAthkarPct(s,'sabah')>=100 },
+  { id:"athkar_all",  icon:"🌿", name:"الذاكر",          desc:"أكمل جميع أقسام الأذكار",          check:s=>calcAthkarPct(s,'all')>=100 },
+  { id:"prophet_read",icon:"⭐", name:"قارئ السير",      desc:"افتح صفحة الأنبياء",               check:s=>!!s.visitedProphets },
+  { id:"level3",      icon:"🎓", name:"الراسخ",          desc:"ابلغ المستوى الثالث في الميدان",  check:s=>getLevel(s.maydan?.xp||0)>=2 },
+  { id:"level_max",   icon:"👑", name:"إمام الميدان",    desc:"ابلغ المستوى الأعلى",              check:s=>getLevel(s.maydan?.xp||0)>=8 },
+];
 
-  // Timeout إذا Firebase تأخر
-  setTimeout(() => {
-    if (!profileLoaded) {
-      document.getElementById("profileLoading").style.display = "none";
-      document.getElementById("notLogged").style.display      = "flex";
+function calcAthkarPct(s, section){
+  const TOTALS={sabah:10,masaa:9,salah:8,nawm:9};
+  if(section==='all'){
+    const all=Object.values(TOTALS).reduce((a,b)=>a+b,0);
+    const done=Object.keys(TOTALS).reduce((sum,k)=>{
+      const st=s['athkar_'+k]||{};
+      return sum+Object.values(st).filter(v=>v>=1).length;
+    },0);
+    return Math.round(done/all*100);
+  }
+  const st=s['athkar_'+section]||{};
+  return Math.round(Object.values(st).filter(v=>v>=1).length/(TOTALS[section]||1)*100);
+}
+
+function getLevel(xp){
+  let lv=0;
+  for(let i=LEVELS.length-1;i>=0;i--){ if(xp>=LEVELS[i].min){lv=i;break;} }
+  return lv;
+}
+
+// ================================================================
+// LOAD ALL LOCAL DATA
+// ================================================================
+function loadAllData(){
+  return {
+    maydan:          JSON.parse(localStorage.getItem('maydan')||'null') || {},
+    khatma:          JSON.parse(localStorage.getItem('kp')||'{}'),
+    khatmaPages:     JSON.parse(localStorage.getItem('kpp')||'{}'),
+    athkar_sabah:    JSON.parse(localStorage.getItem('athkar_sabah')||'{}'),
+    athkar_masaa:    JSON.parse(localStorage.getItem('athkar_masaa')||'{}'),
+    athkar_salah:    JSON.parse(localStorage.getItem('athkar_salah')||'{}'),
+    athkar_nawm:     JSON.parse(localStorage.getItem('athkar_nawm')||'{}'),
+    activity:        JSON.parse(localStorage.getItem('ic_activity')||'[]'),
+    heatmap:         JSON.parse(localStorage.getItem('ic_heatmap')||'{}'),
+    visitedProphets: !!localStorage.getItem('visited_prophets'),
+    settings:        JSON.parse(localStorage.getItem('ic_settings')||'{}'),
+    profile:         JSON.parse(localStorage.getItem('ic_profile')||'{}'),
+  };
+}
+
+// ================================================================
+// PROFILE RENDER
+// ================================================================
+let profileData={};
+
+function renderProfile(user){
+  const d=loadAllData();
+  profileData=d;
+  const p=d.profile;
+  const m=d.maydan||{};
+  const name = p.name || user?.displayName || 'مستخدم IslamiCalc';
+  const avatar= p.avatar || '🕌';
+  const xp    = m.xp||0;
+  const lv    = getLevel(xp);
+  const lvD   = LEVELS[lv];
+  const lvN   = LEVELS[lv+1]||null;
+  const xpCur = xp - lvD.min;
+  const xpNxt = lvN ? lvN.min - lvD.min : 1;
+  const pct   = lvN ? Math.min(Math.round(xpCur/xpNxt*100),100) : 100;
+
+  // Hero
+  document.getElementById('p-avatar').textContent     = avatar;
+  document.getElementById('p-level-badge').textContent= `Lv.${lv+1}`;
+  document.getElementById('p-name').textContent       = name;
+  document.getElementById('p-email').textContent      = user?.email||'—';
+  document.getElementById('p-level-name').textContent = `${lvD.icon} ${lvD.name}`;
+  document.getElementById('p-xp-fill').style.width    = pct+'%';
+  document.getElementById('p-xp-num').textContent     = lvN ? `${xp} / ${lvN.min} XP` : `${xp} XP — الحد الأقصى!`;
+  document.getElementById('p-xp-cur').textContent     = lvD.name;
+  document.getElementById('p-xp-next').textContent    = lvN ? lvN.name : '🏆 المستوى الأعلى';
+
+  // Tags
+  const tags=[];
+  if(xp>=1000) tags.push('🏆 '+lvD.name);
+  if(m.bestStreak>=5)  tags.push('🔥 سلسلة '+m.bestStreak);
+  if(Object.keys(d.khatma).length>=114) tags.push('📖 ختمة كاملة');
+  document.getElementById('p-tags').innerHTML=tags.map(t=>`<span class="ptag">${t}</span>`).join('');
+
+  // Stats
+  const total = (m.correct||0)+(m.wrong||0);
+  const acc   = total?Math.round((m.correct||0)/total*100):0;
+  const athkarDone = ['sabah','masaa','salah','nawm'].reduce((sum,k)=>{
+    return sum+Object.values(d['athkar_'+k]).filter(v=>v>=1).length;
+  },0);
+
+  document.getElementById('st-xp').textContent      = xp;
+  document.getElementById('st-correct').textContent = m.correct||0;
+  document.getElementById('st-surahs').textContent  = Object.keys(d.khatma).length;
+  document.getElementById('st-streak').textContent  = m.bestStreak||0;
+  document.getElementById('st-played').textContent  = m.played||0;
+  document.getElementById('st-pages').textContent   = Object.keys(d.khatmaPages).length;
+  document.getElementById('st-athkar').textContent  = athkarDone;
+  document.getElementById('st-acc').textContent     = acc+'%';
+
+  // Modules
+  const kSurahs = Object.keys(d.khatma).length;
+  const kPages  = Object.keys(d.khatmaPages).length;
+  const kPct    = Math.round(kSurahs/114*100);
+  document.getElementById('mod-khatma-sub').textContent  = `${kSurahs} / 114 سورة`;
+  document.getElementById('mod-khatma-fill').style.width = kPct+'%';
+  document.getElementById('mod-khatma-pages').textContent= `${kPages} صفحة مكتملة`;
+  document.getElementById('mod-khatma-pct').textContent  = kPct+'%';
+
+  const athkarCats=['sabah','masaa','salah','nawm'];
+  const athkarTotals={sabah:10,masaa:9,salah:8,nawm:9};
+  const athkarTotal=Object.values(athkarTotals).reduce((a,b)=>a+b,0);
+  const athkarPct=Math.round(athkarDone/athkarTotal*100);
+  const athkarCatsDone=athkarCats.filter(k=>Object.values(d['athkar_'+k]).filter(v=>v>=1).length===athkarTotals[k]).length;
+  document.getElementById('mod-athkar-sub').textContent  = athkarDone?`${athkarDone} ذكر مكتمل`:'لم تبدأ بعد';
+  document.getElementById('mod-athkar-fill').style.width = athkarPct+'%';
+  document.getElementById('mod-athkar-cats').textContent = `${athkarCatsDone} / 4 أقسام`;
+  document.getElementById('mod-athkar-pct').textContent  = athkarPct+'%';
+
+  const maydanPct=Math.min(Math.round((m.xp||0)/4000*100),100);
+  document.getElementById('mod-maydan-sub').textContent  = `${m.played||0} جولة لُعبت`;
+  document.getElementById('mod-maydan-fill').style.width = maydanPct+'%';
+  document.getElementById('mod-maydan-correct').textContent=`${m.correct||0} إجابة صحيحة`;
+  document.getElementById('mod-maydan-pct').textContent  = maydanPct+'%';
+
+  // Achievements
+  renderAchievements(d);
+
+  // Heatmap
+  renderHeatmap(d.heatmap);
+
+  // Activity
+  renderActivity(d.activity);
+
+  // Settings
+  applySettings(d.settings);
+}
+
+// ================================================================
+// ACHIEVEMENTS
+// ================================================================
+function renderAchievements(d){
+  document.getElementById('achv-grid').innerHTML=ACHIEVEMENTS.map(a=>{
+    const unlocked=a.check(d);
+    return `<div class="achv-card ${unlocked?'unlocked':'locked'}">
+      ${unlocked?'<div class="achv-badge">✓ مفتوح</div>':''}
+      <span class="achv-icon">${a.icon}</span>
+      <div class="achv-name">${a.name}</div>
+      <div class="achv-desc">${a.desc}</div>
+    </div>`;
+  }).join('');
+}
+
+// ================================================================
+// HEATMAP
+// ================================================================
+function renderHeatmap(hm){
+  const weeks=12; const days=7;
+  const grid=document.getElementById('heatmap-grid');
+  grid.innerHTML='';
+
+  const now=new Date();
+  let streak=0; let lastActive=false;
+
+  for(let w=weeks-1;w>=0;w--){
+    const col=document.createElement('div');
+    col.className='hm-col';
+    for(let d=0;d<days;d++){
+      const date=new Date(now);
+      date.setDate(now.getDate()-(w*7+(days-1-d)));
+      const key=date.toISOString().split('T')[0];
+      const val=hm[key]||0;
+      const lvl=val===0?0:val<=1?1:val<=3?2:val<=5?3:4;
+      const cell=document.createElement('div');
+      cell.className='hm-cell';
+      cell.setAttribute('data-v',lvl);
+      cell.title=`${key}: ${val} نشاط`;
+      col.appendChild(cell);
     }
-  }, 6000);
-
-  function renderProfile(data) {
-    if (!data) {
-      document.getElementById("profileLoading").style.display = "none";
-      document.getElementById("notLogged").style.display      = "flex";
-      return;
-    }
-
-    // إخفاء التحميل وإظهار البروفايل
-    document.getElementById("profileLoading").style.display = "none";
-    document.getElementById("profileContent").style.display = "block";
-
-    const xp     = data.xp     || 0;
-    const level  = data.level  || 1;
-    const streak = data.streak || 0;
-    const lvl    = window.islamiCalc?.getLevelFromXP(xp) || { level: 1, title: "مسلم مبتدئ" };
-    const prog   = window.islamiCalc?.getLevelProgress(xp) || { percent: 0, current: 0, needed: 200 };
-
-    // Avatar & Name
-    const avatar = document.getElementById("pAvatar");
-    avatar.src   = data.photo || "";
-    if (!data.photo) avatar.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(data.name||"U")}&background=2d6a4f&color=fff&size=100`;
-
-    setText("pName",          data.name || "مجهول");
-    setText("pTitle",         lvl.title);
-    setText("pLevelBadge",    "Lv. " + level);
-    setText("pCountry",       "🌍 " + (data.country || "--"));
-    setText("pXP",            xp.toLocaleString("ar"));
-    setText("pLevel",         level);
-    setText("pBadgeCount",    (data.badges || []).length);
-    setText("pStreak",        streak);
-    setText("pLongestStreak", data.longestStreak || streak);
-    setText("pKhatma",        data.khatmaCount   || 0);
-    setText("pAthkar",        data.athkarCount   || 0);
-    setText("pQuizWins",      data.quizWins      || 0);
-    setText("pDailyQ",        data.dailyQCorrect || 0);
-
-    // تاريخ الانضمام
-    if (data.createdAt?.toDate) {
-      const d = data.createdAt.toDate();
-      setText("pJoined", d.toLocaleDateString("ar-SA", { year:"numeric", month:"long", day:"numeric" }));
-    }
-
-    // XP Bar
-    setText("pXPText",    xp.toLocaleString("ar") + " XP");
-    setText("pNextLevel", prog.percent < 100 ? `${prog.needed - prog.current} XP للمستوى التالي` : "🏆 أعلى مستوى!");
-    setTimeout(() => {
-      document.getElementById("pXPBar").style.width = prog.percent + "%";
-    }, 300);
-
-    // الأوسمة
-    renderBadges(data.badges || []);
+    grid.appendChild(col);
   }
 
-  function renderBadges(earnedBadges) {
-    const grid    = document.getElementById("pBadgesGrid");
-    const BADGES  = window.islamiCalc?.BADGES_DEF || {};
-    grid.innerHTML = "";
-
-    Object.entries(BADGES).forEach(([id, def]) => {
-      const earned = earnedBadges.includes(id);
-      const item   = document.createElement("div");
-      item.className = "badge-item" + (earned ? " earned" : "");
-      item.title     = def.desc;
-
-      const icon  = document.createElement("span");
-      icon.className   = "badge-icon";
-      icon.textContent = def.icon;
-
-      const label  = document.createElement("div");
-      label.className   = "badge-label";
-      label.textContent = def.label;
-
-      const desc   = document.createElement("div");
-      desc.className   = "badge-desc";
-      desc.textContent = earned ? "✅ مكتسب" : "🔒 مقفل";
-
-      item.append(icon, label, desc);
-      grid.appendChild(item);
-    });
+  // Streak
+  let s=0;
+  for(let i=0;i<365;i++){
+    const d2=new Date(now); d2.setDate(now.getDate()-i);
+    const k2=d2.toISOString().split('T')[0];
+    if(hm[k2]) s++; else break;
   }
+  document.getElementById('hm-streak').textContent=`🔥 ${s} يوم متتالي`;
+}
 
-  function setText(id, val) {
-    const el = document.getElementById(id);
-    if (el) el.textContent = val;
+// ================================================================
+// ACTIVITY
+// ================================================================
+function renderActivity(activity){
+  const el=document.getElementById('activity-list-inner');
+  if(!activity||!activity.length){
+    el.innerHTML='<div style="text-align:center;padding:24px;color:var(--text-muted);font-size:13px;">لا يوجد نشاط مسجل بعد</div>';
+    return;
   }
+  el.innerHTML=[...activity].reverse().slice(0,8).map(a=>`
+    <div class="activity-row">
+      <div class="act-icon" style="background:${a.color||'rgba(45,106,79,0.1)'}">
+        ${a.icon||'⭐'}
+      </div>
+      <div>
+        <div class="act-text">${a.text}</div>
+        <div class="act-sub">${a.sub||''}</div>
+      </div>
+      <div>
+        <div class="act-time">${a.time||''}</div>
+        ${a.xp?`<div class="act-xp">+${a.xp} XP</div>`:''}
+      </div>
+    </div>
+  `).join('');
+}
+
+// ================================================================
+// SETTINGS
+// ================================================================
+function applySettings(s){
+  const isDark=document.documentElement.getAttribute('data-theme')==='dark';
+  const thTog=document.getElementById('toggle-theme');
+  if(isDark) thTog.classList.add('on'); else thTog.classList.remove('on');
+
+  const vibTog=document.getElementById('toggle-vibrate');
+  if(s.vibrate!==false) vibTog.classList.add('on'); else vibTog.classList.remove('on');
+
+  const notTog=document.getElementById('toggle-notif');
+  if(s.notif) notTog.classList.add('on'); else notTog.classList.remove('on');
+
+  const fsSel=document.getElementById('font-size-sel');
+  fsSel.value=s.fontSize||'medium';
+}
+
+function toggleTheme(el){
+  el.classList.toggle('on');
+  const n=document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark';
+  document.documentElement.setAttribute('data-theme',n);
+  localStorage.setItem('theme',n);
+  document.getElementById('iconSun').style.display  = n==='dark'?'none':'block';
+  document.getElementById('iconMoon').style.display = n==='dark'?'block':'none';
+}
+
+function toggleSetting(key, el){
+  el.classList.toggle('on');
+  const s=JSON.parse(localStorage.getItem('ic_settings')||'{}');
+  s[key]=el.classList.contains('on');
+  localStorage.setItem('ic_settings',JSON.stringify(s));
+}
+
+function setFontSize(v){
+  const s=JSON.parse(localStorage.getItem('ic_settings')||'{}');
+  s.fontSize=v; localStorage.setItem('ic_settings',JSON.stringify(s));
+  const fz={small:'18px',medium:'22px',large:'28px'};
+  document.documentElement.style.setProperty('--quran-font-size', fz[v]||'22px');
+}
+
+// ================================================================
+// EDIT PROFILE
+// ================================================================
+let selAvatar='🕌';
+
+function openEdit(){
+  const d=loadAllData();
+  document.getElementById('edit-name').value = d.profile.name||'';
+  selAvatar = d.profile.avatar||'🕌';
+  document.getElementById('avatar-grid').innerHTML=AVATARS.map(a=>`
+    <div class="av-opt ${a===selAvatar?'on':''}" onclick="pickAvatar('${a}',this)">${a}</div>
+  `).join('');
+  document.getElementById('edit-modal').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+
+function closeEdit(){
+  document.getElementById('edit-modal').classList.remove('open');
+  document.body.style.overflow='';
+}
+
+function pickAvatar(a,el){
+  selAvatar=a;
+  document.querySelectorAll('.av-opt').forEach(b=>b.classList.remove('on'));
+  el.classList.add('on');
+}
+
+function saveProfile(){
+  const name=document.getElementById('edit-name').value.trim()||'مستخدم IslamiCalc';
+  const p={name, avatar:selAvatar};
+  localStorage.setItem('ic_profile',JSON.stringify(p));
+  document.getElementById('p-avatar').textContent=selAvatar;
+  document.getElementById('p-name').textContent=name;
+  closeEdit();
+  showToast('✅ تم حفظ البروفايل');
+}
+
+// ================================================================
+// RESET
+// ================================================================
+function resetAllData(){
+  if(!confirm('هل أنت متأكد من حذف جميع بيانات التقدم المحلية؟')) return;
+  ['kp','kpp','kbm','kwaqfa','maydan','athkar_sabah','athkar_masaa','athkar_salah','athkar_nawm','ic_activity','ic_heatmap','kmode','kpl'].forEach(k=>localStorage.removeItem(k));
+  location.reload();
+}
+
+function doLogout(){
+  if(confirm('هل تريد تسجيل الخروج؟'))
+    window.islamiCalc?.logout?.().then(()=>location.href='/');
+}
+
+// ================================================================
+// TOAST
+// ================================================================
+function showToast(msg,color='var(--primary-light)'){
+  const t=document.createElement('div');
+  t.style.cssText=`position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);
+    background:var(--bg-card);border:1px solid ${color};border-radius:12px;
+    padding:10px 22px;font-size:13px;font-weight:700;color:${color};
+    z-index:9999;opacity:0;transition:all 0.3s;pointer-events:none;white-space:nowrap`;
+  t.textContent=msg;
+  document.body.appendChild(t);
+  setTimeout(()=>{t.style.opacity='1';t.style.transform='translateX(-50%) translateY(0)';},10);
+  setTimeout(()=>{t.style.opacity='0';setTimeout(()=>t.remove(),300);},2500);
+}
+
+// ================================================================
+// THEME
+// ================================================================
+(function(){
+  const s=localStorage.getItem('theme')||'dark';
+  document.documentElement.setAttribute('data-theme',s);
+  document.getElementById('iconSun').style.display  = s==='dark'?'none':'block';
+  document.getElementById('iconMoon').style.display = s==='dark'?'block':'none';
+})();
+
+document.getElementById('themeBtn').addEventListener('click',()=>{
+  const n=document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark';
+  document.documentElement.setAttribute('data-theme',n);
+  localStorage.setItem('theme',n);
+  document.getElementById('iconSun').style.display  = n==='dark'?'none':'block';
+  document.getElementById('iconMoon').style.display = n==='dark'?'block':'none';
+});
+
+// ================================================================
+// MENU
+// ================================================================
+const menuToggle=document.getElementById('menuToggle');
+const navMenu=document.getElementById('navMenu');
+const iconMenuEl=document.getElementById('iconMenu');
+const iconCloseEl=document.getElementById('iconClose');
+menuToggle.addEventListener('click',()=>{
+  const open=navMenu.classList.toggle('open');
+  menuToggle.setAttribute('aria-expanded',open);
+  iconMenuEl.style.display=open?'none':'block';
+  iconCloseEl.style.display=open?'block':'none';
+});
+document.addEventListener('click',e=>{
+  if(!menuToggle.contains(e.target)&&!navMenu.contains(e.target)){
+    navMenu.classList.remove('open');
+    iconMenuEl.style.display='block';
+    iconCloseEl.style.display='none';
+  }
+});
+
+// Close modal on bg click
+document.getElementById('edit-modal').addEventListener('click',function(e){
+  if(e.target===this) closeEdit();
+});
+
+// ================================================================
+// FIREBASE AUTH
+// ================================================================
+window.addEventListener('islamiCalcReady',()=>{
+  const user=window.islamiCalc?.getCurrentUser?.();
+  if(user){
+    document.getElementById('gate').classList.remove('show');
+    document.getElementById('profile-content').style.display='block';
+    document.getElementById('loginBtn').style.display='none';
+    document.getElementById('navProfile').style.display='block';
+    renderProfile(user);
+  } else {
+    document.getElementById('gate').classList.add('show');
+    document.getElementById('profile-content').style.display='none';
+  }
+});
+
+// Fallback: show gate if Firebase didn't fire
+setTimeout(()=>{
+  const gate=document.getElementById('gate');
+  const content=document.getElementById('profile-content');
+  if(content.style.display==='none' && !gate.classList.contains('show')){
+    gate.classList.add('show');
+  }
+},2500);
 </script>
 </body>
 </html>
