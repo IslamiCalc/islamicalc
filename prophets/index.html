@@ -3,508 +3,867 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="canonical" href="https://islamicalc.com/prophets/">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🕊️</text></svg>">
+  <title>قصص الأنبياء الـ25 | IslamiCalc</title>
+  <meta name="description" content="قصص الأنبياء والمرسلين الـ25 مرتبة زمنياً بأسلوب ممتع وموثوق من المصادر الشرعية المعتمدة">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://islamicalc.com/prophets">
+  <link rel="icon" href="/favicon.ico">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap">
   <link rel="stylesheet" href="/style.css">
-  <title>قصص الأنبياء | IslamiCalc</title>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": "قصص الأنبياء والمرسلين",
+    "description": "قصص الأنبياء الـ25 مرتبة زمنياً",
+    "url": "https://islamicalc.com/prophets",
+    "inLanguage": "ar"
+  }
+  </script>
   <style>
-    .prophet-card{background:var(--bg-card);border:1px solid var(--border);border-radius:16px;
-      padding:18px;cursor:pointer;transition:.25s;position:relative;overflow:hidden;}
-    .prophet-card:hover{border-color:var(--gold);transform:translateY(-3px);
-      box-shadow:0 8px 24px rgba(245,158,11,0.12);}
-    .prophet-card::before{content:'';position:absolute;top:0;right:0;width:4px;height:100%;
-      background:var(--gold);border-radius:0 16px 16px 0;}
-    .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:1000;
-      display:flex;align-items:flex-start;justify-content:center;padding:16px;overflow-y:auto;}
-    .modal-box{background:var(--bg-card);border:1px solid var(--border);border-radius:20px;
-      padding:28px;max-width:560px;width:100%;margin:auto;position:relative;}
-    .lesson-item{background:var(--bg-main);border-radius:12px;padding:12px 14px;
-      display:flex;gap:10px;align-items:flex-start;margin-bottom:8px;}
-    .hadith-box{background:rgba(245,158,11,0.06);border-right:3px solid var(--gold);
-      padding:12px 14px;border-radius:0 10px 10px 0;margin:12px 0;line-height:1.9;}
-    .tag-chip{background:var(--bg-main);border:1px solid var(--border);border-radius:20px;
-      padding:4px 12px;font-size:12px;font-weight:700;color:var(--text-muted);}
-    .timeline-dot{width:14px;height:14px;border-radius:50%;background:var(--gold);
-      flex-shrink:0;margin-top:5px;}
-    .filter-btn{background:var(--bg-main);border:1px solid var(--border);border-radius:30px;
-      padding:7px 16px;font-size:13px;font-weight:700;cursor:pointer;font-family:var(--font-arabic);
-      color:var(--text-muted);transition:.2s;white-space:nowrap;}
-    .filter-btn:hover,.filter-btn.active{background:var(--gold);border-color:var(--gold);color:#000;}
-    .quiz-opt{background:var(--bg-main);border:2px solid var(--border);border-radius:12px;
-      padding:14px;cursor:pointer;transition:.2s;font-family:var(--font-arabic);font-size:14px;
-      font-weight:700;width:100%;text-align:right;color:var(--text-primary);}
-    .quiz-opt:hover{border-color:var(--primary);}
-    .quiz-opt.correct{border-color:var(--success);background:rgba(16,185,129,0.1);color:var(--success);}
-    .quiz-opt.wrong{border-color:#ef4444;background:rgba(239,68,68,0.1);color:#ef4444;}
-    .progress-bar{background:var(--bg-main);border-radius:30px;height:8px;overflow:hidden;margin:6px 0;}
-    .progress-fill{background:linear-gradient(90deg,var(--gold),#f97316);height:100%;border-radius:30px;transition:.5s;}
+    /* ===== خاص بصفحة الأنبياء ===== */
+    .page-hero {
+      background: linear-gradient(135deg, #0d1117 0%, #0d1a0d 50%, #1a1a0d 100%);
+      padding: 100px 24px 60px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .page-hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 70% 60% at 50% 0%,
+        rgba(45,106,79,0.2) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    .page-hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(201,168,76,0.1);
+      border: 1px solid rgba(201,168,76,0.25);
+      color: var(--gold); padding: 6px 18px;
+      border-radius: 999px; font-size: 13px; font-weight: 600;
+      margin-bottom: 20px; position: relative;
+    }
+    .page-hero h1 {
+      font-size: clamp(30px,5vw,52px); font-weight: 900;
+      line-height: 1.3; margin-bottom: 14px; position: relative;
+    }
+    .page-hero p {
+      font-size: 16px; color: var(--text-sub);
+      max-width: 560px; margin: 0 auto 28px; position: relative;
+    }
+    .hero-stats {
+      display: flex; justify-content: center; gap: 32px;
+      flex-wrap: wrap; position: relative;
+    }
+    .hero-stat { text-align: center; }
+    .hero-stat-num { font-size: 2rem; font-weight: 900; color: var(--gold); display: block; }
+    .hero-stat-lbl { font-size: 12px; color: var(--text-muted); }
+
+    /* ===== الفلاتر ===== */
+    .filters-bar {
+      max-width: 900px; margin: 32px auto 0;
+      padding: 0 24px;
+      display: flex; gap: 8px; flex-wrap: wrap; justify-content: center;
+    }
+    .filter-btn {
+      padding: 7px 18px; border-radius: 999px;
+      background: var(--bg-card); border: 1px solid var(--border);
+      color: var(--text-sub); font-family: var(--font);
+      font-size: 13px; font-weight: 600; cursor: pointer;
+      transition: var(--transition);
+    }
+    .filter-btn:hover, .filter-btn.active {
+      background: rgba(45,106,79,0.15);
+      border-color: var(--primary); color: var(--primary-light);
+    }
+
+    /* ===== بحث ===== */
+    .search-wrap {
+      max-width: 500px; margin: 20px auto 0;
+      padding: 0 24px; position: relative;
+    }
+    .search-input {
+      width: 100%; padding: 12px 20px 12px 44px;
+      background: var(--bg-card); border: 1.5px solid var(--border);
+      border-radius: 999px; color: var(--text); font-family: var(--font);
+      font-size: 14px; outline: none; transition: var(--transition);
+    }
+    .search-input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-glow); }
+    .search-input::placeholder { color: var(--text-muted); }
+    .search-icon {
+      position: absolute; left: 38px; top: 50%;
+      transform: translateY(-50%); color: var(--text-muted);
+      width: 17px; height: 17px; pointer-events: none;
+    }
+
+    /* ===== التسلسل الزمني — الخط الرأسي ===== */
+    .timeline {
+      max-width: 900px; margin: 48px auto 80px;
+      padding: 0 24px;
+      position: relative;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute; top: 0; bottom: 0;
+      right: calc(50% - 1px);
+      width: 2px;
+      background: linear-gradient(180deg, var(--primary) 0%, var(--gold) 100%);
+      opacity: 0.25;
+    }
+
+    /* كارد النبي */
+    .prophet-card {
+      display: grid;
+      grid-template-columns: 1fr 48px 1fr;
+      gap: 0 16px;
+      margin-bottom: 40px;
+      position: relative;
+    }
+    .prophet-card:nth-child(odd)  .prophet-content { grid-column: 1; grid-row: 1; text-align: left; }
+    .prophet-card:nth-child(odd)  .prophet-node    { grid-column: 2; grid-row: 1; }
+    .prophet-card:nth-child(odd)  .prophet-spacer  { grid-column: 3; grid-row: 1; }
+    .prophet-card:nth-child(even) .prophet-spacer  { grid-column: 1; grid-row: 1; }
+    .prophet-card:nth-child(even) .prophet-node    { grid-column: 2; grid-row: 1; }
+    .prophet-card:nth-child(even) .prophet-content { grid-column: 3; grid-row: 1; text-align: right; }
+
+    .prophet-spacer { display: block; }
+
+    .prophet-node {
+      display: flex; flex-direction: column;
+      align-items: center; gap: 4px;
+      z-index: 1;
+    }
+    .prophet-num {
+      width: 48px; height: 48px;
+      background: linear-gradient(135deg, var(--primary), var(--gold));
+      border-radius: 50%; display: flex;
+      align-items: center; justify-content: center;
+      font-size: 16px; font-weight: 900; color: #fff;
+      box-shadow: 0 0 0 4px var(--bg-main), 0 0 0 6px rgba(45,106,79,0.25);
+      flex-shrink: 0;
+    }
+    .prophet-connector { flex: 1; width: 2px; background: var(--border); min-height: 20px; }
+
+    .prophet-content {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 20px; padding: 20px;
+      cursor: pointer; transition: var(--transition);
+      position: relative; overflow: hidden;
+    }
+    .prophet-content::before {
+      content: ''; position: absolute; inset: 0; border-radius: 20px;
+      background: linear-gradient(135deg, rgba(45,106,79,0.06), transparent);
+      opacity: 0; transition: var(--transition);
+    }
+    .prophet-content:hover {
+      border-color: rgba(45,106,79,0.4);
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-lg);
+    }
+    .prophet-content:hover::before { opacity: 1; }
+
+    .prophet-icon  { font-size: 2.2rem; margin-bottom: 8px; display: block; }
+    .prophet-name  { font-size: 20px; font-weight: 900; margin-bottom: 2px; }
+    .prophet-title { font-size: 12px; color: var(--gold); font-weight: 600; margin-bottom: 8px; }
+    .prophet-era   { font-size: 11px; color: var(--text-muted); margin-bottom: 10px; }
+    .prophet-summary {
+      font-size: 13.5px; color: var(--text-sub);
+      line-height: 1.7; margin-bottom: 12px;
+    }
+
+    .prophet-tags {
+      display: flex; gap: 6px; flex-wrap: wrap;
+    }
+    .prophet-tag {
+      background: rgba(45,106,79,0.1);
+      border: 1px solid rgba(45,106,79,0.2);
+      color: var(--primary-light);
+      padding: 3px 10px; border-radius: 999px;
+      font-size: 11px; font-weight: 700;
+    }
+
+    .read-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      margin-top: 12px; padding: 8px 16px;
+      background: linear-gradient(135deg, rgba(45,106,79,0.15), rgba(201,168,76,0.1));
+      border: 1px solid rgba(45,106,79,0.3);
+      border-radius: 999px; color: var(--primary-light);
+      font-size: 13px; font-weight: 700;
+      cursor: pointer; transition: var(--transition);
+    }
+    .read-btn:hover { background: rgba(45,106,79,0.25); }
+
+    /* ===== Modal التفاصيل ===== */
+    .story-modal {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.8);
+      z-index: 9998; display: flex;
+      align-items: flex-start; justify-content: center;
+      padding: 24px 16px;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.3s;
+      overflow-y: auto;
+      backdrop-filter: blur(8px);
+    }
+    .story-modal.open { opacity: 1; pointer-events: all; }
+
+    .story-content {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 24px; padding: 0;
+      max-width: 720px; width: 100%;
+      transform: scale(0.94); transition: transform 0.3s;
+      margin: auto; overflow: hidden;
+    }
+    .story-modal.open .story-content { transform: scale(1); }
+
+    .story-header {
+      background: linear-gradient(135deg, #0d1a0d, #1a1a0d);
+      padding: 32px 32px 24px;
+      position: relative;
+    }
+    .story-close {
+      position: absolute; top: 16px; left: 16px;
+      width: 36px; height: 36px; border-radius: 50%;
+      background: rgba(255,255,255,0.1); border: none;
+      color: var(--text-sub); cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; transition: var(--transition);
+    }
+    .story-close:hover { background: rgba(255,255,255,0.2); color: var(--text); }
+
+    .story-icon  { font-size: 3rem; display: block; margin-bottom: 12px; }
+    .story-name  { font-size: 28px; font-weight: 900; margin-bottom: 4px; }
+    .story-sub   { font-size: 14px; color: var(--gold); margin-bottom: 8px; }
+    .story-meta  { font-size: 12px; color: var(--text-muted); }
+
+    .story-body { padding: 28px 32px 32px; }
+
+    .story-section { margin-bottom: 24px; }
+    .story-section h3 {
+      font-size: 15px; font-weight: 800;
+      color: var(--gold); margin-bottom: 10px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .story-section p {
+      font-size: 14.5px; color: var(--text-sub);
+      line-height: 1.9;
+    }
+
+    .story-verse {
+      background: rgba(201,168,76,0.07);
+      border-right: 3px solid var(--gold);
+      border-radius: 0 10px 10px 0;
+      padding: 14px 16px; margin: 12px 0;
+      font-size: 16px; font-weight: 700;
+      color: var(--gold); line-height: 2;
+    }
+    .story-verse-source {
+      font-size: 12px; color: var(--text-muted);
+      font-weight: 400; display: block; margin-top: 4px;
+    }
+
+    .story-lessons {
+      display: grid; gap: 8px; margin-top: 10px;
+    }
+    .story-lesson {
+      display: flex; gap: 10px; align-items: flex-start;
+      background: rgba(45,106,79,0.07);
+      border-radius: 10px; padding: 10px 14px;
+      font-size: 13.5px; color: var(--text-sub);
+    }
+    .story-lesson::before { content: '✦'; color: var(--primary-light); flex-shrink: 0; margin-top: 2px; }
+
+    .story-source {
+      font-size: 12px; color: var(--text-muted);
+      padding-top: 16px; border-top: 1px solid var(--border);
+      margin-top: 24px;
+    }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 640px) {
+      .timeline::before { right: 24px; }
+      .prophet-card {
+        grid-template-columns: 48px 1fr;
+        grid-template-rows: auto;
+      }
+      .prophet-card:nth-child(odd)  .prophet-content,
+      .prophet-card:nth-child(even) .prophet-content { grid-column: 2; grid-row: 1; text-align: right; }
+      .prophet-card:nth-child(odd)  .prophet-node,
+      .prophet-card:nth-child(even) .prophet-node    { grid-column: 1; grid-row: 1; }
+      .prophet-spacer { display: none; }
+      .story-body { padding: 20px; }
+      .story-header { padding: 24px 20px 20px; }
+    }
   </style>
 </head>
 <body>
-<nav class="navbar">
+
+<!-- Navbar -->
+<nav class="navbar" role="navigation">
   <a href="/" class="navbar-brand">
     <div class="navbar-logo">☪</div>
     <span class="navbar-title">IslamiCalc</span>
   </a>
   <ul class="navbar-menu" id="navMenu">
-    <li><a href="/">🏠 الرئيسية</a></li>
-    <li><a href="/zakat">🧮 الحاسبات</a></li>
-    <li><a href="/khatma">📖 القرآن</a></li>
-    <li><a href="/prayer">🕌 الصلاة</a></li>
-    <li><a href="/athkar">📿 الأذكار</a></li>
-    <li><a href="/arena">🏆 الأرينا</a></li>
+    <li><a href="/">الرئيسية</a></li>
+    <li><a href="/zakat">الحاسبات</a></li>
+    <li><a href="/khatma">القرآن</a></li>
+    <li><a href="/prayer">الصلاة</a></li>
+    <li><a href="/fiqh" class="active">المعرفة</a></li>
+    <li><a href="/arena">الأرينا</a></li>
+    <li id="navProfile" style="display:none;"><a href="/profile">بروفايلي</a></li>
   </ul>
   <div class="navbar-actions">
-    <button class="theme-btn" id="themeBtn">🌙</button>
-    <button class="login-btn" onclick="showToast('سجّل دخولك من الرئيسية','toast-gold')">دخول 🔵</button>
-    <button class="menu-toggle" id="menuToggle">☰</button>
+    <button class="theme-btn" id="themeBtn" aria-label="تبديل الثيم">
+      <svg id="iconMoon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+      <svg id="iconSun"  viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/></svg>
+    </button>
+    <button class="login-btn" id="loginBtn" onclick="window.islamiCalc?.loginWithGoogle()">دخول بـ Google</button>
+    <button class="menu-toggle" id="menuToggle" aria-label="القائمة">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
   </div>
 </nav>
 
-<main>
-<div style="max-width:720px;margin:0 auto;padding:24px 16px 80px;">
-
-  <!-- Header -->
-  <div style="text-align:center;padding:24px 0 16px;">
-    <div style="font-size:56px;margin-bottom:10px;">🕊️</div>
-    <h1 style="font-size:26px;font-weight:900;margin-bottom:6px;">قصص الأنبياء</h1>
-    <p style="color:var(--text-muted);font-size:14px;">سِيَر 25 نبياً ورسولاً • دروس • معجزات • اختبار</p>
+<!-- هيدر الصفحة -->
+<section class="page-hero">
+  <div class="page-hero-badge">📖 مصادر موثوقة — ابن كثير، الطبري، إسلام أون لاين</div>
+  <h1>قصص <span class="gradient-text">الأنبياء والمرسلين</span></h1>
+  <p>خمسة وعشرون نبياً ورسولاً، مرتبون تسلسلاً زمنياً بأسلوب ممتع وموثوق من المصادر الشرعية المعتمدة</p>
+  <div class="hero-stats">
+    <div class="hero-stat"><span class="hero-stat-num">25</span><div class="hero-stat-lbl">نبياً ورسولاً</div></div>
+    <div class="hero-stat"><span class="hero-stat-num">~5000</span><div class="hero-stat-lbl">سنة تاريخ</div></div>
+    <div class="hero-stat"><span class="hero-stat-num">3</span><div class="hero-stat-lbl">مصادر موثوقة</div></div>
   </div>
+</section>
 
-  <!-- أزرار الأقسام -->
-  <div style="display:flex;gap:8px;overflow-x:auto;padding-bottom:8px;margin-bottom:14px;scrollbar-width:none;">
-    <button class="filter-btn active" data-tab="list" onclick="switchTab(this)">📋 القائمة</button>
-    <button class="filter-btn" data-tab="timeline" onclick="switchTab(this)">📅 التسلسل الزمني</button>
-    <button class="filter-btn" data-tab="miracles" onclick="switchTab(this)">✨ المعجزات</button>
-    <button class="filter-btn" data-tab="quiz" onclick="switchTab(this)">🧠 اختبار</button>
-    <button class="filter-btn" data-tab="ulul" onclick="switchTab(this)">👑 أولو العزم</button>
-  </div>
-
-  <!-- ══ القائمة ══ -->
-  <div id="panel-list">
-    <div style="position:relative;margin-bottom:14px;">
-      <input type="text" id="searchProphet" class="form-input"
-        placeholder="🔍 ابحث عن نبي..." oninput="renderList()">
-    </div>
-    <div id="prophetGrid" style="display:flex;flex-direction:column;gap:10px;"></div>
-  </div>
-
-  <!-- ══ التسلسل الزمني ══ -->
-  <div id="panel-timeline" style="display:none;">
-    <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:18px;padding:24px;">
-      <h2 style="font-size:16px;font-weight:900;margin-bottom:16px;">📅 الأنبياء بالترتيب الزمني</h2>
-      <div id="timelineList" style="position:relative;padding-right:20px;
-        border-right:2px solid var(--gold);"></div>
-    </div>
-  </div>
-
-  <!-- ══ المعجزات ══ -->
-  <div id="panel-miracles" style="display:none;">
-    <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:18px;padding:24px;">
-      <h2 style="font-size:16px;font-weight:900;margin-bottom:16px;">✨ معجزات الأنبياء</h2>
-      <div id="miraclesList" style="display:flex;flex-direction:column;gap:10px;"></div>
-    </div>
-  </div>
-
-  <!-- ══ اختبار ══ -->
-  <div id="panel-quiz" style="display:none;">
-    <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:18px;padding:24px;">
-      <div id="quizContent"></div>
-    </div>
-  </div>
-
-  <!-- ══ أولو العزم ══ -->
-  <div id="panel-ulul" style="display:none;">
-    <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:18px;padding:24px;">
-      <h2 style="font-size:16px;font-weight:900;margin-bottom:8px;">👑 أولو العزم من الرسل</h2>
-      <div class="hadith-box">
-        <p style="font-size:13px;color:var(--gold);font-weight:700;">﴿ فَاصْبِرْ كَمَا صَبَرَ أُولُو الْعَزْمِ مِنَ الرُّسُلِ ﴾ — الأحقاف: 35</p>
-      </div>
-      <div id="ululList" style="display:flex;flex-direction:column;gap:12px;margin-top:14px;"></div>
-    </div>
-  </div>
-
+<!-- الفلاتر والبحث -->
+<div class="filters-bar" id="filtersBar">
+  <button class="filter-btn active" onclick="filterProphets('all',this)">الكل</button>
+  <button class="filter-btn" onclick="filterProphets('ulul-azm',this)">أولو العزم</button>
+  <button class="filter-btn" onclick="filterProphets('bani-israil',this)">بني إسرائيل</button>
+  <button class="filter-btn" onclick="filterProphets('arab',this)">الأنبياء العرب</button>
 </div>
-</main>
 
-<!-- Modal -->
-<div class="modal-overlay" id="modal" style="display:none;" onclick="closeModal(event)">
-  <div class="modal-box" id="modalBox">
-    <button onclick="document.getElementById('modal').style.display='none'"
-      style="position:absolute;top:14px;left:14px;background:var(--bg-main);border:1px solid var(--border);
-      border-radius:50%;width:32px;height:32px;cursor:pointer;font-size:16px;color:var(--text-primary);">✕</button>
-    <div id="modalContent"></div>
+<div class="search-wrap">
+  <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+  </svg>
+  <input type="search" class="search-input" id="searchInput"
+         placeholder="ابحث عن نبي..." oninput="searchProphets(this.value)"
+         aria-label="البحث عن نبي">
+</div>
+
+<!-- التسلسل الزمني -->
+<div class="timeline" id="timeline" role="list" aria-label="قائمة الأنبياء"></div>
+
+<!-- Modal القصة الكاملة -->
+<div class="story-modal" id="storyModal" role="dialog" aria-modal="true" aria-labelledby="storyModalName">
+  <div class="story-content" id="storyContent">
+    <div class="story-header">
+      <button class="story-close" onclick="closeStory()" aria-label="إغلاق">✕</button>
+      <span class="story-icon" id="storyIcon"></span>
+      <div class="story-name" id="storyModalName"></div>
+      <div class="story-sub"  id="storySub"></div>
+      <div class="story-meta" id="storyMeta"></div>
+    </div>
+    <div class="story-body" id="storyBody"></div>
   </div>
 </div>
 
-<div class="toast" id="toast"></div>
+<div id="toast" class="toast"></div>
 
+<script type="module" src="/firebase.js"></script>
 <script>
-// ─── Theme & Nav ───
-const themeBtn=document.getElementById("themeBtn");
-const htmlEl=document.documentElement;
-(function(){const s=localStorage.getItem("theme")||"dark";htmlEl.setAttribute("data-theme",s);themeBtn.textContent=s==="dark"?"☀️":"🌙";})();
-themeBtn.addEventListener("click",()=>{const n=htmlEl.getAttribute("data-theme")==="dark"?"light":"dark";htmlEl.setAttribute("data-theme",n);localStorage.setItem("theme",n);themeBtn.textContent=n==="dark"?"☀️":"🌙";});
-document.getElementById("menuToggle").addEventListener("click",()=>{const m=document.getElementById("navMenu");m.classList.toggle("open");document.getElementById("menuToggle").textContent=m.classList.contains("open")?"✕":"☰";});
-function showToast(msg,t=""){const el=document.getElementById("toast");el.textContent=msg;el.className="toast show "+(t||"");setTimeout(()=>el.classList.remove("show"),3000);}
+// ===================================================================
+// بيانات الأنبياء الـ25 — موثقة من: البداية والنهاية (ابن كثير)،
+// تاريخ الأمم والملوك (الطبري)، islamstory.com
+// ===================================================================
+const PROPHETS = [
+  {
+    id: 1,
+    name: "آدم",
+    title: "عليه السلام — أبو البشر",
+    icon: "🌿",
+    era: "بداية الخليقة",
+    category: ["all"],
+    tags: ["أول الأنبياء", "الجنة والأرض", "التوبة"],
+    summary: "أول إنسان خلقه الله من طين، أسجد له الملائكة، أُسكن الجنة ثم نزل إلى الأرض، وعلّمه الله الأسماء كلها.",
+    full: {
+      born: "خُلق من طين الأرض بإذن الله تعالى — أول مخلوق بشري",
+      mission: "خليفة الله في الأرض، أول نبي ورسول",
+      story: `خلق الله آدم عليه السلام بيديه سبحانه من طين الأرض، ونفخ فيه من روحه، فأمر الملائكة بالسجود له فسجدوا إلا إبليس الذي أبى واستكبر. 
+      
+أسكنه الله الجنة مع زوجته حواء، وأمرهما بألا يقربا شجرةً بعينها، فوسوس لهما الشيطان فأكلا منها، فأُهبطا إلى الأرض. 
 
-// ─── Data ───
-const PROPHETS=[
-  {id:"adam",   name:"آدم",    emoji:"🌍", title:"أبو البشر",     order:1,  ulul:false,
-   summary:"خُلق من طين وعُلِّم الأسماء كلها. سكن الجنة ثم نزل إلى الأرض بعد أكل الشجرة. تاب فتاب الله عليه.",
-   miracle:"علّمه الله الأسماء كلها وأسجد له الملائكة",
-   lesson:["التوبة باب دائم مفتوح","العلم شرف الإنسان","الاستغفار يمحو الذنوب"],
-   ayah:"﴿ وَعَلَّمَ آدَمَ الْأَسْمَاءَ كُلَّهَا ﴾ — البقرة: 31",
-   quran:"البقرة، الأعراف، طه"},
-  {id:"idris",  name:"إدريس",  emoji:"⭐", title:"رُفع مكاناً علياً", order:2, ulul:false,
-   summary:"أول من خط بالقلم وخاط الثياب. رُفع إلى السماء. علّم الناس الكتابة والحساب.",
-   miracle:"رفعه الله مكاناً علياً",
-   lesson:["العلم والمعرفة عبادة","الله يرفع من يشاء"],
-   ayah:"﴿ وَرَفَعْنَاهُ مَكَانًا عَلِيًّا ﴾ — مريم: 57",
-   quran:"مريم، الأنبياء"},
-  {id:"nuh",    name:"نوح",    emoji:"🚢", title:"شيخ المرسلين",    order:3,  ulul:true,
-   summary:"دعا قومه 950 سنة. بنى السفينة بأمر الله. نجا هو ومن آمن من الطوفان العظيم.",
-   miracle:"السفينة ونجاته من الطوفان الذي غطى الأرض",
-   lesson:["الصبر في الدعوة ولو طال الزمن","الأسرة لا تنفع إن لم يكن إيمان","الله ينجي المؤمنين"],
-   ayah:"﴿ فَفَتَحْنَا أَبْوَابَ السَّمَاءِ بِمَاءٍ مُّنْهَمِرٍ ﴾ — القمر: 11",
-   quran:"هود، نوح، الأنبياء، المؤمنون"},
-  {id:"hud",    name:"هود",    emoji:"🌬️", title:"نبي قوم عاد",     order:4,  ulul:false,
-   summary:"أُرسل لقوم عاد الأقوياء البانين للأعمدة. رفضوا التوحيد فأُهلكوا بريح صرصر عاتية.",
-   miracle:"النجاة من الريح التي أهلكت قومه",
-   lesson:["القوة المادية لا تحمي من عذاب الله","الكبر يؤدي للهلاك"],
-   ayah:"﴿ فَأَرْسَلْنَا عَلَيْهِمْ رِيحًا صَرْصَرًا ﴾ — الحاقة: 6",
-   quran:"هود، الأعراف، الشعراء"},
-  {id:"saleh",  name:"صالح",   emoji:"🐪", title:"نبي قوم ثمود",    order:5,  ulul:false,
-   summary:"أُرسل لثمود في الحِجر. آيته الناقة التي خرجت من الصخرة. عقروها فأُهلكوا بالصيحة.",
-   miracle:"الناقة التي خرجت من الصخرة الصمّاء",
-   lesson:["حرمة آيات الله","العقوق يجلب الدمار","الاستكبار على الرسل وبال"],
-   ayah:"﴿ وَإِلَىٰ ثَمُودَ أَخَاهُمْ صَالِحًا ﴾ — هود: 61",
-   quran:"هود، الأعراف، الشعراء، النمل"},
-  {id:"ibrahim",name:"إبراهيم",emoji:"🔥", title:"خليل الله",        order:6,  ulul:true,
-   summary:"كسّر الأصنام وأُلقي في النار فكانت برداً وسلاماً. هاجر وبنى الكعبة مع إسماعيل. ابتُلي بذبح ابنه فنجا.",
-   miracle:"النار التي لم تحرقه، والكعبة المشرّفة",
-   lesson:["التوحيد الخالص يستحق كل تضحية","الله يبتلي أحبّاءه","الطاعة الكاملة لله نجاة"],
-   ayah:"﴿ قُلْنَا يَا نَارُ كُونِي بَرْدًا وَسَلَامًا عَلَىٰ إِبْرَاهِيمَ ﴾ — الأنبياء: 69",
-   quran:"البقرة، آل عمران، النساء، الأنعام، هود، إبراهيم، النحل، مريم، الأنبياء، الحج، الشعراء، العنكبوت، الصافات"},
-  {id:"lut",    name:"لوط",    emoji:"🌋", title:"نبي قوم سدوم",    order:7,  ulul:false,
-   summary:"ابن أخي إبراهيم. دعا قومه الذين اشتهروا بالفاحشة فرفضوا. نجا مع بناته وأُهلك القوم بقلب الأرض.",
-   miracle:"نجاته وإهلاك قومه بالحجارة وقلب الأرض",
-   lesson:["الفاحشة تهلك المجتمعات","المؤمن الوحيد في قومه لا يذل"],
-   ayah:"﴿ فَجَعَلْنَا عَالِيَهَا سَافِلَهَا وَأَمْطَرْنَا عَلَيْهِمْ حِجَارَةً ﴾ — هود: 82",
-   quran:"هود، الأعراف، الحجر، الشعراء، النمل، العنكبوت"},
-  {id:"shuayb", name:"شعيب",   emoji:"⚖️", title:"خطيب الأنبياء",   order:8,  ulul:false,
-   summary:"أُرسل لأهل مدين. نهاهم عن بخس المكيال والميزان. أُهلك قومه بعذاب يوم الظلة.",
-   miracle:"النجاة من عذاب يوم الظلة",
-   lesson:["الأمانة في التجارة واجب ديني","الإصلاح الاقتصادي من مهام الأنبياء"],
-   ayah:"﴿ وَأَوْفُوا الْكَيْلَ وَالْمِيزَانَ بِالْقِسْطِ ﴾ — هود: 85",
-   quran:"هود، الأعراف، الشعراء"},
-  {id:"yusuf",  name:"يوسف",   emoji:"👑", title:"الصديق الأمين",   order:9,  ulul:false,
-   summary:"باعه إخوته. فُتن بامرأة العزيز فثبت. سُجن ظلماً. عبّر رؤيا الملك فصار عزيزاً. عفا عن إخوته.",
-   miracle:"تعبير الرؤيا وإدارة أزمة الجفاف",
-   lesson:["الصبر على الابتلاء يعقبه الفرج","العفو عن الظالم شرف","الإخلاص في العمل يرفع الدرجات"],
-   ayah:"﴿ إِنَّهُ مَن يَتَّقِ وَيَصْبِرْ فَإِنَّ اللَّهَ لَا يُضِيعُ أَجْرَ الْمُحْسِنِينَ ﴾ — يوسف: 90",
-   quran:"يوسف"},
-  {id:"ayyub",  name:"أيوب",   emoji:"🤲", title:"نبي الصبر",        order:10, ulul:false,
-   summary:"ابتلاه الله بالمرض والفقد سنوات طويلة. صبر وداوم على الشكر. شُفي وأُعطي مثلهم معهم.",
-   miracle:"شفاؤه بعد ضرب الأرض برجله وخروج الماء",
-   lesson:["الابتلاء ليس عقاباً — قد يكون رفعة","الشكر في السراء والضراء","الله لا يُضيع صبر الصابرين"],
-   ayah:"﴿ إِنِّي مَسَّنِيَ الضُّرُّ وَأَنتَ أَرْحَمُ الرَّاحِمِينَ ﴾ — الأنبياء: 83",
-   quran:"الأنبياء، ص"},
-  {id:"musa",   name:"موسى",   emoji:"🌊", title:"كليم الله",        order:11, ulul:true,
-   summary:"وُلد في زمن فرعون. نشأ في قصره. أُرسل لإنقاذ بني إسرائيل. شقّ البحر. أُعطي التوراة على طور سيناء.",
-   miracle:"العصا — تنقلب ثعباناً وتشق البحر. اليد البيضاء. الطوفان والجراد والقمل",
-   lesson:["قوة الإيمان تهزم أعتى الجبابرة","الحق دائماً في النهاية يغلب","التوكل على الله في أشد اللحظات"],
-   ayah:"﴿ فَأَوْحَيْنَا إِلَىٰ مُوسَىٰ أَنِ اضْرِب بِّعَصَاكَ الْبَحْرَ فَانفَلَقَ ﴾ — الشعراء: 63",
-   quran:"البقرة، الأعراف، يونس، هود، طه، الشعراء، القصص، النازعات"},
-  {id:"harun",  name:"هارون",  emoji:"🎙️", title:"وزير موسى",        order:12, ulul:false,
-   summary:"أخو موسى ووزيره. فصيح اللسان. بقي مع بني إسرائيل حين ذهب موسى. توفي قبله.",
-   miracle:"المعجزات كانت مشتركة مع موسى",
-   lesson:["العمل الجماعي في الدعوة","الأخوة في الله تعين على الطريق"],
-   ayah:"﴿ وَوَهَبْنَا لَهُ مِن رَّحْمَتِنَا أَخَاهُ هَارُونَ نَبِيًّا ﴾ — مريم: 53",
-   quran:"الأعراف، طه، الشعراء"},
-  {id:"dhulkifl",name:"ذو الكفل",emoji:"⚡",title:"نبي صبور",         order:13, ulul:false,
-   summary:"قيل إنه ضمن لقومه الحكم بالعدل وأوفى بوعده. صابر على العبادة.",
-   miracle:"الصبر والوفاء بالعهد",
-   lesson:["الوفاء بالعهد من أعلى الأخلاق","العدل واجب القائد"],
-   ayah:"﴿ وَاذْكُرْ إِسْمَاعِيلَ وَالْيَسَعَ وَذَا الْكِفْلِ ۖ وَكُلٌّ مِّنَ الْأَخْيَارِ ﴾ — ص: 48",
-   quran:"الأنبياء، ص"},
-  {id:"dawud",  name:"داود",   emoji:"📯", title:"الملك النبي",       order:14, ulul:false,
-   summary:"قتل جالوت صغيراً. أُعطي الزبور. ليّنت له الحديد. تسبّح معه الجبال والطير. ملك وعدل.",
-   miracle:"تسبيح الجبال والطير معه، تليين الحديد بيده",
-   lesson:["الشجاعة مع التوكل تصنع الانتصارات","الملك الصالح نعمة على الأمة"],
-   ayah:"﴿ وَأَلَنَّا لَهُ الْحَدِيدَ ﴾ — سبأ: 10",
-   quran:"البقرة، النساء، الأنبياء، النمل، سبأ، ص"},
-  {id:"sulayman",name:"سليمان",emoji:"🦁",title:"ملك الأنبياء",       order:15, ulul:false,
-   summary:"ورث ملك أبيه داود. سُخّر له الجن والريح والطير. علّمه الله منطق الطير. ملك لم يُعطَ لأحد.",
-   miracle:"تسخير الجن والريح، فهم لغة الطير والنمل، ملك الهدهد",
-   lesson:["الملك الحق يشكر الله لا يتكبر","العقل والحكمة أعلى من القوة"],
-   ayah:"﴿ رَبِّ أَوْزِعْنِي أَنْ أَشْكُرَ نِعْمَتَكَ الَّتِي أَنْعَمْتَ عَلَيَّ ﴾ — النمل: 19",
-   quran:"البقرة، الأنبياء، النمل، سبأ، ص"},
-  {id:"ilyas",  name:"إلياس",  emoji:"🌄", title:"نبي بني إسرائيل",  order:16, ulul:false,
-   summary:"أُرسل لقوم يعبدون البعل. ناضل وحيداً ضد الشرك وسط قومه.",
-   miracle:"الغيبة والسلامة من قومه الظالمين",
-   lesson:["الدعوة للتوحيد واجبة ولو كانت وحيداً","الله يحمي أنبياءه"],
-   ayah:"﴿ وَإِنَّ إِلْيَاسَ لَمِنَ الْمُرْسَلِينَ ﴾ — الصافات: 123",
-   quran:"الأنعام، الصافات"},
-  {id:"alyasa", name:"اليسع",  emoji:"💧", title:"نبي بني إسرائيل",  order:17, ulul:false,
-   summary:"خلف إلياس في قومه. اصطفاه الله على العالمين.",
-   miracle:"مذكور في القرآن باصطفاء الله",
-   lesson:["الاستمرار في الدعوة بعد العلماء"],
-   ayah:"﴿ وَاذْكُرْ إِسْمَاعِيلَ وَالْيَسَعَ وَذَا الْكِفْلِ ﴾ — ص: 48",
-   quran:"الأنعام، ص"},
-  {id:"yunus",  name:"يونس",   emoji:"🐳", title:"صاحب الحوت",       order:18, ulul:false,
-   summary:"غضب على قومه وغادر دون إذن. التقمه الحوت. سبّح في الظلمات. نجا وعاد فآمن قومه.",
-   miracle:"البقاء حياً في بطن الحوت",
-   lesson:["لا تيأس من رحمة الله في أشد الظلمات","التسبيح والاستغفار نجاة","الصبر على القوم واجب"],
-   ayah:"﴿ فَنَادَىٰ فِي الظُّلُمَاتِ أَن لَّا إِلَٰهَ إِلَّا أَنتَ سُبْحَانَكَ إِنِّي كُنتُ مِنَ الظَّالِمِينَ ﴾",
-   quran:"يونس، الأنبياء، الصافات، القلم"},
-  {id:"zakariya",name:"زكريا", emoji:"🌸", title:"كافل مريم",         order:19, ulul:false,
-   summary:"كفل مريم في المحراب. دعا الله ولداً وهو شيخ وامرأته عاقر. استجاب الله فوُلد له يحيى.",
-   miracle:"إنجاب يحيى في الكبر من امرأة عاقر",
-   lesson:["الدعاء لا يُرد مهما تأخر الإجابة","لا يأس مع الله"],
-   ayah:"﴿ رَبِّ لَا تَذَرْنِي فَرْدًا وَأَنتَ خَيْرُ الْوَارِثِينَ ﴾ — الأنبياء: 89",
-   quran:"آل عمران، مريم، الأنبياء"},
-  {id:"yahya",  name:"يحيى",   emoji:"🌿", title:"مصدّق بالكلمة",    order:20, ulul:false,
-   summary:"وُلد لأبوين كبيرين معجزة. سُمّي يحيى ولم يُسمَّ أحد قبله. زاهد عابد مات شهيداً.",
-   miracle:"مولده في الكبر. أُوتي الحكم صبياً",
-   lesson:["الزهد في الدنيا يرفع القلب","الحكمة لا تحتاج طول عمر"],
-   ayah:"﴿ يَا يَحْيَىٰ خُذِ الْكِتَابَ بِقُوَّةٍ وَآتَيْنَاهُ الْحُكْمَ صَبِيًّا ﴾ — مريم: 12",
-   quran:"آل عمران، الأنعام، مريم، الأنبياء"},
-  {id:"isa",    name:"عيسى",   emoji:"✨", title:"روح الله",          order:21, ulul:true,
-   summary:"وُلد من مريم العذراء بلا أب. تكلّم في المهد. أحيا الموتى وأبرأ الأكمه والأبرص. رُفع إلى السماء.",
-   miracle:"الكلام في المهد، إحياء الموتى، إبراء الأمراض، خلق الطير من الطين",
-   lesson:["الله على كل شيء قدير","المسيح عبد الله ورسوله","رفعه الله ولم يُصلب"],
-   ayah:"﴿ إِنَّمَا الْمَسِيحُ عِيسَى ابْنُ مَرْيَمَ رَسُولُ اللَّهِ ﴾ — النساء: 171",
-   quran:"آل عمران، النساء، المائدة، مريم، الأنبياء، الزخرف، الصف"},
-  {id:"ismail", name:"إسماعيل",emoji:"🕋", title:"ذبيح الله",        order:22, ulul:false,
-   summary:"ابن إبراهيم من هاجر. تُرك رضيعاً في مكة. نبع زمزم. ابتُلي بالذبح فصبر. بنى الكعبة مع أبيه.",
-   miracle:"زمزم. النجاة من الذبح وإبداله بالكبش",
-   lesson:["الطاعة الكاملة لله أعلى مقامات الإيمان","الله يفرّج عن المطيعين"],
-   ayah:"﴿ فَلَمَّا أَسْلَمَا وَتَلَّهُ لِلْجَبِينِ ﴾ — الصافات: 103",
-   quran:"البقرة، إبراهيم، الأنبياء، مريم، الصافات"},
-  {id:"ishaq",  name:"إسحاق",  emoji:"🌟", title:"نبي بشّر به إبراهيم",order:23,ulul:false,
-   summary:"وُلد لإبراهيم من سارة في كبرها. بُشّر به في الكتب. أبو يعقوب الذي هو إسرائيل.",
-   miracle:"مولده من امرأة عجوز عاقر",
-   lesson:["الله يهب الأولاد لمن يقنط","البشارة من الله حق"],
-   ayah:"﴿ وَبَشَّرْنَاهُ بِإِسْحَاقَ نَبِيًّا مِّنَ الصَّالِحِينَ ﴾ — الصافات: 112",
-   quran:"البقرة، هود، الأنبياء، الصافات"},
-  {id:"yaqub",  name:"يعقوب",  emoji:"💎", title:"إسرائيل نبي الله",  order:24, ulul:false,
-   summary:"ابن إسحاق. أبو الأسباط الاثني عشر. عاش فراق يوسف سنوات بكاءً. عادت عيناه حين شمّ قميص يوسف.",
-   miracle:"عودة بصره بقميص يوسف بعد فراق طويل",
-   lesson:["الصبر الجميل لا شكوى فيه إلا لله","الأمل في رحمة الله لا ينقطع"],
-   ayah:"﴿ إِنَّمَا أَشْكُو بَثِّي وَحُزْنِي إِلَى اللَّهِ ﴾ — يوسف: 86",
-   quran:"البقرة، آل عمران، يوسف، الأنبياء"},
-  {id:"muhammad",name:"محمد",  emoji:"☪️", title:"خاتم الأنبياء ﷺ",   order:25, ulul:true,
-   summary:"وُلد في مكة عام الفيل. بُعث في الأربعين. هاجر للمدينة. فتح مكة. أتمّ الرسالة. توفي في المدينة.",
-   miracle:"القرآن الكريم — المعجزة الخالدة. الإسراء والمعراج. انشقاق القمر. نبع الماء من بين أصابعه",
-   lesson:["القرآن معجزة أبدية للعقول","الصدق والأمانة أساس الدعوة","الرحمة بالعالمين منهج الإسلام"],
-   ayah:"﴿ وَمَا أَرْسَلْنَاكَ إِلَّا رَحْمَةً لِّلْعَالَمِينَ ﴾ — الأنبياء: 107",
-   quran:"القرآن كله — ذُكر اسمه 4 مرات ومحمد وأحمد"},
-];
+كان آدم يعلم أن الله غفور رحيم فتاب وأناب، فتاب الله عليه — وهذه أول توبة في تاريخ البشرية. علّمه الله الأسماء كلها ليكون خليفته على الأرض. وُلد له أبناء كثيرون، وكان يعلّمهم الإيمان بالله الواحد.`,
+      verse: "وَعَلَّمَ آدَمَ الْأَسْمَاءَ كُلَّهَا",
+      verseSource: "سورة البقرة — الآية 31",
+      lessons: [
+        "التوبة والرجوع إلى الله باب مفتوح دائماً",
+        "الكبر والاستعلاء سبب الهلاك (إبليس مثال دائم)",
+        "الاستخلاف في الأرض مسؤولية عظيمة",
+        "معصية آدم أوجدت فينا فطرة التوبة والإنابة"
+      ],
+      source: "البداية والنهاية — ابن كثير، ج1"
+    }
+  },
+  {
+    id: 2,
+    name: "إدريس",
+    title: "عليه السلام — النبي الكاتب",
+    icon: "✍️",
+    era: "قبل الطوفان (~3000 ق.م)",
+    category: ["all"],
+    tags: ["الكتابة", "العلم", "رُفع إلى السماء"],
+    summary: "أول من خط بالقلم، علّمه الله الكتابة والحساب والفلك، ورفعه الله إلى السماء.",
+    full: {
+      born: "من ذرية آدم — قبل الطوفان بآلاف السنين",
+      mission: "دعوة قومه إلى التوحيد وتعليمهم العلوم",
+      story: `إدريس عليه السلام هو من ذرية آدم، وهو جدّ نوح عليه السلام. يُعدّ أول من خط بالقلم وعلّم الناس الكتابة والحساب ومواقع النجوم. 
 
-const ULUL=PROPHETS.filter(p=>p.ulul);
+كان رجلاً عظيماً صبوراً يدعو قومه إلى الإيمان بالله الواحد. وصفه الله في القرآن بأنه صادق وصبور ونبي. 
 
-// ─── Quiz data ───
-const QUIZ_Q=[
-  {q:"كم سنة دعا نوح قومه؟",opts:["100 سنة","500 سنة","950 سنة","1000 سنة"],a:2},
-  {q:"ما معجزة موسى الكبرى؟",opts:["إحياء الموتى","شقّ البحر","الناقة","تسبيح الجبال"],a:1},
-  {q:"من هو صاحب الحوت؟",opts:["يونس","يوسف","أيوب","إلياس"],a:0},
-  {q:"ماذا أُعطي داود؟",opts:["التوراة","الإنجيل","الزبور","القرآن"],a:2},
-  {q:"من بنى الكعبة؟",opts:["محمد وعلي","إبراهيم وإسماعيل","داود وسليمان","موسى وهارون"],a:1},
-  {q:"من هو خليل الله؟",opts:["موسى","إبراهيم","عيسى","محمد"],a:1},
-  {q:"كيف وُلد عيسى؟",opts:["كسائر الناس","من أب وأم","من أم دون أب","خُلق من طين"],a:2},
-  {q:"من أول من خطّ بالقلم؟",opts:["آدم","نوح","إدريس","إبراهيم"],a:2},
-  {q:"ما معجزة سليمان البارزة؟",opts:["شق البحر","تسخير الجن والريح","إحياء الموتى","الناقة"],a:1},
-  {q:"من هو ذبيح الله؟",opts:["إسحاق","يوسف","إسماعيل","يحيى"],a:2},
-  {q:"كم مرة ذُكر اسم محمد في القرآن؟",opts:["مرة","مرتين","3 مرات","4 مرات"],a:3},
-  {q:"من هو كافل مريم؟",opts:["يوسف","زكريا","يحيى","عيسى"],a:1},
-  {q:"ما آية يونس الشهيرة في الظلمات؟",opts:["سبحان الله","لا إله إلا أنت سبحانك إني كنت من الظالمين","الله أكبر","استغفر الله"],a:1},
-  {q:"من الذي أُعطي الحكم صبياً؟",opts:["إدريس","سليمان","يحيى","يوسف"],a:2},
-  {q:"ما معجزة إبراهيم الكبرى؟",opts:["الطوفان","شق البحر","النار لم تحرقه","إحياء الموتى"],a:2},
-];
+ومن أعظم ما امتازت به قصته أن الله رفعه إلى مكان عليّ، وقد قيل إنه لا يزال حياً في السماء الرابعة، وهو ما أشار إليه حديث الإسراء والمعراج.`,
+      verse: "وَرَفَعْنَاهُ مَكَانًا عَلِيًّا",
+      verseSource: "سورة مريم — الآية 57",
+      lessons: [
+        "العلم والكتابة من أجل نعم الله على الإنسان",
+        "الصدق والصبر طريق الرقي عند الله",
+        "الله يرفع درجات أهل التقوى والعلم"
+      ],
+      source: "تفسير ابن كثير، سورة مريم"
+    }
+  },
+  {
+    id: 3,
+    name: "نوح",
+    title: "عليه السلام — أبو البشر الثاني",
+    icon: "⛵",
+    era: "~3500-2500 ق.م",
+    category: ["all", "ulul-azm"],
+    tags: ["الطوفان", "السفينة", "ألف سنة"],
+    summary: "مكث 950 سنة يدعو قومه، فآمن القليل، فأمره الله ببناء سفينة أنجى بها المؤمنين وسائر الأحياء من الطوفان.",
+    full: {
+      born: "من ذرية آدم — أُرسل لأول الحضارات البشرية",
+      mission: "دعوة أول أمة عصت الله بعد آدم",
+      story: `أُرسل نوح عليه السلام إلى قوم عبدوا الأصنام: وداً وسواعاً ويغوث ويعوق ونسراً. دعاهم 950 سنة ليلاً ونهاراً، سراً وجهاراً، لكن أكثرهم أبوا.
 
-let quizIdx=0, quizScore=0, quizTotal=10, quizDone=false, shuffled=[];
+حين يئس من إيمانهم، أوحى الله إليه أن يبني السفينة. سخر منه قومه حين رأوه يبنيها على اليابسة بعيداً عن البحر، لكنه واصل بناءها بأمر ربه.
 
-// ─── Tab switch ───
-function switchTab(el){
-  document.querySelectorAll(".filter-btn").forEach(b=>b.classList.remove("active"));
-  el.classList.add("active");
-  const t=el.dataset.tab;
-  ["list","timeline","miracles","quiz","ulul"].forEach(p=>{
-    document.getElementById("panel-"+p).style.display=p===t?"block":"none";
-  });
-  if(t==="timeline") buildTimeline();
-  if(t==="miracles") buildMiracles();
-  if(t==="quiz") startQuiz();
-  if(t==="ulul") buildUlul();
-}
+جاء أمر الله بالطوفان — ففار التنور، وصعد في السفينة من كل نوع زوجين ومن آمن. غرق جميع الكافرين حتى ابنه الذي رفض الصعود. استوت السفينة على الجودي وبدأت الحياة من جديد.`,
+      verse: "إِنَّهُ كَانَ عَبْدًا شَكُورًا",
+      verseSource: "سورة الإسراء — الآية 3",
+      lessons: [
+        "الصبر على الدعوة ولو طال الزمن",
+        "قرابة الإيمان أعظم من قرابة الدم",
+        "العمل بأمر الله ولو بدا غريباً للناس",
+        "لا ينفع النسب أمام رحمة الله — درس ابن نوح"
+      ],
+      source: "البداية والنهاية، ج1 — سورة هود الآيات 25-49"
+    }
+  },
+  {
+    id: 4,
+    name: "هود",
+    title: "عليه السلام — نبي قوم عاد",
+    icon: "🌪️",
+    era: "~2500 ق.م",
+    category: ["all", "arab"],
+    tags: ["قوم عاد", "الريح", "الأحقاف"],
+    summary: "أُرسل إلى قوم عاد في الأحقاف باليمن، بُعثرت مبانيهم الشامخة بريح صرصر عقب رفضهم التوحيد.",
+    full: {
+      born: "عربي من قبيلة عاد — جنوب شبه الجزيرة العربية",
+      mission: "دعوة عاد الذين كانوا أشد الناس جسداً وبنياناً",
+      story: `قوم عاد كانوا من أعظم الحضارات في عصرهم — بنوا الأعمدة والمباني الضخمة في إرم ذات العماد. اغتروا بقوتهم وقالوا "من أشد منا قوة؟".
 
-// ─── List ───
-function renderList(){
-  const q=(document.getElementById("searchProphet").value||"").trim();
-  const list=PROPHETS.filter(p=>!q||p.name.includes(q)||p.title.includes(q));
-  document.getElementById("prophetGrid").innerHTML=list.map(p=>`
-    <div class="prophet-card" onclick="openProphet('${p.id}')">
-      <div style="display:flex;align-items:center;gap:14px;">
-        <span style="font-size:36px;">${p.emoji}</span>
-        <div style="flex:1;">
-          <div style="display:flex;justify-content:space-between;align-items:center;">
-            <p style="font-size:18px;font-weight:900;">${p.name} عليه السلام</p>
-            <span class="tag-chip">#${p.order}</span>
-          </div>
-          <p style="font-size:13px;color:var(--gold);font-weight:700;margin-top:2px;">${p.title}</p>
-          <p style="font-size:12px;color:var(--text-muted);margin-top:4px;line-height:1.6;">
-            ${p.summary.substring(0,90)}...</p>
-        </div>
-      </div>
-    </div>`).join("");
-}
+أرسل الله إليهم أخاهم هوداً يدعوهم إلى التوحيد وترك الشرك. سخروا منه واستمروا في ظلمهم. فأرسل الله عليهم ريحاً صرصر عاتية سبع ليالٍ وثمانية أيام حسوماً، نزعت الناس كأنهم أعجاز نخل خاوية.
 
-// ─── Prophet modal ───
-function openProphet(id){
-  const p=PROPHETS.find(x=>x.id===id);
-  document.getElementById("modalContent").innerHTML=`
-    <div style="text-align:center;margin-bottom:20px;">
-      <div style="font-size:60px;margin-bottom:8px;">${p.emoji}</div>
-      <h2 style="font-size:24px;font-weight:900;">${p.name} عليه السلام</h2>
-      <p style="color:var(--gold);font-weight:700;">${p.title}</p>
-    </div>
-    <div class="hadith-box"><p style="font-size:13px;color:var(--gold);font-weight:700;">${p.ayah}</p></div>
-    <div style="background:var(--bg-main);border-radius:12px;padding:14px;margin-bottom:12px;">
-      <p style="font-size:14px;line-height:1.9;color:var(--text-secondary);">${p.summary}</p>
-    </div>
-    <h3 style="font-size:14px;font-weight:900;margin-bottom:8px;">✨ المعجزة</h3>
-    <div style="background:rgba(245,158,11,0.06);border-radius:12px;padding:12px;margin-bottom:12px;">
-      <p style="font-size:13px;color:var(--text-secondary);line-height:1.8;">${p.miracle}</p>
-    </div>
-    <h3 style="font-size:14px;font-weight:900;margin-bottom:8px;">💡 الدروس المستفادة</h3>
-    ${p.lesson.map(l=>`<div class="lesson-item">
-      <span style="font-size:16px;">📌</span>
-      <p style="font-size:13px;color:var(--text-secondary);">${l}</p>
-    </div>`).join("")}
-    <div style="background:var(--bg-main);border-radius:10px;padding:10px;margin-top:12px;">
-      <p style="font-size:12px;color:var(--text-muted);">📖 ذُكر في سور: ${p.quran}</p>
-    </div>
-  `;
-  document.getElementById("modal").style.display="flex";
-}
+نجا هود ومن آمن معه، وبقيت قصتهم في القرآن الكريم عبرةً لكل متكبر.`,
+      verse: "أَتَبْنُونَ بِكُلِّ رِيعٍ آيَةً تَعْبَثُونَ",
+      verseSource: "سورة الشعراء — الآية 128",
+      lessons: [
+        "القوة المادية لا تحمي من عذاب الله",
+        "الاغترار بالحضارة والبناء من أسباب الهلاك",
+        "استغفار الله يجلب المطر والبركة — درس دعوة هود"
+      ],
+      source: "سورة الأحقاف 21-26 — تفسير السعدي"
+    }
+  },
+  {
+    id: 5,
+    name: "صالح",
+    title: "عليه السلام — نبي قوم ثمود",
+    icon: "🐪",
+    era: "~2200 ق.م",
+    category: ["all", "arab"],
+    tags: ["قوم ثمود", "الناقة", "الحِجر"],
+    summary: "بعث إلى ثمود في الحجر (شمال الجزيرة)، آيته ناقة أُخرجت من صخرة، فعقروها فكانت حين العقر نهايتهم.",
+    full: {
+      born: "عربي من قبيلة ثمود — شمال الجزيرة العربية",
+      mission: "دعوة ثمود ذوي الحضارة النحاتين للجبال",
+      story: `ثمود حضارة عريقة نحتت بيوتها في الجبال، وكانت تقع في مدائن صالح (الحِجر) شمال الجزيرة. طالبوا نبيّهم صالحاً بآية، فأخرج الله ناقة عظيمة من صخرة صمّاء.
 
-function closeModal(e){
-  if(e.target===document.getElementById("modal"))
-    document.getElementById("modal").style.display="none";
-}
+أمرهم بإطلاق سراحها في الأرض تأكل وتشرب، وحذّرهم من أذاها. لكن أكابر القوم وجّهوا أشقاهم لعقر الناقة. فلمّا عقروها أنظرهم صالح ثلاثة أيام ثم نزل العذاب — الصيحة الكبرى التي أهلكتهم جميعاً.
 
-// ─── Timeline ───
-function buildTimeline(){
-  document.getElementById("timelineList").innerHTML=PROPHETS.map(p=>`
-    <div style="display:flex;gap:14px;align-items:flex-start;margin-bottom:16px;cursor:pointer;"
-      onclick="openProphet('${p.id}')">
-      <div style="position:absolute;right:-8px;width:14px;height:14px;border-radius:50%;
-        background:var(--gold);border:2px solid var(--bg-card);margin-top:4px;"></div>
-      <div style="padding-right:16px;">
-        <div style="display:flex;align-items:center;gap:10px;">
-          <span style="font-size:22px;">${p.emoji}</span>
-          <span style="font-size:15px;font-weight:900;">${p.name} ﷺ</span>
-          ${p.ulul?'<span style="background:rgba(245,158,11,0.15);color:var(--gold);font-size:11px;font-weight:800;padding:2px 8px;border-radius:20px;border:1px solid rgba(245,158,11,0.3);">أولو العزم</span>':""}
-        </div>
-        <p style="font-size:12px;color:var(--text-muted);margin-top:2px;">${p.title}</p>
-      </div>
-    </div>`).join("");
-}
+نجا صالح ومن آمن معه، وبقيت منازلهم شاهدةً إلى اليوم في الحِجر بالسعودية.`,
+      verse: "فَعَقَرُوهَا فَقَالَ تَمَتَّعُوا فِي دَارِكُمْ ثَلَاثَةَ أَيَّامٍ",
+      verseSource: "سورة هود — الآية 65",
+      lessons: [
+        "الآيات الإلهية لا تنفع قلباً مستكبراً",
+        "ظلم الحيوان من أسباب الهلاك",
+        "زعماء السوء يقودون أقوامهم للهلاك"
+      ],
+      source: "سورة هود 61-68 — البداية والنهاية ج1"
+    }
+  },
+  {
+    id: 6,
+    name: "إبراهيم",
+    title: "عليه السلام — خليل الله",
+    icon: "🔥",
+    era: "~2000 ق.م",
+    category: ["all", "ulul-azm"],
+    tags: ["خليل الله", "الكعبة", "النار", "الذبح"],
+    summary: "إمام الحنفاء وأبو الأنبياء، كسر الأصنام وأُلقي في النار فكانت برداً وسلاماً، وبنى الكعبة المشرفة.",
+    full: {
+      born: "أُور — بلاد ما بين النهرين (~العراق اليوم)",
+      mission: "إمام الموحدين — أبو الأنبياء الثلاثة الكبار",
+      story: `ابتدأت قصة إبراهيم بالتفكر والبحث عن الحق — رفض عبادة الأصنام التي ورثها من أبيه آزر. راقب الكواكب والقمر والشمس وقال "لا أحب الآفلين" حتى توصّل بعقله لوجود خالق واحد لا يغيب.
 
-// ─── Miracles ───
-function buildMiracles(){
-  document.getElementById("miraclesList").innerHTML=PROPHETS.filter(p=>p.miracle).map((p,i)=>`
-    <div style="background:var(--bg-main);border-radius:14px;padding:14px;display:flex;gap:12px;cursor:pointer;"
-      onclick="openProphet('${p.id}')">
-      <span style="font-size:30px;">${p.emoji}</span>
-      <div>
-        <p style="font-weight:900;font-size:15px;margin-bottom:4px;">${p.name} عليه السلام</p>
-        <p style="font-size:13px;color:var(--gold);">✨ ${p.miracle}</p>
-      </div>
-    </div>`).join("");
-}
+حطّم أصنام قومه وعلّق الفأس في عنق أكبرها ليثبت عجزها. فأشعلوا له ناراً عظيمة، لكن الله أوحى: "يا نار كوني برداً وسلاماً على إبراهيم" فخرج منها سالماً.
 
-// ─── Ulul ───
-function buildUlul(){
-  const descriptions={
-    nuh:"صبر 950 سنة في الدعوة دون يأس",
-    ibrahim:"ثبت أمام النار والذبح والهجرة",
-    musa:"واجه فرعون أقوى ملوك الأرض",
-    isa:"صبر على الأذى ورُفع دون أن يُقتل",
-    muhammad:"حمل رسالة الخاتم لكل البشر",
-  };
-  document.getElementById("ululList").innerHTML=ULUL.map((p,i)=>`
-    <div style="background:var(--bg-main);border-radius:14px;padding:18px;display:flex;gap:14px;
-      align-items:flex-start;cursor:pointer;border:1px solid rgba(245,158,11,0.2);"
-      onclick="openProphet('${p.id}')">
-      <div style="background:var(--gold);color:#000;border-radius:50%;width:36px;height:36px;
-        display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:900;flex-shrink:0;">${i+1}</div>
-      <div>
-        <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
-          <span style="font-size:24px;">${p.emoji}</span>
-          <p style="font-weight:900;font-size:17px;">${p.name} عليه السلام</p>
-        </div>
-        <p style="font-size:13px;color:var(--gold);font-weight:700;margin-bottom:4px;">${p.title}</p>
-        <p style="font-size:13px;color:var(--text-muted);">${descriptions[p.id]||""}</p>
-      </div>
-    </div>`).join("");
-}
+هاجر إلى الشام ثم مصر، ورُزق بإسماعيل من هاجر وبإسحاق من سارة. أُمر بتركهما في وادٍ غير ذي زرع فأطاع. ثم جاء الاختبار الأعظم: الأمر بذبح ابنه، فامتثل هو وابنه، فدُيَ بكبش عظيم.
 
-// ─── Quiz ───
-function startQuiz(){
-  shuffled=[...QUIZ_Q].sort(()=>Math.random()-0.5).slice(0,quizTotal);
-  quizIdx=0; quizScore=0; quizDone=false;
-  renderQuestion();
-}
+بنى مع إسماعيل الكعبة المشرفة، وشرّع الحج للناس. لقّبه الله بخليله وجعله إماماً للناس.`,
+      verse: "إِنَّ إِبْرَاهِيمَ كَانَ أُمَّةً قَانِتًا لِلَّهِ حَنِيفًا",
+      verseSource: "سورة النحل — الآية 120",
+      lessons: [
+        "البحث العقلي عن الحقيقة فطرة إنسانية سليمة",
+        "الطاعة الكاملة لله هي جوهر التوحيد",
+        "الاختبارات الكبرى لأصحاب المراتب الكبرى",
+        "الإسلام ملّة إبراهيم — أصل الدين الحق"
+      ],
+      source: "سورة البقرة 124-132، سورة الأنبياء 51-73 — البداية والنهاية ج1"
+    }
+  },
+  {
+    id: 7,
+    name: "لوط",
+    title: "عليه السلام — ابن أخ إبراهيم",
+    icon: "🌋",
+    era: "~2000 ق.م",
+    category: ["all"],
+    tags: ["سدوم", "الفاحشة", "العذاب"],
+    summary: "آمن مع إبراهيم وأُرسل لأهل سدوم الذين انتشرت فيهم الفاحشة، فأُهلكوا وقُلبت بهم الأرض.",
+    full: {
+      born: "من أرض كنعان — ابن أخ إبراهيم الخليل",
+      mission: "إصلاح المجتمع المنحل في سدوم وعمورة",
+      story: `لوط عليه السلام آمن مع عمه إبراهيم وهاجر معه. أرسله الله إلى أهل سدوم وعمورة قرب البحر الميت. كان أهلها قد ابتلوا بالفاحشة (إتيان الرجال) وهي جريمة لم تسبقهم فيها أمة.
 
-function renderQuestion(){
-  const qEl=document.getElementById("quizContent");
-  if(quizIdx>=quizTotal){
-    const pct=Math.round((quizScore/quizTotal)*100);
-    const msg=pct>=80?"🏆 ممتاز! أنت تعرف الأنبياء جيداً":pct>=60?"👍 جيد! واصل التعلم":"📚 راجع القصص مجدداً";
-    qEl.innerHTML=`
-      <div style="text-align:center;padding:20px 0;">
-        <div style="font-size:60px;margin-bottom:16px;">${pct>=80?"🏆":pct>=60?"🌟":"📖"}</div>
-        <h2 style="font-size:22px;font-weight:900;margin-bottom:8px;">انتهى الاختبار!</h2>
-        <p style="font-size:40px;font-weight:900;color:var(--gold);margin-bottom:8px;">${quizScore}/${quizTotal}</p>
-        <div class="progress-bar" style="margin:12px 0;"><div class="progress-fill" style="width:${pct}%"></div></div>
-        <p style="font-size:16px;color:var(--text-muted);margin-bottom:20px;">${msg}</p>
-        <button onclick="startQuiz()" class="btn" style="background:var(--gold);color:#000;border:none;
-          padding:12px 32px;border-radius:30px;font-size:15px;font-weight:900;cursor:pointer;
-          font-family:var(--font-arabic);">🔄 إعادة الاختبار</button>
-      </div>`;
-    return;
-  }
-  const q=shuffled[quizIdx];
-  qEl.innerHTML=`
-    <div style="margin-bottom:16px;">
-      <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--text-muted);margin-bottom:8px;">
-        <span>سؤال ${quizIdx+1} من ${quizTotal}</span>
-        <span style="color:var(--gold);font-weight:800;">النتيجة: ${quizScore}/${quizIdx}</span>
-      </div>
-      <div class="progress-bar"><div class="progress-fill" style="width:${(quizIdx/quizTotal)*100}%"></div></div>
-    </div>
-    <div style="background:var(--bg-main);border-radius:14px;padding:18px;margin-bottom:16px;">
-      <p style="font-size:17px;font-weight:900;line-height:1.7;">${q.q}</p>
-    </div>
-    <div style="display:flex;flex-direction:column;gap:8px;">
-      ${q.opts.map((o,i)=>`<button class="quiz-opt" id="opt${i}" onclick="answerQ(${i},${q.a})">${o}</button>`).join("")}
-    </div>`;
-}
+دعاهم لوط طويلاً، فاستهزأوا به وطلبوا إخراجه من المدينة. جاءته ملائكة على هيئة شباب وسيمين، فأراد أهل المدينة فعل الفاحشة بهم. فأعمت الملائكة أبصارهم.
 
-function answerQ(chosen,correct){
-  document.querySelectorAll(".quiz-opt").forEach(b=>b.disabled=true);
-  document.getElementById("opt"+correct).classList.add("correct");
-  if(chosen===correct){quizScore++;}
-  else{document.getElementById("opt"+chosen).classList.add("wrong");}
-  setTimeout(()=>{quizIdx++;renderQuestion();},1200);
-}
+أمر الله لوطاً بالخروج بأهله قبل الفجر ولا يلتفت أحد — إلا امرأته التي التفتت فكانت من الهالكين. قلب الله المدينة رأساً على عقب وأمطرها بحجارة من سجيل.`,
+      verse: "أَتَأْتُونَ الذُّكْرَانَ مِنَ الْعَالَمِينَ",
+      verseSource: "سورة الشعراء — الآية 165",
+      lessons: [
+        "الانحلال الأخلاقي يؤدي لهلاك الأمم",
+        "المؤمن لا يلتفت لما خلّفه من الدنيا",
+        "العصبية للحق واجبة حتى ضد الأهل والجيران"
+      ],
+      source: "سورة هود 77-83 — تفسير ابن كثير"
+    }
+  },
+  {
+    id: 8,
+    name: "إسماعيل",
+    title: "عليه السلام — ذبيح الله",
+    icon: "🕋",
+    era: "~1900 ق.م",
+    category: ["all", "arab"],
+    tags: ["ذبيح الله", "الكعبة", "العرب المستعربة"],
+    summary: "الابن الأول لإبراهيم، صبر طفلاً في الوادي وشاباً حين أمر أبوه بذبحه، وبنى معه الكعبة وهو جد العرب المستعربة.",
+    full: {
+      born: "ولد لإبراهيم من هاجر المصرية — في مكة المكرمة",
+      mission: "بناء الكعبة وتأسيس الدعوة في الجزيرة العربية",
+      story: `جاء إسماعيل في أصعب اختبار — تركه أبوه رضيعاً مع أمه في وادٍ قاحل لا ماء فيه ولا زرع. فلما نفد الماء، سعت هاجر بين الصفا والمروة سبع مرات، فنبع ماء زمزم بين رجلي إسماعيل.
 
-// ─── Init ───
-renderList();
-</script>
-</body>
-</html>
+شبّ إسماعيل وتعلم العربية من قبيلة جُرهم، وتزوج منهم. ثم جاء اختبار الذبح — رأى أبوه في المنام أنه يذبحه، فأخبر إسماعيل فقال: "يا أبت افعل ما تؤمر ستجدني إن شاء الله من الصابرين" — فدُيَ بكبش عظيم.
+
+بنى مع أبيه إبراهيم الكعبة المشرفة وأذّنا للحج. وكان إسماعيل صادق الوعد، وهو جدّ العرب الذين أُرسل منهم النبي محمد ﷺ.`,
+      verse: "يَا أَبَتِ افْعَلْ مَا تُؤْمَرُ سَتَجِدُنِي إِن شَاءَ اللَّهُ مِنَ الصَّابِرِينَ",
+      verseSource: "سورة الصافات — الآية 102",
+      lessons: [
+        "طاعة الوالدين في غير معصية واجبة",
+        "الصبر الكامل على بلاء الله أعظم مقامات العبودية",
+        "زمزم آية باقية إلى يوم القيامة"
+      ],
+      source: "سورة الصافات 99-111 — البداية والنهاية ج1"
+    }
+  },
+  {
+    id: 9,
+    name: "إسحاق",
+    title: "عليه السلام — البشرى العجيبة",
+    icon: "✨",
+    era: "~1850 ق.م",
+    category: ["all", "bani-israil"],
+    tags: ["البشارة", "سارة", "جد بني إسرائيل"],
+    summary: "بُشّر به وبأمه وهي عجوز عقيم، وكانت البشارة حين زيارة الملائكة — ومنه انحدر بنو إسرائيل.",
+    full: {
+      born: "من إبراهيم وسارة — بعد أن بلغت سارة سناً لا تلد فيها عادةً",
+      mission: "استمرار سلسلة الأنبياء في بني إسرائيل",
+      story: `جاءت قصة إسحاق ببشارة لم يكن لها مثيل — حين جاءت الملائكة إلى إبراهيم، بشّروه بغلام اسمه إسحاق. ضحكت سارة من دهشة البشرى وهي عجوز عقيم، فقالت الملائكة: "أتعجبين من أمر الله؟"
+
+نشأ إسحاق في أرض كنعان، وورث النبوة والدعوة من أبيه. تزوج من رفقة وأنجب يعقوب (إسرائيل) وعيسو. وكان يعقوب هو الجد المباشر لأسباط بني إسرائيل الاثني عشر.
+
+كانت مهمته الأساسية استمرار التوحيد في الأرض المقدسة وتربية يعقوب.`,
+      verse: "وَبَشَّرْنَاهُ بِإِسْحَاقَ نَبِيًّا مِّنَ الصَّالِحِينَ",
+      verseSource: "سورة الصافات — الآية 112",
+      lessons: [
+        "قدرة الله لا تقف عند حدود الأسباب الطبيعية",
+        "البشارة الصادقة من علامات الملائكة",
+        "الصالحون يُخلِّفون صالحين"
+      ],
+      source: "سورة هود 69-73 — البداية والنهاية ج1"
+    }
+  },
+  {
+    id: 10,
+    name: "يعقوب",
+    title: "عليه السلام — إسرائيل",
+    icon: "⭐",
+    era: "~1800 ق.م",
+    category: ["all", "bani-israil"],
+    tags: ["إسرائيل", "الأسباط", "الصبر"],
+    summary: "ابن إسحاق ولقبه إسرائيل، أبو الأسباط الاثني عشر، عُرف بصبره الجميل حين فقد يوسف وبصره من الحزن.",
+    full: {
+      born: "أرض كنعان — ابن إسحاق وحفيد إبراهيم",
+      mission: "تأسيس الأسباط الاثني عشر الذين صاروا بني إسرائيل",
+      story: `يعقوب عليه السلام هو إسرائيل — اسم لقّبه الله به. أنجب اثني عشر ابناً صاروا أسباط بني إسرائيل. كان أحبّ أبنائه إليه يوسف، مما أثار حسد إخوته.
+
+حين رمى إخوة يوسف أخاهم في البئر، أخبروا أباهم أن ذئباً أكله، وجاؤوا بقميصه مُلطّخاً بالدم. حزن يعقوب حزناً شديداً حتى ابيضّت عيناه من الحزن وهو كظيم.
+
+لكنه لم ييأس من رحمة الله، يقول لبنيه "اذهبوا فتحسسوا من يوسف وأخيه ولا تيأسوا من روح الله". وحين وصل قميص يوسف لوجهه استعادت عيناه البصر — لتكون نهاية القصة مجمعاً بالأسرة في مصر.`,
+      verse: "إِنَّهُ لَا يَيْأَسُ مِن رَّوْحِ اللَّهِ إِلَّا الْقَوْمُ الْكَافِرُونَ",
+      verseSource: "سورة يوسف — الآية 87",
+      lessons: [
+        "الصبر الجميل لا شكوى فيه إلا لله",
+        "اليأس من رحمة الله من خصال الكافرين",
+        "الفراق لا يدوم والله يجمع المتحابين"
+      ],
+      source: "سورة يوسف — البداية والنهاية ج1"
+    }
+  },
+  {
+    id: 11,
+    name: "يوسف",
+    title: "عليه السلام — الصدّيق",
+    icon: "👑",
+    era: "~1750 ق.م",
+    category: ["all", "bani-israil"],
+    tags: ["الجمال", "السجن", "مصر", "أحسن القصص"],
+    summary: "صاحب أحسن القصص — من البئر إلى السجن إلى عزيز مصر، حفظ عفّته ولقي والديه بعد سنين.",
+    full: {
+      born: "أرض كنعان — أحد أبناء يعقوب الاثني عشر",
+      mission: "إصلاح مصر وإنقاذها من المجاعة وإعادة الأسرة",
+      story: `سمّى الله قصة يوسف "أحسن القصص" — وحقاً هي رواية متكاملة فيها كل معاني الحياة.
+
+بدأت برؤية: رأى يوسف أحد عشر كوكباً والشمس والقمر يسجدون له. حسده إخوته وألقوه في البئر ثم باعوه لتجار مصر بثمن بخس. 
+
+في مصر، ابتلي بامرأة العزيز التي راودته عن نفسه فأبى طاعةً لله، فسُجن ظلماً. في السجن فسّر أحلام سجنائه، وبعد سنوات فسّر حلم الملك الذي أُخرج فيه من السجن وجُعل على خزائن مصر.
+
+حين جاء إخوته يستجلبون الطعام، لم يُعرّفوه، حتى كشف عن نفسه بكل حلم وعفو: "لا تثريب عليكم اليوم، يغفر الله لكم".`,
+      verse: "إِنَّهُ مَن يَتَّقِ وَيَصْبِرْ فَإِنَّ اللَّهَ لَا يُضِيعُ أَجْرَ الْمُحْسِنِينَ",
+      verseSource: "سورة يوسف — الآية 90",
+      lessons: [
+        "التقوى والصبر مفتاح الفرج وإن طال الليل",
+        "العفو عند المقدرة من أعظم الأخلاق",
+        "مكر البشر لا يعطّل قدر الله",
+        "الرؤيا الصالحة بشرى حق لكنها تحتاج وقتها"
+      ],
+      source: "سورة يوسف كاملة — البداية والنهاية ج1"
+    }
+  },
+  {
+    id: 12,
+    name: "شعيب",
+    title: "عليه السلام — خطيب الأنبياء",
+    icon: "⚖️",
+    era: "~1600 ق.م",
+    category: ["all", "arab"],
+    tags: ["أهل مدين", "الميزان", "التجارة"],
+    summary: "أُرسل لأهل مدين الذين كانوا يطففون في الكيل والميزان ويقطعون الطريق، فرفضوا فأخذتهم الصيحة.",
+    full: {
+      born: "أرض مدين — شمال الحجاز غرب الجزيرة",
+      mission: "إصلاح منظومة التجارة الفاسدة في مدين",
+      story: `شعيب عليه السلام سُمّي "خطيب الأنبياء" لحُسن بيانه وفصاحته. أُرسل لأهل مدين، وهم قوم تجار لكنهم كانوا يطففون في الكيل والميزان ويقطعون الطريق.
+
+دعاهم شعيب قائلاً: "أوفوا الكيل والميزان ولا تبخسوا الناس أشياءهم". ردّوا عليه بأن صلاته تأمره بترك ما يعبد آباؤهم. وفي نهاية الجدل قالوا: "لنخرجنّك يا شعيب والذين آمنوا معك من قريتنا أو لتعودنّ في ملّتنا".
+
+أمهلهم وعاش ينتظر أمر الله. جاءهم العذاب — يوم الظلة: سحابة أرسلها الله أظلّتهم ثم أمطرت عليهم ناراً. وأخذتهم الصيحة فأصبحوا في ديارهم جاثمين.`,
+      verse: "وَيَا قَوْمِ أَوْفُوا الْمِكْيَالَ وَالْمِيزَانَ بِالْقِسْطِ",
+      verseSource: "سورة هود — الآية 85",
+      lessons: [
+        "العدل في التجارة والمعاملات فريضة دينية",
+        "الفساد الاقتصادي جريمة دينية قبل أن تكون جريمة قانونية",
+        "الاستهزاء بالدين وأهله من علامات الهلاك"
+      ],
+      source: "سورة الأعراف 85-93 — البداية والنهاية ج1"
+    }
+  },
+  {
+    id: 13,
+    name: "أيوب",
+    title: "عليه السلام — رمز الصبر",
+    icon: "🌸",
+    era: "~1600 ق.م",
+    category: ["all"],
+    tags: ["الصبر", "البلاء", "الشفاء"],
+    summary: "ابتُلي بفقدان المال والأولاد والصحة ثمانية عشر عاماً، ولم يتركه لسانه إلا بالذكر حتى شفاه الله وضاعف له كل شيء.",
+    full: {
+      born: "أرض البثنية بالشام — يُقال إنه من ذرية عيسو بن إسحاق",
+      mission: "تجسيد نموذج الصبر الكامل لكل الأجيال",
+      story: `كان أيوب عليه السلام من أكثر الأنبياء ثروةً وأولاداً وصحةً. ابتلاه الله بالفقدان: ذهبت ثروته وأولاده، ثم أُصيب في جسده بمرض شديد امتد — حسب الروايات — ثمانية عشر عاماً.
+
+لم يُسمع منه طوال هذه السنوات إلا الذكر والحمد. لما بلغ من الضعف مبلغاً عظيماً نادى ربه: "أَنِّي مَسَّنِيَ الضُّرُّ وَأَنتَ أَرْحَمُ الرَّاحِمِينَ" — لم يكن في ندائه شكوى بل توسّل.
+
+فاستجاب الله: "ارْكُضْ بِرِجْلِكَ هَذَا مُغْتَسَلٌ بَارِدٌ وَشَرَابٌ" — اغتسل فعوفي على الفور. وآتاه الله مثلهم مع ذريتهم رحمةً منه وذكرى لأولي الألباب.`,
+      verse: "أَنِّي مَسَّنِيَ الضُّرُّ وَأَنتَ أَرْحَمُ الرَّاحِمِينَ",
+      verseSource: "سورة الأنبياء — الآية 83",
+      lessons: [
+        "البلاء ليس دليلاً على الغضب بل قد يكون رفعةً للدرجات",
+        "الصبر الجميل لا شكوى فيه لغير الله",
+        "دعاء المضطر لا يُرد عند الله",
+        "الفرج يأتي بعد أشد الضيق مباشرةً"
+      ],
+      source: "سورة الأنبياء 83-84، سورة ص 41-44"
+    }
+  },
+  {
+    id: 14,
+    name: "ذو الكِفل",
+    title: "عليه السلام — صاحب الوعد",
+    icon: "🤝",
+    era: "~1500 ق.م",
+    category: ["all"],
+    tags: ["الوفاء", "الوعد", "الصبر"],
+    summary: "تكفّل بحكم عادل وعبادة دائمة وصبر كامل فسُمّي ذا الكفل، ويُقال إنه كان يصلي مئة صلاة في اليوم.",
+    full: {
+      born: "يُقال إنه من أرض الشام أو فارس — ذريته مجهولة",
+      mission: "إحياء العهد والوفاء بالوعد",
+      story: `ذو الكفل عليه السلام ورد اسمه في القرآن الكريم مرتين مع أيوب وإسماعيل وإدريس. سُمّي ذا الكفل لأنه تكفّل بشرط عظيم.
+
+يُروى أن نبياً شاخ وأراد أن يستخلف من يحكم بعده من يقدر على ثلاثة أشياء: الصوم في النهار والقيام في الليل وألا يغضب في القضاء. فتكفّل بذلك ذو الكفل، فسُمّي بهذا الاسم لتكفّله. 
+
+حاول الشيطان أن يُغضبه بطرق شتى ففشل، واستمر في صيامه وقيامه وعدله. وذكره الله مع الصابرين في القرآن الكريم.`,
+      verse: "وَإِسْمَاعِيلَ وَإِدْرِيسَ وَذَا الْكِفْلِ كُلٌّ مِّنَ الصَّابِرِينَ",
+      verseSource: "سورة الأنبياء — الآية 85",
+      lessons: [
+        "الوفاء بالعهد من أشرف الخصال",
+        "كظم الغيظ من الجهاد الأكبر",
+        "الثبات على العبادة ولو كيد الشيطان"
+      ],
+      source: "تفسير ابن كثير، سورة الأنبياء"
+    }
+  },
+  {
+    id: 15,
+    name: "موسى",
+    title: "عليه السلام — كليم الله",
+    icon: "🌊",
+    era: "~1250 ق.م",
+    category: ["all", "ulul-azm", "bani-israil"],
+    tags: ["كليم الله", "فرعون", "التوراة", "البحر"],
+    summary: "أكثر الأنبياء ذكراً في القرآن — كلّمه الله مباشرةً، أُرسل لفرعون وأنقذ بني إسرائيل من العبودية.",
+    full: {
+      born: "مصر الفرعونية — في زمن يقتل فرعون أبناء بني إسرائيل",
+      mission: "تحرير بني إسرائيل وإنزال التوراة",
+      story: `بدأت القصة قبل ولادته — خاف فرعون من نبوءة فأمر بقتل كل مولود ذكر من بني إسرائيل. أُلهمت أم موسى أن تضعه في صندوق وتلقيه في النيل، فاستقرّ في قصر فرعون نفسه، وأرضعته أمه.
+
+نشأ في القصر ثم قتل رجلاً بالخطأ فهرب إلى مدين. عاش فيها عشر سنوات ثم عاد. في الطريق رأى ناراً في جانب الطور — كانت مناجاة الله له، وأُعطي العصا والمعجزات.
+
+ذهب لفرعون يقول له "أرسل معنا بني إسرائيل" فرفض، فجاءت الآيات التسع. لما أُذن لموسى بالخروج تبعهم فرعون بجيشه فانشق البحر لموسى وغرق فرعون.
+
+في سيناء كلّمه الله وأنزل التوراة، لكن بني إسرائيل تاهوا في الصحراء أربعين سنة.`,
+      verse: "وَكَلَّمَ اللَّهُ مُوسَى تَكْلِيمًا",
+      verseSource: "سورة النساء — الآية 164",
+      lessons: [
+        "مكر الطغاة يرتدّ عليهم — فرعون ربّى قاتله",
+        "الله يُعِدّ أنبياءه بالتجارب قبل المهمات",
+        "العدل لا يتحقق بالسيف وحده بل بالدعوة أولاً",
+        "الإيمان يكسر أعتى الطغاة في النهاية"
+      ],
+      source: "سورة القصص، سورة طه، سورة يونس — البداية والنهاية ج1"
+    }
+  },
+  {
+    id: 16,
+    name: "هارون",
+    title: "عليه السلام — وزير موسى",
+    icon: "🎙️",
+    era: "~1250 ق.م",
+    category: ["all", "bani-israil"],
+    tags: ["الفصاحة", "وزير موسى", "العجل"],
+    summary: "أخ موسى وعضده وشريكه في دعوة فرعون، فصيح اللسان طيّب القلب، ابتُلي بصبره حين عبد قومه العجل.",
+    full: {
+      born: "مصر — أخو موسى الأكبر من بني إسرائيل",
+      mission: "مساعدة موسى بفصاحته ولسانه في مواجهة فرعون",
+      story: `هارون عليه السلام كان أكبر من موسى سناً وأفصح لساناً. حين كلّف الله موسى بدعوة فرعون، طلب موسى من ربه أن يجعل هارون وزيراً له: "وَأَشْرِكْهُ فِي أَمْرِي" — فأجابه الله.
+
+ذهبا معاً لفرعون ودعواه بالقول الليّن. وقفا أمام ساحة السحر وانتصرا. بعد خروج بني إسرائيل استخلفه موسى حين ذهب للطور. 
+
+لما صنع السامري عجلاً ذهبياً وعبده بنو إسرائيل، نهاهم هارون بكل قوته لكنهم خشوا منه. وحين عاد موسى وغضب، دافع هارون عن نفسه بصدق، فقبل موسى عذره ودعا له.`,
+      verse: "وَأَشْرِكْهُ فِي أَمْرِي",
+      verseSource: "سورة طه — الآية 32",
+      lessons: [
+        "التعاون بين أهل الحق يضاعف الأثر",
+        "الفصاحة نعمة ينبغي توظيفها في الخير",
+        "الحليم الصابر يحتاجه كل قائد"
+      ],
+      source: "سورة طه 29-36 — تفسير ابن كثير"
+    }
+  },
+  {
+    id: 17,
+    name: "اليسع",
+    title: "عليه السلام — وارث إيليا",
+    icon: "💧",
+    era: "~850 ق.م",
+    category: ["all", "bani-israil"],
+    tags: ["خليفة إيليا", "المعجزات", "النهر"],
+    summary: "وارث نبوة إيليا (إلياس)، ذكره الله مع الأخيار المصطفين، وكانت له معجزات ظاهرة في أرض بني إسرائيل.",
+    full: {
+      born: "أرض إسرائيل — من بني إسرائيل في عهد الملك أخاب",
+      mission: "خلافة إيليا واستمرار الدعوة لبني إسرائيل",
+      story: `اليسع عليه السلام كان تلميذ إيليا عليه السلام ووارثه. حين رُفع إيليا ألقى إليه عباءته — إشارة لنقل النبوة إليه. 
+
+اشتهر اليسع بالمعجزات: عبر نهر الأردن بعد أن ضرب الماء بعباءة إيليا فانشقّ. شفى سرياناً اسمه نعمان من البرص بأمر الغسل في نهر الأردن. أمات وأحيا. بارك زيت أرملة حتى فاض عن كل الأواني.
+
+وصفه الله في القرآن بأنه من المصطفين الأخيار، وقد بقي يدعو بني إسرائيل للتوحيد ومقاومة الظلم.`,
+      verse: "وَإِسْمَاعِيلَ وَالْيَسَعَ وَيُونُسَ وَلُوطًا وَكُلًّا فَضَّلْنَا عَلَى الْعَالَمِينَ",
+      verseSource: "سورة الأنعام — الآية 86",
+      lessons: [
+        "التلمذة الصادقة طريق الخلافة",
+        "المعجزات توكيد للرسالة لا غاية في ذاتها",
+        "الاستمرارية في الدعوة واجب الورثة"
+      ],
+      source: "تفسير القرطبي، سورة الأنعام"
+    }
+  },
+  {
+    id: 18,
+    name: "إلياس",
+    title: "عليه السلام — محارب الأصنام",
+    icon: "⛰️",
+    era: "~860 ق.م",
+    category: ["all", "bani-israil"],
+    tags: ["بعل", "الجبل", "الغيب"],
+    summary: "بُعث لبني إسرائيل في الشمال حين عبدوا بعلاً، وقف وحيداً ضد ملك وكهنة أصنام، ثم رُفع أو أُخذ من الدنيا بصورة غريبة.",
+    full: {
+      born: "م

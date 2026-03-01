@@ -23,6 +23,22 @@
     "url": "https://islamicalc.com/zakat/"
   }
   </script>
+<style>.breakdown-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  font-size: 0.85rem;
+}
+.breakdown-row.total-row {
+  font-weight: 700;
+  color: var(--gold);
+  border-top: 1px solid rgba(201,168,76,0.3);
+  border-bottom: 1px solid rgba(201,168,76,0.3);
+  padding: 10px 0;
+  margin-top: 4px;
+}
+</style>
 </head>
 <body>
 
@@ -76,6 +92,46 @@
     <button class="zakat-tab"        data-tab="silver" onclick="switchTab('silver')">🥈 زكاة الفضة</button>
     <button class="zakat-tab"        data-tab="trade"  onclick="switchTab('trade')">🏪 زكاة التجارة</button>
     <button class="zakat-tab"        data-tab="stocks" onclick="switchTab('stocks')">📈 زكاة الأسهم</button>
+    <button class="zakat-tab" data-tab="total" onclick="switchTab('total')">📊 الإجمالي الشامل</button>
+    
+<!-- قسم الإجمالي الشامل -->
+<div class="zakat-section" id="tab-total" style="display:none;">
+  <div class="zakat-info-box">
+    <strong>📌 ضم الأموال — حكم شرعي مهم:</strong><br>
+    شرعاً تُضم النقود والذهب والفضة وعروض التجارة والأسهم في وعاء زكوي واحد.
+    هذا الحساب يجمع كل ما أدخلته في التبويبات السابقة ويحسب الزكاة الإجمالية.
+    <br><em>المصدر: islamqa.info #585436 + الشرح الممتع لابن عثيمين</em>
+  </div>
+
+  <div style="background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.2);
+              border-radius:14px;padding:16px;margin:16px 0;font-size:0.9rem;
+              color:var(--text-muted);">
+    ⚠️ أدخل بياناتك في التبويبات السابقة أولاً (المال، الذهب، الفضة، التجارة، الأسهم)
+    ثم اضغط "احسب الإجمالي" للحصول على مجموع الزكاة الكاملة.
+  </div>
+
+  <button class="calc-btn" onclick="calcTotalZakat()">📊 احسب الإجمالي الشامل</button>
+
+  <div class="calc-result" id="result-total">
+    <div class="result-icon">📊</div>
+    <div class="result-row">
+      <span>الوعاء الإجمالي</span>
+      <span id="grand-total-value" class="result-value">--</span>
+    </div>
+    <div id="total-breakdown" style="margin:12px 0;font-size:0.85rem;"></div>
+    <div class="nisab-check" id="total-nisab-check"></div>
+    <div class="zakat-amount-label">إجمالي الزكاة الواجبة</div>
+    <div class="zakat-big-number">
+      <span id="zakat-total">0</span>
+      <span class="currency-label" id="total-zakat-unit">ريال</span>
+    </div>
+    <div class="result-actions">
+      <button class="share-btn" onclick="shareResult('total')">📤 شارك</button>
+      <button class="reset-btn" onclick="resetForm('total')">🔄 إعادة</button>
+    </div>
+  </div>
+</div>
+
   </div>
 
   <!-- ===== تبويب المال ===== -->
@@ -497,17 +553,28 @@ details[open] summary { color:var(--gold); }
 </style>
 
 <script>
-// ===== ثوابت شرعية موثقة =====
-const ZAKAT_RATE     = 0.025;   // 2.5٪ = ربع العشر — متفق عليه
-const GOLD_NISAB_G   = 85;      // 85 جرام عيار 24 خالص — islamqa.info #214221
-const SILVER_NISAB_G = 595;     // 595 جرام فضة خالصة — dorar.net
-// نصاب المال = 85 جرام × سعر الجرام عيار 24 اليوم
-// إذا لم يدخل المستخدم سعر الذهب نستخدم تقديراً بناءً على العملة
+// ============================================================
+// IslamiCalc — zakat/index.html — Script v2.0
+// مُصحَّح شرعياً وبرمجياً بالكامل
+// ============================================================
 
+// ===== ثوابت شرعية موثقة =====
+const ZAKAT_RATE     = 0.025;  // 2.5٪ ربع العشر — متفق عليه
+const GOLD_NISAB_G   = 85;     // 85 جرام عيار 24 — islamqa.info #214221
+const SILVER_NISAB_G = 595;    // 595 جرام فضة خالصة — dorar.net
+
+// نصاب المال التقديري — آخر تحديث: مارس 2026
+// المصدر: سعر الذهب × 85 جرام بكل عملة
 const NISAB_APPROX = {
-  SAR:23375, USD:6250, AED:22900,
-  EGP:205000, KWD:1920, QAR:22750,
-  JOD:4430, GBP:4950, EUR:5750
+  SAR: 26775,   // 315 ريال/جرام × 85
+  USD:  7140,   // 84 دولار/جرام  × 85
+  AED: 26230,   // 308.6 درهم/جرام × 85
+  EGP: 350000,  // 4118 جنيه/جرام × 85
+  KWD:  2195,   // 25.8 دينار/جرام × 85
+  QAR: 26010,   // 306 ريال/جرام × 85
+  JOD:  5060,   // 59.5 دينار/جرام × 85
+  GBP:  5440,   // 64 جنيه/جرام × 85
+  EUR:  6290    // 74 يورو/جرام × 85
 };
 
 const CURRENCIES = {
@@ -517,28 +584,38 @@ const CURRENCIES = {
 };
 
 let activeCurrency = "SAR";
-let activeTab = "money";
+let activeTab      = "money";
 
 // ===== أدوات مساعدة =====
 function fmt(n) {
   if (isNaN(n) || n === null) return "0";
   return Number(n.toFixed(2)).toLocaleString("ar-SA");
 }
+
 function getVal(id) {
   const v = parseFloat(document.getElementById(id)?.value);
   return isNaN(v) || v < 0 ? 0 : v;
 }
-function showToast(msg, type="") {
+
+function unit() {
+  return CURRENCIES[activeCurrency] || "ريال";
+}
+
+function showToast(msg, type = "") {
   const t = document.getElementById("toast");
+  if (!t) return;
   t.textContent = msg;
-  t.className = "toast show " + type;
+  t.className   = "toast show " + type;
   setTimeout(() => t.classList.remove("show"), 3500);
 }
+
+// Validation مُحسَّنة مع رسالة واضحة
 function validate(...ids) {
   for (const id of ids) {
     const el = document.getElementById(id);
     if (!el) continue;
-    if (parseFloat(el.value) < 0) {
+    const v = parseFloat(el.value);
+    if (!isNaN(v) && v < 0) {
       el.style.borderColor = "var(--error)";
       showToast("❌ لا تدخل أرقاماً سالبة", "toast-error");
       return false;
@@ -546,6 +623,14 @@ function validate(...ids) {
     el.style.borderColor = "";
   }
   return true;
+}
+
+// فحص وجود مدخل حقيقي في القسم
+function hasInput(...ids) {
+  return ids.some(id => {
+    const v = parseFloat(document.getElementById(id)?.value);
+    return !isNaN(v) && v > 0;
+  });
 }
 
 // ===== تبديل التبويبات =====
@@ -560,183 +645,321 @@ function switchTab(tab) {
 
 function updateCurrency() {
   activeCurrency = document.getElementById("currency").value;
-  document.getElementById("currencyLabel").textContent  = CURRENCIES[activeCurrency];
-  document.getElementById("currency-unit").textContent  = CURRENCIES[activeCurrency];
+  // ✅ تحديث جميع وحدات العملة في الصفحة
+  document.querySelectorAll(".currency-unit-label")
+    .forEach(el => el.textContent = unit());
+  // للتوافق مع الـ IDs القديمة
+  const old = document.getElementById("currency-unit");
+  if (old) old.textContent = unit();
+  const lbl = document.getElementById("currencyLabel");
+  if (lbl) lbl.textContent = unit();
 }
 
 function toggleJewelryNote() {
   const v = document.getElementById("goldPurpose").value;
-  document.getElementById("jewelry-note").style.display = v === "jewelry" ? "block" : "none";
+  const n = document.getElementById("jewelry-note");
+  if (n) n.style.display = v === "jewelry" ? "block" : "none";
 }
 
-// ===== حساب نصاب المال =====
+// ===== حساب نصاب المال — مركزي لكل التبويبات =====
 function calcNisab() {
-  // نصاب = 85 جرام × سعر الجرام عيار 24
-  const goldPriceInput = getVal("goldPriceForNisab");
-  if (goldPriceInput > 0) return goldPriceInput * GOLD_NISAB_G;
-  return NISAB_APPROX[activeCurrency] || NISAB_APPROX.SAR;
+  const priceInput = getVal("goldPriceForNisab");
+  if (priceInput > 0) return priceInput * GOLD_NISAB_G;
+  return NISAB_APPROX[activeCurrency] ?? NISAB_APPROX.SAR;
 }
 
-// ===== زكاة المال =====
+// ===== [1] زكاة المال =====
 function calcMoneyZakat() {
   if (!validate("savings","bank","debtsFor","debtsOn")) return;
+
+  if (!hasInput("savings","bank","debtsFor","debtsOn")) {
+    showToast("⚠️ أدخل مبلغاً واحداً على الأقل", "toast-error");
+    return;
+  }
+
   const savings  = getVal("savings");
   const bank     = getVal("bank");
   const dFor     = getVal("debtsFor");
   const dOn      = getVal("debtsOn");
-  const unit     = CURRENCIES[activeCurrency];
   const nisab    = calcNisab();
-  const total    = savings + bank + dFor - dOn;
-  // لو المجموع سالب (ديون أكثر من الأصول) → لا زكاة
-  const zakawi   = Math.max(total, 0);
+  const u        = unit();
+
+  // الوعاء الزكوي = (النقد + البنك + ما يُرتجى) - الديون
+  // لو سالب: لا زكاة (الديون أكثر من الأصول)
+  const zakawi   = Math.max(savings + bank + dFor - dOn, 0);
   const zakat    = zakawi >= nisab ? zakawi * ZAKAT_RATE : 0;
 
-  document.getElementById("total-money-display").textContent = fmt(zakawi) + " " + unit;
-  document.getElementById("nisab-value").textContent = fmt(nisab) + " " + unit;
-  document.getElementById("zakat-money").textContent = fmt(zakat);
-  document.getElementById("currency-unit").textContent = unit;
+  setText("total-money-display", fmt(zakawi) + " " + u);
+  setText("nisab-value",         fmt(nisab)  + " " + u);
+  setText("currency-unit",       u);
+  setText("zakat-money",         fmt(zakat));
 
   const check = document.getElementById("nisab-check");
-  check.innerHTML = zakawi >= nisab
-    ? `<span style="color:var(--success);font-weight:700;">✅ مالك بلغ النصاب — الزكاة واجبة (بشرط حولان الحول)</span>`
-    : `<span style="color:var(--warning);font-weight:700;">⚠️ مالك ${fmt(zakawi)} ${unit} أقل من النصاب ${fmt(nisab)} ${unit} — لا زكاة الآن</span>`;
-
-  document.getElementById("money-note").textContent = zakawi >= nisab
-    ? `الزكاة الواجبة ${fmt(zakat)} ${unit} — بارك الله في مالك`
-    : "تأكد من سعر الذهب الحالي لحساب النصاب بدقة أكبر";
-
-  document.getElementById("result-money").classList.add("show");
-  document.getElementById("result-money").scrollIntoView({behavior:"smooth",block:"nearest"});
-  if (zakawi >= nisab) showToast("✅ الزكاة: " + fmt(zakat) + " " + unit, "toast-gold");
-}
-
-// ===== زكاة الذهب (مصحح بالكامل) =====
-function calcGoldZakat() {
-  if (!validate("goldWeight","goldPrice")) return;
-  const weight    = getVal("goldWeight");
-  const price     = getVal("goldPrice");
-  // ✅ القيمة هي رقم العيار الحقيقي (24, 22, 21, 18, 14)
-  const karatNum  = parseInt(document.getElementById("goldKarat").value);
-
-  if (weight === 0 || price === 0) {
-    showToast("❌ أدخل الوزن والسعر", "toast-error"); return;
+  if (check) {
+    check.innerHTML = zakawi >= nisab
+      ? `<span style="color:var(--success);font-weight:700;">✅ مالك بلغ النصاب — الزكاة واجبة (بشرط حولان الحول)</span>`
+      : `<span style="color:var(--warning);font-weight:700;">⚠️ مالك ${fmt(zakawi)} ${u} أقل من النصاب ${fmt(nisab)} ${u} — لا زكاة الآن</span>`;
   }
 
-  // ✅ الإصلاح الشرعي: تحويل الوزن إلى خالص عيار 24 أولاً
-  // الوزن الخالص = الوزن الكلي × (العيار ÷ 24)
-  const pureWeight   = weight * (karatNum / 24);
-  const totalValue   = weight * price;
+  setText("money-note",
+    zakawi >= nisab
+      ? `الزكاة الواجبة ${fmt(zakat)} ${u} — بارك الله في مالك`
+      : "تأكد من سعر الذهب الحالي لحساب النصاب بدقة أكبر"
+  );
+
+  showResult("result-money");
+  if (zakawi >= nisab) showToast("✅ الزكاة: " + fmt(zakat) + " " + u, "toast-gold");
+}
+
+// ===== [2] زكاة الذهب =====
+function calcGoldZakat() {
+  if (!validate("goldWeight","goldPrice")) return;
+
+  const weight   = getVal("goldWeight");
+  const price    = getVal("goldPrice");       // سعر جرام بنفس العيار
+  const karatNum = parseInt(document.getElementById("goldKarat").value);
+
+  if (weight === 0) { showToast("❌ أدخل وزن الذهب", "toast-error"); return; }
+  if (price === 0)  { showToast("❌ أدخل سعر الجرام", "toast-error"); return; }
+
+  // ✅ الإصلاح الشرعي الكامل:
+  // الوزن الخالص = الوزن × (العيار ÷ 24) — للمقارنة بالنصاب
+  const pureWeight  = weight * (karatNum / 24);
+
+  // ✅ القيمة الصحيحة: الوزن الكلي × سعر جرام نفس العيار
+  // (ما دفعه/سيبيعه المستخدم في السوق فعلياً)
+  const totalValue  = weight * price;
+
   const reachedNisab = pureWeight >= GOLD_NISAB_G;
-  // الزكاة تُحسب على القيمة الإجمالية للذهب (بسعر السوق)
-  const zakat        = reachedNisab ? totalValue * ZAKAT_RATE : 0;
 
-  document.getElementById("gold-total-weight").textContent = fmt(weight) + " جرام";
-  document.getElementById("gold-pure-weight").textContent  = fmt(pureWeight) + " جرام (عيار 24)";
-  document.getElementById("gold-total-value").textContent  = fmt(totalValue) + " ريال";
-  document.getElementById("zakat-gold").textContent        = fmt(zakat);
+  // الزكاة على القيمة الإجمالية بسعر السوق
+  const zakat = reachedNisab ? totalValue * ZAKAT_RATE : 0;
 
-  document.getElementById("gold-nisab-status").innerHTML = reachedNisab
-    ? `<span style="color:var(--success);">✅ بلغ النصاب (${fmt(pureWeight)} ≥ 85 جرام)</span>`
-    : `<span style="color:var(--warning);">⚠️ لم يبلغ النصاب (${fmt(pureWeight)} < 85 جرام)</span>`;
+  // ✅ توحيد وحدة العملة بدلاً من "ريال" الثابتة
+  const u = unit();
+
+  setText("gold-total-weight",  fmt(weight)     + " جرام");
+  setText("gold-pure-weight",   fmt(pureWeight) + " جرام (مكافئ عيار 24)");
+  setText("gold-total-value",   fmt(totalValue) + " " + u);
+  setText("zakat-gold",         fmt(zakat));
+
+  const nisabStatus = document.getElementById("gold-nisab-status");
+  if (nisabStatus) {
+    nisabStatus.innerHTML = reachedNisab
+      ? `<span style="color:var(--success);">✅ بلغ النصاب (${fmt(pureWeight)} ≥ 85 جرام خالص)</span>`
+      : `<span style="color:var(--warning);">⚠️ لم يبلغ النصاب (${fmt(pureWeight)} < 85 جرام خالص)</span>`;
+  }
 
   const purpose = document.getElementById("goldPurpose").value;
   let note = "";
   if (!reachedNisab) {
     note = `الوزن الخالص ${fmt(pureWeight)} جرام أقل من نصاب 85 جرام — لا زكاة`;
   } else if (purpose === "jewelry") {
-    note = `⚠️ ذهب الزينة فيه خلاف — الأحوط إخراج ${fmt(zakat)} ريال. استشر أهل العلم.`;
+    note = `⚠️ ذهب الزينة فيه خلاف — الأحوط إخراج ${fmt(zakat)} ${u}. استشر أهل العلم.`;
   } else {
-    note = `بارك الله في مالك. الزكاة الواجبة ${fmt(zakat)} ريال`;
+    note = `بارك الله في مالك. الزكاة الواجبة ${fmt(zakat)} ${u}`;
   }
-  document.getElementById("gold-note").textContent = note;
+  setText("gold-note", note);
 
-  document.getElementById("result-gold").classList.add("show");
-  document.getElementById("result-gold").scrollIntoView({behavior:"smooth",block:"nearest"});
-  if (reachedNisab) showToast("🥇 زكاة الذهب: " + fmt(zakat) + " ريال", "toast-gold");
+  showResult("result-gold");
+  if (reachedNisab) showToast("🥇 زكاة الذهب: " + fmt(zakat) + " " + u, "toast-gold");
 }
 
-// ===== زكاة الفضة =====
+// ===== [3] زكاة الفضة =====
 function calcSilverZakat() {
   if (!validate("silverWeight","silverPrice")) return;
+
   const weight = getVal("silverWeight");
   const price  = getVal("silverPrice");
-  if (weight === 0 || price === 0) {
-    showToast("❌ أدخل الوزن والسعر", "toast-error"); return;
-  }
+
+  if (weight === 0) { showToast("❌ أدخل وزن الفضة",  "toast-error"); return; }
+  if (price  === 0) { showToast("❌ أدخل سعر الجرام", "toast-error"); return; }
+
+  // ✅ الفضة: الوزن الكامل (لا يوجد عيار متعدد للفضة في التجارة العامة)
   const totalValue   = weight * price;
   const reachedNisab = weight >= SILVER_NISAB_G;
   const zakat        = reachedNisab ? totalValue * ZAKAT_RATE : 0;
+  const u            = unit();
 
-  document.getElementById("silver-weight-display").textContent = fmt(weight) + " جرام";
-  document.getElementById("silver-total-value").textContent    = fmt(totalValue) + " ريال";
-  document.getElementById("zakat-silver").textContent          = fmt(zakat);
-  document.getElementById("silver-nisab-status").innerHTML = reachedNisab
-    ? `<span style="color:var(--success);">✅ بلغ النصاب</span>`
-    : `<span style="color:var(--warning);">⚠️ لم يبلغ (${fmt(weight)} < 595 جرام)</span>`;
-  document.getElementById("silver-note").textContent = reachedNisab
-    ? `زكاة الفضة الواجبة ${fmt(zakat)} ريال`
-    : `فضتك ${fmt(weight)} جرام لم تبلغ نصاب 595 جرام — لا زكاة`;
+  setText("silver-weight-display", fmt(weight)     + " جرام");
+  setText("silver-total-value",    fmt(totalValue) + " " + u);
+  setText("zakat-silver",          fmt(zakat));
 
-  document.getElementById("result-silver").classList.add("show");
-  document.getElementById("result-silver").scrollIntoView({behavior:"smooth",block:"nearest"});
-  if (reachedNisab) showToast("🥈 زكاة الفضة: " + fmt(zakat) + " ريال", "toast-gold");
+  const nisabStatus = document.getElementById("silver-nisab-status");
+  if (nisabStatus) {
+    nisabStatus.innerHTML = reachedNisab
+      ? `<span style="color:var(--success);">✅ بلغ النصاب</span>`
+      : `<span style="color:var(--warning);">⚠️ لم يبلغ (${fmt(weight)} < 595 جرام)</span>`;
+  }
+
+  setText("silver-note",
+    reachedNisab
+      ? `زكاة الفضة الواجبة ${fmt(zakat)} ${u}`
+      : `فضتك ${fmt(weight)} جرام لم تبلغ نصاب 595 جرام — لا زكاة`
+  );
+
+  showResult("result-silver");
+  if (reachedNisab) showToast("🥈 زكاة الفضة: " + fmt(zakat) + " " + u, "toast-gold");
 }
 
-// ===== زكاة التجارة =====
+// ===== [4] زكاة التجارة =====
 function calcTradeZakat() {
   if (!validate("tradeGoods","tradeCash","tradeDebtsFor","tradeDebtsOn")) return;
-  const goods  = getVal("tradeGoods");
-  const cash   = getVal("tradeCash");
-  const dFor   = getVal("tradeDebtsFor");
-  const dOn    = getVal("tradeDebtsOn");
-  const nisab  = NISAB_APPROX.SAR;
-  const total  = Math.max(goods + cash + dFor - dOn, 0);
-  const zakat  = total >= nisab ? total * ZAKAT_RATE : 0;
 
-  document.getElementById("trade-total").textContent = fmt(total) + " ريال";
-  document.getElementById("zakat-trade").textContent = fmt(zakat);
-  document.getElementById("trade-note").textContent  = total >= nisab
-    ? `زكاة التجارة الواجبة ${fmt(zakat)} ريال — بارك الله في تجارتك`
-    : `وعاء التجارة ${fmt(total)} ريال لم يبلغ النصاب — لا زكاة`;
+  if (!hasInput("tradeGoods","tradeCash","tradeDebtsFor")) {
+    showToast("⚠️ أدخل بيانات التجارة أولاً", "toast-error");
+    return;
+  }
 
-  document.getElementById("result-trade").classList.add("show");
-  document.getElementById("result-trade").scrollIntoView({behavior:"smooth",block:"nearest"});
-  if (total >= nisab) showToast("🏪 زكاة التجارة: " + fmt(zakat) + " ريال", "toast-gold");
+  const goods = getVal("tradeGoods");
+  const cash  = getVal("tradeCash");
+  const dFor  = getVal("tradeDebtsFor");
+  const dOn   = getVal("tradeDebtsOn");
+
+  // ✅ الإصلاح: استخدام calcNisab() بدلاً من NISAB_APPROX.SAR الثابتة
+  const nisab = calcNisab();
+  const total = Math.max(goods + cash + dFor - dOn, 0);
+  const zakat = total >= nisab ? total * ZAKAT_RATE : 0;
+  const u     = unit();
+
+  setText("trade-total",  fmt(total)  + " " + u);
+  setText("zakat-trade",  fmt(zakat));
+  setText("trade-note",
+    total >= nisab
+      ? `زكاة التجارة الواجبة ${fmt(zakat)} ${u} — بارك الله في تجارتك`
+      : `وعاء التجارة ${fmt(total)} ${u} لم يبلغ النصاب ${fmt(nisab)} ${u} — لا زكاة`
+  );
+
+  showResult("result-trade");
+  if (total >= nisab) showToast("🏪 زكاة التجارة: " + fmt(zakat) + " " + u, "toast-gold");
 }
 
-// ===== زكاة الأسهم =====
+// ===== [5] زكاة الأسهم =====
 function calcStocksZakat() {
   if (!validate("stocksValue","stocksDividends")) return;
+
   const value     = getVal("stocksValue");
   const dividends = getVal("stocksDividends");
   const type      = document.getElementById("stocksType").value;
-  const nisab     = NISAB_APPROX.SAR;
-  // أسهم مضاربة: الوعاء = القيمة السوقية + الأرباح
-  // أسهم دخل: الوعاء = الأرباح فقط
+
+  if (value === 0 && dividends === 0) {
+    showToast("⚠️ أدخل قيمة الأسهم أو الأرباح", "toast-error");
+    return;
+  }
+
+  // ✅ الإصلاح: calcNisab() بدلاً من NISAB_APPROX.SAR الثابتة
+  const nisab = calcNisab();
+  const u     = unit();
+
+  // أسهم مضاربة: وعاء = القيمة السوقية + الأرباح المتراكمة
+  // أسهم دخل:    وعاء = الأرباح الموزعة فقط
   const base  = type === "trade" ? value + dividends : dividends;
   const zakat = base >= nisab ? base * ZAKAT_RATE : 0;
 
-  document.getElementById("stocks-base").textContent  = fmt(base) + " ريال";
-  document.getElementById("zakat-stocks").textContent = fmt(zakat);
-  document.getElementById("stocks-note").textContent  = base >= nisab
-    ? `زكاة الأسهم ${fmt(zakat)} ريال (${type==="trade"?"على القيمة السوقية":"على الأرباح فقط"})`
-    : `الوعاء ${fmt(base)} ريال لم يبلغ النصاب — لا زكاة`;
+  setText("stocks-base",  fmt(base)  + " " + u);
+  setText("zakat-stocks", fmt(zakat));
+  setText("stocks-note",
+    base >= nisab
+      ? `زكاة الأسهم ${fmt(zakat)} ${u} (${type === "trade" ? "على القيمة السوقية" : "على الأرباح فقط"})`
+      : `الوعاء ${fmt(base)} ${u} لم يبلغ النصاب ${fmt(nisab)} ${u} — لا زكاة`
+  );
 
-  document.getElementById("result-stocks").classList.add("show");
-  document.getElementById("result-stocks").scrollIntoView({behavior:"smooth",block:"nearest"});
-  if (base >= nisab) showToast("📈 زكاة الأسهم: " + fmt(zakat) + " ريال", "toast-gold");
+  showResult("result-stocks");
+  if (base >= nisab) showToast("📈 زكاة الأسهم: " + fmt(zakat) + " " + u, "toast-gold");
+}
+
+// ===== [6] ✅ الإجمالي الشامل (جديد) =====
+// يجمع جميع الأموال في وعاء واحد (شرعاً: الذهب + النقود + الفضة تُضم)
+function calcTotalZakat() {
+  const nisab = calcNisab();
+  const u     = unit();
+
+  // من تبويب المال
+  const moneyTotal  = Math.max(
+    getVal("savings") + getVal("bank") + getVal("debtsFor") - getVal("debtsOn"), 0
+  );
+
+  // من تبويب الذهب
+  const goldWeight  = getVal("goldWeight");
+  const goldPrice   = getVal("goldPrice");
+  const goldKarat   = parseInt(document.getElementById("goldKarat")?.value || "22");
+  const pureGold    = goldWeight * (goldKarat / 24);
+  const goldValue   = goldWeight * goldPrice;
+
+  // من تبويب الفضة
+  const silverValue = getVal("silverWeight") * getVal("silverPrice");
+
+  // من تبويب التجارة
+  const tradeTotal  = Math.max(
+    getVal("tradeGoods") + getVal("tradeCash") + getVal("tradeDebtsFor") - getVal("tradeDebtsOn"), 0
+  );
+
+  // من تبويب الأسهم
+  const stocksType  = document.getElementById("stocksType")?.value;
+  const stocksBase  = stocksType === "trade"
+    ? getVal("stocksValue") + getVal("stocksDividends")
+    : getVal("stocksDividends");
+
+  // ✅ الوعاء الإجمالي = مجموع كل الأموال
+  const grandTotal  = moneyTotal + goldValue + silverValue + tradeTotal + stocksBase;
+  const zakat       = grandTotal >= nisab ? grandTotal * ZAKAT_RATE : 0;
+
+  // عرض تفاصيل الوعاء
+  const breakdownEl = document.getElementById("total-breakdown");
+  if (breakdownEl) {
+    breakdownEl.innerHTML = `
+      <div class="breakdown-row"><span>💵 أموال نقدية وبنكية</span><span>${fmt(moneyTotal)} ${u}</span></div>
+      ${goldValue > 0     ? `<div class="breakdown-row"><span>🥇 قيمة الذهب</span><span>${fmt(goldValue)} ${u}</span></div>` : ""}
+      ${silverValue > 0   ? `<div class="breakdown-row"><span>🥈 قيمة الفضة</span><span>${fmt(silverValue)} ${u}</span></div>` : ""}
+      ${tradeTotal > 0    ? `<div class="breakdown-row"><span>🏪 وعاء التجارة</span><span>${fmt(tradeTotal)} ${u}</span></div>` : ""}
+      ${stocksBase > 0    ? `<div class="breakdown-row"><span>📈 وعاء الأسهم</span><span>${fmt(stocksBase)} ${u}</span></div>` : ""}
+      <div class="breakdown-row total-row"><span>📊 الوعاء الإجمالي</span><span>${fmt(grandTotal)} ${u}</span></div>
+      <div class="breakdown-row"><span>🏅 النصاب</span><span>${fmt(nisab)} ${u}</span></div>
+    `;
+  }
+
+  setText("zakat-total",       fmt(zakat));
+  setText("total-zakat-unit",  u);
+  setText("grand-total-value", fmt(grandTotal) + " " + u);
+  setText("total-nisab-check",
+    grandTotal >= nisab
+      ? `✅ مجموع أموالك ${fmt(grandTotal)} ${u} بلغ النصاب — الزكاة واجبة بشرط الحول`
+      : `⚠️ مجموع أموالك ${fmt(grandTotal)} ${u} أقل من النصاب ${fmt(nisab)} ${u} — لا زكاة`
+  );
+
+  showResult("result-total");
+  if (grandTotal >= nisab) {
+    showToast("📊 إجمالي الزكاة الواجبة: " + fmt(zakat) + " " + u, "toast-gold");
+    // منح XP إذا كان مسجلاً
+    window.islamiCalc?.addXP(50, "zakat_calc");
+    window.islamiCalc?.addBadge("zakat_calc");
+  }
+}
+
+// ===== دوال مساعدة =====
+function setText(id, val) {
+  const el = document.getElementById(id);
+  if (el) el.textContent = val;
+}
+
+function showResult(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.classList.add("show");
+  el.scrollIntoView({ behavior: "smooth", block: "nearest" });
 }
 
 // ===== مشاركة النتيجة =====
 function shareResult(tab) {
-  const ids = { money:"zakat-money", gold:"zakat-gold",
-                silver:"zakat-silver", trade:"zakat-trade", stocks:"zakat-stocks" };
+  const ids = {
+    money:"zakat-money", gold:"zakat-gold",
+    silver:"zakat-silver", trade:"zakat-trade",
+    stocks:"zakat-stocks", total:"zakat-total"
+  };
   const val  = document.getElementById(ids[tab])?.textContent || "0";
-  const unit = tab === "money" ? (CURRENCIES[activeCurrency]||"ريال") : "ريال";
-  const text = `✅ حسبت زكاتي على IslamiCalc
-💰 المبلغ الواجب: ${val} ${unit}
+  const u    = tab === "money" || tab === "total" ? unit() : "ريال";
+  const text = `✅ حسبت زكاتي على IslamiCalc\n💰 المبلغ الواجب: ${val} ${u}\nاحسب زكاتك: https://islamicalc.com/zakat`;
 
-احسب زكاتك: https://islamicalc.com/zakat`;
   if (navigator.share) {
     navigator.share({ title: "حاسبة الزكاة — IslamiCalc", text });
   } else {
@@ -747,16 +970,22 @@ function shareResult(tab) {
 
 // ===== إعادة التعيين =====
 function resetForm(tab) {
-  document.querySelectorAll("#tab-" + tab + " input")
+  document.querySelectorAll(`#tab-${tab} input`)
     .forEach(i => { i.value = ""; i.style.borderColor = ""; });
-  document.getElementById("result-" + tab).classList.remove("show");
+  const result = document.getElementById("result-" + tab);
+  if (result) result.classList.remove("show");
 }
 
 // ===== Enter للحساب =====
 const calcFns = {
-  money:calcMoneyZakat, gold:calcGoldZakat,
-  silver:calcSilverZakat, trade:calcTradeZakat, stocks:calcStocksZakat
+  money:  calcMoneyZakat,
+  gold:   calcGoldZakat,
+  silver: calcSilverZakat,
+  trade:  calcTradeZakat,
+  stocks: calcStocksZakat,
+  total:  calcTotalZakat
 };
+
 document.querySelectorAll(".form-input").forEach(input => {
   input.addEventListener("keypress", e => {
     if (e.key === "Enter") calcFns[activeTab]?.();
@@ -765,29 +994,36 @@ document.querySelectorAll(".form-input").forEach(input => {
 
 // ===== Theme =====
 const themeBtn = document.getElementById("themeBtn");
-const html = document.documentElement;
+const html     = document.documentElement;
+
 function initTheme() {
   const s = localStorage.getItem("theme") || "dark";
   html.setAttribute("data-theme", s);
-  themeBtn.textContent = s === "dark" ? "☀️" : "🌙";
+  if (themeBtn) themeBtn.textContent = s === "dark" ? "☀️" : "🌙";
 }
-themeBtn.addEventListener("click", () => {
-  const n = html.getAttribute("data-theme") === "dark" ? "light" : "dark";
-  html.setAttribute("data-theme", n);
-  themeBtn.textContent = n === "dark" ? "☀️" : "🌙";
-  localStorage.setItem("theme", n);
-});
+
+if (themeBtn) {
+  themeBtn.addEventListener("click", () => {
+    const n = html.getAttribute("data-theme") === "dark" ? "light" : "dark";
+    html.setAttribute("data-theme", n);
+    themeBtn.textContent = n === "dark" ? "☀️" : "🌙";
+    localStorage.setItem("theme", n);
+  });
+}
 
 // ===== Mobile Menu =====
-document.getElementById("menuToggle").addEventListener("click", () => {
-  const m = document.getElementById("navMenu");
-  m.classList.toggle("open");
-  document.getElementById("menuToggle").textContent = m.classList.contains("open") ? "✕" : "☰";
-});
+const menuToggle = document.getElementById("menuToggle");
+if (menuToggle) {
+  menuToggle.addEventListener("click", () => {
+    const m = document.getElementById("navMenu");
+    if (!m) return;
+    m.classList.toggle("open");
+    menuToggle.textContent = m.classList.contains("open") ? "✕" : "☰";
+  });
+}
 
-function openLoginModal() { showToast("🔵 سجّل دخولك من الصفحة الرئيسية","toast-gold"); }
+function openLoginModal() {
+  showToast("🔵 سجّل دخولك من الصفحة الرئيسية", "toast-gold");
+}
 
 initTheme();
-</script>
-</body>
-</html>
