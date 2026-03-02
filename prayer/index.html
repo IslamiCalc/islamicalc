@@ -1,457 +1,802 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl" data-theme="dark">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="أوقات الصلاة الدقيقة واتجاه القبلة - IslamiCalc">
-<link rel="canonical" href="https://islamicalc.com/prayer">
-<link rel="manifest" href="../manifest.json">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>☪</text></svg>">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../style.css">
-<title>أوقات الصلاة | IslamiCalc</title>
-<style>
-@keyframes spin { to { transform: rotate(360deg); } }
-@keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.05)} }
-.prayer-card {
-  background: var(--bg-card); border: 1px solid var(--border);
-  border-radius: 14px; padding: 16px 20px;
-  display: flex; justify-content: space-between; align-items: center;
-  transition: var(--transition);
-}
-.prayer-card:hover { border-color: var(--primary); transform: translateX(-2px); }
-.prayer-card.active-now { border-color: var(--gold) !important; background: rgba(245,158,11,0.06) !important; box-shadow: 0 0 0 2px rgba(245,158,11,0.15); }
-.prayer-card.next-prayer { border-color: var(--primary) !important; background: rgba(26,86,219,0.06) !important; }
-.prayer-info { display: flex; align-items: center; gap: 14px; }
-.prayer-emoji { font-size: 28px; width: 44px; text-align: center; }
-.prayer-name-ar { font-size: 17px; font-weight: 800; }
-.prayer-name-en { font-size: 12px; color: var(--text-muted); font-family: Poppins,sans-serif; }
-.prayer-time { font-size: 24px; font-weight: 900; font-family: Poppins,sans-serif; color: var(--primary-light); direction: ltr; text-align: left; }
-.prayer-adhan { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
-.city-btn { padding: 6px 12px; background: var(--bg-main); border: 1px solid var(--border); border-radius: 20px; font-size: 13px; font-family: var(--font-arabic); color: var(--text-secondary); cursor: pointer; transition: var(--transition); white-space: nowrap; }
-.city-btn:hover { background: var(--primary); color: white; border-color: var(--primary); }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>أوقات الصلاة | IslamiCalc</title>
+  <meta name="description" content="أوقات الصلاة الدقيقة لأي مدينة في العالم — الفجر والظهر والعصر والمغرب والعشاء مع عداد تنازلي واتجاه القبلة مجاناً">
+  <meta name="keywords" content="أوقات الصلاة، موعد الصلاة، القبلة، الفجر، المغرب، العشاء، مواقيت الصلاة">
+  <meta property="og:title"       content="أوقات الصلاة — IslamiCalc">
+  <meta property="og:description" content="أوقات الصلاة الدقيقة لأي مدينة مع عداد تنازلي واتجاه القبلة">
+  <meta property="og:url"         content="https://islamicalc.com/prayer/">
+  <meta property="og:type"        content="website">
+  <link rel="canonical"           href="https://islamicalc.com/prayer/">
+
+  <!-- Preconnect للأداء -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;800;900&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="/style.css">
+
+  <!-- ✅ Firebase — type="module" مطلوب -->
+  <script type="module" src="/firebase.js"></script>
+
+  <style>
+    /* ===== أوقات الصلاة ===== */
+    .prayer-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: var(--transition);
+    }
+    .prayer-card:hover { border-color: var(--primary); transform: translateX(-2px); }
+    .prayer-card.active-now {
+      border-color: var(--gold) !important;
+      background: rgba(201,168,76,0.06) !important;
+      box-shadow: 0 0 0 2px rgba(201,168,76,0.15);
+    }
+    .prayer-card.next-prayer {
+      border-color: var(--primary) !important;
+      background: rgba(45,106,79,0.06) !important;
+    }
+    .prayer-info  { display: flex; align-items: center; gap: 14px; }
+    .prayer-emoji { font-size: 28px; width: 44px; text-align: center; }
+    .prayer-name-ar { font-size: 17px; font-weight: 800; }
+    .prayer-name-en { font-size: 12px; color: var(--text-muted); }
+
+    .prayer-time {
+      font-size: 24px; font-weight: 900;
+      color: var(--primary-light);
+      direction: ltr; text-align: left;
+    }
+    .prayer-adhan { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+
+    /* ===== عداد تنازلي ===== */
+    .countdown-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 24px 20px;
+      text-align: center;
+    }
+    .countdown-label  { font-size: 13px; color: var(--text-muted); margin-bottom: 8px; }
+    .countdown-name   { font-size: 20px; font-weight: 900; color: var(--gold); margin-bottom: 4px; }
+    .countdown-time   { font-size: 14px; color: var(--text-sub); margin-bottom: 16px; }
+    .countdown-digits { display: flex; justify-content: center; gap: 8px; margin-bottom: 14px; }
+    .cd-unit {
+      background: var(--bg-main);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 10px 16px;
+      min-width: 64px;
+    }
+    .cd-num  { font-size: 28px; font-weight: 900; font-family: 'Tajawal', monospace; }
+    .cd-lbl  { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+    .colon   { font-size: 28px; font-weight: 900; color: var(--gold); align-self: center; padding-bottom: 16px; }
+
+    .progress-wrap  { background: var(--bg-main); border-radius: 999px; height: 6px; overflow: hidden; margin-bottom: 6px; }
+    .progress-fill  {
+      height: 100%; border-radius: 999px;
+      background: linear-gradient(90deg, var(--primary), var(--gold));
+      transition: width 1s linear;
+      width: 0%;
+    }
+    .progress-label { font-size: 11px; color: var(--text-muted); }
+
+    /* ===== القبلة ===== */
+    .qibla-compass {
+      width: 100px; height: 100px;
+      background: var(--bg-main);
+      border: 2px solid var(--border);
+      border-radius: 50%;
+      position: relative;
+      margin: 0 auto 10px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .compass-ring {
+      position: absolute;
+      top: 6px; right: 6px; bottom: 6px; left: 6px;
+      border-radius: 50%;
+      border: 1px dashed var(--border-strong);
+    }
+    .compass-dirs {
+      position: absolute;
+      inset: 0;
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--text-muted);
+    }
+    .compass-dirs span {
+      position: absolute;
+      transform: translate(-50%, -50%);
+    }
+    .compass-dirs .n { top: 8px;  left: 50%; }
+    .compass-dirs .s { bottom: 2px; left: 50%; transform: translate(-50%, 50%); }
+    .compass-dirs .e { top: 50%;  right: 4px; transform: translateY(-50%); }
+    .compass-dirs .w { top: 50%;  left: 4px;  transform: translateY(-50%); }
+
+    .qibla-arrow {
+      font-size: 36px;
+      transition: transform 0.8s ease;
+      position: relative;
+      z-index: 2;
+      line-height: 1;
+    }
+
+    /* ===== أزرار المدن ===== */
+    .city-btn {
+      padding: 6px 14px;
+      background: var(--bg-main);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      font-size: 13px;
+      font-family: var(--font);
+      color: var(--text-sub);
+      cursor: pointer;
+      transition: var(--transition);
+      white-space: nowrap;
+    }
+    .city-btn:hover { background: var(--primary); color: #fff; border-color: var(--primary); }
+
+    @keyframes spin    { to { transform: rotate(360deg); } }
+    @keyframes pulse   { 0%,100%{transform:scale(1)} 50%{transform:scale(1.05)} }
+    .spin { animation: spin 1s linear infinite; }
+  </style>
 </head>
+
 <body>
+<!-- ===== Navbar ===== -->
 <nav class="navbar">
-  <a href="../" class="navbar-brand">
+  <a href="/" class="navbar-brand">
     <div class="navbar-logo">☪</div>
     <span class="navbar-title">IslamiCalc</span>
   </a>
   <ul class="navbar-menu" id="navMenu">
-    <li><a href="../">الرئيسية</a></li>
-    <li><a href="../zakat">الزكاة</a></li>
-    <li><a href="../khatma">الختمة</a></li>
-    <li><a href="../prayer" class="active">الصلاة</a></li>
-    <li><a href="../athkar">الأذكار</a></li>
-    <li><a href="../arena">الأرينا</a></li>
+    <li><a href="/">🏠 الرئيسية</a></li>
+    <li><a href="/zakat">🧮 الزكاة</a></li>
+    <li><a href="/khatma">📖 القرآن</a></li>
+    <li><a href="/prayer" class="active">🕌 الصلاة</a></li>
+    <li><a href="/athkar">📿 الأذكار</a></li>
+    <li><a href="/arena">🏆 الميدان</a></li>
   </ul>
   <div class="navbar-actions">
-    <button class="theme-btn" id="themeBtn">🌙</button>
-    <button class="login-btn" id="loginBtn" onclick="openLoginModal()">دخول 🔵</button>
-    <button class="menu-toggle" id="menuToggle">☰</button>
+    <button class="theme-btn" id="themeBtn" title="تغيير الثيم">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="5"/>
+        <line x1="12" y1="1"  x2="12" y2="3"/>  <line x1="12" y1="21" x2="12" y2="23"/>
+        <line x1="4.22" y1="4.22"  x2="5.64" y2="5.64"/>  <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+        <line x1="1" y1="12" x2="3" y2="12"/>  <line x1="21" y1="12" x2="23" y2="12"/>
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>  <line x1="18.36" y1="5.64"  x2="19.78" y2="4.22"/>
+      </svg>
+    </button>
+    <button class="login-btn" id="loginBtn" onclick="openLoginModal()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M15 12H3"/>
+      </svg>
+      <span>دخول</span>
+    </button>
+    <button class="menu-toggle" id="menuToggle" aria-label="القائمة">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="3" y1="6" x2="21" y2="6"/>
+        <line x1="3" y1="12" x2="21" y2="12"/>
+        <line x1="3" y1="18" x2="21" y2="18"/>
+      </svg>
+    </button>
   </div>
 </nav>
 
-<main>
-<div style="max-width:680px;margin:0 auto;padding:20px 16px 80px;">
+<!-- ===== Toast ===== -->
+<div class="toast" id="toast"></div>
+
+<!-- ===== Main ===== -->
+<main style="max-width:700px;margin:0 auto;padding:80px 16px 60px;">
 
   <!-- Header -->
-  <div style="text-align:center;padding:32px 0 24px;">
-    <div style="font-size:64px;margin-bottom:12px;animation:pulse 2s infinite;">🕌</div>
-    <h1 style="font-size:28px;font-weight:900;margin-bottom:8px;">أوقات الصلاة</h1>
-    <p id="locationLabel" style="color:var(--text-muted);font-size:15px;">📍 جاري تحديد موقعك...</p>
-  </div>
-
-  <!-- التاريخ -->
-  <div style="display:flex;gap:12px;justify-content:center;margin-top:12px;flex-wrap:wrap;">
-    <span id="hijriDate" style="background:var(--bg-card);border:1px solid var(--border);border-radius:20px;padding:6px 16px;font-size:14px;font-weight:700;">--</span>
-    <span id="miladiDate" style="background:var(--bg-card);border:1px solid var(--border);border-radius:20px;padding:6px 16px;font-size:14px;color:var(--text-muted);">--</span>
-  </div>
-
-  <!-- بطاقة الصلاة القادمة -->
-  <div id="nextPrayerCard" style="background:linear-gradient(135deg,var(--primary) 0%,#1e40af 100%);border-radius:20px;padding:28px 24px;text-align:center;margin:24px 0;box-shadow:0 8px 32px rgba(26,86,219,0.3);">
-    <p style="color:rgba(255,255,255,0.8);font-size:14px;margin-bottom:8px;font-weight:600;">الصلاة القادمة</p>
-    <h2 id="nextPrayerName" style="color:white;font-size:32px;font-weight:900;margin-bottom:4px;">--</h2>
-    <p id="nextPrayerTime" style="color:rgba(255,255,255,0.9);font-size:18px;margin-bottom:16px;">--</p>
-    <div id="countdown" style="background:rgba(0,0,0,0.2);border-radius:12px;padding:16px 24px;display:inline-flex;gap:24px;align-items:center;">
-      <div style="text-align:center;">
-        <div id="cd-hours" style="color:white;font-size:36px;font-weight:900;line-height:1;direction:ltr;">00</div>
-        <div style="color:rgba(255,255,255,0.7);font-size:12px;margin-top:4px;">ساعة</div>
-      </div>
-      <div style="color:rgba(255,255,255,0.5);font-size:28px;font-weight:900;">:</div>
-      <div style="text-align:center;">
-        <div id="cd-mins" style="color:white;font-size:36px;font-weight:900;line-height:1;direction:ltr;">00</div>
-        <div style="color:rgba(255,255,255,0.7);font-size:12px;margin-top:4px;">دقيقة</div>
-      </div>
-      <div style="color:rgba(255,255,255,0.5);font-size:28px;font-weight:900;">:</div>
-      <div style="text-align:center;">
-        <div id="cd-secs" style="color:var(--gold);font-size:36px;font-weight:900;line-height:1;direction:ltr;">00</div>
-        <div style="color:rgba(255,255,255,0.7);font-size:12px;margin-top:4px;">ثانية</div>
-      </div>
-    </div>
-    <div style="margin-top:16px;background:rgba(0,0,0,0.2);border-radius:10px;height:6px;overflow:hidden;">
-      <div id="progressBar" style="height:100%;background:var(--gold);border-radius:10px;width:0%;transition:width 1s linear;"></div>
-    </div>
-    <p id="progressLabel" style="color:rgba(255,255,255,0.6);font-size:12px;margin-top:8px;">--</p>
-  </div>
-
-  <!-- البحث عن مدينة -->
-  <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:16px 20px;margin-bottom:24px;">
-    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
-      <input type="text" id="cityInput" placeholder="🔍 ابحث عن مدينة..." style="flex:1;min-width:180px;padding:10px 14px;background:var(--bg-main);border:1px solid var(--border);border-radius:10px;color:var(--text-primary);font-family:var(--font-arabic);font-size:14px;outline:none;" onkeypress="if(event.key==='Enter')searchCity()">
-      <button onclick="searchCity()" class="btn btn-primary btn-sm" style="white-space:nowrap;">بحث</button>
-      <button onclick="getLocation()" class="btn btn-outline btn-sm" style="white-space:nowrap;">📍 موقعي</button>
-    </div>
-    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;">
-      <button onclick="quickCity('Riyadh','SA')" class="city-btn">الرياض</button>
-      <button onclick="quickCity('Buraidah','SA')" class="city-btn">بريدة</button>
-      <button onclick="quickCity('Mecca','SA')" class="city-btn">مكة</button>
-      <button onclick="quickCity('Medina','SA')" class="city-btn">المدينة</button>
-      <button onclick="quickCity('Jeddah','SA')" class="city-btn">جدة</button>
-      <button onclick="quickCity('Cairo','EG')" class="city-btn">القاهرة</button>
-      <button onclick="quickCity('Dubai','AE')" class="city-btn">دبي</button>
-      <button onclick="quickCity('Kuwait City','KW')" class="city-btn">الكويت</button>
+  <div style="text-align:center;margin-bottom:28px;">
+    <div style="font-size:52px;margin-bottom:10px;">🕌</div>
+    <h1 style="font-size:clamp(24px,5vw,36px);font-weight:900;margin-bottom:6px;">أوقات الصلاة</h1>
+    <div id="locationLabel" style="color:var(--text-muted);font-size:14px;">📍 جاري تحديد موقعك...</div>
+    <div style="margin-top:6px;display:flex;justify-content:center;gap:16px;flex-wrap:wrap;">
+      <span id="miladiDate" style="font-size:13px;color:var(--text-sub);"></span>
+      <span id="hijriDate"  style="font-size:13px;color:var(--gold);font-weight:700;"></span>
     </div>
   </div>
 
-  <!-- قائمة الصلوات -->
-  <div id="prayerGrid" style="display:flex;flex-direction:column;gap:10px;margin-bottom:24px;">
-    <div id="loadingState" style="text-align:center;padding:40px;color:var(--text-muted);">
-      <div style="font-size:40px;animation:spin 1s linear infinite;display:inline-block;">⏳</div>
-      <p style="margin-top:12px;">جاري تحميل أوقات الصلاة...</p>
+  <!-- عداد تنازلي -->
+  <div class="countdown-box" style="margin-bottom:20px;">
+    <div class="countdown-label">الصلاة القادمة</div>
+    <div class="countdown-name" id="nextPrayerName">--</div>
+    <div class="countdown-time" id="nextPrayerTime">--</div>
+    <div class="countdown-digits">
+      <div class="cd-unit">
+        <div class="cd-num" id="cd-hours">00</div>
+        <div class="cd-lbl">ساعة</div>
+      </div>
+      <div class="colon">:</div>
+      <div class="cd-unit">
+        <div class="cd-num" id="cd-mins">00</div>
+        <div class="cd-lbl">دقيقة</div>
+      </div>
+      <div class="colon">:</div>
+      <div class="cd-unit">
+        <div class="cd-num" id="cd-secs">00</div>
+        <div class="cd-lbl">ثانية</div>
+      </div>
     </div>
-    <div id="prayerCards" style="display:none;flex-direction:column;gap:10px;">
-      <div class="prayer-card" id="card-fajr">
-        <div class="prayer-info"><span class="prayer-emoji">🌙</span><div><p class="prayer-name-ar">الفجر</p><p class="prayer-name-en">Fajr</p></div></div>
-        <div style="text-align:left;"><p class="prayer-time" id="time-fajr" style="direction:ltr;">----</p></div>
+    <div class="progress-wrap">
+      <div class="progress-fill" id="progressBar"></div>
+    </div>
+    <div class="progress-label" id="progressLabel"></div>
+  </div>
+
+  <!-- بحث المدن -->
+  <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:16px;margin-bottom:20px;">
+    <div style="display:flex;gap:8px;margin-bottom:12px;">
+      <input type="text" id="cityInput"
+        placeholder="🔍 ابحث عن مدينة..."
+        style="flex:1;padding:10px 14px;background:var(--bg-main);border:1px solid var(--border);border-radius:10px;color:var(--text);font-family:var(--font);font-size:14px;outline:none;"
+        onkeypress="if(event.key==='Enter') searchCity()">
+      <button class="btn btn-primary btn-sm" onclick="searchCity()">بحث</button>
+      <button class="btn btn-secondary btn-sm" onclick="getLocation()">📍 موقعي</button>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;">
+      <button class="city-btn" onclick="quickCity('Riyadh')">الرياض</button>
+      <button class="city-btn" onclick="quickCity('Mecca')">مكة</button>
+      <button class="city-btn" onclick="quickCity('Medina')">المدينة</button>
+      <button class="city-btn" onclick="quickCity('Jeddah')">جدة</button>
+      <button class="city-btn" onclick="quickCity('Buraidah')">بريدة</button>
+      <button class="city-btn" onclick="quickCity('Cairo')">القاهرة</button>
+      <button class="city-btn" onclick="quickCity('Dubai')">دبي</button>
+      <button class="city-btn" onclick="quickCity('Kuwait City')">الكويت</button>
+    </div>
+  </div>
+
+  <!-- بطاقات الصلاة -->
+  <div id="loadingState" style="text-align:center;padding:32px;color:var(--text-muted);">
+    <div class="spin" style="font-size:32px;display:inline-block;">⏳</div>
+    <p style="margin-top:12px;">جاري تحميل أوقات الصلاة...</p>
+  </div>
+
+  <div id="prayerCards" style="display:none;flex-direction:column;gap:10px;">
+    <div class="prayer-card" id="card-fajr">
+      <div class="prayer-info">
+        <div class="prayer-emoji">🌙</div>
+        <div>
+          <div class="prayer-name-ar">الفجر</div>
+          <div class="prayer-name-en">Fajr</div>
+        </div>
       </div>
-      <div class="prayer-card" id="card-sunrise">
-        <div class="prayer-info"><span class="prayer-emoji">🌅</span><div><p class="prayer-name-ar">الشروق</p><p class="prayer-name-en">Sunrise</p></div></div>
-        <div style="text-align:left;"><p class="prayer-time" id="time-sunrise" style="color:var(--text-muted);font-size:20px;direction:ltr;">----</p></div>
+      <div style="text-align:left;">
+        <div class="prayer-time" id="time-fajr">----</div>
+        <div class="prayer-adhan">آذان الفجر</div>
       </div>
-      <div class="prayer-card" id="card-dhuhr">
-        <div class="prayer-info"><span class="prayer-emoji">☀️</span><div><p class="prayer-name-ar">الظهر</p><p class="prayer-name-en">Dhuhr</p></div></div>
-        <div style="text-align:left;"><p class="prayer-time" id="time-dhuhr" style="direction:ltr;">----</p></div>
+    </div>
+
+    <div class="prayer-card" id="card-sunrise">
+      <div class="prayer-info">
+        <div class="prayer-emoji">🌅</div>
+        <div>
+          <div class="prayer-name-ar">الشروق</div>
+          <div class="prayer-name-en">Sunrise</div>
+        </div>
       </div>
-      <div class="prayer-card" id="card-asr">
-        <div class="prayer-info"><span class="prayer-emoji">🌤️</span><div><p class="prayer-name-ar">العصر</p><p class="prayer-name-en">Asr</p></div></div>
-        <div style="text-align:left;"><p class="prayer-time" id="time-asr" style="direction:ltr;">----</p></div>
+      <div style="text-align:left;">
+        <div class="prayer-time" id="time-sunrise">----</div>
+        <div class="prayer-adhan">نهاية وقت الفجر</div>
       </div>
-      <div class="prayer-card" id="card-maghrib">
-        <div class="prayer-info"><span class="prayer-emoji">🌆</span><div><p class="prayer-name-ar">المغرب</p><p class="prayer-name-en">Maghrib</p></div></div>
-        <div style="text-align:left;"><p class="prayer-time" id="time-maghrib" style="direction:ltr;">----</p></div>
+    </div>
+
+    <div class="prayer-card" id="card-dhuhr">
+      <div class="prayer-info">
+        <div class="prayer-emoji">☀️</div>
+        <div>
+          <div class="prayer-name-ar">الظهر</div>
+          <div class="prayer-name-en">Dhuhr</div>
+        </div>
       </div>
-      <div class="prayer-card" id="card-isha">
-        <div class="prayer-info"><span class="prayer-emoji">🌃</span><div><p class="prayer-name-ar">العشاء</p><p class="prayer-name-en">Isha</p></div></div>
-        <div style="text-align:left;"><p class="prayer-time" id="time-isha" style="direction:ltr;">----</p></div>
+      <div style="text-align:left;">
+        <div class="prayer-time" id="time-dhuhr">----</div>
+        <div class="prayer-adhan">آذان الظهر</div>
+      </div>
+    </div>
+
+    <div class="prayer-card" id="card-asr">
+      <div class="prayer-info">
+        <div class="prayer-emoji">🌤️</div>
+        <div>
+          <div class="prayer-name-ar">العصر</div>
+          <div class="prayer-name-en">Asr</div>
+        </div>
+      </div>
+      <div style="text-align:left;">
+        <div class="prayer-time" id="time-asr">----</div>
+        <div class="prayer-adhan">آذان العصر</div>
+      </div>
+    </div>
+
+    <div class="prayer-card" id="card-maghrib">
+      <div class="prayer-info">
+        <div class="prayer-emoji">🌆</div>
+        <div>
+          <div class="prayer-name-ar">المغرب</div>
+          <div class="prayer-name-en">Maghrib</div>
+        </div>
+      </div>
+      <div style="text-align:left;">
+        <div class="prayer-time" id="time-maghrib">----</div>
+        <div class="prayer-adhan">آذان المغرب</div>
+      </div>
+    </div>
+
+    <div class="prayer-card" id="card-isha">
+      <div class="prayer-info">
+        <div class="prayer-emoji">🌃</div>
+        <div>
+          <div class="prayer-name-ar">العشاء</div>
+          <div class="prayer-name-en">Isha</div>
+        </div>
+      </div>
+      <div style="text-align:left;">
+        <div class="prayer-time" id="time-isha">----</div>
+        <div class="prayer-adhan">آذان العشاء</div>
       </div>
     </div>
   </div>
 
-  <!-- اتجاه القبلة -->
-  <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:24px;text-align:center;">
-    <h3 style="font-size:16px;font-weight:800;margin-bottom:16px;">🧭 اتجاه القبلة</h3>
-    <div style="position:relative;width:120px;height:120px;margin:0 auto;">
-      <div style="width:120px;height:120px;border-radius:50%;border:3px solid var(--border);background:var(--bg-main);display:flex;align-items:center;justify-content:center;position:relative;">
-        <span style="position:absolute;top:4px;left:50%;transform:translateX(-50%);font-size:12px;font-weight:700;color:var(--text-muted);">N</span>
-        <span style="position:absolute;bottom:4px;left:50%;transform:translateX(-50%);font-size:12px;font-weight:700;color:var(--text-muted);">S</span>
-        <span style="position:absolute;right:6px;top:50%;transform:translateY(-50%);font-size:12px;font-weight:700;color:var(--text-muted);">E</span>
-        <span style="position:absolute;left:6px;top:50%;transform:translateY(-50%);font-size:12px;font-weight:700;color:var(--text-muted);">W</span>
-        <div id="qiblaArrow" style="width:4px;height:44px;background:linear-gradient(to top,var(--error) 50%,var(--success) 50%);border-radius:4px;transform-origin:center bottom;transform:rotate(0deg);transition:transform 0.5s ease;position:relative;top:-10px;"></div>
-        <span style="position:absolute;font-size:18px;">🕋</span>
-      </div>
-    </div>
-    <p id="qiblaAngle" style="color:var(--text-muted);font-size:13px;margin-top:12px;">جاري حساب الاتجاه...</p>
-    <p id="qiblaCity" style="font-size:12px;color:var(--text-muted);">مكة المكرمة: 21.4225°N, 39.8262°E</p>
+  <!-- مشاركة -->
+  <div style="text-align:center;margin-top:16px;">
+    <button class="btn btn-secondary btn-sm" onclick="sharePrayerTimes()">📤 شارك أوقات الصلاة</button>
   </div>
 
-  <!-- طريقة الحساب -->
-  <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:20px;">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
-      <h3 style="font-size:15px;font-weight:800;">⚙️ طريقة الحساب</h3>
-      <select id="methodSelect" class="form-select" style="width:auto;font-size:13px;padding:6px 10px;" onchange="reloadPrayers()">
+  <!-- القبلة وطريقة الحساب -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:24px;">
+
+    <!-- القبلة -->
+    <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px;text-align:center;">
+      <h2 style="font-size:15px;font-weight:800;margin-bottom:14px;">🧭 اتجاه القبلة</h2>
+      <div class="qibla-compass">
+        <div class="compass-ring"></div>
+        <div class="compass-dirs">
+          <span class="n">N</span>
+          <span class="s">S</span>
+          <span class="e">E</span>
+          <span class="w">W</span>
+        </div>
+        <div class="qibla-arrow" id="qiblaArrow">🕋</div>
+      </div>
+      <div id="qiblaAngle" style="font-size:13px;color:var(--text-sub);margin-top:8px;">جاري الحساب...</div>
+      <div style="font-size:11px;color:var(--text-muted);margin-top:4px;">مكة: 21.42°N, 39.83°E</div>
+    </div>
+
+    <!-- طريقة الحساب -->
+    <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px;">
+      <h2 style="font-size:15px;font-weight:800;margin-bottom:14px;">⚙️ طريقة الحساب</h2>
+      <select id="methodSelect" class="form-select" style="font-size:13px;padding:8px 10px;margin-bottom:12px;" onchange="reloadPrayers()">
         <option value="4">أم القرى (السعودية)</option>
         <option value="5">مصلحة الشؤون الإسلامية (مصر)</option>
         <option value="3">رابطة العالم الإسلامي</option>
         <option value="2">ISNA (أمريكا الشمالية)</option>
+        <option value="1">University of Islamic Sciences, Karachi</option>
+        <option value="7">Institute of Geophysics, University of Tehran</option>
       </select>
+      <p style="font-size:11px;color:var(--text-muted);line-height:1.7;">
+        البيانات من <strong>Aladhan API</strong> — مفتوح المصدر وموثوق.<br>
+        الافتراضي: أم القرى (السعودية والخليج).
+      </p>
     </div>
-    <p style="font-size:12px;color:var(--text-muted);line-height:1.7;">البيانات من <strong>Aladhan API</strong> — مفتوح المصدر وموثوق. الطريقة الافتراضية: أم القرى (مناسبة للسعودية والخليج).</p>
   </div>
 
-</div>
 </main>
 
-<div class="toast" id="toast"></div>
+<!-- ===== Footer ===== -->
+<footer style="text-align:center;padding:32px 24px;margin-top:48px;border-top:1px solid var(--border);color:var(--text-muted);font-size:13px;">
+  <a href="/" style="color:var(--primary-light);text-decoration:none;">← العودة للرئيسية</a>
+  &nbsp;|&nbsp; © 2026 IslamiCalc
+</footer>
 
+<!-- ===== Login Modal ===== -->
+<div class="modal" id="loginModal">
+  <div class="modal-box">
+    <h2>🕌 أوقات الصلاة</h2>
+    <p>سجّل دخولك لحفظ مدينتك المفضلة ومزامنتها عبر أجهزتك</p>
+    <button class="google-btn" onclick="window.islamiCalc?.loginWithGoogle()">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="margin-left:8px;vertical-align:middle">
+        <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+        <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+        <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/>
+        <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+      </svg>
+      الدخول بحساب Google
+    </button>
+    <button class="skip-btn" onclick="document.getElementById('loginModal').classList.remove('open')">تصفح بدون حساب</button>
+    <p class="modal-terms">بالدخول توافق على <a href="/privacy">سياسة الخصوصية</a></p>
+  </div>
+</div>
+
+<!-- ===== Script ===== -->
 <script>
+// ============================================================
+// IslamiCalc — prayer/index.html — Script v3.0
+// ✅ Memory Leak fix: clearInterval قبل كل setInterval
+// ✅ Nominatim: User-Agent header
+// ✅ openLoginModal: Modal حقيقي بدل showToast
+// ✅ Firebase: islamiCalcReady
+// ✅ مشاركة أوقات الصلاة (ميزة جديدة)
+// ============================================================
+
 const PRAYERS = [
-  {key:'Fajr',   ar:'الفجر',   card:'fajr'},
-  {key:'Sunrise',ar:'الشروق',  card:'sunrise'},
-  {key:'Dhuhr',  ar:'الظهر',   card:'dhuhr'},
-  {key:'Asr',    ar:'العصر',   card:'asr'},
-  {key:'Maghrib',ar:'المغرب',  card:'maghrib'},
-  {key:'Isha',   ar:'العشاء',  card:'isha'},
+  { key:"Fajr",    ar:"الفجر",    card:"fajr"    },
+  { key:"Sunrise", ar:"الشروق",   card:"sunrise" },
+  { key:"Dhuhr",   ar:"الظهر",    card:"dhuhr"   },
+  { key:"Asr",     ar:"العصر",    card:"asr"     },
+  { key:"Maghrib", ar:"المغرب",   card:"maghrib" },
+  { key:"Isha",    ar:"العشاء",   card:"isha"    },
 ];
 
-let prayerTimes = {};
+let prayerTimes  = {};
+// ✅ الإصلاح: متغير واحد للـ interval
 let countdownInt = null;
-let currentLat = 21.3891, currentLng = 39.8579, currentCity = 'مكة المكرمة';
+let currentLat   = 24.7136;
+let currentLng   = 46.6753;
+let currentCity  = "الرياض";
 
-window.addEventListener('load', () => { updateDates(); getLocation(); });
+// ===== تهيئة =====
+window.addEventListener("load", () => {
+  updateDates();
+  getLocation();
+});
 setInterval(updateDates, 60000);
 
 function updateDates() {
   const now = new Date();
-  document.getElementById('miladiDate').textContent =
-    now.toLocaleDateString('ar-SA', {weekday:'long', year:'numeric', month:'long', day:'numeric'});
-  document.getElementById('hijriDate').textContent =
-    now.toLocaleDateString('ar-SA-u-ca-islamic', {day:'numeric', month:'long', year:'numeric'});
+  const mi  = document.getElementById("miladiDate");
+  const hi  = document.getElementById("hijriDate");
+  if (mi) mi.textContent = now.toLocaleDateString("ar-SA", {
+    weekday:"long", year:"numeric", month:"long", day:"numeric"
+  });
+  if (hi) hi.textContent = now.toLocaleDateString("ar-SA-u-ca-islamic", {
+    day:"numeric", month:"long", year:"numeric"
+  });
 }
 
+// ===== الموقع =====
 function getLocation() {
-  document.getElementById('locationLabel').textContent = '📍 جاري تحديد موقعك...';
-  if (!navigator.geolocation) { loadPrayers(currentLat, currentLng, currentCity); return; }
+  const lbl = document.getElementById("locationLabel");
+  if (lbl) lbl.textContent = "📍 جاري تحديد موقعك...";
+
+  if (!navigator.geolocation) {
+    loadPrayers(currentLat, currentLng, currentCity);
+    return;
+  }
   navigator.geolocation.getCurrentPosition(
     pos => {
       currentLat = pos.coords.latitude;
       currentLng = pos.coords.longitude;
       reverseGeocode(currentLat, currentLng);
     },
-    () => { showToast('⚠️ تعذّر تحديد الموقع، تم تحميل مكة المكرمة', 'toast-gold'); loadPrayers(currentLat, currentLng, currentCity); },
-    {timeout: 8000, enableHighAccuracy: true}
+    () => {
+      showToast("⚠️ تعذّر تحديد الموقع، تم تحميل الرياض", "toast-gold");
+      loadPrayers(currentLat, currentLng, currentCity);
+    },
+    { timeout: 8000, enableHighAccuracy: true }
   );
 }
 
+// ✅ الإصلاح: Nominatim User-Agent header
 async function reverseGeocode(lat, lng) {
   try {
-    const r = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&accept-language=ar`);
+    const r = await fetch(
+      `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&accept-language=ar`,
+      { headers: { "User-Agent": "IslamiCalc/1.0 (islamicalc.com)" } }
+    );
     const d = await r.json();
-    currentCity = d.address?.city || d.address?.town || d.address?.state || 'موقعك';
+    currentCity = d.address?.city || d.address?.town || d.address?.state || "موقعك";
     loadPrayers(lat, lng, currentCity);
-  } catch { loadPrayers(lat, lng, currentCity); }
-}
-
-async function searchCity() {
-  const q = document.getElementById('cityInput').value.trim();
-  if (!q) { showToast('اكتب اسم المدينة', 'toast-error'); return; }
-  try {
-    const r = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(q)}&limit=1&accept-language=ar`);
-    const d = await r.json();
-    if (!d.length) { showToast('لم يتم العثور على المدينة', 'toast-error'); return; }
-    currentLat = parseFloat(d[0].lat);
-    currentLng = parseFloat(d[0].lon);
-    currentCity = d[0].display_name.split(',')[0];
-    loadPrayers(currentLat, currentLng, currentCity);
-    document.getElementById('cityInput').value = '';
-  } catch { showToast('خطأ في البحث', 'toast-error'); }
-}
-
-async function quickCity(name, country) {
-  const coords = {
-    'Riyadh':[24.7136,46.6753,'الرياض'],
-    'Buraidah':[26.3260,43.9750,'بريدة'],
-    'Mecca':[21.3891,39.8579,'مكة المكرمة'],
-    'Medina':[24.5247,39.5692,'المدينة المنورة'],
-    'Jeddah':[21.4858,39.1925,'جدة'],
-    'Cairo':[30.0444,31.2357,'القاهرة'],
-    'Dubai':[25.2048,55.2708,'دبي'],
-    'Kuwait City':[29.3759,47.9774,'الكويت'],
-  };
-  if (coords[name]) {
-    currentLat = coords[name][0]; currentLng = coords[name][1]; currentCity = coords[name][2];
-    loadPrayers(currentLat, currentLng, currentCity);
+  } catch {
+    loadPrayers(lat, lng, currentCity);
   }
 }
 
-async function loadPrayers(lat, lng, city) {
-  document.getElementById('loadingState').style.display = 'block';
-  document.getElementById('prayerCards').style.display = 'none';
-  document.getElementById('locationLabel').textContent = '📍 ' + (city || 'موقعك');
-  const method = document.getElementById('methodSelect').value;
-  const now = new Date();
-  const date = `${now.getDate()}-${now.getMonth()+1}-${now.getFullYear()}`;
+// ✅ الإصلاح: Nominatim User-Agent header
+async function searchCity() {
+  const q = document.getElementById("cityInput").value.trim();
+  if (!q) { showToast("اكتب اسم المدينة", "toast-error"); return; }
   try {
-    const r = await fetch(`https://api.aladhan.com/v1/timings/${date}?latitude=${lat}&longitude=${lng}&method=${method}`);
+    const r = await fetch(
+      `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(q)}&limit=1&accept-language=ar`,
+      { headers: { "User-Agent": "IslamiCalc/1.0 (islamicalc.com)" } }
+    );
     const d = await r.json();
-    if (d.code !== 200) throw new Error('API error');
+    if (!d.length) { showToast("لم يتم العثور على المدينة", "toast-error"); return; }
+    currentLat  = parseFloat(d[0].lat);
+    currentLng  = parseFloat(d[0].lon);
+    currentCity = d[0].display_name.split(",")[0];
+    loadPrayers(currentLat, currentLng, currentCity);
+    document.getElementById("cityInput").value = "";
+  } catch {
+    showToast("خطأ في البحث", "toast-error");
+  }
+}
+
+// إحداثيات المدن السريعة
+const QUICK_CITIES = {
+  "Riyadh":      [24.7136,  46.6753, "الرياض"],
+  "Buraidah":    [26.3260,  43.9750, "بريدة"],
+  "Mecca":       [21.3891,  39.8579, "مكة المكرمة"],
+  "Medina":      [24.5247,  39.5692, "المدينة المنورة"],
+  "Jeddah":      [21.4858,  39.1925, "جدة"],
+  "Cairo":       [30.0444,  31.2357, "القاهرة"],
+  "Dubai":       [25.2048,  55.2708, "دبي"],
+  "Kuwait City": [29.3759,  47.9774, "الكويت"],
+};
+
+function quickCity(name) {
+  const c = QUICK_CITIES[name];
+  if (!c) return;
+  [currentLat, currentLng, currentCity] = c;
+  loadPrayers(currentLat, currentLng, currentCity);
+}
+
+// ===== تحميل الأوقات =====
+async function loadPrayers(lat, lng, city) {
+  const loadEl  = document.getElementById("loadingState");
+  const cardsEl = document.getElementById("prayerCards");
+  if (loadEl)  { loadEl.style.display = "block"; loadEl.innerHTML = '<div class="spin" style="font-size:32px;display:inline-block;">⏳</div><p style="margin-top:12px;color:var(--text-muted);">جاري تحميل أوقات الصلاة...</p>'; }
+  if (cardsEl) cardsEl.style.display = "none";
+
+  const lbl = document.getElementById("locationLabel");
+  if (lbl) lbl.textContent = "📍 " + (city || "موقعك");
+
+  const method = document.getElementById("methodSelect").value;
+  const now    = new Date();
+  const date   = `${now.getDate()}-${now.getMonth()+1}-${now.getFullYear()}`;
+
+  try {
+    const r = await fetch(
+      `https://api.aladhan.com/v1/timings/${date}?latitude=${lat}&longitude=${lng}&method=${method}`
+    );
+    const d = await r.json();
+    if (d.code !== 200) throw new Error("API error");
+
     prayerTimes = d.data.timings;
     calcQibla(lat, lng);
     renderPrayers();
-    if (countdownInt) clearInterval(countdownInt);
+
+    // ✅ الإصلاح: clearInterval دائماً قبل setInterval جديد
+    if (countdownInt) {
+      clearInterval(countdownInt);
+      countdownInt = null;
+    }
     updateCountdown();
     countdownInt = setInterval(updateCountdown, 1000);
-    document.getElementById('loadingState').style.display = 'none';
-    document.getElementById('prayerCards').style.display = 'flex';
-    showToast('✅ ' + (city || 'موقعك'), 'toast-success');
-  } catch(e) {
-    document.getElementById('loadingState').innerHTML = '<p style="color:var(--error)">❌ فشل تحميل الأوقات. تحقق من الإنترنت.</p>';
-    showToast('❌ خطأ في تحميل الأوقات', 'toast-error');
+
+    if (loadEl)  loadEl.style.display = "none";
+    if (cardsEl) cardsEl.style.display = "flex";
+    showToast("✅ " + (city || "موقعك"), "toast-success");
+
+    // XP عند أول استخدام
+    if (window.islamiCalc) {
+      window.islamiCalc.addXP(10, "prayer_view");
+    } else {
+      window.addEventListener("islamiCalcReady",
+        () => window.islamiCalc?.addXP(10, "prayer_view"),
+        { once: true }
+      );
+    }
+  } catch (e) {
+    if (loadEl) loadEl.innerHTML = '<p style="color:var(--error)">❌ فشل تحميل الأوقات. تحقق من الإنترنت.</p>';
+    showToast("❌ خطأ في تحميل الأوقات", "toast-error");
   }
 }
 
-function reloadPrayers() { loadPrayers(currentLat, currentLng, currentCity); }
+function reloadPrayers() {
+  loadPrayers(currentLat, currentLng, currentCity);
+}
 
+// ===== عرض الأوقات =====
 function renderPrayers() {
-  const keys = ['Fajr','Sunrise','Dhuhr','Asr','Maghrib','Isha'];
-  const now = new Date();
+  const keys = ["Fajr","Sunrise","Dhuhr","Asr","Maghrib","Isha"];
+  const now  = new Date();
   keys.forEach(key => {
     const raw = prayerTimes[key];
     if (!raw) return;
-    const [h, m] = raw.split(':').map(Number);
+    const [h, m] = raw.split(":").map(Number);
     const display = new Date(now.getFullYear(), now.getMonth(), now.getDate(), h, m)
-      .toLocaleTimeString('ar-SA', {hour:'2-digit', minute:'2-digit', hour12:true});
-    const el = document.getElementById('time-' + key.toLowerCase());
+      .toLocaleTimeString("ar-SA", { hour:"2-digit", minute:"2-digit", hour12:true });
+    const el = document.getElementById("time-" + key.toLowerCase());
     if (el) el.textContent = display;
   });
 }
 
+// ===== العداد التنازلي =====
 function updateCountdown() {
-  const now = new Date();
-  const keys = ['Fajr','Dhuhr','Asr','Maghrib','Isha'];
+  const now  = new Date();
+  const keys = ["Fajr","Dhuhr","Asr","Maghrib","Isha"];
   let foundNext = false;
 
-  // إزالة الكلاسات السابقة
   PRAYERS.forEach(p => {
-    const card = document.getElementById('card-' + p.card);
-    if (card) card.classList.remove('active-now','next-prayer');
+    const card = document.getElementById("card-" + p.card);
+    if (card) card.classList.remove("active-now","next-prayer");
   });
 
   for (let i = 0; i < keys.length; i++) {
     const key = keys[i];
     const raw = prayerTimes[key];
     if (!raw) continue;
-    const [h, m] = raw.split(':').map(Number);
-    const ts = new Date(now);
-    ts.setHours(h, m, 0, 0);
-    const diff = ts - now;
+
+    const [h, m] = raw.split(":").map(Number);
+    const ts     = new Date(now.getFullYear(), now.getMonth(), now.getDate(), h, m, 0, 0);
+    const diff   = ts - now;
 
     if (diff > 0 && !foundNext) {
       foundNext = true;
 
-      // الصلاة القادمة
-      const card = document.getElementById('card-' + key.toLowerCase());
-      if (card) card.classList.add('next-prayer');
-      const arName = PRAYERS.find(p => p.key === key)?.ar || key;
-      const display = ts.toLocaleTimeString('ar-SA', {hour:'2-digit', minute:'2-digit', hour12:true});
-      document.getElementById('nextPrayerName').textContent = arName;
-      document.getElementById('nextPrayerTime').textContent = display;
+      const card = document.getElementById("card-" + key.toLowerCase());
+      if (card) card.classList.add("next-prayer");
 
-      // العداد التنازلي
-      const totalSecs = Math.floor(diff / 1000);
-      const h2 = Math.floor(totalSecs / 3600);
-      const m2 = Math.floor((totalSecs % 3600) / 60);
-      const s2 = totalSecs % 60;
-      document.getElementById('cd-hours').textContent = String(h2).padStart(2,'0');
-      document.getElementById('cd-mins').textContent  = String(m2).padStart(2,'0');
-      document.getElementById('cd-secs').textContent  = String(s2).padStart(2,'0');
+      const arName  = PRAYERS.find(p => p.key === key)?.ar || key;
+      const display = ts.toLocaleTimeString("ar-SA", { hour:"2-digit", minute:"2-digit", hour12:true });
 
-      // Progress bar — من الصلاة السابقة
+      document.getElementById("nextPrayerName").textContent = arName;
+      document.getElementById("nextPrayerTime").textContent = display;
+
+      const total = Math.floor(diff / 1000);
+      const h2    = Math.floor(total / 3600);
+      const m2    = Math.floor((total % 3600) / 60);
+      const s2    = total % 60;
+      document.getElementById("cd-hours").textContent = String(h2).padStart(2,"0");
+      document.getElementById("cd-mins").textContent  = String(m2).padStart(2,"0");
+      document.getElementById("cd-secs").textContent  = String(s2).padStart(2,"0");
+
+      // Progress Bar
       const prevKey = keys[i > 0 ? i - 1 : keys.length - 1];
       const prevRaw = prayerTimes[prevKey];
       if (prevRaw) {
-        const [ph, pm] = prevRaw.split(':').map(Number);
-        let prevTS = new Date(now);
-        prevTS.setHours(ph, pm, 0, 0);
+        const [ph, pm] = prevRaw.split(":").map(Number);
+        let prevTS     = new Date(now.getFullYear(), now.getMonth(), now.getDate(), ph, pm, 0, 0);
         if (prevTS >= ts) prevTS.setDate(prevTS.getDate() - 1);
-        const total   = ts - prevTS;
-        const elapsed = now - prevTS;
-        const pct = Math.min(Math.max(elapsed / total * 100, 0), 100);
-        document.getElementById('progressBar').style.width = pct + '%';
+        const totalDiff   = ts - prevTS;
+        const elapsedDiff = now - prevTS;
+        const pct         = Math.min(Math.max(elapsedDiff / totalDiff * 100, 0), 100);
+        const progBar     = document.getElementById("progressBar");
+        const progLbl     = document.getElementById("progressLabel");
+        if (progBar) progBar.style.width = pct + "%";
         const prevAr = PRAYERS.find(p => p.key === prevKey)?.ar || prevKey;
-        document.getElementById('progressLabel').textContent =
-          Math.round(pct) + '% • من ' + prevAr + ' إلى ' + arName;
+        if (progLbl) progLbl.textContent = Math.round(pct) + "% • من " + prevAr + " إلى " + arName;
       }
       break;
     }
   }
 
-  // ✅ الإصلاح الرئيسي: بعد العشاء → احسب فجر الغد بشكل صحيح
+  // بعد العشاء → فجر الغد
   if (!foundNext) {
-    const fajrRaw = prayerTimes['Fajr'];
+    const fajrRaw = prayerTimes["Fajr"];
     if (fajrRaw) {
-      const [fh, fm] = fajrRaw.split(':').map(Number);
-      const fajrTomorrow = new Date(now);
-      fajrTomorrow.setDate(fajrTomorrow.getDate() + 1); // ← الغد فقط
-      fajrTomorrow.setHours(fh, fm, 0, 0);
+      const [fh, fm]    = fajrRaw.split(":").map(Number);
+      const fajrTomorrow = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, fh, fm, 0, 0);
+      const diff2        = fajrTomorrow - now;
+      const total2       = Math.floor(diff2 / 1000);
+      const h2 = Math.floor(total2 / 3600);
+      const m2 = Math.floor((total2 % 3600) / 60);
+      const s2 = total2 % 60;
 
-      const diff2   = fajrTomorrow - now;
-      const ts2     = Math.floor(diff2 / 1000);
-      const h2      = Math.floor(ts2 / 3600);
-      const m2      = Math.floor((ts2 % 3600) / 60);
-      const s2      = ts2 % 60;
-      document.getElementById('cd-hours').textContent = String(h2).padStart(2,'0');
-      document.getElementById('cd-mins').textContent  = String(m2).padStart(2,'0');
-      document.getElementById('cd-secs').textContent  = String(s2).padStart(2,'0');
-      document.getElementById('nextPrayerName').textContent = 'الفجر';
-      document.getElementById('nextPrayerTime').textContent =
-        fajrTomorrow.toLocaleTimeString('ar-SA',{hour:'2-digit',minute:'2-digit',hour12:true});
+      document.getElementById("cd-hours").textContent     = String(h2).padStart(2,"0");
+      document.getElementById("cd-mins").textContent      = String(m2).padStart(2,"0");
+      document.getElementById("cd-secs").textContent      = String(s2).padStart(2,"0");
+      document.getElementById("nextPrayerName").textContent = "الفجر";
+      document.getElementById("nextPrayerTime").textContent = fajrTomorrow.toLocaleTimeString("ar-SA",{hour:"2-digit",minute:"2-digit",hour12:true});
 
-      // Progress من العشاء للفجر
-      const ishaRaw = prayerTimes['Isha'];
+      const ishaRaw = prayerTimes["Isha"];
       if (ishaRaw) {
-        const [ih, im] = ishaRaw.split(':').map(Number);
-        let ishaTS = new Date(now);
-        ishaTS.setHours(ih, im, 0, 0);
+        const [ih, im] = ishaRaw.split(":").map(Number);
+        let ishaTS     = new Date(now.getFullYear(), now.getMonth(), now.getDate(), ih, im, 0, 0);
         if (ishaTS > now) ishaTS.setDate(ishaTS.getDate() - 1);
-        const total   = fajrTomorrow - ishaTS;
-        const elapsed = now - ishaTS;
-        const pct = Math.min(Math.max(elapsed / total * 100, 0), 100);
-        document.getElementById('progressBar').style.width = pct + '%';
-        document.getElementById('progressLabel').textContent =
-          Math.round(pct) + '% • من العشاء إلى الفجر';
+        const totalD   = fajrTomorrow - ishaTS;
+        const elapsed  = now - ishaTS;
+        const pct      = Math.min(Math.max(elapsed / totalD * 100, 0), 100);
+        const progBar  = document.getElementById("progressBar");
+        const progLbl  = document.getElementById("progressLabel");
+        if (progBar) progBar.style.width = pct + "%";
+        if (progLbl) progLbl.textContent = Math.round(pct) + "% • من العشاء إلى الفجر";
       }
     }
   }
 }
 
+// ===== القبلة =====
 function calcQibla(lat, lng) {
   const KAABA_LAT = 21.4225, KAABA_LNG = 39.8262;
   const toRad = d => d * Math.PI / 180;
   const toDeg = r => r * 180 / Math.PI;
-  const dLng = toRad(KAABA_LNG - lng);
-  const lat1 = toRad(lat), lat2 = toRad(KAABA_LAT);
-  const x = Math.sin(dLng) * Math.cos(lat2);
-  const y = Math.cos(lat1) * Math.sin(lat2) - Math.sin(lat1) * Math.cos(lat2) * Math.cos(dLng);
-  let angle = toDeg(Math.atan2(x, y));
-  angle = ((angle % 360) + 360) % 360;
-  document.getElementById('qiblaArrow').style.transform = `rotate(${angle}deg)`;
-  document.getElementById('qiblaAngle').textContent = `اتجاه القبلة: ${Math.round(angle)}° من الشمال`;
+  const dLng  = toRad(KAABA_LNG - lng);
+  const lat1  = toRad(lat);
+  const lat2  = toRad(KAABA_LAT);
+  const x     = Math.sin(dLng) * Math.cos(lat2);
+  const y     = Math.cos(lat1) * Math.sin(lat2) - Math.sin(lat1) * Math.cos(lat2) * Math.cos(dLng);
+  let angle   = toDeg(Math.atan2(x, y));
+  angle       = ((angle % 360) + 360) % 360;
+
+  const arrow = document.getElementById("qiblaArrow");
+  const lbl   = document.getElementById("qiblaAngle");
+  if (arrow) arrow.style.transform = `rotate(${angle}deg)`;
+  if (lbl)   lbl.textContent       = `اتجاه القبلة: ${Math.round(angle)}° من الشمال`;
 }
 
-function showToast(msg, type) {
-  const t = document.getElementById('toast');
-  t.textContent = msg; t.className = 'toast show ' + (type||'');
-  setTimeout(() => t.classList.remove('show'), 3500);
+// ===== مشاركة أوقات الصلاة (ميزة جديدة) =====
+function sharePrayerTimes() {
+  if (!Object.keys(prayerTimes).length) {
+    showToast("⚠️ لم تُحمَّل الأوقات بعد", "toast-error");
+    return;
+  }
+  const now  = new Date();
+  const keys = ["Fajr","Dhuhr","Asr","Maghrib","Isha"];
+  const names = { Fajr:"الفجر", Dhuhr:"الظهر", Asr:"العصر", Maghrib:"المغرب", Isha:"العشاء" };
+  const lines = keys.map(k => {
+    const raw   = prayerTimes[k];
+    if (!raw) return "";
+    const [h,m] = raw.split(":").map(Number);
+    const t     = new Date(now.getFullYear(), now.getMonth(), now.getDate(), h, m);
+    return `${names[k]}: ${t.toLocaleTimeString("ar-SA",{hour:"2-digit",minute:"2-digit",hour12:true})}`;
+  }).filter(Boolean);
+
+  const text = `🕌 أوقات الصلاة في ${currentCity}\n${now.toLocaleDateString("ar-SA",{weekday:"long",day:"numeric",month:"long"})}\n\n${lines.join("\n")}\n\n📍 islamicalc.com/prayer`;
+
+  if (navigator.share) {
+    navigator.share({ title: "أوقات الصلاة — IslamiCalc", text });
+  } else {
+    navigator.clipboard?.writeText(text);
+    showToast("✅ تم نسخ الأوقات!", "toast-success");
+  }
 }
 
-// Theme
-const themeBtn = document.getElementById('themeBtn');
-const htmlEl = document.documentElement;
+// ===== Modal =====
+// ✅ الإصلاح: Modal حقيقي بدل showToast
+function openLoginModal() {
+  if (window.islamiCalc) {
+    window.islamiCalc.openLoginModal();
+    return;
+  }
+  const m = document.getElementById("loginModal");
+  if (m) m.classList.add("open");
+}
+
+document.getElementById("loginModal")?.addEventListener("click", function(e) {
+  if (e.target === this) this.classList.remove("open");
+});
+
+// ===== Toast =====
+function showToast(msg, type = "") {
+  const t = document.getElementById("toast");
+  if (!t) return;
+  t.textContent = msg;
+  t.className   = "toast show " + type;
+  setTimeout(() => t.classList.remove("show"), 3500);
+}
+
+// ===== Theme =====
+const themeBtn = document.getElementById("themeBtn");
 (function initTheme() {
-  const h = new Date().getHours();
-  const saved = localStorage.getItem('theme');
-  const theme = saved || (h >= 19 || h < 6 ? 'dark' : 'light');
-  htmlEl.setAttribute('data-theme', theme);
-  themeBtn.textContent = theme === 'dark' ? '☀️' : '🌙';
+  const saved  = localStorage.getItem("theme");
+  const hour   = new Date().getHours();
+  const theme  = saved || (hour >= 19 || hour < 6 ? "dark" : "light");
+  document.documentElement.setAttribute("data-theme", theme);
 })();
-themeBtn.addEventListener('click', () => {
-  const n = htmlEl.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-  htmlEl.setAttribute('data-theme', n);
-  localStorage.setItem('theme', n);
-  themeBtn.textContent = n === 'dark' ? '☀️' : '🌙';
+themeBtn?.addEventListener("click", () => {
+  const n = document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark";
+  document.documentElement.setAttribute("data-theme", n);
+  localStorage.setItem("theme", n);
 });
 
-document.getElementById('menuToggle').addEventListener('click', () => {
-  const m = document.getElementById('navMenu');
-  m.classList.toggle('open');
-  document.getElementById('menuToggle').textContent = m.classList.contains('open') ? '✕' : '☰';
+// ===== Mobile Menu =====
+document.getElementById("menuToggle")?.addEventListener("click", () => {
+  document.getElementById("navMenu")?.classList.toggle("open");
 });
-
-function openLoginModal() { showToast('🔐 قريباً — سجل بريدك الإلكتروني لتفعيل الحساب', 'toast-gold'); }
 </script>
+
 </body>
 </html>

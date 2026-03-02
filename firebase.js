@@ -1,9 +1,8 @@
 // ============================================================
-// IslamiCalc — firebase.js v3.0
-// Auth + Firestore + XP + Levels + Badges + Leaderboard
-// + islamiCalcReady (للتوافق مع كل الصفحات)
-// + logActivity (للـ Profile heatmap)
-// + logout alias
+// IslamiCalc — firebase.js v4.0
+// ✅ Security: XSS fix + Rate Limiting + Streak Date fix
+// ✅ islamiCalcReady يُطلق دائماً بعد Auth
+// ✅ safeAddXP موحّدة لكل الصفحات
 // ============================================================
 
 import { initializeApp }
@@ -20,6 +19,8 @@ import {
 
 // ============================================================
 // Firebase Config
+// ⚠️ قيّد الـ apiKey في Google Cloud Console على islamicalc.com فقط
+// ⚠️ فعّل Firestore Security Rules من firestore.rules
 // ============================================================
 const firebaseConfig = {
   apiKey:            "AIzaSyAFzGPiCFB6vEH-wylbW4zRxxgB_2vZSIs",
@@ -37,36 +38,39 @@ const db       = getFirestore(app);
 const provider = new GoogleAuthProvider();
 provider.setCustomParameters({ prompt: "select_account" });
 
+// ✅ نصدّر db للصفحات الأخرى
+window._islamiDB = db;
+
 // ============================================================
-// المستويات — موحّدة مع الميدان والبروفايل
+// المستويات
 // ============================================================
 const LEVELS = [
-  { level:1,  title:"المبتدئ",       icon:"🌱",  xp:0     },
-  { level:2,  title:"الطالب",        icon:"📚",  xp:100   },
-  { level:3,  title:"الراسخ",        icon:"🎯",  xp:300   },
-  { level:4,  title:"العارف",        icon:"💡",  xp:600   },
-  { level:5,  title:"الحافظ",        icon:"🛡",  xp:1000  },
-  { level:6,  title:"الفقيه",        icon:"⚖️", xp:1500  },
-  { level:7,  title:"الشيخ",         icon:"🎓",  xp:2200  },
-  { level:8,  title:"العلّامة",      icon:"🌟",  xp:3000  },
-  { level:9,  title:"إمام الميدان", icon:"👑",  xp:4000  },
+  { level:1, title:"المبتدئ",      icon:"🌱", xp:0    },
+  { level:2, title:"الطالب",       icon:"📚", xp:100  },
+  { level:3, title:"الراسخ",       icon:"🎯", xp:300  },
+  { level:4, title:"العارف",       icon:"💡", xp:600  },
+  { level:5, title:"الحافظ",       icon:"🛡",  xp:1000 },
+  { level:6, title:"الفقيه",       icon:"⚖️", xp:1500 },
+  { level:7, title:"الشيخ",        icon:"🎓", xp:2200 },
+  { level:8, title:"العلّامة",     icon:"🌟", xp:3000 },
+  { level:9, title:"إمام الميدان", icon:"👑", xp:4000 },
 ];
 
 // ============================================================
 // الأوسمة
 // ============================================================
 const BADGES_DEF = {
-  "first_login":   { label:"أول خطوة",        icon:"🌱", desc:"سجّلت دخولك لأول مرة"              },
-  "zakat_calc":    { label:"محاسب أمين",       icon:"💰", desc:"استخدمت حاسبة الزكاة"              },
-  "khatma_done":   { label:"ختمة مباركة",     icon:"📖", desc:"أكملت ختمة القرآن"                 },
-  "streak_7":      { label:"أسبوع متواصل",    icon:"🔥", desc:"دخلت 7 أيام متتالية"               },
-  "streak_30":     { label:"شهر إخلاص",       icon:"⭐", desc:"دخلت 30 يوماً متتالياً"            },
-  "maydan_win":    { label:"فائز الميدان",    icon:"🏆", desc:"فزت في جولة في الميدان"            },
-  "maydan_streak": { label:"سلسلة النار",     icon:"⚡", desc:"حققت سلسلة 5 إجابات صحيحة"        },
-  "level_5":       { label:"الحافظ",          icon:"🛡", desc:"وصلت للمستوى الخامس"               },
-  "level_9":       { label:"إمام الميدان",   icon:"👑", desc:"وصلت للمستوى الأعلى"               },
-  "athkar_100":    { label:"ذاكر الله",       icon:"📿", desc:"أتممت الأذكار 100 مرة"             },
-  "daily_q_10":    { label:"متعلم نشيط",      icon:"❓", desc:"أجبت على 10 أسئلة يومية صحيحة"    },
+  "first_login":   { label:"أول خطوة",       icon:"🌱", desc:"سجّلت دخولك لأول مرة"            },
+  "zakat_calc":    { label:"محاسب أمين",      icon:"💰", desc:"استخدمت حاسبة الزكاة"            },
+  "khatma_done":   { label:"ختمة مباركة",    icon:"📖", desc:"أكملت ختمة القرآن"               },
+  "streak_7":      { label:"أسبوع متواصل",   icon:"🔥", desc:"دخلت 7 أيام متتالية"             },
+  "streak_30":     { label:"شهر إخلاص",      icon:"⭐", desc:"دخلت 30 يوماً متتالياً"          },
+  "maydan_win":    { label:"فائز الميدان",   icon:"🏆", desc:"فزت في جولة في الميدان"           },
+  "maydan_streak": { label:"سلسلة النار",    icon:"⚡", desc:"حققت سلسلة 5 إجابات صحيحة"       },
+  "level_5":       { label:"الحافظ",         icon:"🛡",  desc:"وصلت للمستوى الخامس"             },
+  "level_9":       { label:"إمام الميدان",   icon:"👑", desc:"وصلت للمستوى الأعلى"             },
+  "athkar_100":    { label:"ذاكر الله",      icon:"📿", desc:"أتممت الأذكار 100 مرة"            },
+  "daily_q_10":    { label:"متعلم نشيط",     icon:"❓", desc:"أجبت على 10 أسئلة يومية صحيحة"   },
 };
 
 // ============================================================
@@ -76,23 +80,9 @@ let currentUser    = null;
 let currentUserDoc = null;
 
 // ============================================================
-// مراقبة Auth
+// Rate Limiting — منع تكرار addXP لنفس السبب
 // ============================================================
-onAuthStateChanged(auth, async (user) => {
-  if (user) {
-    currentUser    = user;
-    currentUserDoc = await ensureUserDoc(user);
-    updateNavbarUI(user);
-    window.dispatchEvent(new CustomEvent("islamiCalcReady"));
-    window.dispatchEvent(new CustomEvent("userReady", { detail: currentUserDoc }));
-  } else {
-    currentUser    = null;
-    currentUserDoc = null;
-    updateNavbarUI(null);
-    window.dispatchEvent(new CustomEvent("islamiCalcReady")); // يُطلق دائماً
-    window.dispatchEvent(new CustomEvent("userSignedOut"));
-  }
-});
+const _xpCooldowns = {};
 
 // ============================================================
 // تسجيل الدخول
@@ -100,9 +90,8 @@ onAuthStateChanged(auth, async (user) => {
 async function loginWithGoogle() {
   try {
     const result = await signInWithPopup(auth, provider);
-    const name = result.user.displayName?.split(" ")[0] || "أهلاً";
+    const name   = result.user.displayName?.split(" ")[0] || "أهلاً";
     showToast("✅ أهلاً " + name + "!", "toast-success");
-    // إغلاق مودال تسجيل الدخول إن كان مفتوحاً
     document.getElementById("loginModal")?.classList.remove("open");
   } catch (error) {
     if (error.code !== "auth/popup-closed-by-user")
@@ -118,35 +107,40 @@ async function logout() {
     await signOut(auth);
     showToast("👋 تم تسجيل الخروج", "toast-gold");
     setTimeout(() => location.href = "/", 800);
-  } catch (e) { console.error("logout:", e.code); }
+  } catch (e) {
+    console.error("logout:", e.code);
+  }
 }
-const logoutUser = logout; // alias للتوافق مع الكود القديم
+const logoutUser = logout;
 
 // ============================================================
-// إنشاء / تحديث وثيقة المستخدم
+// إنشاء / جلب وثيقة المستخدم
 // ============================================================
 async function ensureUserDoc(user) {
   try {
     const ref  = doc(db, "users", user.uid);
     const snap = await getDoc(ref);
+
     if (!snap.exists()) {
       const country = await getUserCountry();
-      const newDoc = {
-        uid: user.uid,
-        name: user.displayName || "مجهول",
-        email: user.email,
-        photo: user.photoURL || "",
-        xp: 0, level: 1,
-        streak: 1, longestStreak: 1,
-        lastLogin: serverTimestamp(),
-        badges: ["first_login"],
+      const newDoc  = {
+        uid:           user.uid,
+        name:          user.displayName || "مجهول",
+        email:         user.email,
+        photo:         user.photoURL || "",
+        xp:            0,
+        level:         1,
+        streak:        1,
+        longestStreak: 1,
+        lastLogin:     serverTimestamp(),
+        badges:        ["first_login"],
         country,
-        khatmaCount: 0,
-        athkarCount: 0,
-        maydanWins: 0,
-        maydanXP: 0,
+        khatmaCount:   0,
+        athkarCount:   0,
+        maydanWins:    0,
+        maydanXP:      0,
         dailyQCorrect: 0,
-        createdAt: serverTimestamp()
+        createdAt:     serverTimestamp()
       };
       await setDoc(ref, newDoc);
       return newDoc;
@@ -154,40 +148,75 @@ async function ensureUserDoc(user) {
       const updated = await updateStreak(user.uid, snap.data());
       return { ...snap.data(), ...updated };
     }
-  } catch (e) { console.error("ensureUserDoc:", e.code); return null; }
+  } catch (e) {
+    console.error("ensureUserDoc:", e.code);
+    return null;
+  }
 }
 
 // ============================================================
-// تحديث Streak
+// تحديث Streak — ✅ إصلاح Date timezone bug
 // ============================================================
 async function updateStreak(uid, data) {
   try {
     const lastLogin = data.lastLogin?.toDate?.() || new Date(0);
     const now       = new Date();
-    const diffDays  = Math.floor(
-      (now.setHours(0,0,0,0) - new Date(lastLogin).setHours(0,0,0,0)) / 86400000
+
+    // ✅ الإصلاح: نسخ من الـ dates بدل تعديل نفس الـ object
+    const todayStart     = new Date(now);
+    todayStart.setHours(0, 0, 0, 0);
+
+    const lastLoginStart = new Date(lastLogin);
+    lastLoginStart.setHours(0, 0, 0, 0);
+
+    const diffDays = Math.floor(
+      (todayStart.getTime() - lastLoginStart.getTime()) / 86400000
     );
+
     if (diffDays === 0) return {};
+
     const newStreak     = diffDays === 1 ? (data.streak || 0) + 1 : 1;
     const longestStreak = Math.max(newStreak, data.longestStreak || 0);
-    const updateData    = { lastLogin: serverTimestamp(), streak: newStreak, longestStreak };
+
+    const updateData = {
+      lastLogin: serverTimestamp(),
+      streak:    newStreak,
+      longestStreak
+    };
+
     await updateDoc(doc(db, "users", uid), updateData);
+
     if (newStreak >= 7)  await addBadgeInternal(uid, data.badges || [], "streak_7");
     if (newStreak >= 30) await addBadgeInternal(uid, data.badges || [], "streak_30");
+
     return updateData;
-  } catch (e) { console.error("updateStreak:", e.code); return {}; }
+  } catch (e) {
+    console.error("updateStreak:", e.code);
+    return {};
+  }
 }
 
 // ============================================================
-// إضافة XP
+// إضافة XP — ✅ Rate Limiting + Input Validation
 // ============================================================
 async function addXPToFirebase(amount, reason = "") {
+  // ✅ التحقق من الـ amount
+  if (!Number.isInteger(amount) || amount <= 0 || amount > 500) return;
+
+  // ✅ Rate Limit: نفس السبب لا يعطي XP أكثر من مرة كل 5 ثوان
+  if (reason) {
+    const now = Date.now();
+    if (_xpCooldowns[reason] && now - _xpCooldowns[reason] < 5000) return;
+    _xpCooldowns[reason] = now;
+  }
+
   if (!currentUser) {
-    localStorage.setItem("userXP",
-      parseInt(localStorage.getItem("userXP") || "0") + amount);
+    const stored = parseInt(localStorage.getItem("userXP") || "0");
+    localStorage.setItem("userXP", stored + amount);
     showXPFloat(amount);
     return;
   }
+
   try {
     const oldXP = currentUserDoc?.xp || 0;
     const newXP = oldXP + amount;
@@ -197,11 +226,35 @@ async function addXPToFirebase(amount, reason = "") {
     showXPFloat(amount);
     await checkLevelUp(newXP, currentUser.uid, currentUserDoc?.level || 1);
   } catch (e) {
-    localStorage.setItem("userXP",
-      parseInt(localStorage.getItem("userXP") || "0") + amount);
+    console.error("addXP:", e.code);
   }
 }
-const addXP = addXPToFirebase; // alias
+const addXP = addXPToFirebase;
+
+// ============================================================
+// safeAddXP — ✅ آمنة مع islamiCalcReady (لكل الصفحات)
+// ============================================================
+function safeAddXP(amount, reason) {
+  if (window.islamiCalc) {
+    window.islamiCalc.addXP(amount, reason);
+  } else {
+    window.addEventListener("islamiCalcReady",
+      () => window.islamiCalc?.addXP(amount, reason),
+      { once: true }
+    );
+  }
+}
+
+function safeAddBadge(badge) {
+  if (window.islamiCalc) {
+    window.islamiCalc.addBadge(badge);
+  } else {
+    window.addEventListener("islamiCalcReady",
+      () => window.islamiCalc?.addBadge(badge),
+      { once: true }
+    );
+  }
+}
 
 // ============================================================
 // فحص ترقّي المستوى
@@ -224,7 +277,10 @@ async function checkLevelUp(newXP, uid, oldLevel) {
 // ============================================================
 function getLevelFromXP(xp) {
   let current = LEVELS[0];
-  for (const lvl of LEVELS) { if (xp >= lvl.xp) current = lvl; else break; }
+  for (const lvl of LEVELS) {
+    if (xp >= lvl.xp) current = lvl;
+    else break;
+  }
   return current;
 }
 
@@ -252,7 +308,9 @@ async function addBadgeInternal(uid, currentBadges, badgeId) {
       currentUserDoc.badges = [...(currentUserDoc.badges || []), badgeId];
     const def = BADGES_DEF[badgeId];
     if (def) showToast(`${def.icon} وسام جديد: ${def.label}`, "toast-gold");
-  } catch (e) { console.error("addBadge:", e.code); }
+  } catch (e) {
+    console.error("addBadge:", e.code);
+  }
 }
 
 async function addBadge(badgeId) {
@@ -273,16 +331,18 @@ async function getLeaderboard(type = "global") {
         .filter(u => u.country === currentUserDoc.country)
         .map((u, i) => ({ ...u, rank: i + 1 }));
     return all;
-  } catch (e) { console.error("getLeaderboard:", e.code); return []; }
+  } catch (e) {
+    console.error("getLeaderboard:", e.code);
+    return [];
+  }
 }
 
 // ============================================================
 // تسجيل نشاط — للـ Profile heatmap
 // ============================================================
-function logActivity(text, sub = "", icon = "⭐",
-                     color = "rgba(45,106,79,0.1)", xp = 0) {
+function logActivity(text, sub = "", icon = "⭐", color = "rgba(45,106,79,0.1)", xp = 0) {
   const activity = JSON.parse(localStorage.getItem("ic_activity") || "[]");
-  const now = new Date();
+  const now      = new Date();
   activity.push({
     text, sub, icon, color, xp,
     time: now.toLocaleTimeString("ar-SA", { hour: "2-digit", minute: "2-digit" })
@@ -290,7 +350,6 @@ function logActivity(text, sub = "", icon = "⭐",
   if (activity.length > 50) activity.shift();
   localStorage.setItem("ic_activity", JSON.stringify(activity));
 
-  // تحديث heatmap
   const hm  = JSON.parse(localStorage.getItem("ic_heatmap") || "{}");
   const key = now.toISOString().split("T")[0];
   hm[key]   = (hm[key] || 0) + 1;
@@ -298,31 +357,49 @@ function logActivity(text, sub = "", icon = "⭐",
 }
 
 // ============================================================
-// تحديث Navbar
+// تحديث Navbar — ✅ XSS fix: textContent بدل innerHTML للبيانات
 // ============================================================
+function buildLoginButton(btn) {
+  btn.innerHTML = "";
+  // SVG آمن — ليس بيانات مستخدم
+  btn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+    stroke="currentColor" stroke-width="2" style="flex-shrink:0">
+    <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M15 12H3"/>
+  </svg>`;
+  const span = document.createElement("span");
+  span.textContent = "دخول";
+  btn.appendChild(span);
+  btn.onclick = loginWithGoogle;
+}
+
 function updateNavbarUI(user) {
   const loginBtn = document.getElementById("loginBtn");
   if (!loginBtn) return;
+
   if (user) {
     loginBtn.innerHTML = "";
-    const img = document.createElement("img");
-    img.src = user.photoURL || ""; img.alt = ""; img.width = 28; img.height = 28;
+
+    const img    = document.createElement("img");
+    img.src      = user.photoURL || "";
+    img.alt      = "";
+    img.width    = 28;
+    img.height   = 28;
     img.style.cssText = "border-radius:50%;margin-left:6px;vertical-align:middle;";
-    img.onerror = () => img.style.display = "none";
-    const span = document.createElement("span");
-    span.textContent = (user.displayName?.split(" ")[0] || "حسابي") + " ▾";
+    img.onerror  = () => img.style.display = "none";
+
+    const span   = document.createElement("span");
+    // ✅ textContent فقط — لا innerHTML ببيانات المستخدم
+    const rawName = (user.displayName || "حسابي").split(" ")[0].substring(0, 20);
+    span.textContent = rawName + " ▾";
+
     loginBtn.appendChild(img);
     loginBtn.appendChild(span);
     loginBtn.onclick = showUserMenu;
+
     const navProfile = document.getElementById("navProfile");
     if (navProfile) navProfile.style.display = "block";
   } else {
-    loginBtn.innerHTML = `<svg viewBox="0 0 24 24" fill="none"
-      stroke="currentColor" stroke-width="2" width="16" height="16">
-      <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
-      <circle cx="12" cy="7" r="4"/>
-    </svg> دخول`;
-    loginBtn.onclick = loginWithGoogle;
+    buildLoginButton(loginBtn);
     const navProfile = document.getElementById("navProfile");
     if (navProfile) navProfile.style.display = "none";
   }
@@ -340,8 +417,8 @@ function showUserMenu() {
   const lvl    = getLevelFromXP(xp);
   const prog   = getLevelProgress(xp);
 
-  const menu = document.createElement("div");
-  menu.id = "userMenuPopup";
+  const menu   = document.createElement("div");
+  menu.id      = "userMenuPopup";
   menu.style.cssText = `
     position:fixed; top:68px; left:50%; transform:translateX(-50%);
     background:var(--bg-card); border:1px solid var(--border);
@@ -351,37 +428,36 @@ function showUserMenu() {
     font-family:inherit; direction:rtl;
   `;
 
-  const photoEl = document.createElement("img");
-  photoEl.src = currentUser?.photoURL || ""; photoEl.alt = "";
+  // ✅ كل عناصر المستخدم تستخدم textContent
+  const photoEl      = document.createElement("img");
+  photoEl.src        = currentUser?.photoURL || "";
+  photoEl.alt        = "";
   photoEl.style.cssText = "width:60px;height:60px;border-radius:50%;border:3px solid var(--gold);display:block;margin:0 auto 10px;";
-  photoEl.onerror = () => photoEl.style.display = "none";
+  photoEl.onerror    = () => photoEl.style.display = "none";
 
-  const nameEl = document.createElement("div");
-  nameEl.textContent = currentUser?.displayName || "مستخدم";
+  const nameEl       = document.createElement("div");
+  nameEl.textContent = (currentUser?.displayName || "مستخدم").substring(0, 30);
   nameEl.style.cssText = "text-align:center;font-weight:800;font-size:16px;margin-bottom:2px;";
 
-  const titleEl = document.createElement("div");
+  const titleEl      = document.createElement("div");
   titleEl.textContent = `${lvl.icon} ${lvl.title}`;
   titleEl.style.cssText = "text-align:center;color:var(--gold);font-size:13px;margin-bottom:12px;";
 
-  const barWrap = document.createElement("div");
+  const barWrap      = document.createElement("div");
   barWrap.style.cssText = "background:rgba(255,255,255,0.08);border-radius:999px;height:8px;overflow:hidden;margin-bottom:4px;";
-  const barFill = document.createElement("div");
+  const barFill      = document.createElement("div");
   barFill.style.cssText = `width:${prog.percent}%;height:100%;background:linear-gradient(90deg,var(--primary),var(--gold));border-radius:999px;`;
   barWrap.appendChild(barFill);
 
-  const barTxt = document.createElement("div");
+  const barTxt       = document.createElement("div");
   barTxt.textContent = `${prog.current} / ${prog.needed} XP`;
   barTxt.style.cssText = "text-align:center;font-size:11px;color:var(--text-muted);margin-bottom:12px;";
 
-  const stats = document.createElement("div");
+  const stats        = document.createElement("div");
   stats.style.cssText = "display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px;";
-  [
-    ["⭐", xp,          "XP"       ],
-    ["🔥", streak,      "يوم"      ],
-    [lvl.icon, lvl.level, "المستوى"],
-  ].forEach(([ic, v, lb]) => {
-    const c = document.createElement("div");
+
+  [["⭐", xp, "XP"], ["🔥", streak, "يوم"], [lvl.icon, lvl.level, "المستوى"]].forEach(([ic, v, lb]) => {
+    const c   = document.createElement("div");
     c.style.cssText = "background:rgba(255,255,255,0.05);border-radius:10px;padding:8px;text-align:center;";
     const ico = document.createElement("div"); ico.textContent = ic; ico.style.fontSize = "18px";
     const val = document.createElement("div"); val.textContent = v;  val.style.cssText = "font-size:15px;font-weight:900;";
@@ -390,15 +466,15 @@ function showUserMenu() {
     stats.appendChild(c);
   });
 
-  const btnProfile = document.createElement("a");
-  btnProfile.href = "/profile";
+  const btnProfile       = document.createElement("a");
+  btnProfile.href        = "/profile";
   btnProfile.textContent = "👤 صفحة البروفايل";
   btnProfile.style.cssText = "display:block;width:100%;padding:10px;margin-bottom:8px;border-radius:12px;background:linear-gradient(135deg,var(--primary),#1a4a35);color:#fff;text-align:center;text-decoration:none;font-weight:800;font-size:13px;box-sizing:border-box;";
 
-  const btnLogout = document.createElement("button");
-  btnLogout.textContent = "تسجيل الخروج";
+  const btnLogout        = document.createElement("button");
+  btnLogout.textContent  = "تسجيل الخروج";
   btnLogout.style.cssText = "display:block;width:100%;padding:10px;border-radius:12px;background:rgba(248,81,73,0.1);border:1px solid rgba(248,81,73,0.3);color:#f85149;font-family:inherit;font-weight:700;font-size:13px;cursor:pointer;";
-  btnLogout.onclick = () => { menu.remove(); logout(); };
+  btnLogout.onclick       = () => { menu.remove(); logout(); };
 
   menu.append(photoEl, nameEl, titleEl, barWrap, barTxt, stats, btnProfile, btnLogout);
   document.body.appendChild(menu);
@@ -420,25 +496,55 @@ async function getUserCountry() {
   try {
     const r = await fetch("https://api.country.is/");
     return (await r.json()).country || "unknown";
-  } catch { return "unknown"; }
+  } catch {
+    return "unknown";
+  }
 }
 
 function showToast(msg, type = "") {
   const toast = document.getElementById("toast");
   if (!toast) return;
+  // ✅ textContent بدل innerHTML
   toast.textContent = msg;
-  toast.className = "toast show " + type;
+  toast.className   = "toast show " + type;
   setTimeout(() => toast.classList.remove("show"), 3500);
 }
 
 function showXPFloat(amount) {
-  const el = document.createElement("div");
-  el.className = "xp-float";
+  const el       = document.createElement("div");
+  el.className   = "xp-float";
   el.textContent = "+" + amount + " XP";
   el.style.cssText = "position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:99999;pointer-events:none;";
   document.body.appendChild(el);
   setTimeout(() => el.remove(), 1200);
 }
+
+// ============================================================
+// onAuthStateChanged — ✅ islamiCalcReady يُطلق دائماً
+// ============================================================
+onAuthStateChanged(auth, async (user) => {
+  if (user) {
+    currentUser    = user;
+    currentUserDoc = await ensureUserDoc(user);
+    updateNavbarUI(user);
+  } else {
+    currentUser    = null;
+    currentUserDoc = null;
+    updateNavbarUI(null);
+  }
+
+  // ✅ يُطلق دائماً — سواء login أو لا — لكل الصفحات التي تنتظر
+  window.dispatchEvent(new CustomEvent("islamiCalcReady", {
+    detail: { user: currentUser }
+  }));
+
+  // للتوافق مع الكود القديم
+  if (user) {
+    window.dispatchEvent(new CustomEvent("userReady",     { detail: currentUserDoc }));
+  } else {
+    window.dispatchEvent(new CustomEvent("userSignedOut"));
+  }
+});
 
 // ============================================================
 // API الموحّد — window.islamiCalc
@@ -447,38 +553,41 @@ window.islamiCalc = {
   // Auth
   loginWithGoogle,
   logout,
-  logoutUser,           // alias للتوافق
-
+  logoutUser,
+  openLoginModal: () => {
+    const m = document.getElementById("loginModal");
+    if (m) m.classList.add("open");
+  },
   // User
   getCurrentUser:  () => currentUser,
   getCurrentDoc:   () => currentUserDoc,
-
   // XP & Levels
-  addXP: addXPToFirebase,
+  addXP:           addXPToFirebase,
+  safeAddXP,
+  safeAddBadge,
   getLevelFromXP,
   getLevelProgress,
   LEVELS,
-
   // Badges
   addBadge,
   BADGES_DEF,
-
   // Leaderboard
   getLeaderboard,
-
   // Activity Log
   logActivity,
-
   // Firebase refs (للصفحات التي تحتاجها)
   auth, db,
-  doc, updateDoc, increment,
-  serverTimestamp, arrayUnion,
+  doc, updateDoc, increment, serverTimestamp, arrayUnion,
 };
 
-// Aliases عالمية للتوافق مع الكود القديم
+// ============================================================
+// Aliases عالمية — للتوافق مع الكود القديم
+// ============================================================
 window.loginWithGoogle = loginWithGoogle;
 window.logoutUser      = logoutUser;
 window.addXP           = addXPToFirebase;
+window.safeAddXP       = safeAddXP;
+window.safeAddBadge    = safeAddBadge;
 window.showToast       = showToast;
 window.showXPFloat     = showXPFloat;
 window.logActivity     = logActivity;
