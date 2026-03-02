@@ -1,71 +1,88 @@
-/* ========================================
-   IslamiCalc — style.css v3.0
-   أخضر + ذهبي | احترافي | Dark/Light
-   ======================================== */
+/* ================================================
+   IslamiCalc — style.css v4.0
+   أخضر إسلامي + ذهبي | Dark/Light | موحّد لكل الصفحات
+   الصفحات: index, zakat, khatma, prayer, athkar,
+             arena, profile, prophets, seerah, fiqh
+   ================================================ */
 
-/* === 1. المتغيرات === */
+/* ================================================
+   1. المتغيرات
+   ================================================ */
 :root {
   /* الأخضر الإسلامي */
-  --primary:        #2d6a4f;
-  --primary-dark:   #1b4332;
-  --primary-light:  #40916c;
-  --primary-glow:   rgba(45,106,79,0.25);
+  --primary:       #2d6a4f;
+  --primary-dark:  #1b4332;
+  --primary-light: #40916c;
+  --primary-glow:  rgba(45,106,79,0.25);
 
   /* الذهبي */
-  --gold:           #c9a84c;
-  --gold-dark:      #a07830;
-  --gold-light:     #e8c96a;
-  --gold-glow:      rgba(201,168,76,0.2);
+  --gold:       #c9a84c;
+  --gold-dark:  #a07830;
+  --gold-light: #e8c96a;
+  --gold-glow:  rgba(201,168,76,0.2);
 
   /* خلفيات — Dark (افتراضي) */
-  --bg-main:        #0d1117;
-  --bg-card:        #161b22;
-  --bg-card-hover:  #1c2430;
-  --bg-nav:         rgba(13,17,23,0.95);
-  --border:         rgba(255,255,255,0.08);
-  --border-strong:  rgba(255,255,255,0.15);
+  --bg-main:       #0d1117;
+  --bg-card:       #161b22;
+  --bg-card-hover: #1c2430;
+  --bg-nav:        rgba(13,17,23,0.96);
+  --border:        rgba(255,255,255,0.08);
+  --border-strong: rgba(255,255,255,0.15);
 
   /* نصوص */
-  --text:           #e6edf3;
-  --text-sub:       #8b949e;
-  --text-muted:     #484f58;
+  --text:       #e6edf3;
+  --text-sub:   #8b949e;
+  --text-muted: #484f58;
 
   /* حالات */
-  --success:        #3fb950;
-  --error:          #f85149;
-  --warning:        #d29922;
+  --success: #3fb950;
+  --error:   #f85149;
+  --warning: #d29922;
 
-  /* متفرقات */
-  --radius:         12px;
-  --radius-lg:      20px;
-  --radius-sm:      8px;
-  --radius-full:    9999px;
-  --shadow:         0 4px 24px rgba(0,0,0,0.4);
-  --shadow-lg:      0 12px 48px rgba(0,0,0,0.5);
-  --transition:     all 0.25s ease;
+  /* ابعاد */
+  --radius:      12px;
+  --radius-lg:   20px;
+  --radius-sm:   8px;
+  --radius-full: 9999px;
+
+  /* ظلال */
+  --shadow:    0 4px 24px rgba(0,0,0,0.4);
+  --shadow-lg: 0 12px 48px rgba(0,0,0,0.5);
+
+  /* انتقالات */
+  --transition: all 0.25s ease;
 
   /* خطوط */
-  --font:           'Tajawal', sans-serif;
-  --font-en:        'Inter', sans-serif;
+  --font:    'Tajawal', sans-serif;
+  --font-en: 'Inter', sans-serif;
+
+  /* متغيرات الأقسام — تُستخدم في arena/profile */
+  --quran-font-size: 22px;
 }
 
-/* === الوضع الفاتح === */
+/* الوضع الفاتح */
 [data-theme="light"] {
-  --bg-main:        #f6f8fa;
-  --bg-card:        #ffffff;
-  --bg-card-hover:  #f0f4f8;
-  --bg-nav:         rgba(255,255,255,0.97);
-  --border:         rgba(0,0,0,0.09);
-  --border-strong:  rgba(0,0,0,0.16);
-  --text:           #1c2128;
-  --text-sub:       #57606a;
-  --text-muted:     #8c959f;
-  --shadow:         0 4px 24px rgba(0,0,0,0.08);
-  --shadow-lg:      0 12px 48px rgba(0,0,0,0.12);
+  --bg-main:       #f6f8fa;
+  --bg-card:       #ffffff;
+  --bg-card-hover: #f0f4f8;
+  --bg-nav:        rgba(255,255,255,0.97);
+  --border:        rgba(0,0,0,0.09);
+  --border-strong: rgba(0,0,0,0.16);
+  --text:          #1c2128;
+  --text-sub:      #57606a;
+  --text-muted:    #8c959f;
+  --shadow:        0 4px 24px rgba(0,0,0,0.08);
+  --shadow-lg:     0 12px 48px rgba(0,0,0,0.12);
 }
 
-/* === 2. أساسيات === */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+/* ================================================
+   2. أساسيات
+   ================================================ */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
 html {
   scroll-behavior: smooth;
@@ -85,7 +102,17 @@ body {
 
 [lang="en"] { direction: ltr; font-family: var(--font-en); }
 
-/* === 3. Navbar === */
+img { max-width: 100%; display: block; }
+
+a { color: inherit; }
+
+button, input, select, textarea {
+  font-family: var(--font);
+}
+
+/* ================================================
+   3. Navbar
+   ================================================ */
 .navbar {
   position: fixed;
   top: 0; right: 0; left: 0;
@@ -153,8 +180,6 @@ body {
   white-space: nowrap;
 }
 
-.navbar-menu a svg { width: 15px; height: 15px; flex-shrink: 0; }
-
 .navbar-menu a:hover,
 .navbar-menu a.active {
   color: var(--primary-light);
@@ -182,7 +207,7 @@ body {
   color: var(--text-sub);
 }
 .theme-btn:hover { border-color: var(--gold); color: var(--gold); }
-.theme-btn svg { width: 18px; height: 18px; }
+.theme-btn svg   { width: 18px; height: 18px; }
 
 /* زر اللغة */
 .lang-btn {
@@ -218,11 +243,9 @@ body {
   align-items: center;
   gap: 6px;
 }
-.login-btn:hover {
-  opacity: 0.9;
-  box-shadow: 0 4px 16px var(--primary-glow);
-}
-.login-btn svg { width: 16px; height: 16px; }
+.login-btn:hover { opacity: 0.9; box-shadow: 0 4px 16px var(--primary-glow); }
+.login-btn svg   { width: 16px; height: 16px; flex-shrink: 0; }
+.login-btn img   { width: 28px; height: 28px; border-radius: 50%; }
 
 /* زر الجوال */
 .menu-toggle {
@@ -236,27 +259,80 @@ body {
   transition: var(--transition);
 }
 .menu-toggle:hover { background: var(--bg-card); }
-.menu-toggle svg { width: 22px; height: 22px; display: block; }
+.menu-toggle svg   { width: 22px; height: 22px; display: block; }
 
-/* === 4. Main === */
-main { margin-top: 64px; min-height: calc(100vh - 64px); }
+/* ================================================
+   4. أوقات الصلاة — شريط
+   ================================================ */
+.prayer-section {
+  background: var(--bg-card);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 24px;
+  position: sticky;
+  top: 64px;
+  z-index: 100;
+}
 
-/* === 5. Hero === */
+.prayer-grid {
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.prayer-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  flex: 1;
+  min-width: 64px;
+  padding: 8px;
+  border-radius: var(--radius-sm);
+  transition: var(--transition);
+}
+
+.prayer-name { font-size: 11px; color: var(--text-muted); font-weight: 600; }
+.prayer-time { font-size: 15px; font-weight: 800; font-family: var(--font-en); }
+.prayer-sub  { font-size: 10px; color: var(--text-muted); }
+
+.prayer-item.active {
+  background: rgba(45,106,79,0.1);
+}
+.prayer-item.active .prayer-name { color: var(--primary-light); }
+.prayer-item.active .prayer-time { color: var(--gold); }
+
+.next-prayer {
+  background: linear-gradient(135deg, rgba(45,106,79,0.12), rgba(201,168,76,0.08));
+  border: 1px solid rgba(201,168,76,0.2);
+  border-radius: var(--radius);
+  padding: 8px 16px;
+  min-width: 120px;
+  flex: 1.5;
+}
+
+/* ================================================
+   5. Hero
+   ================================================ */
 .hero {
-  padding: 80px 24px 64px;
+  padding: 96px 24px 64px;
   text-align: center;
   position: relative;
   overflow: hidden;
 }
 
-/* خلفية تدرجية متحركة */
 .hero::before {
   content: '';
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse 60% 50% at 50% -10%, rgba(45,106,79,0.18) 0%, transparent 70%),
-    radial-gradient(ellipse 40% 30% at 80% 80%, rgba(201,168,76,0.1) 0%, transparent 60%);
+    radial-gradient(ellipse 60% 50% at 50% -10%,
+      rgba(45,106,79,0.18) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 30% at 80% 80%,
+      rgba(201,168,76,0.10) 0%, transparent 60%);
   pointer-events: none;
 }
 
@@ -264,7 +340,7 @@ main { margin-top: 64px; min-height: calc(100vh - 64px); }
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background: rgba(201,168,76,0.1);
+  background: rgba(201,168,76,0.10);
   border: 1px solid rgba(201,168,76,0.25);
   color: var(--gold);
   padding: 6px 16px;
@@ -275,23 +351,23 @@ main { margin-top: 64px; min-height: calc(100vh - 64px); }
   position: relative;
 }
 
-.hero h1 {
-  font-size: clamp(34px, 6vw, 66px);
+.hero-title {
+  font-size: clamp(32px, 6vw, 64px);
   font-weight: 900;
   line-height: 1.25;
   margin-bottom: 18px;
   position: relative;
 }
 
-.hero h1 .gradient-text {
+.gradient-text {
   background: linear-gradient(135deg, var(--primary-light) 0%, var(--gold) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-.hero p {
-  font-size: clamp(15px, 2.5vw, 18px);
+.hero-desc {
+  font-size: clamp(14px, 2.5vw, 17px);
   color: var(--text-sub);
   max-width: 580px;
   margin: 0 auto 36px;
@@ -307,10 +383,12 @@ main { margin-top: 64px; min-height: calc(100vh - 64px); }
   position: relative;
 }
 
-/* === 6. آية اليوم === */
-.verse-banner {
-  max-width: 720px;
-  margin: 0 auto 56px;
+/* ================================================
+   6. آية اليوم
+   ================================================ */
+.verse-card {
+  max-width: 680px;
+  margin: 48px auto 0;
   background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
@@ -320,15 +398,16 @@ main { margin-top: 64px; min-height: calc(100vh - 64px); }
   overflow: hidden;
 }
 
-.verse-banner::before {
+.verse-card::before {
   content: '❝';
   position: absolute;
-  top: 10px; right: 24px;
+  top: 8px; right: 24px;
   font-size: 60px;
   color: var(--gold);
-  opacity: 0.1;
+  opacity: 0.09;
   font-family: Georgia, serif;
   line-height: 1;
+  pointer-events: none;
 }
 
 .verse-text {
@@ -344,105 +423,58 @@ main { margin-top: 64px; min-height: calc(100vh - 64px); }
   color: var(--text-muted);
 }
 
-.verse-fade { animation: verseFade 0.8s ease; }
+.verse-fade {
+  animation: verseFade 0.8s ease;
+}
 
 @keyframes verseFade {
   from { opacity: 0; transform: translateY(8px); }
-  to   { opacity: 1; transform: translateY(0); }
+  to   { opacity: 1; transform: translateY(0);   }
 }
 
-/* === 7. أوقات الصلاة === */
-.prayer-bar {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  padding: 18px 24px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  flex-wrap: wrap;
-  margin-bottom: 56px;
+/* ================================================
+   7. الأقسام العامة
+   ================================================ */
+.daily-section,
+.features-section,
+.arena-section,
+.ramadan-section {
+  padding: 56px 24px;
 }
 
-.prayer-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-  flex: 1;
-  min-width: 72px;
-  padding: 8px;
-  border-radius: var(--radius-sm);
-  transition: var(--transition);
+.features-section.alt {
+  background: rgba(255,255,255,0.015);
 }
 
-.prayer-name { font-size: 12px; color: var(--text-muted); font-weight: 600; }
-.prayer-time { font-size: 16px; font-weight: 800; font-family: var(--font-en); }
-
-.prayer-item.active {
-  background: rgba(45,106,79,0.12);
-  border-radius: var(--radius-sm);
-}
-.prayer-item.active .prayer-name { color: var(--primary-light); }
-.prayer-item.active .prayer-time { color: var(--gold); }
-
-.next-prayer {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 3px;
-  background: linear-gradient(135deg, rgba(45,106,79,0.15), rgba(201,168,76,0.12));
-  border: 1px solid rgba(201,168,76,0.2);
-  border-radius: var(--radius);
-  padding: 12px 18px;
-  min-width: 120px;
-}
-.next-label    { font-size: 11px; color: var(--text-muted); }
-.next-name     { font-size: 13px; font-weight: 700; color: var(--primary-light); }
-.next-countdown{ font-size: 18px; font-weight: 900; color: var(--gold); font-family: var(--font-en); }
-
-/* === 8. الأقسام === */
-.section {
-  padding: 52px 24px;
-  max-width: 1200px;
+.section-container {
+  max-width: 1100px;
   margin: 0 auto;
 }
-
-.section-header { margin-bottom: 32px; }
-
-.section-label {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 12px;
-  font-weight: 700;
-  color: var(--primary-light);
-  text-transform: uppercase;
-  letter-spacing: 1.5px;
-  margin-bottom: 8px;
-}
-.section-label svg { width: 14px; height: 14px; }
 
 .section-title {
   font-size: clamp(22px, 4vw, 32px);
   font-weight: 800;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
+  text-align: center;
 }
 
-.section-subtitle {
-  font-size: 15px;
+.section-sub {
+  font-size: 14px;
   color: var(--text-sub);
+  text-align: center;
+  margin-bottom: 28px;
 }
 
-/* === 9. الكاردات === */
-.cards-grid {
+/* ================================================
+   8. بطاقات الميزات
+   ================================================ */
+.features-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(255px, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 14px;
 }
 
-.card {
+.feature-card {
   background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
@@ -452,103 +484,199 @@ main { margin-top: 64px; min-height: calc(100vh - 64px); }
   transition: var(--transition);
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
   position: relative;
   overflow: hidden;
 }
 
-.card::after {
+.feature-card::after {
   content: '';
   position: absolute;
   inset: 0;
-  border-radius: var(--radius-lg);
   background: linear-gradient(135deg, var(--primary-glow), transparent);
   opacity: 0;
   transition: var(--transition);
+  border-radius: var(--radius-lg);
 }
 
-.card:hover {
-  border-color: rgba(45,106,79,0.4);
+.feature-card:hover {
+  border-color: rgba(45,106,79,0.35);
   transform: translateY(-4px);
   box-shadow: var(--shadow-lg);
 }
-.card:hover::after { opacity: 1; }
 
-.card-icon {
-  width: 48px; height: 48px;
-  background: linear-gradient(135deg, rgba(45,106,79,0.2), rgba(201,168,76,0.15));
-  border: 1px solid rgba(45,106,79,0.25);
-  border-radius: 14px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  z-index: 1;
-  flex-shrink: 0;
-}
-.card-icon svg { width: 24px; height: 24px; color: var(--primary-light); }
+.feature-card:hover::after { opacity: 1; }
 
-.card-title {
-  font-size: 17px;
-  font-weight: 700;
+.feature-icon {
+  font-size: 2rem;
   position: relative;
   z-index: 1;
 }
 
-.card-desc {
-  font-size: 13.5px;
+.feature-card h3 {
+  font-size: 16px;
+  font-weight: 800;
+  position: relative;
+  z-index: 1;
+}
+
+.feature-card p {
+  font-size: 13px;
   color: var(--text-sub);
   line-height: 1.65;
   position: relative;
   z-index: 1;
 }
 
-.card-arrow {
+.feature-link {
   margin-top: auto;
   color: var(--primary-light);
   font-size: 13px;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  gap: 6px;
+  font-weight: 700;
   position: relative;
   z-index: 1;
 }
-.card-arrow svg { width: 14px; height: 14px; transition: transform 0.2s; }
-.card:hover .card-arrow svg { transform: translateX(-4px); }
 
-/* === 10. ساحة التحدي CTA === */
-.arena-cta {
-  background: linear-gradient(135deg, #0d1117 0%, #1a2e1a 40%, #1a1a0d 100%);
-  border: 1px solid rgba(201,168,76,0.2);
+/* ================================================
+   9. سؤال اليوم
+   ================================================ */
+.daily-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
   border-radius: var(--radius-lg);
-  padding: 52px 36px;
-  text-align: center;
+  padding: 28px;
+  max-width: 640px;
+  margin: 0 auto;
   position: relative;
-  overflow: hidden;
 }
 
-.arena-cta::before {
+.daily-xp-badge {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  background: rgba(201,168,76,0.12);
+  border: 1px solid rgba(201,168,76,0.25);
+  color: var(--gold);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+}
+
+.daily-q {
+  font-size: clamp(16px, 3vw, 20px);
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 20px;
+  line-height: 1.7;
+  padding-top: 12px;
+}
+
+.daily-options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.daily-result {
+  margin-top: 14px;
+  font-size: 13px;
+  font-weight: 600;
+  text-align: center;
+  line-height: 1.7;
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  background: rgba(255,255,255,0.04);
+}
+
+/* ================================================
+   10. الميدان CTA
+   ================================================ */
+.arena-section {
+  background: linear-gradient(135deg, #0d1117 0%, #0d1a0d 50%, #1a1a0d 100%);
+  border-top:    1px solid rgba(201,168,76,0.1);
+  border-bottom: 1px solid rgba(201,168,76,0.1);
+}
+
+.arena-content {
+  max-width: 680px;
+  margin: 0 auto;
+  text-align: center;
+  position: relative;
+}
+
+.arena-content::before {
   content: '';
-  position: absolute; inset: 0;
-  background: radial-gradient(ellipse at 50% 50%, rgba(201,168,76,0.08) 0%, transparent 70%);
+  position: absolute;
+  inset: -56px -24px;
+  background: radial-gradient(ellipse at 50% 50%,
+    rgba(201,168,76,0.08) 0%, transparent 65%);
   pointer-events: none;
+}
+
+.arena-icon  { font-size: 4rem; margin-bottom: 14px; position: relative; }
+
+.arena-content h2 {
+  font-size: clamp(24px, 4vw, 38px);
+  font-weight: 900;
+  margin-bottom: 10px;
+  position: relative;
+}
+
+.arena-content p {
+  font-size: 15px;
+  color: var(--text-sub);
+  max-width: 480px;
+  margin: 0 auto 24px;
+  position: relative;
 }
 
 .arena-stats {
   display: flex;
   justify-content: center;
-  gap: 40px;
-  margin: 28px 0;
+  gap: 32px;
+  margin-bottom: 28px;
   flex-wrap: wrap;
   position: relative;
 }
 
-.arena-stat-num  { font-size: 2.4rem; font-weight: 900; color: var(--gold); display: block; }
-.arena-stat-lbl  { font-size: 0.8rem; color: var(--text-sub); }
+.arena-stat  { text-align: center; }
+.arena-num   { font-size: 2.2rem; font-weight: 900; color: var(--gold); display: block; }
+.arena-lbl   { font-size: 12px; color: var(--text-sub); }
 
-/* === 11. الأزرار === */
-.btn {
+/* ================================================
+   11. رمضان
+   ================================================ */
+.ramadan-section {
+  background: linear-gradient(135deg,
+    rgba(45,106,79,0.06) 0%,
+    rgba(201,168,76,0.04) 100%);
+  border-top: 1px solid rgba(45,106,79,0.15);
+  text-align: center;
+}
+
+.ramadan-inner  { max-width: 480px; margin: 0 auto; }
+.ramadan-icon   { font-size: 3rem; margin-bottom: 12px; }
+.ramadan-inner h2 { font-size: clamp(20px, 4vw, 28px); font-weight: 900; margin-bottom: 12px; }
+.ramadan-counter {
+  font-size: clamp(60px, 12vw, 96px);
+  font-weight: 900;
+  color: var(--gold);
+  line-height: 1;
+  margin-bottom: 4px;
+  font-family: var(--font-en);
+}
+.ramadan-label { font-size: 18px; font-weight: 700; color: var(--primary-light); margin-bottom: 10px; }
+.ramadan-desc  { font-size: 14px; color: var(--text-sub); }
+
+/* ================================================
+   12. الأزرار
+   ================================================ */
+.btn,
+.btn-primary,
+.btn-secondary,
+.btn-gold,
+.btn-outline {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -564,7 +692,6 @@ main { margin-top: 64px; min-height: calc(100vh - 64px); }
   text-decoration: none;
   white-space: nowrap;
 }
-.btn svg { width: 18px; height: 18px; flex-shrink: 0; }
 
 .btn-primary {
   background: linear-gradient(135deg, var(--primary), var(--primary-dark));
@@ -572,6 +699,13 @@ main { margin-top: 64px; min-height: calc(100vh - 64px); }
   box-shadow: 0 4px 16px var(--primary-glow);
 }
 .btn-primary:hover { opacity: 0.9; transform: translateY(-2px); }
+
+.btn-secondary {
+  background: var(--bg-card);
+  border: 1.5px solid var(--border-strong);
+  color: var(--text);
+}
+.btn-secondary:hover { border-color: var(--primary); color: var(--primary-light); }
 
 .btn-gold {
   background: linear-gradient(135deg, var(--gold), var(--gold-dark));
@@ -588,56 +722,21 @@ main { margin-top: 64px; min-height: calc(100vh - 64px); }
 .btn-outline:hover { border-color: var(--primary); color: var(--primary-light); }
 
 .btn-lg { padding: 15px 34px; font-size: 16px; border-radius: var(--radius-lg); }
-.btn-sm { padding: 8px 16px; font-size: 13px; }
+.btn-sm { padding: 8px  16px; font-size: 13px; }
 
-/* === 12. سؤال اليوم === */
-.daily-q-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  padding: 28px;
-  max-width: 680px;
-  margin: 0 auto 56px;
-}
-
-.daily-q-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 20px;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.daily-q-title {
-  font-size: 1rem;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.xp-badge {
-  background: rgba(201,168,76,0.12);
-  border: 1px solid rgba(201,168,76,0.25);
-  color: var(--gold);
-  font-size: 12px;
-  font-weight: 700;
-  padding: 4px 12px;
-  border-radius: var(--radius-full);
-}
-
-/* === 13. الحاسبات — صفحة داخلية === */
+/* ================================================
+   13. الحاسبات
+   ================================================ */
 .calculator-page {
   max-width: 700px;
   margin: 0 auto;
-  padding: 40px 24px 80px;
+  padding: 96px 24px 80px;
 }
 
-.calc-header { text-align: center; margin-bottom: 40px; }
-.calc-icon   { font-size: 52px; margin-bottom: 16px; display: block; }
-.calc-title  { font-size: clamp(26px,4vw,36px); font-weight: 900; margin-bottom: 8px; }
-.calc-desc   { color: var(--text-sub); font-size: 15px; }
+.calc-header     { text-align: center; margin-bottom: 36px; }
+.calc-icon       { font-size: 52px; margin-bottom: 14px; display: block; }
+.calc-title      { font-size: clamp(24px, 4vw, 36px); font-weight: 900; margin-bottom: 8px; }
+.calc-desc       { color: var(--text-sub); font-size: 15px; }
 
 .calc-form {
   background: var(--bg-card);
@@ -649,10 +748,11 @@ main { margin-top: 64px; min-height: calc(100vh - 64px); }
   gap: 20px;
 }
 
-.form-group { display: flex; flex-direction: column; gap: 8px; }
-.form-label { font-size: 14px; font-weight: 700; color: var(--text-sub); }
+.form-group  { display: flex; flex-direction: column; gap: 8px; }
+.form-label  { font-size: 14px; font-weight: 700; color: var(--text-sub); }
 
-.form-input, .form-select {
+.form-input,
+.form-select {
   background: var(--bg-main);
   border: 1.5px solid var(--border);
   border-radius: var(--radius);
@@ -664,15 +764,19 @@ main { margin-top: 64px; min-height: calc(100vh - 64px); }
   width: 100%;
   outline: none;
 }
-.form-input:focus, .form-select:focus {
+
+.form-input:focus,
+.form-select:focus {
   border-color: var(--primary);
   box-shadow: 0 0 0 3px var(--primary-glow);
 }
+
 .form-input::placeholder { color: var(--text-muted); }
 .form-select { cursor: pointer; }
 
 .calc-result {
-  background: linear-gradient(135deg, rgba(45,106,79,0.08), rgba(201,168,76,0.08));
+  background: linear-gradient(135deg,
+    rgba(45,106,79,0.08), rgba(201,168,76,0.08));
   border: 1px solid rgba(201,168,76,0.25);
   border-radius: var(--radius-lg);
   padding: 28px;
@@ -682,14 +786,13 @@ main { margin-top: 64px; min-height: calc(100vh - 64px); }
   margin-top: 16px;
 }
 .calc-result.show { display: block; }
-
 @keyframes resultAppear {
   from { opacity: 0; transform: scale(0.96); }
-  to   { opacity: 1; transform: scale(1); }
+  to   { opacity: 1; transform: scale(1);    }
 }
 
 .result-label { font-size: 14px; color: var(--text-muted); margin-bottom: 8px; }
-.result-value { font-size: clamp(32px,6vw,48px); font-weight: 900; color: var(--gold); }
+.result-value { font-size: clamp(30px, 6vw, 48px); font-weight: 900; color: var(--gold); }
 .result-unit  { font-size: 18px; color: var(--text-sub); margin-top: 4px; }
 .result-note  {
   font-size: 13px; color: var(--text-muted);
@@ -697,7 +800,115 @@ main { margin-top: 64px; min-height: calc(100vh - 64px); }
   border-top: 1px solid var(--border);
 }
 
-/* === 14. Leaderboard === */
+/* ================================================
+   14. Quiz / Maydan
+   ================================================ */
+.quiz-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 28px;
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+.quiz-progress,
+.quiz-timer {
+  width: 100%; height: 7px;
+  background: var(--bg-main);
+  border-radius: var(--radius-full);
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+
+.quiz-progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary), var(--gold));
+  border-radius: var(--radius-full);
+  transition: width 0.5s ease;
+}
+
+.quiz-timer-bar {
+  height: 100%;
+  border-radius: var(--radius-full);
+  transition: width 1s linear, background 0.5s;
+}
+
+.timer-green  { background: var(--success); }
+.timer-yellow { background: var(--warning); }
+.timer-red    { background: var(--error);   }
+
+.quiz-question {
+  font-size: clamp(16px, 3vw, 21px);
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 24px;
+  line-height: 1.7;
+}
+
+.quiz-options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.quiz-option {
+  background: var(--bg-main);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px;
+  font-family: var(--font);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  cursor: pointer;
+  transition: var(--transition);
+  text-align: center;
+  min-height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.quiz-option:hover:not(:disabled) {
+  border-color: var(--primary);
+  background: rgba(45,106,79,0.08);
+  transform: translateY(-2px);
+}
+
+.quiz-option.correct {
+  border-color: var(--success);
+  background: rgba(63,185,80,0.12);
+  color: var(--success);
+  animation: correctPulse 0.4s ease;
+}
+
+.quiz-option.wrong {
+  border-color: var(--error);
+  background: rgba(248,81,73,0.12);
+  color: var(--error);
+  animation: wrongShake 0.4s ease;
+}
+
+.quiz-option.reveal {
+  border-color: var(--success);
+  background: rgba(63,185,80,0.07);
+}
+
+@keyframes correctPulse {
+  0%, 100% { transform: scale(1); }
+  50%       { transform: scale(1.03); }
+}
+
+@keyframes wrongShake {
+  0%, 100% { transform: translateX(0); }
+  25%      { transform: translateX(-7px); }
+  75%      { transform: translateX(7px);  }
+}
+
+/* ================================================
+   15. Leaderboard
+   ================================================ */
 .leaderboard {
   background: var(--bg-card);
   border: 1px solid var(--border);
@@ -711,9 +922,11 @@ main { margin-top: 64px; min-height: calc(100vh - 64px); }
 }
 
 .leaderboard-tab {
-  flex: 1; padding: 13px;
+  flex: 1;
+  padding: 13px;
   text-align: center;
-  font-size: 14px; font-weight: 700;
+  font-size: 14px;
+  font-weight: 700;
   color: var(--text-muted);
   cursor: pointer;
   transition: var(--transition);
@@ -721,6 +934,7 @@ main { margin-top: 64px; min-height: calc(100vh - 64px); }
   background: none;
   font-family: var(--font);
 }
+
 .leaderboard-tab.active {
   color: var(--primary-light);
   border-bottom: 3px solid var(--primary);
@@ -735,9 +949,12 @@ main { margin-top: 64px; min-height: calc(100vh - 64px); }
   border-bottom: 1px solid var(--border);
   transition: var(--transition);
 }
-.leaderboard-item:hover { background: var(--bg-card-hover); }
 
-.lb-rank { font-size: 17px; font-weight: 900; width: 30px; text-align: center; flex-shrink: 0; }
+.leaderboard-item:last-child { border-bottom: none; }
+.leaderboard-item:hover      { background: var(--bg-card-hover); }
+.leaderboard-item.me         { background: rgba(45,106,79,0.06); }
+
+.lb-rank   { font-size: 17px; font-weight: 900; width: 30px; text-align: center; flex-shrink: 0; color: var(--text-muted); }
 .lb-rank-1 { color: var(--gold); }
 .lb-rank-2 { color: #8b949e; }
 .lb-rank-3 { color: #cd7c2f; }
@@ -748,17 +965,23 @@ main { margin-top: 64px; min-height: calc(100vh - 64px); }
   object-fit: cover;
   flex-shrink: 0;
   background: linear-gradient(135deg, var(--primary), var(--gold));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px;
 }
 
-.lb-info { flex: 1; }
+.lb-info  { flex: 1; }
 .lb-name  { font-size: 14px; font-weight: 700; }
 .lb-title { font-size: 11px; color: var(--text-muted); }
 .lb-xp    { font-size: 14px; font-weight: 800; color: var(--gold); font-family: var(--font-en); }
 
-/* === 15. الشارات === */
+/* ================================================
+   16. الشارات
+   ================================================ */
 .badge {
-  display: inline-flex; flex-direction: column;
-  align-items: center; gap: 5px;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
   padding: 12px 8px;
   background: var(--bg-card);
   border: 1px solid var(--border);
@@ -766,37 +989,47 @@ main { margin-top: 64px; min-height: calc(100vh - 64px); }
   cursor: pointer;
   transition: var(--transition);
   min-width: 76px;
+  text-decoration: none;
 }
-.badge:hover { transform: translateY(-3px); box-shadow: var(--shadow); }
-.badge-icon  { font-size: 26px; }
-.badge-name  { font-size: 11px; font-weight: 700; color: var(--text-sub); text-align: center; }
-.badge-gold  { border-color: var(--gold); background: rgba(201,168,76,0.07); }
-.badge-locked{ opacity: 0.35; filter: grayscale(1); pointer-events: none; }
+.badge:hover      { transform: translateY(-3px); box-shadow: var(--shadow); }
+.badge-icon       { font-size: 26px; }
+.badge-name       { font-size: 11px; font-weight: 700; color: var(--text-sub); text-align: center; }
+.badge-gold       { border-color: var(--gold); background: rgba(201,168,76,0.07); }
+.badge-locked     { opacity: 0.35; filter: grayscale(1); pointer-events: none; }
 
-/* === 16. XP Float === */
+/* ================================================
+   17. XP Float
+   ================================================ */
 .xp-float {
   position: fixed;
-  font-size: 18px; font-weight: 900;
+  font-size: 18px;
+  font-weight: 900;
   color: var(--gold);
   pointer-events: none;
   z-index: 9999;
   animation: xpFloat 1.2s ease forwards;
-}
-@keyframes xpFloat {
-  0%   { opacity: 1; transform: translate(-50%,-50%) scale(1); }
-  100% { opacity: 0; transform: translate(-50%,-120px) scale(1.4); }
+  white-space: nowrap;
 }
 
-/* === 17. Toast === */
+@keyframes xpFloat {
+  0%   { opacity: 1; transform: translate(-50%,-50%) scale(1);   }
+  100% { opacity: 0; transform: translate(-50%,-130px) scale(1.4); }
+}
+
+/* ================================================
+   18. Toast
+   ================================================ */
 .toast {
   position: fixed;
-  top: 76px; left: 50%;
+  top: 76px;
+  left: 50%;
   transform: translateX(-50%) translateY(-16px);
   background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 12px 22px;
-  font-size: 14px; font-weight: 600;
+  font-size: 14px;
+  font-weight: 600;
   z-index: 9999;
   opacity: 0;
   transition: all 0.28s ease;
@@ -805,228 +1038,340 @@ main { margin-top: 64px; min-height: calc(100vh - 64px); }
   max-width: 88vw;
   pointer-events: none;
 }
-.toast.show {
-  opacity: 1;
-  transform: translateX(-50%) translateY(0);
-}
+
+.toast.show    { opacity: 1; transform: translateX(-50%) translateY(0); }
 .toast-success { border-color: var(--success); color: var(--success); }
 .toast-error   { border-color: var(--error);   color: var(--error);   }
 .toast-gold    { border-color: var(--gold);     color: var(--gold);    }
 
-/* === 18. Modal === */
-.modal-overlay {
-  position: fixed; inset: 0;
-  background: rgba(0,0,0,0.75);
-  z-index: 9998;
-  display: flex; align-items: center; justify-content: center;
-  padding: 24px;
-  opacity: 0; pointer-events: none;
-  transition: var(--transition);
-  backdrop-filter: blur(6px);
-}
-.modal-overlay.open { opacity: 1; pointer-events: all; }
-
+/* ================================================
+   19. Modal (تسجيل الدخول)
+   ================================================ */
 .modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.78);
+  z-index: 9998;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+  backdrop-filter: blur(8px);
+}
+
+.modal.open { opacity: 1; pointer-events: all; }
+
+.modal-box {
   background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
-  padding: 32px; max-width: 460px; width: 100%;
-  transform: scale(0.92); transition: var(--transition);
+  padding: 36px 32px;
+  max-width: 440px;
+  width: 100%;
+  text-align: center;
+  transform: scale(0.93);
+  transition: transform 0.3s;
 }
-.modal-overlay.open .modal { transform: scale(1); }
-.modal-title { font-size: 22px; font-weight: 800; margin-bottom: 16px; text-align: center; }
 
-/* === 19. Footer === */
-footer {
+.modal.open .modal-box { transform: scale(1); }
+
+.modal-box h2     { font-size: 22px; font-weight: 900; margin-bottom: 10px; }
+.modal-box p      { font-size: 14px; color: var(--text-sub); margin-bottom: 24px; line-height: 1.7; }
+.modal-terms      { font-size: 11px; color: var(--text-muted); margin-top: 14px; line-height: 1.7; }
+.modal-terms a    { color: var(--primary-light); text-decoration: none; }
+
+.google-btn {
+  width: 100%;
+  padding: 13px;
+  background: linear-gradient(135deg, #1a56a0, #1a73e8);
+  border: none;
+  border-radius: var(--radius);
+  color: #fff;
+  font-family: var(--font);
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--transition);
+  margin-bottom: 10px;
+}
+.google-btn:hover { opacity: 0.9; transform: scale(1.02); }
+
+.skip-btn {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-family: var(--font);
+  font-size: 13px;
+  cursor: pointer;
+  padding: 6px;
+  transition: var(--transition);
+}
+.skip-btn:hover { color: var(--text-sub); }
+
+/* ================================================
+   20. Footer
+   ================================================ */
+.footer {
   background: var(--bg-card);
   border-top: 1px solid var(--border);
   padding: 52px 24px 28px;
   margin-top: 80px;
 }
 
-.footer-grid {
-  max-width: 1200px; margin: 0 auto;
+.footer-inner {
+  max-width: 1100px;
+  margin: 0 auto;
   display: grid;
   grid-template-columns: 2fr 1fr 1fr 1fr;
   gap: 40px;
-  margin-bottom: 40px;
+  margin-bottom: 36px;
 }
 
-.footer-brand .navbar-title { font-size: 22px; display: block; margin-bottom: 12px; }
-.footer-desc { font-size: 14px; color: var(--text-sub); line-height: 1.8; max-width: 270px; }
-.footer-email {
-  display: inline-flex; align-items: center; gap: 6px;
-  margin-top: 12px; font-size: 13px; color: var(--text-muted);
-  text-decoration: none;
-  transition: var(--transition);
-}
-.footer-email:hover { color: var(--primary-light); }
-.footer-email svg { width: 14px; height: 14px; }
-
-.footer-col h4 { font-size: 14px; font-weight: 700; margin-bottom: 14px; }
-.footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
-.footer-col ul a {
-  font-size: 13.5px; color: var(--text-sub); text-decoration: none;
-  transition: var(--transition);
-}
+.footer-brand p      { font-size: 13px; color: var(--text-sub); line-height: 1.8; margin-bottom: 6px; max-width: 260px; }
+.footer-col h4       { font-size: 14px; font-weight: 700; margin-bottom: 14px; }
+.footer-col ul       { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.footer-col ul a     { font-size: 13px; color: var(--text-sub); text-decoration: none; transition: var(--transition); }
 .footer-col ul a:hover { color: var(--primary-light); }
 
 .footer-bottom {
-  max-width: 1200px; margin: 0 auto;
-  display: flex; align-items: center; justify-content: space-between;
-  padding-top: 24px; border-top: 1px solid var(--border);
-  font-size: 13px; color: var(--text-muted);
-  flex-wrap: wrap; gap: 10px;
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+  font-size: 12px;
+  color: var(--text-muted);
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
-/* === 20. Cookie Banner === */
+/* ================================================
+   21. Cookie Banner
+   ================================================ */
 .cookie-banner {
-  position: fixed; bottom: 0; right: 0; left: 0; z-index: 9997;
+  position: fixed;
+  bottom: 0; right: 0; left: 0;
+  z-index: 9997;
   background: var(--bg-card);
   border-top: 1px solid var(--border);
   padding: 14px 24px;
-  display: flex; align-items: center; justify-content: space-between;
-  gap: 14px; flex-wrap: wrap;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
   box-shadow: 0 -4px 20px rgba(0,0,0,0.2);
 }
-.cookie-text { font-size: 14px; color: var(--text-sub); flex: 1; }
-.cookie-text a { color: var(--primary-light); text-decoration: none; }
 
-/* === 21. Quiz (Arena) === */
-.quiz-card {
-  background: var(--bg-card);
+.cookie-banner span  { font-size: 13px; color: var(--text-sub); flex: 1; }
+.cookie-banner span a { color: var(--primary-light); text-decoration: none; }
+
+.cookie-btns { display: flex; gap: 8px; }
+.cookie-btns button {
+  padding: 7px 16px;
+  border-radius: var(--radius-sm);
+  font-family: var(--font);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
   border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  padding: 30px;
-  max-width: 680px; margin: 0 auto;
-}
-
-.quiz-progress, .quiz-timer {
-  width: 100%; height: 7px;
-  background: var(--bg-main);
-  border-radius: var(--radius-full);
-  margin-bottom: 20px; overflow: hidden;
-}
-.quiz-progress-bar {
-  height: 100%;
-  background: linear-gradient(90deg, var(--primary), var(--gold));
-  border-radius: var(--radius-full);
-  transition: width 0.5s ease;
-}
-.quiz-timer-bar { height: 100%; border-radius: var(--radius-full); transition: width 1s linear, background 0.5s; }
-.timer-green  { background: var(--success); }
-.timer-yellow { background: var(--warning); }
-.timer-red    { background: var(--error); }
-
-.quiz-question {
-  font-size: clamp(18px,3vw,22px); font-weight: 700;
-  text-align: center; margin-bottom: 26px; line-height: 1.7;
-}
-
-.quiz-options { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-
-.quiz-option {
-  background: var(--bg-main);
-  border: 1.5px solid var(--border);
-  border-radius: var(--radius);
-  padding: 15px;
-  font-family: var(--font); font-size: 14px; font-weight: 600;
-  color: var(--text); cursor: pointer;
+  background: none;
+  color: var(--text-sub);
   transition: var(--transition);
-  text-align: center; min-height: 54px;
-  display: flex; align-items: center; justify-content: center;
 }
-.quiz-option:hover:not(:disabled) {
-  border-color: var(--primary);
-  background: rgba(45,106,79,0.08);
-  transform: translateY(-2px);
-}
-.quiz-option.correct {
-  border-color: var(--success);
-  background: rgba(63,185,80,0.12);
-  color: var(--success);
-  animation: correctPulse 0.4s ease;
-}
-.quiz-option.wrong {
-  border-color: var(--error);
-  background: rgba(248,81,73,0.12);
-  color: var(--error);
-  animation: wrongShake 0.4s ease;
-}
-@keyframes correctPulse {
-  0% { transform: scale(1); } 50% { transform: scale(1.03); } 100% { transform: scale(1); }
-}
-@keyframes wrongShake {
-  0%, 100% { transform: translateX(0); } 25% { transform: translateX(-7px); } 75% { transform: translateX(7px); }
-}
+.cookie-btns button:hover        { border-color: var(--primary); color: var(--primary-light); }
+.cookie-btns button.accept       { background: var(--primary); border-color: var(--primary); color: #fff; }
+.cookie-btns button.accept:hover { opacity: 0.9; }
 
-/* === 22. Skeleton Loading === */
+/* ================================================
+   22. Skeleton Loading
+   ================================================ */
 .skeleton {
-  background: linear-gradient(90deg, var(--bg-card) 25%, var(--bg-card-hover) 50%, var(--bg-card) 75%);
+  background: linear-gradient(
+    90deg,
+    var(--bg-card) 25%,
+    var(--bg-card-hover) 50%,
+    var(--bg-card) 75%
+  );
   background-size: 200% 100%;
   animation: skeleton 1.5s infinite;
   border-radius: var(--radius-sm);
 }
+
 @keyframes skeleton {
-  0%   { background-position: 200% 0; }
+  0%   { background-position: 200% 0;   }
   100% { background-position: -200% 0; }
 }
 
-/* === 23. Scrollbar === */
-::-webkit-scrollbar { width: 5px; }
+/* ================================================
+   23. Scrollbar
+   ================================================ */
+::-webkit-scrollbar       { width: 5px; }
 ::-webkit-scrollbar-track { background: var(--bg-main); }
 ::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 10px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
 
 ::selection { background: rgba(45,106,79,0.3); }
 
-/* === 24. Responsive === */
+/* ================================================
+   24. مكونات مشتركة
+   ================================================ */
+
+/* Section Heading */
+.sec-hd {
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--text-sub);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Back Button */
+.back-btn {
+  background: none;
+  border: none;
+  color: var(--text-sub);
+  cursor: pointer;
+  font-family: var(--font);
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 18px;
+  padding: 0;
+  transition: var(--transition);
+  text-decoration: none;
+}
+.back-btn:hover { color: var(--primary-light); }
+
+/* Stat Card */
+.stat-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 16px 12px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.stat-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--sc, var(--gold));
+}
+
+.stat-icon { font-size: 1.6rem; margin-bottom: 6px; }
+.stat-num  { font-size: 22px; font-weight: 900; color: var(--sc, var(--gold)); }
+.stat-lbl  { font-size: 11px; color: var(--text-muted); margin-top: 3px; }
+
+/* XP Bar عامة */
+.xp-bar-wrap { display: flex; align-items: center; gap: 8px; }
+.xp-bar { flex: 1; height: 8px; background: var(--bg-main); border-radius: var(--radius-full); overflow: hidden; }
+.xp-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary), var(--primary-light));
+  border-radius: var(--radius-full);
+  transition: width 0.5s;
+}
+.xp-lbl { font-size: 11px; color: var(--gold); font-weight: 700; white-space: nowrap; }
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: 48px 24px;
+  color: var(--text-muted);
+}
+.empty-state-icon { font-size: 3rem; margin-bottom: 12px; }
+.empty-state p    { font-size: 14px; }
+
+/* ================================================
+   25. Responsive
+   ================================================ */
+@media (max-width: 900px) {
+  .footer-inner { grid-template-columns: 1fr 1fr; gap: 28px; }
+}
+
 @media (max-width: 768px) {
   .navbar-menu { display: none; }
+
   .navbar-menu.open {
-    display: flex; flex-direction: column;
-    position: fixed; top: 64px; right: 0; left: 0;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 64px; right: 0; left: 0;
     background: var(--bg-nav);
     border-bottom: 1px solid var(--border);
-    padding: 12px 16px; gap: 4px; z-index: 999;
+    padding: 12px 16px;
+    gap: 4px;
+    z-index: 999;
     backdrop-filter: blur(16px);
+    max-height: calc(100vh - 64px);
+    overflow-y: auto;
   }
-  /* ✅ login-btn ظاهر في القائمة على الجوال */
+
+  .navbar-menu.open li a {
+    padding: 10px 14px;
+    font-size: 15px;
+  }
+
+  .menu-toggle { display: flex; }
+
+  .hero          { padding: 80px 16px 44px; }
+  .prayer-section { position: static; }
+  .prayer-grid   { justify-content: center; }
+
+  .daily-options  { grid-template-columns: 1fr; }
+  .quiz-options   { grid-template-columns: 1fr; }
+  .features-grid  { grid-template-columns: repeat(auto-fill, minmax(180px,1fr)); gap: 10px; }
+  .arena-stats    { gap: 20px; }
+
+  .calc-form { padding: 20px 16px; }
+  .footer-inner { grid-template-columns: 1fr 1fr; gap: 24px; }
+}
+
+@media (max-width: 540px) {
+  .navbar        { padding: 0 14px; gap: 8px; }
+  .navbar-title  { font-size: 17px; }
+  .login-btn     { display: none; }
+
+  /* login في القائمة على الجوال */
   .navbar-menu.open .login-btn-mobile {
     display: flex !important;
     width: 100%;
     justify-content: center;
     margin-top: 8px;
   }
-  .menu-toggle { display: flex; }
-  .hero { padding: 48px 16px 40px; }
-  .footer-grid { grid-template-columns: 1fr 1fr; gap: 28px; }
-  .prayer-bar { gap: 6px; }
-  .prayer-item { min-width: 58px; }
-  .prayer-time { font-size: 14px; }
-  .quiz-options { grid-template-columns: 1fr; }
-  .cards-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; }
-  .section { padding: 36px 16px; }
-  .calc-form { padding: 20px; }
-  .arena-stats { gap: 24px; }
-}
 
-@media (max-width: 480px) {
-  .navbar { padding: 0 14px; gap: 8px; }
-  .navbar-title { font-size: 17px; }
-  /* ✅ login-btn لا يُخفى بعد الآن — يظهر في القائمة */
-  .login-btn { display: none; }
-  .cards-grid { grid-template-columns: 1fr 1fr; }
-  .footer-grid { grid-template-columns: 1fr; }
+  .features-grid { grid-template-columns: 1fr 1fr; }
+  .footer-inner  { grid-template-columns: 1fr; }
   .footer-bottom { flex-direction: column; text-align: center; }
-  .arena-cta { padding: 36px 20px; }
+  .verse-card    { padding: 20px; }
+  .daily-card    { padding: 20px 16px; }
+  .arena-section { padding: 40px 16px; }
 }
 
+/* ================================================
+   26. تحسينات إضافية
+   ================================================ */
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+  *, *::before, *::after {
+    animation-duration:  0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
 }
 
 @media print {
-  .navbar, footer, .cookie-banner { display: none; }
+  .navbar, .footer, .cookie-banner,
+  .prayer-section, .toast { display: none; }
   body { background: white; color: black; }
 }
