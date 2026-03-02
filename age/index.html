@@ -1,58 +1,347 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl" data-theme="dark">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>عمرك الإسلامي — IslamiCalc</title>
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>عمرك الإسلامي (الهجري) | IslamiCalc</title>
+  <meta name="description" content="احسب عمرك بالتاريخ الهجري بالسنوات والأشهر والأيام، واعرف كم مضى من حياتك منذ ميلادك بالتاريخ الميلادي أو الهجري.">
+  <meta property="og:title" content="عمرك الإسلامي (الهجري) — IslamiCalc">
+  <meta property="og:description" content="حاسبة عمرك بالتاريخ الهجري: سنوات، أشهر، أيام، مع فرق بين الميلادي والهجري.">
+  <meta property="og:url" content="https://islamicalc.com/age/">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://islamicalc.com/age/">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+  <script type="module" src="/firebase.js"></script>
+
+  <style>
+    .age-hero{background:linear-gradient(135deg,#0d1117 0%,#0a1628 45%,#0d1a12 100%);padding:88px 24px 44px;position:relative;overflow:hidden;text-align:center}
+    .age-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at 20% 0%,rgba(45,106,79,.18) 0%,transparent 60%),radial-gradient(ellipse 60% 40% at 80% 100%,rgba(201,168,76,.15) 0%,transparent 60%);pointer-events:none}
+    .age-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(64,145,108,.14);border:1px solid rgba(64,145,108,.35);color:#a6ffcb;padding:6px 16px;border-radius:999px;font-size:13px;font-weight:700;margin-bottom:16px;position:relative}
+    .age-hero h1{font-size:clamp(26px,5vw,42px);font-weight:900;margin-bottom:10px;position:relative}
+    .age-hero h1 span{background:linear-gradient(135deg,#c9a84c,#f0c96e);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .age-hero p{font-size:14px;color:var(--text-sub);max-width:520px;margin:0 auto 20px;position:relative}
+    .age-stats-row{display:flex;justify-content:center;gap:24px;flex-wrap:wrap;position:relative;margin-top:10px}
+    .age-stat{font-size:12px;color:var(--text-muted)}
+    .age-stat span{display:block;font-size:20px;font-weight:900;color:var(--gold)}
+    .age-wrap{max-width:860px;margin:32px auto 80px;padding:0 20px;display:grid;grid-template-columns:minmax(0,1.2fr)minmax(0,1fr);gap:24px}
+    .age-card{background:var(--bg-card);border:1px solid var(--border);border-radius:18px;padding:20px;position:relative;overflow:hidden}
+    .age-card::before{content:'';position:absolute;top:0;right:0;left:0;height:2px;background:linear-gradient(90deg,transparent,rgba(201,168,76,.35),transparent)}
+    .age-card h2{font-size:15px;font-weight:800;margin-bottom:14px}
+    .age-field{margin-bottom:14px}
+    .age-label{display:block;font-size:12px;font-weight:700;color:var(--text-sub);margin-bottom:5px}
+    .age-input-row{display:flex;gap:8px;flex-wrap:wrap}
+    .age-input{flex:1;min-width:120px;padding:10px 12px;border-radius:10px;border:1px solid var(--border);background:var(--bg-main);color:var(--text);font-family:var(--font);font-size:13px;outline:none;transition:var(--transition)}
+    .age-input:focus{border-color:var(--primary);box-shadow:0 0 0 2px var(--primary-glow)}
+    .age-toggle{display:flex;gap:8px;margin-bottom:10px}
+    .age-toggle-btn{flex:1;padding:10px 12px;border-radius:999px;border:1px solid var(--border);background:var(--bg-main);color:var(--text-sub);font-size:12px;font-weight:700;font-family:var(--font);cursor:pointer;transition:var(--transition)}
+    .age-toggle-btn.active{background:rgba(45,106,79,.18);border-color:var(--primary);color:var(--primary-light)}
+    .age-btn-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
+    .age-btn-primary{flex:1;min-width:140px;padding:11px 16px;border-radius:999px;border:none;background:linear-gradient(135deg,#40916c,#c9a84c);color:#fff;font-family:var(--font);font-size:14px;font-weight:800;cursor:pointer;transition:var(--transition);box-shadow:0 8px 24px rgba(0,0,0,.35)}
+    .age-btn-primary:hover{transform:translateY(-2px);box-shadow:0 10px 32px rgba(0,0,0,.45);opacity:.95}
+    .age-btn-secondary{padding:10px 16px;border-radius:999px;border:1px solid var(--border);background:var(--bg-main);color:var(--text-muted);font-family:var(--font);font-size:12px;font-weight:700;cursor:pointer;transition:var(--transition)}
+    .age-btn-secondary:hover{border-color:#f85149;color:#f85149}
+    .age-note{font-size:11px;color:var(--text-muted);margin-top:6px}
+    .age-result-main{font-size:26px;font-weight:900;margin-bottom:6px;color:var(--gold)}
+    .age-result-sub{font-size:13px;color:var(--text-sub);margin-bottom:12px}
+    .age-result-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-bottom:14px}
+    .age-pill{background:var(--bg-main);border-radius:12px;padding:10px 12px;font-size:12px;color:var(--text-sub);display:flex;justify-content:space-between;align-items:center}
+    .age-pill span{font-weight:800;color:var(--gold);font-size:14px}
+    .age-line{height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.12),transparent);margin:8px 0}
+    .age-meta{font-size:11px;color:var(--text-muted);line-height:1.8}
+    .age-meta strong{color:var(--gold);font-weight:800}
+    .age-hint{font-size:11px;color:var(--text-muted);margin-top:6px}
+    .age-hijri-date{font-size:13px;font-weight:700;margin-top:6px}
+    .age-hijri-date span{color:var(--gold)}
+    .age-empty{font-size:13px;color:var(--text-muted);text-align:center;margin-top:40px}
+    @media(max-width:768px){.age-wrap{grid-template-columns:minmax(0,1fr);}.age-hero{padding-top:80px}}
+  </style>
 </head>
+
 <body>
 <nav class="navbar">
   <a href="/" class="navbar-brand">
-    <div class="navbar-logo"></div>
+    <div class="navbar-logo">☪</div>
     <span class="navbar-title">IslamiCalc</span>
   </a>
   <ul class="navbar-menu" id="navMenu">
-    <li><a href="/">الرئيسية</a></li>
-    <li><a href="/zakat/">الزكاة</a></li>
-    <li><a href="/khatma/">الختمة</a></li>
-    <li><a href="/prayer/">الصلاة</a></li>
-    <li><a href="/athkar/">الأذكار</a></li>
-    <li><a href="/arena/">الأرينا</a></li>
+    <li><a href="/">🏠 الرئيسية</a></li>
+    <li><a href="/zakat">🧮 الزكاة</a></li>
+    <li><a href="/khatma">📖 القرآن</a></li>
+    <li><a href="/prayer">🕌 الصلاة</a></li>
+    <li><a href="/athkar">📿 الأذكار</a></li>
+    <li><a href="/arena">🏆 الميدان</a></li>
+    <li><a href="/profile">👤 بروفايلي</a></li>
   </ul>
   <div class="navbar-actions">
-    <button class="theme-btn" id="themeBtn">🌙</button>
-    <button class="menu-toggle" id="menuToggle">☰</button>
+    <button class="theme-btn" id="themeBtn">
+      <svg id="iconSun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none">
+        <circle cx="12" cy="12" r="5"/>
+        <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+        <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+      </svg>
+      <svg id="iconMoon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+      </svg>
+    </button>
+    <button class="login-btn" id="loginBtn" onclick="openLoginModal()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M15 12H3"/>
+      </svg>
+      <span>دخول</span>
+    </button>
+    <button class="menu-toggle" id="menuToggle" aria-expanded="false">
+      <svg id="iconMenu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+      </svg>
+      <svg id="iconClose" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none">
+        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+    </button>
   </div>
 </nav>
-<main style="min-height:80vh;display:flex;align-items:center;justify-content:center;padding:40px 20px;">
-  <div style="text-align:center;max-width:480px;">
-    <div style="font-size:80px;margin-bottom:24px;">🕌</div>
-    <h1 style="font-size:28px;font-weight:900;margin-bottom:12px;color:var(--gold);">عمرك الإسلامي</h1>
-    <p style="font-size:16px;color:var(--text-secondary);line-height:1.8;margin-bottom:32px;">
-      هذه الصفحة قيد التطوير وستكون متاحة قريباً بإذن الله ✨
-    </p>
-    <a href="/" style="display:inline-block;background:linear-gradient(135deg,var(--gold),#fbbf24);color:#0a0f1e;border-radius:14px;padding:14px 32px;font-family:Cairo,sans-serif;font-size:16px;font-weight:900;text-decoration:none;">
-      ← العودة للرئيسية
-    </a>
+
+<div class="toast" id="toast"></div>
+
+<div class="age-hero">
+  <div class="age-badge">⏳ اكتشف <strong>عمرك الإسلامي</strong></div>
+  <h1>كم عمرك في <span>التاريخ الهجري؟</span></h1>
+  <p>أدخل تاريخ ميلادك، وسنحسب لك عمرك بالسنوات والأشهر والأيام في التقويم الهجري، مع الفرق بين الميلادي والهجري.</p>
+  <div class="age-stats-row">
+    <div class="age-stat"><span>365</span>يوماً تقريباً في السنة الميلادية</div>
+    <div class="age-stat"><span>354</span>يوماً تقريباً في السنة الهجرية</div>
   </div>
-</main>
+</div>
+
+<div class="age-wrap">
+  <!-- Form -->
+  <div class="age-card">
+    <h2>🎯 أدخل تاريخ ميلادك</h2>
+    <div class="age-toggle">
+      <button class="age-toggle-btn active" id="btnTypeGregorian" onclick="setBirthType('gregorian')">ميلادي (Gregorian)</button>
+      <button class="age-toggle-btn" id="btnTypeHijri" onclick="setBirthType('hijri')">هجري (Hijri)</button>
+    </div>
+
+    <div class="age-field">
+      <span class="age-label" id="lblDate">تاريخ الميلاد (ميلادي)</span>
+      <div class="age-input-row">
+        <input type="date" class="age-input" id="birthDate">
+      </div>
+      <div class="age-note">اختر اليوم من التقويم. إن كنت لا تعرف التاريخ الهجري، اختر الميلادي وسنحوّله تلقائياً.</div>
+    </div>
+
+    <div class="age-field">
+      <span class="age-label">أحسب حتى تاريخ</span>
+      <div class="age-input-row">
+        <input type="date" class="age-input" id="toDate">
+      </div>
+      <div class="age-note">إن تركته فارغاً، سنستخدم تاريخ اليوم.</div>
+    </div>
+
+    <div class="age-btn-row">
+      <button class="age-btn-primary" onclick="calcAge()">احسب عمري الإسلامي</button>
+      <button class="age-btn-secondary" onclick="resetAge()">إعادة تعيين</button>
+    </div>
+    <div class="age-hint">هذه الحاسبة لأغراض تقريبية، وقد يختلف اليوم الهجري يوماً بالزيادة أو النقصان حسب بداية الشهر.</div>
+  </div>
+
+  <!-- Result -->
+  <div class="age-card" id="ageResultCard">
+    <h2>📊 نتيجة حساب عمرك</h2>
+    <div id="ageResultEmpty" class="age-empty">أدخل تاريخ ميلادك واضغط "احسب عمري الإسلامي" لعرض النتيجة.</div>
+
+    <div id="ageResultContent" style="display:none">
+      <div class="age-result-main" id="ageYearsLine"></div>
+      <div class="age-result-sub" id="ageDiffLine"></div>
+
+      <div class="age-result-grid">
+        <div class="age-pill">عمرك بالأيام <span id="ageDays"></span></div>
+        <div class="age-pill">عمرك بالأشهر التقريبية <span id="ageMonths"></span></div>
+        <div class="age-pill">سنواتك الهجرية التقريبية <span id="ageHijriYears"></span></div>
+        <div class="age-pill">سنواتك الميلادية التقريبية <span id="ageGregYears"></span></div>
+      </div>
+
+      <div class="age-line"></div>
+      <div class="age-hijri-date" id="birthHijriLine"></div>
+      <div class="age-hijri-date" id="todayHijriLine"></div>
+
+      <div class="age-line"></div>
+      <div class="age-meta" id="ageMeta"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Login Modal -->
+<div class="modal" id="loginModal">
+  <div class="modal-box">
+    <h2>👤 سجّل دخولك إلى IslamiCalc</h2>
+    <p>بحساب واحد تستطيع حفظ تقدمك في الزكاة، الختمة، الأذكار، والميدان عبر كل أجهزتك.</p>
+    <button class="google-btn" onclick="window.islamiCalc?.loginWithGoogle()">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="margin-left:8px;vertical-align:middle">
+        <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+        <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+        <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/>
+        <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+      </svg>
+      الدخول بحساب Google
+    </button>
+    <button class="skip-btn" onclick="document.getElementById('loginModal').classList.remove('open')">تصفح بدون حساب</button>
+    <p class="modal-terms">بالدخول توافق على <a href="/privacy">سياسة الخصوصية</a></p>
+  </div>
+</div>
+
 <script>
-const btn = document.getElementById('themeBtn');
-const h = document.documentElement;
-const s = localStorage.getItem('theme') || 'dark';
-h.setAttribute('data-theme', s);
-btn.textContent = s === 'dark' ? '☀️' : '🌙';
-btn.addEventListener('click', () => {
-  const n = h.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-  h.setAttribute('data-theme', n);
-  btn.textContent = n === 'dark' ? '☀️' : '🌙';
-  localStorage.setItem('theme', n);
+// ===== Theme =====
+(function(){
+  const saved=localStorage.getItem('theme')||'dark';
+  document.documentElement.setAttribute('data-theme',saved);
+  const sun=document.getElementById('iconSun');
+  const moon=document.getElementById('iconMoon');
+  if(sun) sun.style.display = saved==='dark'?'none':'block';
+  if(moon) moon.style.display=saved==='dark'?'block':'none';
+})();
+document.getElementById('themeBtn')?.addEventListener('click',()=>{
+  const cur=document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark';
+  document.documentElement.setAttribute('data-theme',cur);
+  localStorage.setItem('theme',cur);
+  document.getElementById('iconSun').style.display = cur==='dark'?'none':'block';
+  document.getElementById('iconMoon').style.display= cur==='dark'?'block':'none';
 });
-document.getElementById('menuToggle').addEventListener('click', () => {
-  document.getElementById('navMenu').classList.toggle('open');
+
+// ===== Mobile Menu =====
+document.getElementById('menuToggle')?.addEventListener('click',()=>{
+  const open=document.getElementById('navMenu').classList.toggle('open');
+  document.getElementById('menuToggle').setAttribute('aria-expanded',open);
+  document.getElementById('iconMenu').style.display  = open?'none':'block';
+  document.getElementById('iconClose').style.display = open?'block':'none';
 });
+document.addEventListener('click',e=>{
+  const t=document.getElementById('menuToggle');
+  const m=document.getElementById('navMenu');
+  if(!t?.contains(e.target)&&!m?.contains(e.target)){
+    m?.classList.remove('open');
+    document.getElementById('iconMenu').style.display  ='block';
+    document.getElementById('iconClose').style.display='none';
+  }
+});
+
+// ===== Toast =====
+let toastTimer;
+function showToast(msg,type=''){
+  const t=document.getElementById('toast');
+  if(!t) return;
+  t.textContent=msg;
+  t.className='toast show '+(type||'');
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>t.classList.remove('show'),3000);
+}
+
+// ===== Login Modal =====
+function openLoginModal(){
+  if(window.islamiCalc?.openLoginModal){ window.islamiCalc.openLoginModal(); return;}
+  document.getElementById('loginModal')?.classList.add('open');
+}
+document.getElementById('loginModal')?.addEventListener('click',function(e){
+  if(e.target===this) this.classList.remove('open');
+});
+window.addEventListener('islamiCalcReady',(e)=>{
+  const user=e.detail?.user;
+  const btn=document.getElementById('loginBtn');
+  if(!btn) return;
+  if(user){ btn.onclick=()=>window.islamiCalc?.showUserMenu?.(); }
+  else     { btn.onclick=()=>openLoginModal(); }
+},{once:true});
+
+// ===== Age Logic =====
+let birthType='gregorian';
+function setBirthType(t){
+  birthType=t;
+  document.getElementById('btnTypeGregorian').classList.toggle('active',t==='gregorian');
+  document.getElementById('btnTypeHijri').classList.toggle('active',t==='hijri');
+  document.getElementById('lblDate').textContent = t==='gregorian'?'تاريخ الميلاد (ميلادي)':'تاريخ الميلاد (هجري تقريبي)';
+}
+
+function resetAge(){
+  document.getElementById('birthDate').value='';
+  document.getElementById('toDate').value='';
+  document.getElementById('ageResultContent').style.display='none';
+  document.getElementById('ageResultEmpty').style.display='block';
+}
+
+// تحويل ميلادي → هجري (خوارزمية تقريبية بسيطة)
+function gregorianToHijri(gDate){
+  // مستندة على خوارزمية شائعة لحساب التاريخ الهجري تقريبياً [web:12][web:14]
+  const day   = gDate.getDate();
+  const month = gDate.getMonth()+1;
+  const year  = gDate.getFullYear();
+  let jd = Math.floor((1461*(year+4800+Math.floor((month-14)/12)))/4)
+         + Math.floor((367*(month-2-12*Math.floor((month-14)/12)))/12)
+         - Math.floor((3*Math.floor((year+4900+Math.floor((month-14)/12))/100))/4)
+         + day - 32075;
+  const l = jd - 1948440 + 10632;
+  const n = Math.floor((l-1)/10631);
+  const r = l-10631*n+354;
+  const j = (Math.floor((10985-r)/5316))*Math.floor((50*r)/17719)
+          + (Math.floor(r/5670))*Math.floor((43*r)/15238);
+  const r2 = r - (Math.floor((30-j)/15))*Math.floor((17719*j)/50)
+               - (Math.floor(j/16))*Math.floor((15238*j)/43)+29;
+  const m  = Math.floor((24*r2)/709);
+  const d  = r2 - Math.floor((709*m)/24);
+  const y  = 30*n + j - 30;
+  return {hYear:y,hMonth:m,hDay:d};
+}
+
+function calcAge(){
+  const birthStr=document.getElementById('birthDate').value;
+  const toStr   =document.getElementById('toDate').value;
+  if(!birthStr){ showToast('يرجى إدخال تاريخ الميلاد','toast-error'); return; }
+
+  const birth = new Date(birthStr);
+  const to    = toStr?new Date(toStr):new Date();
+  if(to<birth){ showToast('تاريخ النهاية يجب أن يكون بعد الميلاد','toast-error'); return; }
+
+  const diffMs   = to - birth;
+  const diffDays = Math.floor(diffMs/86400000);
+  const yearsGregorian = diffMs/(365.2425*86400000);
+  const yearsHijri     = diffMs/(354.3667*86400000); // متوسط السنة الهجرية [web:14]
+
+  const wholeHijriYears = Math.floor(yearsHijri);
+  const remHijriDays    = Math.floor((yearsHijri-wholeHijriYears)*354.3667);
+  const hijriMonths     = Math.floor(remHijriDays/29.53);
+  const hijriDays       = Math.max(0, remHijriDays - Math.round(hijriMonths*29.53));
+
+  document.getElementById('ageResultEmpty').style.display='none';
+  document.getElementById('ageResultContent').style.display='block';
+
+  document.getElementById('ageYearsLine').textContent =
+    `${wholeHijriYears} سنة و ${hijriMonths} شهر و ${hijriDays} يوم (هجري تقريباً)`;
+  const diffYears = (yearsHijri - yearsGregorian).toFixed(2);
+  document.getElementById('ageDiffLine').textContent =
+    `عمرك بالهجري أكبر تقريباً بـ ${diffYears} سنة عن الميلادي.`;
+
+  document.getElementById('ageDays').textContent       = diffDays.toLocaleString('ar-SA');
+  document.getElementById('ageMonths').textContent     = Math.floor(yearsGregorian*12).toLocaleString('ar-SA');
+  document.getElementById('ageHijriYears').textContent = yearsHijri.toFixed(2);
+  document.getElementById('ageGregYears').textContent  = yearsGregorian.toFixed(2);
+
+  const birthHijri = gregorianToHijri(birth);
+  const todayHijri = gregorianToHijri(to);
+  document.getElementById('birthHijriLine').innerHTML =
+    `تاريخ ميلادك الهجري التقريبي: <span>${birthHijri.hDay} / ${birthHijri.hMonth} / ${birthHijri.hYear}</span>`;
+  document.getElementById('todayHijriLine').innerHTML =
+    `التاريخ الهجري اليوم تقريباً: <span>${todayHijri.hDay} / ${todayHijri.hMonth} / ${todayHijri.hYear}</span>`;
+
+  document.getElementById('ageMeta').innerHTML =
+    `منذ ولادتك مرَّ تقريباً <strong>${diffDays.toLocaleString('ar-SA')}</strong> يوماً، `+
+    `أي حوالي <strong>${Math.floor(yearsHijri*12).toLocaleString('ar-SA')}</strong> شهر هجري.`;
+
+  window.islamiCalc?.addXP?.(5,'age_calc');
+}
 </script>
 </body>
 </html>

@@ -1375,3 +1375,420 @@ button, input, select, textarea {
   .prayer-section, .toast { display: none; }
   body { background: white; color: black; }
 }
+/* ================================================
+   IslamiCalc — Premium Visual Upgrade v5.0
+   Modern Islamic UI — Glassmorphism + Deep Depth
+   ================================================ */
+
+/* ================================================
+   A. Design Tokens المحسّنة
+   ================================================ */
+:root {
+  /* Gradients جاهزة للاستخدام */
+  --grad-primary:    linear-gradient(135deg, #1b4332 0%, #2d6a4f 50%, #40916c 100%);
+  --grad-gold:       linear-gradient(135deg, #a07830 0%, #c9a84c 50%, #e8c96a 100%);
+  --grad-hero:       linear-gradient(160deg, #0d1117 0%, #0a1628 35%, #0d1a12 70%, #1a1a08 100%);
+  --grad-card:       linear-gradient(145deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 100%);
+  --grad-glass:      linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%);
+  --grad-emerald:    linear-gradient(135deg, #0d2b1f 0%, #1b4332 100%);
+  --grad-night:      linear-gradient(180deg, #0a0e17 0%, #0d1117 100%);
+  --grad-section:    linear-gradient(180deg, transparent 0%, rgba(45,106,79,.04) 100%);
+
+  /* Glows محسّنة */
+  --glow-green:  0 0 40px rgba(45,106,79,.25), 0 0 80px rgba(45,106,79,.10);
+  --glow-gold:   0 0 40px rgba(201,168,76,.20), 0 0 80px rgba(201,168,76,.08);
+  --glow-card:   0 8px 32px rgba(0,0,0,.4), 0 2px 8px rgba(0,0,0,.3);
+  --glow-hover:  0 20px 60px rgba(0,0,0,.5), 0 0 0 1px rgba(45,106,79,.2);
+
+  /* Borders محسّنة */
+  --border-glow:    rgba(45,106,79,.25);
+  --border-gold:    rgba(201,168,76,.25);
+  --border-glass:   rgba(255,255,255,.06);
+
+  /* Blur */
+  --blur-glass: blur(20px) saturate(1.4);
+  --blur-nav:   blur(24px) saturate(1.8);
+}
+
+/* ================================================
+   B. Body Texture — نسيج خلفية خفي
+   ================================================ */
+[data-theme="dark"] body {
+  background: var(--grad-night);
+  background-attachment: fixed;
+}
+[data-theme="dark"] body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 50% at 20% 10%, rgba(45,106,79,.07) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 80% 90%, rgba(201,168,76,.05) 0%, transparent 50%),
+    radial-gradient(ellipse 50% 60% at 50% 50%, rgba(13,17,23,.8) 0%, transparent 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+[data-theme="dark"] body > * { position: relative; z-index: 1; }
+
+/* ================================================
+   C. Navbar — Glass Premium
+   ================================================ */
+.navbar {
+  background: rgba(10,14,23,.85) !important;
+  backdrop-filter: var(--blur-nav) !important;
+  -webkit-backdrop-filter: var(--blur-nav) !important;
+  border-bottom: 1px solid rgba(255,255,255,.06) !important;
+  box-shadow: 0 1px 0 rgba(45,106,79,.1), 0 4px 24px rgba(0,0,0,.3);
+}
+.navbar-logo {
+  background: var(--grad-primary) !important;
+  box-shadow: var(--glow-green), inset 0 1px 0 rgba(255,255,255,.1);
+}
+.navbar-menu a:hover,
+.navbar-menu a.active {
+  background: rgba(45,106,79,.15) !important;
+  color: #52c97a !important;
+  box-shadow: inset 0 0 0 1px rgba(45,106,79,.2);
+}
+.login-btn {
+  background: var(--grad-primary) !important;
+  box-shadow: 0 4px 16px rgba(45,106,79,.3), inset 0 1px 0 rgba(255,255,255,.12) !important;
+}
+.login-btn:hover {
+  box-shadow: 0 6px 24px rgba(45,106,79,.45) !important;
+  transform: translateY(-1px) !important;
+}
+
+/* ================================================
+   D. Hero — Cinematic Background
+   ================================================ */
+.hero {
+  background: var(--grad-hero) !important;
+  position: relative;
+  overflow: hidden;
+}
+.hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at 25% 25%, rgba(45,106,79,.12) 0%, transparent 50%),
+    radial-gradient(circle at 75% 75%, rgba(201,168,76,.08) 0%, transparent 50%);
+  pointer-events: none;
+}
+/* نجوم خلفية خفية */
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(1px 1px at 20% 30%, rgba(255,255,255,.3) 0%, transparent 100%),
+    radial-gradient(1px 1px at 60% 15%, rgba(255,255,255,.2) 0%, transparent 100%),
+    radial-gradient(1px 1px at 80% 50%, rgba(201,168,76,.4) 0%, transparent 100%),
+    radial-gradient(1px 1px at 40% 70%, rgba(255,255,255,.15) 0%, transparent 100%),
+    radial-gradient(2px 2px at 90% 20%, rgba(201,168,76,.3) 0%, transparent 100%),
+    radial-gradient(1px 1px at 10% 80%, rgba(255,255,255,.2) 0%, transparent 100%);
+  pointer-events: none;
+}
+.hero-badge {
+  background: rgba(201,168,76,.08) !important;
+  border: 1px solid rgba(201,168,76,.3) !important;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 16px rgba(201,168,76,.1), inset 0 1px 0 rgba(255,255,255,.08);
+}
+.hero-title {
+  text-shadow: 0 2px 40px rgba(45,106,79,.3);
+}
+
+/* ================================================
+   E. Buttons — Premium Depth
+   ================================================ */
+.btn-primary {
+  background: var(--grad-primary) !important;
+  box-shadow: 0 4px 20px rgba(45,106,79,.35), inset 0 1px 0 rgba(255,255,255,.12) !important;
+  border: 1px solid rgba(64,145,108,.3) !important;
+}
+.btn-primary:hover {
+  box-shadow: 0 8px 32px rgba(45,106,79,.5), inset 0 1px 0 rgba(255,255,255,.15) !important;
+  transform: translateY(-3px) scale(1.01) !important;
+}
+.btn-gold {
+  background: var(--grad-gold) !important;
+  box-shadow: 0 4px 20px rgba(201,168,76,.3), inset 0 1px 0 rgba(255,255,255,.2) !important;
+  border: 1px solid rgba(232,201,106,.25) !important;
+  color: #1a1205 !important;
+}
+.btn-gold:hover {
+  box-shadow: 0 8px 32px rgba(201,168,76,.45) !important;
+  transform: translateY(-3px) scale(1.01) !important;
+}
+.btn-secondary {
+  background: rgba(255,255,255,.04) !important;
+  border: 1px solid rgba(255,255,255,.1) !important;
+  backdrop-filter: blur(10px);
+}
+.btn-secondary:hover {
+  background: rgba(45,106,79,.1) !important;
+  border-color: rgba(45,106,79,.4) !important;
+}
+
+/* ================================================
+   F. Cards — Glass + Depth
+   ================================================ */
+.feature-card {
+  background: var(--grad-card) !important;
+  border: 1px solid rgba(255,255,255,.06) !important;
+  backdrop-filter: blur(10px);
+  box-shadow: var(--glow-card);
+  position: relative;
+  overflow: hidden;
+}
+.feature-card::before {
+  content: '';
+  position: absolute;
+  top: 0; right: 0; left: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.08), transparent);
+}
+.feature-card:hover {
+  border-color: rgba(45,106,79,.3) !important;
+  box-shadow: var(--glow-hover) !important;
+  transform: translateY(-6px) !important;
+}
+.feature-card:hover::after {
+  opacity: 1 !important;
+  background: linear-gradient(135deg, rgba(45,106,79,.1), rgba(201,168,76,.05)) !important;
+}
+
+/* Quiz / Daily Cards */
+.quiz-card,
+.daily-card,
+.calc-form {
+  background: rgba(22,27,34,.8) !important;
+  border: 1px solid rgba(255,255,255,.07) !important;
+  backdrop-filter: blur(16px);
+  box-shadow: var(--glow-card);
+}
+[data-theme="dark"] .quiz-card::before,
+[data-theme="dark"] .daily-card::before,
+[data-theme="dark"] .calc-form::before {
+  content: '';
+  position: absolute;
+  top: 0; right: 0; left: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.07), transparent);
+  pointer-events: none;
+}
+
+/* ================================================
+   G. Quiz Options — Micro Interactions
+   ================================================ */
+.quiz-option {
+  background: rgba(255,255,255,.03) !important;
+  border: 1.5px solid rgba(255,255,255,.07) !important;
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+  position: relative;
+  overflow: hidden;
+}
+.quiz-option::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(45,106,79,.08), transparent);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.quiz-option:hover:not(:disabled) {
+  border-color: rgba(45,106,79,.45) !important;
+  background: rgba(45,106,79,.08) !important;
+  transform: translateY(-3px) scale(1.01) !important;
+  box-shadow: 0 8px 24px rgba(45,106,79,.2) !important;
+}
+.quiz-option:hover::before { opacity: 1; }
+.quiz-option.correct {
+  background: rgba(63,185,80,.1) !important;
+  border-color: rgba(63,185,80,.5) !important;
+  box-shadow: 0 0 20px rgba(63,185,80,.2) !important;
+}
+.quiz-option.wrong {
+  background: rgba(248,81,73,.1) !important;
+  border-color: rgba(248,81,73,.5) !important;
+  box-shadow: 0 0 20px rgba(248,81,73,.2) !important;
+}
+
+/* ================================================
+   H. Leaderboard — Premium Rows
+   ================================================ */
+.leaderboard {
+  background: rgba(22,27,34,.9) !important;
+  border: 1px solid rgba(255,255,255,.07) !important;
+  backdrop-filter: blur(16px);
+  box-shadow: var(--glow-card);
+}
+.leaderboard-item:hover {
+  background: rgba(45,106,79,.08) !important;
+}
+.leaderboard-item.me {
+  background: rgba(45,106,79,.1) !important;
+  border-right: 3px solid var(--primary-light);
+}
+.lb-rank-1 { text-shadow: 0 0 12px rgba(201,168,76,.6); }
+
+/* ================================================
+   I. Toast — Premium
+   ================================================ */
+.toast {
+  background: rgba(22,27,34,.95) !important;
+  border: 1px solid rgba(255,255,255,.1) !important;
+  backdrop-filter: blur(20px) saturate(1.5) !important;
+  box-shadow: 0 8px 32px rgba(0,0,0,.5), 0 0 0 1px rgba(255,255,255,.05) !important;
+  border-radius: 14px !important;
+}
+.toast-success { border-color: rgba(63,185,80,.4) !important; box-shadow: 0 8px 32px rgba(0,0,0,.5), 0 0 20px rgba(63,185,80,.15) !important; }
+.toast-error   { border-color: rgba(248,81,73,.4) !important; box-shadow: 0 8px 32px rgba(0,0,0,.5), 0 0 20px rgba(248,81,73,.15) !important; }
+.toast-gold    { border-color: rgba(201,168,76,.4) !important; box-shadow: 0 8px 32px rgba(0,0,0,.5), 0 0 20px rgba(201,168,76,.15) !important; }
+
+/* ================================================
+   J. Modal — Cinematic
+   ================================================ */
+.modal {
+  background: rgba(0,0,0,.85) !important;
+  backdrop-filter: blur(12px) saturate(1.2) !important;
+}
+.modal-box {
+  background: linear-gradient(145deg, rgba(22,27,34,.98), rgba(15,20,27,.98)) !important;
+  border: 1px solid rgba(255,255,255,.09) !important;
+  box-shadow: 0 32px 80px rgba(0,0,0,.7), 0 0 0 1px rgba(255,255,255,.04) !important;
+}
+.modal-box::before {
+  content: '';
+  position: absolute;
+  top: 0; right: 0; left: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(201,168,76,.2), transparent);
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+}
+.modal-box { position: relative; overflow: hidden; }
+.google-btn {
+  background: linear-gradient(135deg, #1557c0, #1a73e8, #1557c0) !important;
+  box-shadow: 0 4px 20px rgba(26,115,232,.3), inset 0 1px 0 rgba(255,255,255,.1) !important;
+}
+
+/* ================================================
+   K. XP Float — Cinematic
+   ================================================ */
+.xp-float {
+  font-size: 22px !important;
+  text-shadow: 0 0 20px rgba(201,168,76,.8), 0 0 40px rgba(201,168,76,.4) !important;
+  animation: xpFloatPremium 1.4s cubic-bezier(0.22, 1, 0.36, 1) forwards !important;
+}
+@keyframes xpFloatPremium {
+  0%   { opacity: 0; transform: translate(-50%,-50%) scale(0.6); }
+  20%  { opacity: 1; transform: translate(-50%,-50%) scale(1.2); }
+  80%  { opacity: 1; transform: translate(-50%,-120px) scale(1); }
+  100% { opacity: 0; transform: translate(-50%,-160px) scale(0.8); }
+}
+
+/* ================================================
+   L. Verse Card — Cinematic
+   ================================================ */
+.verse-card {
+  background: linear-gradient(145deg, rgba(22,27,34,.9), rgba(13,26,13,.6)) !important;
+  border: 1px solid rgba(201,168,76,.15) !important;
+  box-shadow: 0 8px 40px rgba(0,0,0,.4), inset 0 1px 0 rgba(201,168,76,.08) !important;
+  backdrop-filter: blur(16px);
+}
+.verse-text { text-shadow: 0 0 30px rgba(201,168,76,.2); }
+
+/* ================================================
+   M. Arena Section — Cinematic
+   ================================================ */
+.arena-section {
+  background: linear-gradient(160deg, #0a0e17 0%, #0d1a0d 40%, #1a1a08 100%) !important;
+  position: relative;
+  overflow: hidden;
+}
+.arena-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 50% 80% at 50% 50%, rgba(201,168,76,.07) 0%, transparent 65%);
+  pointer-events: none;
+}
+.arena-num { text-shadow: 0 0 20px rgba(201,168,76,.4); }
+
+/* ================================================
+   N. Calc Result — Glow
+   ================================================ */
+.calc-result {
+  background: linear-gradient(135deg, rgba(45,106,79,.1), rgba(201,168,76,.08)) !important;
+  border: 1px solid rgba(201,168,76,.25) !important;
+  box-shadow: 0 8px 32px rgba(0,0,0,.3), inset 0 1px 0 rgba(201,168,76,.1) !important;
+}
+.result-value { text-shadow: 0 0 20px rgba(201,168,76,.3); }
+
+/* ================================================
+   O. Skeleton — Shimmer محسّن
+   ================================================ */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    rgba(255,255,255,.03) 0%,
+    rgba(255,255,255,.07) 50%,
+    rgba(255,255,255,.03) 100%
+  ) !important;
+  background-size: 200% 100% !important;
+}
+
+/* ================================================
+   P. Scrollbar — Premium
+   ================================================ */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, rgba(45,106,79,.4), rgba(201,168,76,.3));
+  border-radius: 10px;
+}
+
+/* ================================================
+   Q. Selection
+   ================================================ */
+::selection {
+  background: rgba(45,106,79,.4);
+  color: #e8c96a;
+}
+
+/* ================================================
+   R. Focus Ring — Accessible
+   ================================================ */
+:focus-visible {
+  outline: 2px solid rgba(45,106,79,.6);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* ================================================
+   S. Light Theme Overrides
+   ================================================ */
+[data-theme="light"] .navbar {
+  background: rgba(255,255,255,.92) !important;
+  box-shadow: 0 1px 0 rgba(0,0,0,.06), 0 4px 20px rgba(0,0,0,.05) !important;
+}
+[data-theme="light"] .feature-card {
+  background: #ffffff !important;
+  box-shadow: 0 4px 24px rgba(0,0,0,.06), 0 1px 4px rgba(0,0,0,.04) !important;
+}
+[data-theme="light"] .feature-card:hover {
+  box-shadow: 0 12px 40px rgba(45,106,79,.15) !important;
+}
+[data-theme="light"] .hero {
+  background: linear-gradient(160deg, #f0f4f8 0%, #e8f5ee 40%, #f8f4e8 100%) !important;
+}
+[data-theme="light"] .toast {
+  background: rgba(255,255,255,.97) !important;
+}
+[data-theme="light"] .modal-box {
+  background: #ffffff !important;
+  box-shadow: 0 32px 80px rgba(0,0,0,.15) !important;
+}

@@ -25,6 +25,8 @@ https://www.islamicalc.com/*  https://islamicalc.com/:splat  301!
 /fasting/*  /fasting/index.html  200
 /kafara/*  /kafara/index.html  200
 /sadaqa/*  /sadaqa/index.html  200
+/profile/*  /profile/index.html  200
+
 
 # توجيه الصفحات المدمجة
 /tasbih/  /athkar/  301
