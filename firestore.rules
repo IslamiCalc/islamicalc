@@ -6,50 +6,77 @@ service cloud.firestore {
     // users/{uid}
     // ============================================================
     match /users/{uid} {
-      // يقرأ: المستخدم نفسه فقط
-      allow read: if request.auth != null && request.auth.uid == uid;
 
-      // يكتب: المستخدم نفسه — مع التحقق من أنواع البيانات
-      allow write: if request.auth != null
-        && request.auth.uid == uid
-        && validUserData(request.resource.data);
+      // ✅ القراءة: المستخدم نفسه فقط
+      allow read: if request.auth != null
+                  && request.auth.uid == uid;
 
-      // يحدّث: المستخدم نفسه فقط — لا يقدر يغيّر uid/email
+      // ✅ الإنشاء: المستخدم نفسه مع التحقق الكامل من البيانات
+      allow create: if request.auth != null
+                    && request.auth.uid == uid
+                    && validUserData(request.resource.data);
+
+      // ✅ التحديث:
+      //    - المستخدم نفسه فقط
+      //    - uid و email لا يتغيران أبداً
+      //    - البيانات تمر بالتحقق
       allow update: if request.auth != null
-        && request.auth.uid == uid
-        && request.resource.data.uid == resource.data.uid
-        && request.resource.data.email == resource.data.email;
+                    && request.auth.uid == uid
+                    && request.resource.data.uid   == resource.data.uid
+                    && request.resource.data.email == resource.data.email
+                    && validUserData(request.resource.data);
+
+      // ✅ الحذف: ممنوع نهائياً من الـ client
+      //    (الحذف يتم فقط عبر Cloud Functions أو Console)
+      allow delete: if false;
     }
 
     // ============================================================
-    // Leaderboard — قراءة عامة (فقط حقول محدودة)
+    // leaderboard — ✅ قراءة مصرّح بها فقط
     // ============================================================
     match /leaderboard/{docId} {
-      allow read: if true;
-      allow write: if false; // يكتب فقط عبر Cloud Function
+      // قراءة مصرّح بها للمستخدمين المسجّلين فقط
+      allow read:  if request.auth != null;
+      // الكتابة عبر Cloud Functions فقط — ممنوعة من الـ client
+      allow write: if false;
     }
 
     // ============================================================
-    // أي مسار آخر — محجوب
+    // أي مسار آخر غير معرّف — محجوب بشكل افتراضي
+    // ملاحظة: إذا أضفت sub-collections مستقبلاً (مثل /users/{uid}/activity)
+    // أضف لها rule صريحة قبل هذا الـ wildcard
     // ============================================================
     match /{document=**} {
       allow read, write: if false;
     }
 
     // ============================================================
-    // دالة التحقق
+    // دالة التحقق من بيانات المستخدم
     // ============================================================
     function validUserData(data) {
-      return data.xp is number
+      return
+        // XP: عدد صحيح موجب — حد 50,000 للمرحلة الحالية
+        data.xp is number
         && data.xp >= 0
-        && data.xp <= 999999
+        && data.xp <= 50000
+
+        // المستوى: 1 إلى 9
         && data.level is number
         && data.level >= 1
         && data.level <= 9
+
+        // الـ streak: 0 إلى 3650 يوم (10 سنوات كحد منطقي)
         && data.streak is number
         && data.streak >= 0
+        && data.streak <= 3650
+
+        // الاسم: نص لا يتجاوز 40 حرفاً
         && data.name is string
-        && data.name.size() <= 100;
+        && data.name.size() <= 40
+
+        // الشارات: قائمة لا تتجاوز 50 عنصر
+        && data.badges is list
+        && data.badges.size() <= 50;
     }
   }
 }
