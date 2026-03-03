@@ -2,573 +2,1150 @@
 <html lang="ar" dir="rtl" data-theme="dark">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>حاسبة الزكاة | IslamiCalc</title>
-  <meta name="description" content="احسب زكاة الذهب والفضة والأموال النقدية وعروض التجارة والأسهم بدقة شرعية كاملة — حاسبة مجانية موثوقة مع مصادر فقهية معتمدة">
-  <meta name="keywords" content="حاسبة الزكاة، زكاة الذهب، زكاة المال، نصاب الزكاة، زكاة الأسهم، زكاة التجارة">
-  <meta property="og:title"       content="حاسبة الزكاة — IslamiCalc">
-  <meta property="og:description" content="احسب زكاتك بدقة شرعية — الذهب والفضة والأموال والتجارة والأسهم">
-  <meta property="og:url"         content="https://islamicalc.com/zakat/">
-  <meta property="og:type"        content="website">
-  <link rel="canonical"           href="https://islamicalc.com/zakat/">
-
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebPage",
-    "name": "حاسبة الزكاة الإسلامية",
-    "description": "احسب زكاة الذهب والفضة والأموال والتجارة والأسهم بدقة شرعية كاملة مع مصادر فقهية موثقة",
-    "url": "https://islamicalc.com/zakat/",
-    "isPartOf": { "@type": "WebSite", "name": "IslamiCalc", "url": "https://islamicalc.com" }
-  }
-  </script>
-
-  <!-- Preconnect للأداء -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;800;900&display=swap" rel="stylesheet">
-
+  <title>حاسبة الزكاة الإسلامية | IslamiCalc</title>
+  <meta name="description" content="احسب زكاة المال والذهب والفضة والتجارة والأسهم بدقة شرعية كاملة مع مصادر فقهية موثقة.">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="canonical" href="https://islamicalc.com/zakat/">
   <link rel="stylesheet" href="/style.css">
-
-  <!-- ✅ Firebase — type="module" مطلوب -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
   <script type="module" src="/firebase.js"></script>
 
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebPage","name":"حاسبة الزكاة الإسلامية","description":"احسب زكاة المال والذهب والفضة والتجارة والأسهم بدقة شرعية","url":"https://islamicalc.com/zakat/"}
+  </script>
+
   <style>
-    .breakdown-row {
-      display: flex;
-      justify-content: space-between;
-      padding: 6px 0;
-      border-bottom: 1px solid rgba(255,255,255,0.05);
-      font-size: 14px;
-    }
-    .breakdown-row.total-row {
-      font-weight: 700;
-      color: var(--gold);
-      border-top: 1px solid rgba(201,168,76,0.3);
-      border-bottom: 1px solid rgba(201,168,76,0.3);
-      padding: 10px 0;
-      margin-top: 4px;
-    }
-    .zakat-tab {
-      flex: 1;
-      min-width: 100px;
-      padding: 10px 12px;
-      background: transparent;
-      border: none;
-      color: var(--text-muted);
-      font-family: var(--font);
-      font-size: 13px;
-      font-weight: 700;
-      cursor: pointer;
-      border-radius: 10px;
-      transition: var(--transition);
-      white-space: nowrap;
-    }
-    .zakat-tab:hover  { background: var(--bg-card-hover); color: var(--text); }
-    .zakat-tab.active { background: var(--primary); color: #fff; }
-    details summary   { list-style: none; cursor: pointer; }
-    details[open] summary { color: var(--gold); }
-    .jewelry-note {
-      display: none;
-      background: rgba(201,168,76,0.07);
-      border: 1px solid rgba(201,168,76,0.2);
-      border-radius: var(--radius);
-      padding: 14px;
-      font-size: 13px;
-      line-height: 1.8;
-      margin-top: 8px;
-    }
-    .sharia-note {
-      background: rgba(45,106,79,0.07);
-      border: 1px solid rgba(45,106,79,0.2);
-      border-radius: var(--radius);
-      padding: 14px;
-      font-size: 13px;
-      line-height: 1.8;
-      margin-bottom: 20px;
-    }
-    .stocks-warn {
-      display: none;
-      background: rgba(210,153,34,0.08);
-      border: 1px solid rgba(210,153,34,0.25);
-      border-radius: var(--radius-sm);
-      padding: 10px 14px;
-      font-size: 12px;
-      color: var(--warning);
-      margin-top: 8px;
-      line-height: 1.7;
-    }
+  /* ============================================================
+     Zakat — Page-Specific Styles
+     ============================================================ */
+  :root {
+    --zk-1:   #fbbf24;
+    --zk-2:   #d97706;
+    --zk-3:   #fcd34d;
+    --zk-em:  #34d399;
+    --grad-zakat: linear-gradient(160deg, #0c0a05 0%, #140e00 50%, #0a0c08 100%);
+    --border-zk:  rgba(251,191,36,0.2);
+    --shadow-zk:  0 8px 32px rgba(217,119,6,0.2), 0 0 0 1px rgba(251,191,36,0.1);
+    --grad-zk-card: linear-gradient(160deg, rgba(251,191,36,0.05) 0%, rgba(251,191,36,0.01) 100%);
+  }
+
+  /* ── Hero ── */
+  .zk-hero {
+    background: var(--grad-zakat);
+    padding: 96px var(--s-6) var(--s-10);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .zk-hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 70% 50% at 50% 0%,  rgba(217,119,6,0.15), transparent 65%),
+      radial-gradient(ellipse 35% 35% at 85% 70%, rgba(16,185,129,0.06), transparent 55%);
+    pointer-events: none;
+  }
+
+  .zk-hero__inner { position: relative; max-width: 720px; margin: 0 auto; }
+
+  .zk-hero__title {
+    font-size: clamp(26px, 5.5vw, 50px);
+    font-weight: 900;
+    line-height: 1.3;
+    margin-bottom: var(--s-3);
+  }
+
+  .zk-hero__sub {
+    font-size: var(--text-base);
+    color: var(--text-2);
+    margin-bottom: var(--s-6);
+    max-width: 500px;
+    margin-inline: auto;
+  }
+
+  /* Nisab Card */
+  .zk-nisab-card {
+    max-width: 640px;
+    margin: 0 auto var(--s-4);
+    background: linear-gradient(135deg, rgba(217,119,6,0.1), rgba(16,185,129,0.05));
+    border: 1px solid var(--border-zk);
+    border-radius: var(--r-2xl);
+    padding: var(--s-4) var(--s-5);
+    display: flex;
+    align-items: center;
+    gap: var(--s-4);
+    flex-wrap: wrap;
+    box-shadow: var(--shadow-zk);
+    position: relative;
+  }
+
+  .zk-nisab-card::before {
+    content: '';
+    position: absolute; top: 0; right: 0; left: 0; height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(251,191,36,0.3), transparent);
+  }
+
+  .zk-nisab-icon {
+    font-size: 2rem;
+    width: 52px; height: 52px;
+    flex-shrink: 0;
+    background: linear-gradient(135deg, var(--zk-2), var(--zk-1));
+    border-radius: var(--r-xl);
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 4px 16px rgba(217,119,6,0.3);
+  }
+
+  .zk-nisab-info { flex: 1; min-width: 140px; }
+  .zk-nisab-title { font-size: var(--text-sm); font-weight: 900; color: var(--zk-1); margin-bottom: 3px; }
+  .zk-nisab-val   { font-size: var(--text-xl); font-weight: 900; color: var(--text-1); font-family: var(--font-en); }
+  .zk-nisab-sub   { font-size: 10px; color: var(--text-3); margin-top: 2px; }
+
+  /* Currency + Gold Price Row */
+  .zk-top-row {
+    max-width: 640px;
+    margin: 0 auto var(--s-2);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--s-3);
+  }
+
+  .zk-top-field { }
+  .zk-top-lbl { font-size: var(--text-xs); font-weight: 700; color: var(--text-3); margin-bottom: var(--s-2); display: block; }
+
+  /* ── Body ── */
+  .zk-body { max-width: 900px; margin: 0 auto; padding: var(--s-8) var(--s-6) var(--s-16); }
+
+  .zk-sec { font-size: var(--text-sm); font-weight: 800; color: var(--text-2); margin-bottom: var(--s-4); display: flex; align-items: center; gap: var(--s-2); }
+
+  /* ── Tab Bar ── */
+  .zk-tabs {
+    display: flex;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border);
+    border-radius: var(--r-xl);
+    padding: 4px;
+    gap: 3px;
+    margin-bottom: var(--s-6);
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .zk-tabs::-webkit-scrollbar { display: none; }
+
+  .zk-tab {
+    flex: 1;
+    min-width: 90px;
+    padding: 9px var(--s-3);
+    border: none;
+    background: none;
+    cursor: pointer;
+    border-radius: var(--r-lg);
+    font-family: var(--font);
+    font-size: var(--text-xs);
+    font-weight: 800;
+    color: var(--text-3);
+    transition: all var(--t-base) var(--ease);
+    white-space: nowrap;
+    text-align: center;
+  }
+
+  .zk-tab:hover  { color: var(--text-2); background: rgba(255,255,255,0.04); }
+  .zk-tab.active { background: linear-gradient(135deg, var(--zk-2), var(--zk-1)); color: #000; box-shadow: 0 2px 10px rgba(217,119,6,0.35); font-weight: 900; }
+
+  /* ── Calc Card ── */
+  .zk-card {
+    background: var(--grad-zk-card), var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--r-2xl);
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+    margin-bottom: var(--s-4);
+    display: none;
+    position: relative;
+  }
+
+  .zk-card.on { display: block; }
+
+  .zk-card::before {
+    content: '';
+    position: absolute; top: 0; right: 0; left: 0; height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(251,191,36,0.1), transparent);
+  }
+
+  .zk-card-head {
+    background: rgba(251,191,36,0.04);
+    border-bottom: 1px solid var(--border);
+    padding: var(--s-4) var(--s-5);
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+  }
+
+  .zk-card-icon {
+    width: 40px; height: 40px;
+    border-radius: var(--r-lg);
+    background: linear-gradient(135deg, var(--zk-2), var(--zk-1));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+    box-shadow: 0 2px 10px rgba(217,119,6,0.3);
+  }
+
+  .zk-card-title { font-size: var(--text-lg); font-weight: 900; }
+  .zk-card-src   { font-size: 10px; color: var(--text-3); margin-top: 2px; }
+  .zk-card-src a { color: var(--zk-1); text-decoration: none; }
+  .zk-card-src a:hover { text-decoration: underline; }
+
+  .zk-card-body { padding: var(--s-5); }
+
+  /* ── Sharia Note ── */
+  .zk-sharia {
+    background: rgba(16,185,129,0.04);
+    border: 1px solid rgba(16,185,129,0.15);
+    border-radius: var(--r-lg);
+    padding: var(--s-4) var(--s-4);
+    font-size: var(--text-xs);
+    color: var(--text-2);
+    line-height: 1.9;
+    margin-bottom: var(--s-5);
+  }
+
+  .zk-sharia strong { color: var(--zk-em); }
+
+  /* Houl Warning */
+  .zk-houl {
+    background: rgba(245,158,11,0.06);
+    border: 1px solid rgba(245,158,11,0.2);
+    border-radius: var(--r-lg);
+    padding: var(--s-3) var(--s-4);
+    font-size: var(--text-xs);
+    color: var(--zk-1);
+    line-height: 1.8;
+    margin-bottom: var(--s-5);
+    display: flex;
+    gap: var(--s-3);
+  }
+
+  .zk-houl__icon { font-size: 18px; flex-shrink: 0; }
+
+  /* ── Fields ── */
+  .zk-fields { display: grid; gap: var(--s-4); margin-bottom: var(--s-5); }
+  .zk-fields--2 { grid-template-columns: 1fr 1fr; }
+  .zk-fields--3 { grid-template-columns: 1fr 1fr 1fr; }
+
+  .zk-field { }
+
+  .zk-field__lbl {
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
+    font-size: var(--text-sm);
+    font-weight: 700;
+    color: var(--text-2);
+    margin-bottom: var(--s-2);
+  }
+
+  .zk-field__lbl .zk-field__icon { font-size: 16px; }
+
+  .zk-input-wrap {
+    display: flex;
+    align-items: center;
+    background: rgba(255,255,255,0.03);
+    border: 1.5px solid var(--border-2);
+    border-radius: var(--r-lg);
+    overflow: hidden;
+    transition: border-color var(--t-fast), box-shadow var(--t-fast);
+  }
+
+  .zk-input-wrap:focus-within {
+    border-color: var(--zk-1);
+    box-shadow: 0 0 0 3px rgba(251,191,36,0.1);
+  }
+
+  .zk-input-wrap.error { border-color: var(--error); }
+
+  .zk-input {
+    flex: 1;
+    padding: 11px var(--s-4);
+    background: none;
+    border: none;
+    outline: none;
+    font-family: var(--font-en);
+    font-size: var(--text-base);
+    font-weight: 600;
+    color: var(--text-1);
+    direction: ltr;
+    text-align: right;
+  }
+
+  .zk-input::placeholder { color: var(--text-3); font-family: var(--font); font-size: var(--text-sm); direction: rtl; text-align: right; }
+
+  .zk-input-unit {
+    padding: 0 var(--s-3);
+    font-size: var(--text-xs);
+    font-weight: 800;
+    color: var(--text-3);
+    white-space: nowrap;
+    border-right: 1px solid var(--border);
+    height: 100%;
+    display: flex;
+    align-items: center;
+  }
+
+  .zk-select {
+    width: 100%;
+    padding: 11px var(--s-4);
+    background: rgba(255,255,255,0.03);
+    border: 1.5px solid var(--border-2);
+    border-radius: var(--r-lg);
+    font-family: var(--font);
+    font-size: var(--text-sm);
+    font-weight: 700;
+    color: var(--text-1);
+    cursor: pointer;
+    outline: none;
+    transition: border-color var(--t-fast);
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23666' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: left 14px center;
+  }
+
+  .zk-select:focus { border-color: var(--zk-1); }
+
+  .zk-field__hint {
+    font-size: 11px;
+    color: var(--text-3);
+    margin-top: var(--s-2);
+    line-height: 1.7;
+  }
+
+  .zk-field__hint a { color: var(--zk-1); }
+
+  /* Jewelry Note */
+  .zk-jewelry-note {
+    display: none;
+    background: rgba(251,191,36,0.05);
+    border: 1px solid rgba(251,191,36,0.2);
+    border-radius: var(--r-lg);
+    padding: var(--s-4);
+    font-size: var(--text-xs);
+    color: var(--text-2);
+    line-height: 1.9;
+    margin-top: var(--s-3);
+  }
+
+  .zk-jewelry-note.show { display: block; }
+  .zk-jewelry-note strong { color: var(--zk-1); }
+
+  /* ── Calc Button ── */
+  .zk-calc-btn {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg, var(--zk-2), var(--zk-1));
+    border: none;
+    border-radius: var(--r-xl);
+    color: #000;
+    font-family: var(--font);
+    font-size: var(--text-base);
+    font-weight: 900;
+    cursor: pointer;
+    transition: all var(--t-base) var(--ease);
+    box-shadow: 0 4px 16px rgba(217,119,6,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--s-2);
+  }
+
+  .zk-calc-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 28px rgba(217,119,6,0.45);
+  }
+
+  /* ── Result Box ── */
+  .zk-result {
+    display: none;
+    background: linear-gradient(135deg, rgba(217,119,6,0.08), rgba(16,185,129,0.04));
+    border: 1px solid var(--border-zk);
+    border-radius: var(--r-xl);
+    padding: var(--s-5);
+    margin-top: var(--s-4);
+    box-shadow: var(--shadow-zk);
+    animation: zkFadeIn 0.3s var(--ease-out);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .zk-result::before {
+    content: '';
+    position: absolute; top: 0; right: 0; left: 0; height: 2px;
+    background: linear-gradient(90deg, var(--zk-2), var(--zk-1), var(--zk-3));
+  }
+
+  @keyframes zkFadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+
+  .zk-result.on { display: block; }
+
+  .zk-result__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: var(--s-3);
+    margin-bottom: var(--s-4);
+  }
+
+  .zk-ritem {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border);
+    border-radius: var(--r-lg);
+    padding: var(--s-3) var(--s-3);
+    text-align: center;
+  }
+
+  .zk-ritem__lbl { font-size: 10px; color: var(--text-3); margin-bottom: 4px; }
+  .zk-ritem__val { font-size: var(--text-base); font-weight: 900; color: var(--text-1); font-family: var(--font-en); }
+  .zk-ritem__val.em  { color: var(--zk-em); }
+  .zk-ritem__val.gd  { color: var(--zk-1); }
+  .zk-ritem__val.err { color: var(--error); }
+
+  .zk-result__nisab {
+    padding: var(--s-3) var(--s-4);
+    border-radius: var(--r-lg);
+    font-size: var(--text-sm);
+    font-weight: 700;
+    margin-bottom: var(--s-4);
+  }
+
+  .zk-result__nisab.reached {
+    background: rgba(52,211,153,0.08);
+    border: 1px solid rgba(52,211,153,0.25);
+    color: var(--zk-em);
+  }
+
+  .zk-result__nisab.not-reached {
+    background: rgba(245,158,11,0.08);
+    border: 1px solid rgba(245,158,11,0.25);
+    color: var(--zk-1);
+  }
+
+  .zk-result__main {
+    text-align: center;
+    padding: var(--s-4);
+    background: rgba(255,255,255,0.02);
+    border-radius: var(--r-lg);
+    margin-bottom: var(--s-4);
+  }
+
+  .zk-result__lbl  { font-size: var(--text-xs); color: var(--text-3); margin-bottom: var(--s-2); }
+  .zk-result__num  { font-size: 2.4rem; font-weight: 900; color: var(--zk-1); font-family: var(--font-en); line-height: 1.2; }
+  .zk-result__unit { font-size: var(--text-sm); color: var(--text-2); margin-top: 4px; }
+  .zk-result__note { font-size: var(--text-xs); color: var(--text-3); margin-top: var(--s-3); line-height: 1.8; }
+
+  .zk-result__actions {
+    display: flex;
+    gap: var(--s-2);
+  }
+
+  .zk-act-btn {
+    flex: 1;
+    padding: 9px;
+    border-radius: var(--r-lg);
+    font-family: var(--font);
+    font-size: var(--text-xs);
+    font-weight: 800;
+    cursor: pointer;
+    transition: all var(--t-fast);
+    border: none;
+  }
+
+  .zk-act-btn.share  { background: rgba(251,191,36,0.1); color: var(--zk-1); border: 1px solid rgba(251,191,36,0.25); }
+  .zk-act-btn.reset  { background: rgba(239,68,68,0.06); color: var(--error); border: 1px solid rgba(239,68,68,0.2); }
+  .zk-act-btn.copy   { background: rgba(52,211,153,0.08); color: var(--zk-em); border: 1px solid rgba(52,211,153,0.2); }
+  .zk-act-btn:hover  { transform: translateY(-1px); opacity: 0.9; }
+
+  /* ── Total Breakdown ── */
+  .zk-breakdown {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid var(--border);
+    border-radius: var(--r-lg);
+    overflow: hidden;
+    margin-bottom: var(--s-4);
+  }
+
+  .zk-brow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px var(--s-4);
+    border-bottom: 1px solid rgba(255,255,255,0.03);
+    font-size: var(--text-sm);
+  }
+
+  .zk-brow:last-child { border-bottom: none; }
+  .zk-brow.total { background: rgba(251,191,36,0.06); font-weight: 900; color: var(--zk-1); border-top: 1px solid rgba(251,191,36,0.2); }
+  .zk-brow.total td, .zk-brow.total span { color: var(--zk-1); }
+
+  .zk-brow__lbl { color: var(--text-2); display: flex; align-items: center; gap: var(--s-2); }
+  .zk-brow__val { font-weight: 700; color: var(--text-1); font-family: var(--font-en); }
+
+  /* ── FAQ ── */
+  .zk-faq { margin-top: var(--s-8); }
+
+  .zk-faq__item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--r-xl);
+    overflow: hidden;
+    margin-bottom: var(--s-3);
+    transition: border-color var(--t-fast);
+  }
+
+  .zk-faq__item:hover { border-color: var(--border-zk); }
+
+  .zk-faq__q {
+    width: 100%;
+    padding: var(--s-4) var(--s-5);
+    background: none;
+    border: none;
+    text-align: right;
+    font-family: var(--font);
+    font-size: var(--text-sm);
+    font-weight: 800;
+    color: var(--text-1);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+    transition: color var(--t-fast);
+  }
+
+  .zk-faq__q::after { content: '▸'; margin-right: auto; color: var(--text-3); font-size: 12px; transition: transform var(--t-base); }
+  .zk-faq__item.open .zk-faq__q::after { transform: rotate(90deg); color: var(--zk-1); }
+  .zk-faq__item.open .zk-faq__q { color: var(--zk-1); }
+
+  .zk-faq__a {
+    display: none;
+    padding: 0 var(--s-5) var(--s-4);
+    font-size: var(--text-sm);
+    color: var(--text-2);
+    line-height: 2;
+    border-top: 1px solid var(--border);
+  }
+
+  .zk-faq__item.open .zk-faq__a { display: block; animation: zkFadeIn 0.2s ease; }
+  .zk-faq__a a { color: var(--zk-1); }
+
+  /* ── Responsive ── */
+  @media (max-width: 620px) {
+    .zk-fields--2 { grid-template-columns: 1fr; }
+    .zk-fields--3 { grid-template-columns: 1fr 1fr; }
+    .zk-top-row   { grid-template-columns: 1fr; }
+    .zk-result__num { font-size: 1.8rem; }
+  }
   </style>
 </head>
-
 <body>
-<!-- ===== Navbar ===== -->
-<nav class="navbar">
-  <a href="/" class="navbar-brand">
-    <div class="navbar-logo">☪</div>
-    <span class="navbar-title">IslamiCalc</span>
-  </a>
-  <ul class="navbar-menu" id="navMenu">
-    <li><a href="/">🏠 الرئيسية</a></li>
-    <li><a href="/zakat" class="active">🧮 الزكاة</a></li>
-    <li><a href="/khatma">📖 القرآن</a></li>
-    <li><a href="/prayer">🕌 الصلاة</a></li>
-    <li><a href="/athkar">📿 الأذكار</a></li>
-    <li><a href="/arena">🏆 الميدان</a></li>
-  </ul>
-  <div class="navbar-actions">
-    <button class="theme-btn" id="themeBtn" title="تغيير الثيم">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <circle cx="12" cy="12" r="5"/><line x1="12" y1="1"  x2="12" y2="3"/>
-        <line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22"  x2="5.64" y2="5.64"/>
-        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
-        <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
-        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
-        <line x1="18.36" y1="5.64"  x2="19.78" y2="4.22"/>
-      </svg>
-    </button>
-    <button class="login-btn" id="loginBtn" onclick="window.islamiCalc?.openLoginModal() || openLoginModal()">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M15 12H3"/>
-      </svg>
-      <span>دخول</span>
-    </button>
-    <button class="menu-toggle" id="menuToggle" aria-label="القائمة">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <line x1="3" y1="6" x2="21" y2="6"/>
-        <line x1="3" y1="12" x2="21" y2="12"/>
-        <line x1="3" y1="18" x2="21" y2="18"/>
-      </svg>
-    </button>
+
+<!-- ============================================================
+     NAVBAR
+     ============================================================ -->
+<header class="ic-nav" id="icNav">
+  <div class="ic-nav__inner">
+    <a href="/" class="ic-nav__logo">
+      <div class="ic-nav__logo-mark">☪</div>
+      <span class="ic-nav__logo-text">IslamiCalc</span>
+    </a>
+    <nav class="ic-nav__links">
+      <a href="/"       class="ic-nav__link">🏠 الرئيسية</a>
+      <a href="/khatma" class="ic-nav__link">📖 الختمة</a>
+      <a href="/arena"  class="ic-nav__link">🏆 الميدان</a>
+      <a href="/zakat"  class="ic-nav__link active">💰 الزكاة</a>
+      <a href="/prayer" class="ic-nav__link">🕌 الصلاة</a>
+      <a href="/athkar" class="ic-nav__link">📿 الأذكار</a>
+    </nav>
+    <div class="ic-nav__actions">
+      <button id="themeBtn" class="ic-nav__icon-btn">🌙</button>
+      <button id="loginBtn" class="ic-nav__login-btn">دخول</button>
+      <button class="ic-nav__mobile-toggle" id="mobileToggle">☰</button>
+    </div>
   </div>
-</nav>
-
-<!-- ===== Toast ===== -->
-<div class="toast" id="toast"></div>
-
-<!-- ===== Main ===== -->
-<main class="calculator-page">
-
-  <div class="calc-header">
-    <span class="calc-icon">💰</span>
-    <h1 class="calc-title">حاسبة الزكاة</h1>
-    <p class="calc-desc">احسب زكاتك بدقة شرعية — الذهب والفضة والأموال والتجارة والأسهم</p>
+  <div class="ic-nav__mobile" id="mobileMenu">
+    <a href="/">🏠 الرئيسية</a>
+    <a href="/khatma">📖 الختمة</a>
+    <a href="/arena">🏆 الميدان</a>
+    <a href="/zakat">💰 الزكاة</a>
+    <a href="/prayer">🕌 الصلاة</a>
+    <a href="/athkar">📿 الأذكار</a>
   </div>
+</header>
 
-  <!-- تنبيه الحول -->
-  <div class="sharia-note" style="max-width:700px;margin:0 auto 24px;">
-    <strong>⚠️ شرط الحول:</strong>
-    تجب الزكاة فقط إذا بلغ المال النصاب وحال عليه الحول (مرور سنة هجرية كاملة).
-    هذه الحاسبة تحسب المقدار الواجب — تأكد أن مالك حال عليه الحول قبل الإخراج.
-    <br><small>المصدر: <a href="https://islamqa.info/ar/207972" target="_blank" rel="noopener" style="color:var(--primary-light)">islamqa.info #207972</a></small>
-  </div>
+<!-- ============================================================
+     HERO
+     ============================================================ -->
+<div class="zk-hero">
+  <div class="zk-hero__inner">
+    <div class="ic-section__eyebrow" style="margin-bottom:var(--s-4)">💰 الركن الثالث</div>
+    <h1 class="zk-hero__title">
+      حاسبة الزكاة الإسلامية<br>
+      <span style="background:linear-gradient(135deg,var(--zk-1),var(--zk-3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">بدقة شرعية موثّقة</span>
+    </h1>
+    <p class="zk-hero__sub">
+      الذهب والفضة والأموال والتجارة والأسهم —
+      احسب زكاتك بمصادر فقهية من islamqa وابن باز وابن عثيمين
+    </p>
 
-  <!-- سعر الذهب للنصاب — مشترك لكل التبويبات -->
-  <div class="calc-form" style="max-width:700px;margin:0 auto 20px;">
-    <div class="form-group">
-      <label class="form-label" for="goldPriceForNisab">
-        💵 سعر جرام الذهب عيار 24 الآن (اختياري — لحساب النصاب بدقة)
-      </label>
-      <div style="display:flex;gap:10px;align-items:center;">
-        <input type="number" class="form-input" id="goldPriceForNisab"
-          placeholder="اتركه فارغاً للتقدير التلقائي (~315 ريال)" min="0" step="0.01" inputmode="decimal">
-        <span class="currency-unit-label" style="white-space:nowrap;color:var(--text-sub);font-weight:700;">ريال</span>
+    <!-- Nisab Card -->
+    <div class="zk-nisab-card">
+      <div class="zk-nisab-icon">🏅</div>
+      <div class="zk-nisab-info">
+        <div class="zk-nisab-title">النصاب الحالي المقدَّر</div>
+        <div class="zk-nisab-val" id="hero-nisab-val">26,775</div>
+        <div class="zk-nisab-sub">ريال سعودي • 85 جرام ذهب عيار 24 • يتغير مع سعر الذهب</div>
+      </div>
+      <div style="text-align:center">
+        <div style="font-size:10px;color:var(--text-3);margin-bottom:4px">معدل الزكاة</div>
+        <div style="font-size:1.5rem;font-weight:900;color:var(--zk-1);font-family:var(--font-en)">2.5٪</div>
+        <div style="font-size:10px;color:var(--text-3)">ربع العشر</div>
       </div>
     </div>
-    <div class="form-group">
-      <label class="form-label" for="currency">💱 العملة</label>
-      <select class="form-select" id="currency" onchange="updateCurrency()">
-        <option value="SAR">🇸🇦 ريال سعودي (SAR)</option>
-        <option value="USD">🇺🇸 دولار أمريكي (USD)</option>
-        <option value="AED">🇦🇪 درهم إماراتي (AED)</option>
-        <option value="EGP">🇪🇬 جنيه مصري (EGP)</option>
-        <option value="KWD">🇰🇼 دينار كويتي (KWD)</option>
-        <option value="QAR">🇶🇦 ريال قطري (QAR)</option>
-        <option value="JOD">🇯🇴 دينار أردني (JOD)</option>
-        <option value="GBP">🇬🇧 جنيه إسترليني (GBP)</option>
-        <option value="EUR">🇪🇺 يورو (EUR)</option>
-      </select>
+
+    <!-- Top Row -->
+    <div class="zk-top-row">
+      <div class="zk-top-field">
+        <label class="zk-top-lbl" for="currency">💱 العملة</label>
+        <select class="zk-select" id="currency" onchange="onCurrencyChange()">
+          <option value="SAR">🇸🇦 ريال سعودي (SAR)</option>
+          <option value="USD">🇺🇸 دولار أمريكي (USD)</option>
+          <option value="AED">🇦🇪 درهم إماراتي (AED)</option>
+          <option value="EGP">🇪🇬 جنيه مصري (EGP)</option>
+          <option value="KWD">🇰🇼 دينار كويتي (KWD)</option>
+          <option value="QAR">🇶🇦 ريال قطري (QAR)</option>
+          <option value="JOD">🇯🇴 دينار أردني (JOD)</option>
+          <option value="GBP">🇬🇧 جنيه إسترليني (GBP)</option>
+          <option value="EUR">🇪🇺 يورو (EUR)</option>
+        </select>
+      </div>
+      <div class="zk-top-field">
+        <label class="zk-top-lbl" for="goldPriceGlobal">💵 سعر جرام الذهب عيار 24 (اختياري)</label>
+        <div class="zk-input-wrap">
+          <input class="zk-input" type="number" id="goldPriceGlobal"
+            placeholder="اتركه فارغاً للتقدير التلقائي"
+            min="0" step="0.01" inputmode="decimal"
+            oninput="onGoldPriceGlobalChange()">
+          <span class="zk-input-unit unit-lbl">ريال</span>
+        </div>
+      </div>
     </div>
   </div>
+</div>
 
-  <!-- تبويبات الزكاة -->
-  <div style="max-width:700px;margin:0 auto;">
+<!-- ============================================================
+     BODY
+     ============================================================ -->
+<div class="zk-body">
 
-    <!-- أزرار التبويبات -->
-    <div style="display:flex;flex-wrap:wrap;gap:6px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:8px;margin-bottom:20px;overflow-x:auto;">
-      <button class="zakat-tab active" data-tab="money"  onclick="switchTab('money')">💵 المال</button>
-      <button class="zakat-tab"        data-tab="gold"   onclick="switchTab('gold')">🥇 الذهب</button>
-      <button class="zakat-tab"        data-tab="silver" onclick="switchTab('silver')">🥈 الفضة</button>
-      <button class="zakat-tab"        data-tab="trade"  onclick="switchTab('trade')">🏪 التجارة</button>
-      <button class="zakat-tab"        data-tab="stocks" onclick="switchTab('stocks')">📈 الأسهم</button>
-      <button class="zakat-tab"        data-tab="total"  onclick="switchTab('total')">📊 الإجمالي</button>
+  <!-- Tab Bar -->
+  <div class="zk-tabs">
+    <button class="zk-tab active" data-tab="money"   onclick="switchTab('money')">💵 المال</button>
+    <button class="zk-tab"        data-tab="gold"    onclick="switchTab('gold')">🥇 الذهب</button>
+    <button class="zk-tab"        data-tab="silver"  onclick="switchTab('silver')">🥈 الفضة</button>
+    <button class="zk-tab"        data-tab="trade"   onclick="switchTab('trade')">🏪 التجارة</button>
+    <button class="zk-tab"        data-tab="stocks"  onclick="switchTab('stocks')">📈 الأسهم</button>
+    <button class="zk-tab"        data-tab="total"   onclick="switchTab('total')">📊 الإجمالي</button>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       TAB 1 — المال النقدي
+  ══════════════════════════════════════ -->
+  <div class="zk-card on" id="tab-money">
+    <div class="zk-card-head">
+      <div class="zk-card-icon">💵</div>
+      <div>
+        <div class="zk-card-title">زكاة المال النقدي</div>
+        <div class="zk-card-src">المصدر: <a href="https://islamqa.info/ar/93007" target="_blank">islamqa.info #93007</a></div>
+      </div>
     </div>
+    <div class="zk-card-body">
 
-    <!-- ===== تبويب المال ===== -->
-    <div id="tab-money" class="zakat-section">
-      <div class="calc-form">
-        <div class="form-group">
-          <label class="form-label" for="savings">💵 المدخرات والأموال النقدية</label>
-          <input type="number" class="form-input" id="savings" placeholder="0" min="0" inputmode="decimal">
-        </div>
-        <div class="form-group">
-          <label class="form-label" for="bank">🏦 الأموال في البنك (جارٍ + توفير)</label>
-          <input type="number" class="form-input" id="bank" placeholder="0" min="0" inputmode="decimal">
-        </div>
-        <div class="form-group">
-          <label class="form-label" for="debtsFor">💸 ديون لك (تتوقع استردادها)</label>
-          <input type="number" class="form-input" id="debtsFor" placeholder="0" min="0" inputmode="decimal">
-        </div>
-        <div class="form-group">
-          <label class="form-label" for="debtsOn">📤 ديون عليك (تُطرح من المال)</label>
-          <input type="number" class="form-input" id="debtsOn" placeholder="0" min="0" inputmode="decimal">
-        </div>
-        <button class="btn btn-primary" onclick="calcMoneyZakat()">🧮 احسب الزكاة</button>
+      <div class="zk-houl">
+        <span class="zk-houl__icon">⚠️</span>
+        <span>تجب الزكاة فقط إذا حال الحول (مرور سنة هجرية) على المال وهو بالغ النصاب. هذه الحاسبة تحسب المقدار الواجب — تأكد أن مالك حال عليه الحول.</span>
       </div>
 
-      <div class="calc-result" id="result-money">
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">
-          <div class="stat-card">
-            <div class="stat-lbl">إجمالي المال الزكوي</div>
-            <div class="stat-num" id="total-money-display" style="font-size:18px;">--</div>
+      <div class="zk-fields zk-fields--2">
+        <div class="zk-field">
+          <div class="zk-field__lbl"><span class="zk-field__icon">💵</span> المدخرات النقدية</div>
+          <div class="zk-input-wrap">
+            <input class="zk-input" type="number" id="savings" placeholder="0" min="0" inputmode="decimal">
+            <span class="zk-input-unit unit-lbl">ريال</span>
           </div>
-          <div class="stat-card">
-            <div class="stat-lbl">النصاب المستخدم</div>
-            <div class="stat-num" id="nisab-value" style="font-size:18px;">--</div>
+        </div>
+        <div class="zk-field">
+          <div class="zk-field__lbl"><span class="zk-field__icon">🏦</span> الأموال في البنك</div>
+          <div class="zk-input-wrap">
+            <input class="zk-input" type="number" id="bank" placeholder="0" min="0" inputmode="decimal">
+            <span class="zk-input-unit unit-lbl">ريال</span>
           </div>
         </div>
-        <div id="nisab-check" style="margin-bottom:12px;font-size:14px;"></div>
-        <div class="result-label">نسبة الزكاة: 2.5٪ (ربع العشر)</div>
-        <div class="result-label" style="margin-top:8px;">الزكاة الواجبة</div>
-        <div class="result-value" id="zakat-money">0</div>
-        <div class="result-unit currency-unit-label">ريال</div>
-        <div class="result-note" id="money-note"></div>
-        <div style="display:flex;gap:8px;justify-content:center;margin-top:14px;">
-          <button class="btn btn-secondary btn-sm" onclick="shareResult('money')">📤 شارك</button>
-          <button class="btn btn-outline btn-sm"   onclick="resetForm('money')">🔄 إعادة</button>
+        <div class="zk-field">
+          <div class="zk-field__lbl"><span class="zk-field__icon">💸</span> ديون لك (تتوقع استردادها)</div>
+          <div class="zk-input-wrap">
+            <input class="zk-input" type="number" id="debtsFor" placeholder="0" min="0" inputmode="decimal">
+            <span class="zk-input-unit unit-lbl">ريال</span>
+          </div>
+        </div>
+        <div class="zk-field">
+          <div class="zk-field__lbl"><span class="zk-field__icon">📤</span> ديون عليك (تُطرح)</div>
+          <div class="zk-input-wrap">
+            <input class="zk-input" type="number" id="debtsOn" placeholder="0" min="0" inputmode="decimal">
+            <span class="zk-input-unit unit-lbl">ريال</span>
+          </div>
+          <div class="zk-field__hint">تُطرح الديون الحالّة فقط — ما يجب سداده الآن</div>
+        </div>
+      </div>
+
+      <button class="zk-calc-btn" onclick="calcMoney()">🧮 احسب زكاة المال</button>
+
+      <div class="zk-result" id="res-money">
+        <div class="zk-result__grid">
+          <div class="zk-ritem"><div class="zk-ritem__lbl">الوعاء الزكوي</div><div class="zk-ritem__val" id="rm-total">--</div></div>
+          <div class="zk-ritem"><div class="zk-ritem__lbl">النصاب</div><div class="zk-ritem__val" id="rm-nisab">--</div></div>
+          <div class="zk-ritem"><div class="zk-ritem__lbl">نسبة الزكاة</div><div class="zk-ritem__val gd">2.5٪</div></div>
+        </div>
+        <div class="zk-result__nisab" id="rm-status"></div>
+        <div class="zk-result__main">
+          <div class="zk-result__lbl">الزكاة الواجبة</div>
+          <div class="zk-result__num" id="rm-zakat">0</div>
+          <div class="zk-result__unit unit-lbl">ريال</div>
+          <div class="zk-result__note" id="rm-note"></div>
+        </div>
+        <div class="zk-result__actions">
+          <button class="zk-act-btn share" onclick="shareResult('money')">📤 مشاركة</button>
+          <button class="zk-act-btn copy"  onclick="copyResult('money')">📋 نسخ</button>
+          <button class="zk-act-btn reset" onclick="resetTab('money')">🔄 إعادة</button>
         </div>
       </div>
     </div>
+  </div>
 
-    <!-- ===== تبويب الذهب ===== -->
-    <div id="tab-gold" class="zakat-section" style="display:none;">
-      <div class="sharia-note">
-        📌 <strong>نصاب الذهب:</strong> 85 جراماً من الذهب <strong>الخالص (عيار 24)</strong>.
-        أي عيار آخر يُحوَّل إلى وزنه الخالص ثم يُقارَن بالنصاب.<br>
-        📐 <strong>المعادلة:</strong> الوزن الخالص = الوزن × (العيار ÷ 24)<br>
-        <small>المصدر: <a href="https://islamqa.info/ar/214221" target="_blank" rel="noopener" style="color:var(--primary-light)">islamqa.info #214221</a></small>
+  <!-- ══════════════════════════════════════
+       TAB 2 — الذهب
+  ══════════════════════════════════════ -->
+  <div class="zk-card" id="tab-gold">
+    <div class="zk-card-head">
+      <div class="zk-card-icon">🥇</div>
+      <div>
+        <div class="zk-card-title">زكاة الذهب</div>
+        <div class="zk-card-src">المصدر: <a href="https://islamqa.info/ar/214221" target="_blank">islamqa.info #214221</a> + <a href="https://islamqa.info/ar/145545" target="_blank">#145545</a></div>
       </div>
-      <div class="calc-form">
-        <div class="form-group">
-          <label class="form-label" for="goldWeight">⚖️ وزن الذهب الكلي (جرام)</label>
-          <input type="number" class="form-input" id="goldWeight" placeholder="مثال: 120" min="0" step="0.01" inputmode="decimal">
+    </div>
+    <div class="zk-card-body">
+
+      <div class="zk-sharia">
+        <strong>📌 النصاب:</strong> 85 جراماً من الذهب الخالص (عيار 24).<br>
+        <strong>📐 الوزن الخالص</strong> = الوزن الكلي × (العيار ÷ 24) — أي عيار يُحوَّل للخالص أولاً.
+      </div>
+
+      <div class="zk-fields zk-fields--3">
+        <div class="zk-field">
+          <div class="zk-field__lbl"><span class="zk-field__icon">⚖️</span> الوزن الكلي (جرام)</div>
+          <div class="zk-input-wrap">
+            <input class="zk-input" type="number" id="goldWeight" placeholder="مثال: 120" min="0" step="0.01" inputmode="decimal">
+            <span class="zk-input-unit">جرام</span>
+          </div>
         </div>
-        <div class="form-group">
-          <label class="form-label" for="goldKarat">🏅 عيار الذهب</label>
-          <select class="form-select" id="goldKarat">
-            <option value="24">24 قيراط — ذهب خالص</option>
+        <div class="zk-field">
+          <div class="zk-field__lbl"><span class="zk-field__icon">🏅</span> العيار</div>
+          <select class="zk-select" id="goldKarat">
+            <option value="24">24 قيراط — خالص</option>
             <option value="22" selected>22 قيراط</option>
             <option value="21">21 قيراط</option>
             <option value="18">18 قيراط</option>
             <option value="14">14 قيراط</option>
           </select>
         </div>
-        <div class="form-group">
-          <label class="form-label" for="goldPrice">💵 سعر جرام الذهب بنفس العيار الآن</label>
-          <div style="display:flex;gap:10px;align-items:center;">
-            <input type="number" class="form-input" id="goldPrice"
-              placeholder="مثال: 290 (للعيار 22)" min="0" step="0.01" inputmode="decimal">
-            <span style="white-space:nowrap;color:var(--text-sub);font-weight:700;">
-              <span class="currency-unit-label">ريال</span>/جرام
-            </span>
+        <div class="zk-field">
+          <div class="zk-field__lbl"><span class="zk-field__icon">💵</span> سعر الجرام (بنفس العيار)</div>
+          <div class="zk-input-wrap">
+            <input class="zk-input" type="number" id="goldPrice" placeholder="مثال: 290" min="0" step="0.01" inputmode="decimal">
+            <span class="zk-input-unit unit-lbl">ريال</span>
           </div>
         </div>
-        <div class="form-group">
-          <label class="form-label" for="goldPurpose">💍 الغرض من الذهب</label>
-          <select class="form-select" id="goldPurpose" onchange="toggleJewelryNote()">
-            <option value="savings">💰 للادخار أو الاستثمار — زكاته واجبة اتفاقاً</option>
-            <option value="jewelry">💍 للزينة الشخصية — فيه خلاف بين العلماء</option>
-          </select>
-        </div>
-        <div class="jewelry-note" id="jewelry-note">
+      </div>
+
+      <div class="zk-field" style="margin-bottom:var(--s-4)">
+        <div class="zk-field__lbl"><span class="zk-field__icon">💍</span> الغرض من الذهب</div>
+        <select class="zk-select" id="goldPurpose" onchange="onGoldPurposeChange()">
+          <option value="savings">💰 للادخار أو الاستثمار — زكاته واجبة اتفاقاً</option>
+          <option value="jewelry">💍 للزينة الشخصية — فيه خلاف بين العلماء</option>
+        </select>
+        <div class="zk-jewelry-note" id="jewelry-note">
           <strong>خلاف العلماء في ذهب الزينة:</strong><br>
           • <strong>الجمهور</strong> (مالك + الشافعي + أحمد): لا زكاة في ذهب الزينة المُستخدَم<br>
           • <strong>الأحناف + ابن باز رحمه الله</strong>: تجب الزكاة احتياطاً<br>
           ✅ <strong>الأحوط والأبرأ للذمة: إخراج الزكاة</strong><br>
-          <small>المصدر: <a href="https://binbaz.org.sa" target="_blank" rel="noopener" style="color:var(--primary-light)">binbaz.org.sa</a> + <a href="https://islamqa.info/ar/145545" target="_blank" rel="noopener" style="color:var(--primary-light)">islamqa.info #145545</a></small>
+          المصدر: <a href="https://binbaz.org.sa" target="_blank">binbaz.org.sa</a>
         </div>
-        <button class="btn btn-primary" onclick="calcGoldZakat()">🥇 احسب زكاة الذهب</button>
       </div>
 
-      <div class="calc-result" id="result-gold">
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;text-align:right;">
-          <div class="stat-card"><div class="stat-lbl">الوزن الكلي</div><div class="stat-num" id="gold-total-weight" style="font-size:16px;">--</div></div>
-          <div class="stat-card"><div class="stat-lbl">الوزن الخالص (عيار 24)</div><div class="stat-num" id="gold-pure-weight" style="font-size:16px;">--</div></div>
-          <div class="stat-card"><div class="stat-lbl">القيمة الإجمالية</div><div class="stat-num" id="gold-total-value" style="font-size:16px;">--</div></div>
-          <div class="stat-card"><div class="stat-lbl">النصاب (85 جرام خالص)</div><div id="gold-nisab-status" style="font-size:13px;padding-top:4px;">--</div></div>
-        </div>
-        <div class="result-label">الزكاة الواجبة (2.5٪)</div>
-        <div class="result-value" id="zakat-gold">0</div>
-        <div class="result-unit currency-unit-label">ريال</div>
-        <div class="result-note" id="gold-note"></div>
-        <div style="display:flex;gap:8px;justify-content:center;margin-top:14px;">
-          <button class="btn btn-secondary btn-sm" onclick="shareResult('gold')">📤 شارك</button>
-          <button class="btn btn-outline btn-sm"   onclick="resetForm('gold')">🔄 إعادة</button>
-        </div>
-      </div>
-    </div>
+      <button class="zk-calc-btn" onclick="calcGold()">🥇 احسب زكاة الذهب</button>
 
-    <!-- ===== تبويب الفضة ===== -->
-    <div id="tab-silver" class="zakat-section" style="display:none;">
-      <div class="sharia-note">
-        📌 <strong>نصاب الفضة:</strong> 595 جراماً من الفضة الخالصة (200 درهم شرعي).<br>
-        <small>المصدر: <a href="https://dorar.net" target="_blank" rel="noopener" style="color:var(--primary-light)">dorar.net — الموسوعة الفقهية</a></small>
-      </div>
-      <div class="calc-form">
-        <div class="form-group">
-          <label class="form-label" for="silverWeight">⚖️ وزن الفضة (جرام)</label>
-          <input type="number" class="form-input" id="silverWeight" placeholder="مثال: 700" min="0" step="0.01" inputmode="decimal">
+      <div class="zk-result" id="res-gold">
+        <div class="zk-result__grid">
+          <div class="zk-ritem"><div class="zk-ritem__lbl">الوزن الكلي</div><div class="zk-ritem__val" id="rg-weight">--</div></div>
+          <div class="zk-ritem"><div class="zk-ritem__lbl">الوزن الخالص</div><div class="zk-ritem__val gd" id="rg-pure">--</div></div>
+          <div class="zk-ritem"><div class="zk-ritem__lbl">القيمة الإجمالية</div><div class="zk-ritem__val" id="rg-value">--</div></div>
+          <div class="zk-ritem"><div class="zk-ritem__lbl">النصاب</div><div class="zk-ritem__val" id="rg-nisab">85 جرام</div></div>
         </div>
-        <div class="form-group">
-          <label class="form-label" for="silverPrice">
-            💵 سعر جرام الفضة الآن
-            (<span class="currency-unit-label">ريال</span>/جرام)
-          </label>
-          <input type="number" class="form-input" id="silverPrice" placeholder="مثال: 3.5" min="0" step="0.01" inputmode="decimal">
+        <div class="zk-result__nisab" id="rg-status"></div>
+        <div class="zk-result__main">
+          <div class="zk-result__lbl">الزكاة الواجبة</div>
+          <div class="zk-result__num" id="rg-zakat">0</div>
+          <div class="zk-result__unit unit-lbl">ريال</div>
+          <div class="zk-result__note" id="rg-note"></div>
         </div>
-        <button class="btn btn-primary" onclick="calcSilverZakat()">🥈 احسب زكاة الفضة</button>
-      </div>
-
-      <div class="calc-result" id="result-silver">
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;">
-          <div class="stat-card"><div class="stat-lbl">وزن الفضة</div><div class="stat-num" id="silver-weight-display" style="font-size:16px;">--</div></div>
-          <div class="stat-card"><div class="stat-lbl">القيمة الإجمالية</div><div class="stat-num" id="silver-total-value" style="font-size:16px;">--</div></div>
-        </div>
-        <div id="silver-nisab-status" style="margin-bottom:10px;font-size:13px;"></div>
-        <div class="result-label">الزكاة الواجبة (2.5٪)</div>
-        <div class="result-value" id="zakat-silver">0</div>
-        <div class="result-unit currency-unit-label">ريال</div>
-        <div class="result-note" id="silver-note"></div>
-        <div style="display:flex;gap:8px;justify-content:center;margin-top:14px;">
-          <button class="btn btn-secondary btn-sm" onclick="shareResult('silver')">📤 شارك</button>
-          <button class="btn btn-outline btn-sm"   onclick="resetForm('silver')">🔄 إعادة</button>
+        <div class="zk-result__actions">
+          <button class="zk-act-btn share" onclick="shareResult('gold')">📤 مشاركة</button>
+          <button class="zk-act-btn copy"  onclick="copyResult('gold')">📋 نسخ</button>
+          <button class="zk-act-btn reset" onclick="resetTab('gold')">🔄 إعادة</button>
         </div>
       </div>
     </div>
+  </div>
 
-    <!-- ===== تبويب التجارة ===== -->
-    <div id="tab-trade" class="zakat-section" style="display:none;">
-      <div class="sharia-note">
-        📌 <strong>وعاء زكاة التجارة:</strong>
-        (قيمة البضاعة بسعر السوق + النقد + الديون المتوقعة) − الديون عليك<br>
-        <small>المصدر: <a href="https://islamqa.info/ar/22449" target="_blank" rel="noopener" style="color:var(--primary-light)">islamqa.info #22449</a></small>
+  <!-- ══════════════════════════════════════
+       TAB 3 — الفضة
+  ══════════════════════════════════════ -->
+  <div class="zk-card" id="tab-silver">
+    <div class="zk-card-head">
+      <div class="zk-card-icon">🥈</div>
+      <div>
+        <div class="zk-card-title">زكاة الفضة</div>
+        <div class="zk-card-src">المصدر: <a href="https://dorar.net" target="_blank">dorar.net — الموسوعة الفقهية</a></div>
       </div>
-      <div class="calc-form">
-        <div class="form-group">
-          <label class="form-label" for="tradeGoods">📦 قيمة البضاعة (بسعر السوق الحالي)</label>
-          <input type="number" class="form-input" id="tradeGoods" placeholder="0" min="0" inputmode="decimal">
-        </div>
-        <div class="form-group">
-          <label class="form-label" for="tradeCash">💵 النقد في الصندوق والبنك</label>
-          <input type="number" class="form-input" id="tradeCash" placeholder="0" min="0" inputmode="decimal">
-        </div>
-        <div class="form-group">
-          <label class="form-label" for="tradeDebtsFor">📋 ديون للتحصيل (تتوقع استردادها)</label>
-          <input type="number" class="form-input" id="tradeDebtsFor" placeholder="0" min="0" inputmode="decimal">
-        </div>
-        <div class="form-group">
-          <label class="form-label" for="tradeDebtsOn">📤 ديون عليك (تُطرح من الوعاء)</label>
-          <input type="number" class="form-input" id="tradeDebtsOn" placeholder="0" min="0" inputmode="decimal">
-        </div>
-        <button class="btn btn-primary" onclick="calcTradeZakat()">🏪 احسب زكاة التجارة</button>
+    </div>
+    <div class="zk-card-body">
+
+      <div class="zk-sharia">
+        <strong>📌 النصاب:</strong> 595 جراماً من الفضة الخالصة (200 درهم شرعي).
       </div>
 
-      <div class="calc-result" id="result-trade">
-        <div class="stat-card" style="margin-bottom:14px;">
-          <div class="stat-lbl">وعاء الزكاة التجاري</div>
-          <div class="stat-num" id="trade-total">--</div>
+      <div class="zk-fields zk-fields--2">
+        <div class="zk-field">
+          <div class="zk-field__lbl"><span class="zk-field__icon">⚖️</span> وزن الفضة (جرام)</div>
+          <div class="zk-input-wrap">
+            <input class="zk-input" type="number" id="silverWeight" placeholder="مثال: 700" min="0" step="0.01" inputmode="decimal">
+            <span class="zk-input-unit">جرام</span>
+          </div>
         </div>
-        <div class="result-label">الزكاة الواجبة (2.5٪)</div>
-        <div class="result-value" id="zakat-trade">0</div>
-        <div class="result-unit currency-unit-label">ريال</div>
-        <div class="result-note" id="trade-note"></div>
-        <div style="display:flex;gap:8px;justify-content:center;margin-top:14px;">
-          <button class="btn btn-secondary btn-sm" onclick="shareResult('trade')">📤 شارك</button>
-          <button class="btn btn-outline btn-sm"   onclick="resetForm('trade')">🔄 إعادة</button>
+        <div class="zk-field">
+          <div class="zk-field__lbl"><span class="zk-field__icon">💵</span> سعر الجرام الآن</div>
+          <div class="zk-input-wrap">
+            <input class="zk-input" type="number" id="silverPrice" placeholder="مثال: 3.5" min="0" step="0.01" inputmode="decimal">
+            <span class="zk-input-unit unit-lbl">ريال</span>
+          </div>
+        </div>
+      </div>
+
+      <button class="zk-calc-btn" onclick="calcSilver()">🥈 احسب زكاة الفضة</button>
+
+      <div class="zk-result" id="res-silver">
+        <div class="zk-result__grid">
+          <div class="zk-ritem"><div class="zk-ritem__lbl">الوزن</div><div class="zk-ritem__val" id="rs-weight">--</div></div>
+          <div class="zk-ritem"><div class="zk-ritem__lbl">القيمة</div><div class="zk-ritem__val" id="rs-value">--</div></div>
+          <div class="zk-ritem"><div class="zk-ritem__lbl">النصاب</div><div class="zk-ritem__val">595 جرام</div></div>
+        </div>
+        <div class="zk-result__nisab" id="rs-status"></div>
+        <div class="zk-result__main">
+          <div class="zk-result__lbl">الزكاة الواجبة</div>
+          <div class="zk-result__num" id="rs-zakat">0</div>
+          <div class="zk-result__unit unit-lbl">ريال</div>
+          <div class="zk-result__note" id="rs-note"></div>
+        </div>
+        <div class="zk-result__actions">
+          <button class="zk-act-btn share" onclick="shareResult('silver')">📤 مشاركة</button>
+          <button class="zk-act-btn copy"  onclick="copyResult('silver')">📋 نسخ</button>
+          <button class="zk-act-btn reset" onclick="resetTab('silver')">🔄 إعادة</button>
         </div>
       </div>
     </div>
+  </div>
 
-    <!-- ===== تبويب الأسهم ===== -->
-    <div id="tab-stocks" class="zakat-section" style="display:none;">
-      <div class="sharia-note">
-        📌 <strong>أسهم المضاربة (للبيع):</strong> زكِّ على القيمة السوقية الحالية × 2.5٪<br>
-        📌 <strong>أسهم الدخل (للتوزيعات):</strong> زكِّ على الأرباح الموزَّعة التي لم تُزكَّ فقط × 2.5٪<br>
-        <small>المصدر: <a href="https://islamqa.info/ar/125504" target="_blank" rel="noopener" style="color:var(--primary-light)">islamqa.info #125504</a></small>
+  <!-- ══════════════════════════════════════
+       TAB 4 — التجارة
+  ══════════════════════════════════════ -->
+  <div class="zk-card" id="tab-trade">
+    <div class="zk-card-head">
+      <div class="zk-card-icon">🏪</div>
+      <div>
+        <div class="zk-card-title">زكاة عروض التجارة</div>
+        <div class="zk-card-src">المصدر: <a href="https://islamqa.info/ar/22449" target="_blank">islamqa.info #22449</a></div>
       </div>
-      <div class="calc-form">
-        <div class="form-group">
-          <label class="form-label" for="stocksType">📊 نوع الاحتفاظ بالأسهم</label>
-          <select class="form-select" id="stocksType" onchange="handleStocksTypeChange()">
-            <option value="trade">للمضاربة والبيع — زكاة على القيمة السوقية</option>
-            <option value="income">للتوزيعات والدخل — زكاة على الأرباح فقط</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label class="form-label" for="stocksValue">💰 القيمة السوقية الحالية للأسهم</label>
-          <input type="number" class="form-input" id="stocksValue" placeholder="0" min="0" inputmode="decimal">
-        </div>
-        <div class="form-group">
-          <label class="form-label" for="stocksDividends">
-            💵 أرباح التوزيعات المتراكمة (لم تُزكَّ بعد)
-            <span id="dividends-hint" style="color:var(--text-muted);font-size:11px;display:block;margin-top:2px;">
-              لأسهم المضاربة: لا تُدخل الأرباح هنا إذا كانت مُضمَّنة في القيمة السوقية
-            </span>
-          </label>
-          <input type="number" class="form-input" id="stocksDividends" placeholder="0" min="0" inputmode="decimal">
-        </div>
-        <!-- ✅ تنبيه ازدواج الحساب -->
-        <div class="stocks-warn" id="stocksDoubleWarn">
-          ⚠️ <strong>تنبيه:</strong> الأرباح الموزعة عادةً مُضمَّنة في القيمة السوقية للأسهم.
-          أدخل الأرباح هنا <strong>فقط</strong> إذا كانت غير معلنة في سعر السهم بعد (أرباح نقدية محوّلة لحسابك خارج السوق).
-        </div>
-        <button class="btn btn-primary" onclick="calcStocksZakat()">📈 احسب زكاة الأسهم</button>
+    </div>
+    <div class="zk-card-body">
+
+      <div class="zk-sharia">
+        <strong>📌 وعاء زكاة التجارة:</strong> (قيمة البضاعة بسعر السوق + النقد + الديون المتوقعة) − الديون عليك.
       </div>
 
-      <div class="calc-result" id="result-stocks">
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;">
-          <div class="stat-card"><div class="stat-lbl">الوعاء الزكوي</div><div class="stat-num" id="stocks-base" style="font-size:16px;">--</div></div>
-          <div class="stat-card"><div id="stocks-nisab-status" style="font-size:13px;padding-top:4px;"></div></div>
+      <div class="zk-fields zk-fields--2">
+        <div class="zk-field">
+          <div class="zk-field__lbl"><span class="zk-field__icon">📦</span> قيمة البضاعة (سعر السوق)</div>
+          <div class="zk-input-wrap">
+            <input class="zk-input" type="number" id="tradeGoods" placeholder="0" min="0" inputmode="decimal">
+            <span class="zk-input-unit unit-lbl">ريال</span>
+          </div>
         </div>
-        <div class="result-label">الزكاة الواجبة (2.5٪)</div>
-        <div class="result-value" id="zakat-stocks">0</div>
-        <div class="result-unit currency-unit-label">ريال</div>
-        <div class="result-note" id="stocks-note"></div>
-        <div style="display:flex;gap:8px;justify-content:center;margin-top:14px;">
-          <button class="btn btn-secondary btn-sm" onclick="shareResult('stocks')">📤 شارك</button>
-          <button class="btn btn-outline btn-sm"   onclick="resetForm('stocks')">🔄 إعادة</button>
+        <div class="zk-field">
+          <div class="zk-field__lbl"><span class="zk-field__icon">💵</span> النقد (صندوق + بنك)</div>
+          <div class="zk-input-wrap">
+            <input class="zk-input" type="number" id="tradeCash" placeholder="0" min="0" inputmode="decimal">
+            <span class="zk-input-unit unit-lbl">ريال</span>
+          </div>
+        </div>
+        <div class="zk-field">
+          <div class="zk-field__lbl"><span class="zk-field__icon">📋</span> ديون للتحصيل</div>
+          <div class="zk-input-wrap">
+            <input class="zk-input" type="number" id="tradeDebtsFor" placeholder="0" min="0" inputmode="decimal">
+            <span class="zk-input-unit unit-lbl">ريال</span>
+          </div>
+        </div>
+        <div class="zk-field">
+          <div class="zk-field__lbl"><span class="zk-field__icon">📤</span> ديون عليك (تُطرح)</div>
+          <div class="zk-input-wrap">
+            <input class="zk-input" type="number" id="tradeDebtsOn" placeholder="0" min="0" inputmode="decimal">
+            <span class="zk-input-unit unit-lbl">ريال</span>
+          </div>
+        </div>
+      </div>
+
+      <button class="zk-calc-btn" onclick="calcTrade()">🏪 احسب زكاة التجارة</button>
+
+      <div class="zk-result" id="res-trade">
+        <div class="zk-result__grid">
+          <div class="zk-ritem"><div class="zk-ritem__lbl">وعاء التجارة</div><div class="zk-ritem__val" id="rt-total">--</div></div>
+          <div class="zk-ritem"><div class="zk-ritem__lbl">النصاب</div><div class="zk-ritem__val" id="rt-nisab">--</div></div>
+          <div class="zk-ritem"><div class="zk-ritem__lbl">نسبة الزكاة</div><div class="zk-ritem__val gd">2.5٪</div></div>
+        </div>
+        <div class="zk-result__nisab" id="rt-status"></div>
+        <div class="zk-result__main">
+          <div class="zk-result__lbl">الزكاة الواجبة</div>
+          <div class="zk-result__num" id="rt-zakat">0</div>
+          <div class="zk-result__unit unit-lbl">ريال</div>
+          <div class="zk-result__note" id="rt-note"></div>
+        </div>
+        <div class="zk-result__actions">
+          <button class="zk-act-btn share" onclick="shareResult('trade')">📤 مشاركة</button>
+          <button class="zk-act-btn copy"  onclick="copyResult('trade')">📋 نسخ</button>
+          <button class="zk-act-btn reset" onclick="resetTab('trade')">🔄 إعادة</button>
         </div>
       </div>
     </div>
+  </div>
 
-    <!-- ===== تبويب الإجمالي ===== -->
-    <div id="tab-total" class="zakat-section" style="display:none;">
-      <div class="sharia-note">
-        📌 <strong>ضم الأموال — حكم شرعي مهم:</strong><br>
-        شرعاً تُضم النقود والذهب والفضة وعروض التجارة والأسهم في وعاء زكوي واحد.
-        هذا الحساب يجمع كل ما أدخلته في التبويبات السابقة ويحسب الزكاة الإجمالية.<br>
-        <small>المصدر: <a href="https://islamqa.info/ar/585436" target="_blank" rel="noopener" style="color:var(--primary-light)">islamqa.info #585436</a> + الشرح الممتع لابن عثيمين رحمه الله</small>
+  <!-- ══════════════════════════════════════
+       TAB 5 — الأسهم
+  ══════════════════════════════════════ -->
+  <div class="zk-card" id="tab-stocks">
+    <div class="zk-card-head">
+      <div class="zk-card-icon">📈</div>
+      <div>
+        <div class="zk-card-title">زكاة الأسهم</div>
+        <div class="zk-card-src">المصدر: <a href="https://islamqa.info/ar/125504" target="_blank">islamqa.info #125504</a></div>
       </div>
-      <div class="calc-form">
-        <p style="color:var(--text-sub);font-size:14px;text-align:center;margin-bottom:16px;">
-          ⚠️ أدخل بياناتك في التبويبات السابقة أولاً ثم اضغط الزر أدناه
-        </p>
-        <button class="btn btn-primary btn-lg" style="width:100%;" onclick="calcTotalZakat()">📊 احسب الإجمالي الشامل</button>
+    </div>
+    <div class="zk-card-body">
+
+      <div class="zk-sharia">
+        <strong>📌 أسهم المضاربة (للبيع):</strong> زكِّ على القيمة السوقية الحالية × 2.5٪<br>
+        <strong>📌 أسهم الدخل (للتوزيعات):</strong> زكِّ على الأرباح الموزَّعة التي لم تُزكَّ فقط × 2.5٪
       </div>
 
-      <div class="calc-result" id="result-total">
-        <div id="total-breakdown" style="margin-bottom:16px;"></div>
-        <div id="total-nisab-check" style="font-size:13px;margin-bottom:12px;"></div>
-        <div class="result-label">إجمالي الزكاة الواجبة</div>
-        <div class="result-value" id="zakat-total">0</div>
-        <div class="result-unit" id="total-zakat-unit">ريال</div>
-        <div class="result-note" id="grand-total-value"></div>
-        <div style="display:flex;gap:8px;justify-content:center;margin-top:14px;">
-          <button class="btn btn-secondary btn-sm" onclick="shareResult('total')">📤 شارك</button>
-          <button class="btn btn-outline btn-sm"   onclick="location.reload()">🔄 إعادة الكل</button>
+      <div class="zk-field" style="margin-bottom:var(--s-4)">
+        <div class="zk-field__lbl"><span class="zk-field__icon">📊</span> نوع الاحتفاظ</div>
+        <select class="zk-select" id="stocksType" onchange="onStocksTypeChange()">
+          <option value="trade">للمضاربة والبيع — زكاة على القيمة السوقية</option>
+          <option value="income">للتوزيعات والدخل — زكاة على الأرباح فقط</option>
+        </select>
+      </div>
+
+      <div class="zk-fields zk-fields--2">
+        <div class="zk-field">
+          <div class="zk-field__lbl"><span class="zk-field__icon">💰</span> القيمة السوقية الحالية</div>
+          <div class="zk-input-wrap">
+            <input class="zk-input" type="number" id="stocksValue" placeholder="0" min="0" inputmode="decimal">
+            <span class="zk-input-unit unit-lbl">ريال</span>
+          </div>
+        </div>
+        <div class="zk-field" id="dividends-field">
+          <div class="zk-field__lbl"><span class="zk-field__icon">💵</span> أرباح موزّعة (لم تُزكَّ)</div>
+          <div class="zk-input-wrap">
+            <input class="zk-input" type="number" id="stocksDividends" placeholder="0" min="0" inputmode="decimal">
+            <span class="zk-input-unit unit-lbl">ريال</span>
+          </div>
+          <div class="zk-field__hint">⚠️ للمضاربة: الأرباح عادةً مضمّنة في السعر — لا تضعها هنا إلا إذا كانت نقداً خارج السوق</div>
+        </div>
+      </div>
+
+      <button class="zk-calc-btn" onclick="calcStocks()">📈 احسب زكاة الأسهم</button>
+
+      <div class="zk-result" id="res-stocks">
+        <div class="zk-result__grid">
+          <div class="zk-ritem"><div class="zk-ritem__lbl">الوعاء الزكوي</div><div class="zk-ritem__val" id="rst-base">--</div></div>
+          <div class="zk-ritem"><div class="zk-ritem__lbl">النصاب</div><div class="zk-ritem__val" id="rst-nisab">--</div></div>
+          <div class="zk-ritem"><div class="zk-ritem__lbl">النوع</div><div class="zk-ritem__val gd" id="rst-type">مضاربة</div></div>
+        </div>
+        <div class="zk-result__nisab" id="rst-status"></div>
+        <div class="zk-result__main">
+          <div class="zk-result__lbl">الزكاة الواجبة</div>
+          <div class="zk-result__num" id="rst-zakat">0</div>
+          <div class="zk-result__unit unit-lbl">ريال</div>
+          <div class="zk-result__note" id="rst-note"></div>
+        </div>
+        <div class="zk-result__actions">
+          <button class="zk-act-btn share" onclick="shareResult('stocks')">📤 مشاركة</button>
+          <button class="zk-act-btn copy"  onclick="copyResult('stocks')">📋 نسخ</button>
+          <button class="zk-act-btn reset" onclick="resetTab('stocks')">🔄 إعادة</button>
         </div>
       </div>
     </div>
+  </div>
 
-  </div><!-- /max-width wrapper -->
+  <!-- ══════════════════════════════════════
+       TAB 6 — الإجمالي
+  ══════════════════════════════════════ -->
+  <div class="zk-card" id="tab-total">
+    <div class="zk-card-head">
+      <div class="zk-card-icon">📊</div>
+      <div>
+        <div class="zk-card-title">الإجمالي الشامل</div>
+        <div class="zk-card-src">المصدر: <a href="https://islamqa.info/ar/585436" target="_blank">islamqa.info #585436</a></div>
+      </div>
+    </div>
+    <div class="zk-card-body">
 
-  <!-- ===== أسئلة فقهية ===== -->
-  <section style="max-width:700px;margin:48px auto 0;">
-    <h2 style="font-size:20px;font-weight:800;margin-bottom:16px;text-align:center;">📚 أسئلة فقهية شائعة</h2>
+      <div class="zk-sharia">
+        <strong>📌 ضم الأموال:</strong> شرعاً تُضم النقود والذهب والفضة وعروض التجارة والأسهم في وعاء زكوي واحد — المصدر: الشرح الممتع لابن عثيمين رحمه الله.
+      </div>
 
-    <details style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:10px;">
-      <summary style="font-weight:700;font-size:14px;">▸ ما هي شروط وجوب الزكاة؟</summary>
-      <p style="font-size:13px;color:var(--text-sub);margin-top:10px;line-height:1.8;">
-        خمسة شروط: (1) الإسلام (2) الحرية (3) ملك النصاب كاملاً
-        (4) حولان الحول — مرور سنة هجرية كاملة (5) ألا تكون الأموال محتاجاً إليها للحوائج الأصلية.<br>
-        <small>المصدر: الشرح الممتع — ابن عثيمين رحمه الله</small>
-      </p>
-    </details>
+      <div class="zk-houl">
+        <span class="zk-houl__icon">💡</span>
+        <span>أدخل بياناتك في التبويبات السابقة أولاً ثم اضغط الزر أدناه لحساب الإجمالي الشامل.</span>
+      </div>
 
-    <details style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:10px;">
-      <summary style="font-weight:700;font-size:14px;">▸ كيف أعرف نصاب المال بالريال السعودي؟</summary>
-      <p style="font-size:13px;color:var(--text-sub);margin-top:10px;line-height:1.8;">
-        النصاب = 85 جرام ذهب × سعر الجرام عيار 24 اليوم.
-        مثال: إذا كان سعر الجرام 315 ريال → النصاب = 85 × 315 = 26,775 ريال.
-        يتغير النصاب مع سعر الذهب — لذلك أدخل سعر الجرام في الحقل أعلاه للدقة.<br>
-        <small>المصدر: <a href="https://islamqa.info/ar/270751" target="_blank" rel="noopener" style="color:var(--primary-light)">islamqa.info #270751</a></small>
-      </p>
-    </details>
+      <button class="zk-calc-btn" onclick="calcTotal()">📊 احسب الإجمالي الشامل</button>
 
-    <details style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:10px;">
-      <summary style="font-weight:700;font-size:14px;">▸ هل يُزكَّى الراتب الشهري مباشرةً؟</summary>
-      <p style="font-size:13px;color:var(--text-sub);margin-top:10px;line-height:1.8;">
-        الأصح أن الراتب لا يُزكَّى منفرداً عند استلامه، بل يُضاف إلى سائر أموالك
-        وتُحسب الزكاة مرةً واحدةً في السنة على مجموع ما بقي عندك حين حولان الحول.<br>
-        <small>المصدر: <a href="https://islamqa.info/ar/93007" target="_blank" rel="noopener" style="color:var(--primary-light)">islamqa.info #93007</a></small>
-      </p>
-    </details>
+      <div class="zk-result" id="res-total">
+        <div class="zk-breakdown" id="total-breakdown"></div>
+        <div class="zk-result__nisab" id="rtot-status"></div>
+        <div class="zk-result__main">
+          <div class="zk-result__lbl">إجمالي الزكاة الواجبة</div>
+          <div class="zk-result__num" id="rtot-zakat">0</div>
+          <div class="zk-result__unit unit-lbl">ريال</div>
+        </div>
+        <div class="zk-result__actions">
+          <button class="zk-act-btn share" onclick="shareResult('total')">📤 مشاركة</button>
+          <button class="zk-act-btn copy"  onclick="copyResult('total')">📋 نسخ</button>
+          <button class="zk-act-btn reset" onclick="resetAll()">🔄 إعادة الكل</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
-    <details style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:10px;">
-      <summary style="font-weight:700;font-size:14px;">▸ هل تجب الزكاة على الذهب أقل من النصاب إذا كانت قيمته كبيرة؟</summary>
-      <p style="font-size:13px;color:var(--text-sub);margin-top:10px;line-height:1.8;">
-        لا. العبرة بالوزن الخالص لا بالقيمة وحدها. إذا كان وزنه الخالص أقل من 85 جراماً
-        فلا زكاة فيه بمفرده، لكن لو ضُمَّ إلى نقوده وبلغ النصاب وجبت الزكاة على الجميع.<br>
-        <small>المصدر: <a href="https://islamqa.info/ar/585436" target="_blank" rel="noopener" style="color:var(--primary-light)">islamqa.info #585436</a></small>
-      </p>
-    </details>
-  </section>
+  <!-- ══════════════════════════════════════
+       FAQ
+  ══════════════════════════════════════ -->
+  <div class="zk-faq">
+    <div class="zk-sec">📚 أسئلة فقهية شائعة</div>
 
-</main>
+    <div class="zk-faq__item">
+      <button class="zk-faq__q" onclick="toggleFaq(this)">⚖️ ما شروط وجوب الزكاة الخمسة؟</button>
+      <div class="zk-faq__a">
+        خمسة شروط: (1) <strong>الإسلام</strong> (2) <strong>الحرية</strong> (3) <strong>ملك النصاب</strong> كاملاً (4) <strong>حولان الحول</strong> — مرور سنة هجرية كاملة (5) <strong>ألا تكون الأموال</strong> محتاجاً إليها للحوائج الأصلية.<br>
+        المصدر: الشرح الممتع — ابن عثيمين رحمه الله
+      </div>
+    </div>
 
-<!-- ===== Footer ===== -->
-<footer style="text-align:center;padding:32px 24px;margin-top:48px;border-top:1px solid var(--border);color:var(--text-muted);font-size:13px;">
-  <a href="/" style="color:var(--primary-light);text-decoration:none;">← العودة للرئيسية</a>
-  &nbsp;|&nbsp; © 2026 IslamiCalc
-  &nbsp;|&nbsp; <a href="/privacy" style="color:var(--primary-light);text-decoration:none;">الخصوصية</a>
-</footer>
+    <div class="zk-faq__item">
+      <button class="zk-faq__q" onclick="toggleFaq(this)">💰 كيف أعرف نصاب المال بالريال السعودي؟</button>
+      <div class="zk-faq__a">
+        النصاب = 85 جرام ذهب × سعر الجرام عيار 24 اليوم.<br>
+        مثال: إذا كان سعر الجرام 315 ريال → النصاب = 85 × 315 = <strong>26,775 ريال</strong>.<br>
+        يتغير النصاب مع سعر الذهب — أدخل سعر الجرام أعلاه للدقة.<br>
+        المصدر: <a href="https://islamqa.info/ar/270751" target="_blank">islamqa.info #270751</a>
+      </div>
+    </div>
 
-<!-- ===== Login Modal ===== -->
-<div class="modal" id="loginModal">
-  <div class="modal-box">
-    <h2>💰 احسب زكاتك</h2>
-    <p>سجّل دخولك لحفظ نتائجك ومزامنة حساباتك عبر أجهزتك</p>
-    <button class="google-btn" onclick="window.islamiCalc?.loginWithGoogle()">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="margin-left:8px;vertical-align:middle">
-        <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
-        <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
-        <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/>
-        <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
-      </svg>
-      الدخول بحساب Google
-    </button>
-    <button class="skip-btn" onclick="document.getElementById('loginModal').classList.remove('open')">تصفح بدون حساب</button>
-    <p class="modal-terms">بالدخول توافق على <a href="/privacy">سياسة الخصوصية</a></p>
+    <div class="zk-faq__item">
+      <button class="zk-faq__q" onclick="toggleFaq(this)">📅 هل يُزكَّى الراتب الشهري مباشرةً؟</button>
+      <div class="zk-faq__a">
+        الأصح أن الراتب لا يُزكَّى منفرداً عند استلامه، بل يُضاف إلى سائر أموالك وتُحسب الزكاة مرةً واحدةً في السنة على مجموع ما بقي عندك حين حولان الحول.<br>
+        المصدر: <a href="https://islamqa.info/ar/93007" target="_blank">islamqa.info #93007</a>
+      </div>
+    </div>
+
+    <div class="zk-faq__item">
+      <button class="zk-faq__q" onclick="toggleFaq(this)">💍 هل تجب الزكاة في ذهب الزينة أقل من 85 جرام خالص؟</button>
+      <div class="zk-faq__a">
+        لا. العبرة بالوزن الخالص لا بالقيمة وحدها. إذا كان وزنه الخالص أقل من 85 جراماً فلا زكاة فيه بمفرده، لكن لو <strong>ضُمَّ إلى نقوده</strong> وبلغ النصاب وجبت الزكاة على الجميع.<br>
+        المصدر: <a href="https://islamqa.info/ar/585436" target="_blank">islamqa.info #585436</a>
+      </div>
+    </div>
+
+    <div class="zk-faq__item">
+      <button class="zk-faq__q" onclick="toggleFaq(this)">🏦 هل تجب الزكاة في فوائد البنك؟</button>
+      <div class="zk-faq__a">
+        الفوائد البنكية الربوية محرّمة، ولا يجوز الانتفاع بها. الواجب التخلص منها بصرفها في وجوه الخير (لا بنية الزكاة). أما الودائع الأصلية فتُزكَّى مع سائر الأموال.<br>
+        المصدر: <a href="https://islamqa.info/ar/2967" target="_blank">islamqa.info #2967</a>
+      </div>
+    </div>
+
+    <div class="zk-faq__item">
+      <button class="zk-faq__q" onclick="toggleFaq(this)">🏠 هل تجب الزكاة في العقارات؟</button>
+      <div class="zk-faq__a">
+        <strong>عقار للسكن:</strong> لا زكاة فيه.<br>
+        <strong>عقار للاستثمار / إيجار:</strong> تُزكَّى الإيجارات المتراكمة التي لم تُنفَق (بعد حولان الحول) لا العقار نفسه.<br>
+        <strong>عقار للبيع والمتاجرة:</strong> يُعامَل معاملة عروض التجارة وتُزكَّى قيمته السوقية.
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Login Modal -->
+<div id="loginModal" class="ic-modal">
+  <div class="ic-modal__backdrop" id="modalBackdrop"></div>
+  <div class="ic-modal__box">
+    <div class="ic-modal__icon">💰</div>
+    <h3 class="ic-modal__title">سجّل دخولك لحفظ حساباتك</h3>
+    <p class="ic-modal__sub">نتائج الزكاة تُحفظ وتُزامَن عبر أجهزتك</p>
+    <div class="ic-modal__actions">
+      <button id="googleLoginBtn" class="ic-btn ic-btn--google ic-btn--full">الدخول بحساب Google</button>
+      <button id="guestBrowseBtn" class="ic-btn ic-btn--ghost ic-btn--full">تصفح بدون حساب</button>
+    </div>
+    <p class="ic-modal__note">بالدخول توافق على <a href="/privacy">سياسة الخصوصية</a></p>
   </div>
 </div>
 
-<!-- ===== Script ===== -->
+<div id="toast" class="ic-toast"></div>
+
+<!-- ============================================================
+     JAVASCRIPT
+     ============================================================ -->
 <script>
 // ============================================================
-// IslamiCalc — zakat/index.html — Script v3.0
-// ✅ إصلاح شرعي: أسهم المضاربة = القيمة السوقية فقط
-// ✅ إصلاح: unit() لكل shareResult
-// ✅ إصلاح: Rate Limit + safeAddXP
+// CONSTANTS
 // ============================================================
-
-// ===== ثوابت شرعية =====
 const ZAKAT_RATE    = 0.025;
 const GOLD_NISAB_G  = 85;
 const SILVER_NISAB_G = 595;
 
 const NISAB_APPROX = {
-  SAR: 26775, USD: 7140, AED: 26230, EGP: 350000,
-  KWD: 2195,  QAR: 26010, JOD: 5060, GBP: 5440, EUR: 6290
+  SAR:26775, USD:7140, AED:26230, EGP:350000,
+  KWD:2195,  QAR:26010, JOD:5060, GBP:5440, EUR:6290
 };
 
 const CURRENCIES = {
@@ -576,13 +1153,61 @@ const CURRENCIES = {
   KWD:"دينار", QAR:"ريال", JOD:"دينار", GBP:"جنيه", EUR:"يورو"
 };
 
-let activeCurrency = "SAR";
-let activeTab      = "money";
+// ============================================================
+// STATE
+// ============================================================
+let activeCurrency = 'SAR';
+let activeTab      = 'money';
 
-// ===== أدوات مساعدة =====
+// ============================================================
+// THEME
+// ============================================================
+(function () {
+  const s = localStorage.getItem('theme');
+  const h = new Date().getHours();
+  document.documentElement.setAttribute('data-theme',
+    s || (h >= 19 || h < 6 ? 'dark' : 'light'));
+})();
+
+document.getElementById('themeBtn')?.addEventListener('click', () => {
+  const n = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', n);
+  localStorage.setItem('theme', n);
+  document.getElementById('themeBtn').textContent = n === 'dark' ? '🌙' : '☀️';
+});
+
+window.addEventListener('scroll', () => {
+  document.getElementById('icNav')?.classList.toggle('ic-nav--scrolled', scrollY > 20);
+}, { passive: true });
+
+document.getElementById('mobileToggle')?.addEventListener('click', () => {
+  document.getElementById('mobileMenu')?.classList.toggle('ic-nav__mobile--open');
+});
+
+document.getElementById('loginBtn')?.addEventListener('click', () => {
+  window.islamiCalc?.getCurrentUser?.()
+    ? window.islamiCalc.showUserMenu?.()
+    : document.getElementById('loginModal')?.classList.add('ic-modal--open');
+});
+
+document.getElementById('modalBackdrop')?.addEventListener('click', () => {
+  document.getElementById('loginModal')?.classList.remove('ic-modal--open');
+});
+
+document.getElementById('guestBrowseBtn')?.addEventListener('click', () => {
+  document.getElementById('loginModal')?.classList.remove('ic-modal--open');
+});
+
+document.getElementById('googleLoginBtn')?.addEventListener('click', () => {
+  window.islamiCalc?.loginWithGoogle?.();
+});
+
+// ============================================================
+// HELPERS
+// ============================================================
 function fmt(n) {
-  if (isNaN(n) || n === null) return "0";
-  return Number(n.toFixed(2)).toLocaleString("ar-SA");
+  if (isNaN(n) || n == null) return '0';
+  return Number(n.toFixed(2)).toLocaleString('ar-SA');
 }
 
 function getVal(id) {
@@ -590,39 +1215,102 @@ function getVal(id) {
   return isNaN(v) || v < 0 ? 0 : v;
 }
 
-function unit() { return CURRENCIES[activeCurrency] || "ريال"; }
+function unit() { return CURRENCIES[activeCurrency] || 'ريال'; }
 
 function setText(id, val) {
   const el = document.getElementById(id);
   if (el) el.textContent = val;
 }
 
+function calcNisab() {
+  const p = getVal('goldPriceGlobal');
+  return p > 0 ? p * GOLD_NISAB_G : (NISAB_APPROX[activeCurrency] ?? NISAB_APPROX.SAR);
+}
+
 function showResult(id) {
-  const el = document.getElementById(id);
+  const el = document.getElementById('res-' + id);
   if (!el) return;
-  el.classList.add("show");
-  el.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  el.classList.add('on');
+  el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 
-function showToast(msg, type = "") {
-  const t = document.getElementById("toast");
-  if (!t) return;
-  t.textContent = msg;
-  t.className   = "toast show " + type;
-  setTimeout(() => t.classList.remove("show"), 3500);
+function nisabStatusHTML(amount, nisab, reached) {
+  const u = unit();
+  return reached
+    ? `✅ مجموعك ${fmt(amount)} ${u} بلغ النصاب ${fmt(nisab)} ${u} — الزكاة واجبة بشرط حولان الحول`
+    : `⚠️ مجموعك ${fmt(amount)} ${u} أقل من النصاب ${fmt(nisab)} ${u} — لا زكاة الآن`;
 }
 
+window.showToast = function(msg, cls = '') {
+  const el = document.getElementById('toast');
+  if (!el) return;
+  el.textContent = msg;
+  el.className   = 'ic-toast show ' + cls;
+  clearTimeout(el._t);
+  el._t = setTimeout(() => el.classList.remove('show'), 3500);
+};
+
+function safeAddXP(amount, reason) {
+  if (window.islamiCalc) window.islamiCalc.addXP?.(amount, reason);
+  else window.addEventListener('islamiCalcReady',
+    () => window.islamiCalc?.addXP?.(amount, reason), { once: true });
+}
+
+// ============================================================
+// TABS
+// ============================================================
+function switchTab(tab) {
+  document.querySelectorAll('.zk-card').forEach(c => c.classList.remove('on'));
+  document.querySelectorAll('.zk-tab').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + tab)?.classList.add('on');
+  document.querySelector(`[data-tab="${tab}"]`)?.classList.add('active');
+  activeTab = tab;
+}
+
+// ============================================================
+// CURRENCY & GOLD PRICE
+// ============================================================
+function onCurrencyChange() {
+  activeCurrency = document.getElementById('currency').value;
+  document.querySelectorAll('.unit-lbl').forEach(el => el.textContent = unit());
+  updateNisabCard();
+}
+
+function onGoldPriceGlobalChange() { updateNisabCard(); }
+
+function updateNisabCard() {
+  const nisab = calcNisab();
+  const el    = document.getElementById('hero-nisab-val');
+  if (el) el.textContent = fmt(nisab) + ' ' + unit();
+}
+
+// ============================================================
+// GOLD PURPOSE
+// ============================================================
+function onGoldPurposeChange() {
+  const v = document.getElementById('goldPurpose').value;
+  document.getElementById('jewelry-note')?.classList.toggle('show', v === 'jewelry');
+}
+
+function onStocksTypeChange() {
+  const t = document.getElementById('stocksType').value;
+  setText('rst-type', t === 'trade' ? 'مضاربة' : 'دخل');
+}
+
+// ============================================================
+// VALIDATE
+// ============================================================
 function validate(...ids) {
   for (const id of ids) {
     const el = document.getElementById(id);
     if (!el) continue;
     const v = parseFloat(el.value);
     if (!isNaN(v) && v < 0) {
-      el.style.borderColor = "var(--error)";
-      showToast("❌ لا تدخل أرقاماً سالبة", "toast-error");
+      el.closest('.zk-input-wrap')?.classList.add('error');
+      showToast('❌ لا تدخل أرقاماً سالبة', 'toast-error');
       return false;
     }
-    el.style.borderColor = "";
+    el.closest('.zk-input-wrap')?.classList.remove('error');
   }
   return true;
 }
@@ -634,392 +1322,300 @@ function hasInput(...ids) {
   });
 }
 
-// ===== XP آمن مع islamiCalcReady =====
-function safeAddXP(amount, reason) {
-  if (window.islamiCalc) {
-    window.islamiCalc.addXP(amount, reason);
-  } else {
-    window.addEventListener("islamiCalcReady",
-      () => window.islamiCalc?.addXP(amount, reason),
-      { once: true }
-    );
+// ============================================================
+// CALC MONEY
+// ============================================================
+function calcMoney() {
+  if (!validate('savings','bank','debtsFor','debtsOn')) return;
+  if (!hasInput('savings','bank','debtsFor','debtsOn')) {
+    showToast('⚠️ أدخل مبلغاً واحداً على الأقل', 'toast-error'); return;
   }
-}
+  const nisab  = calcNisab();
+  const u      = unit();
+  const total  = Math.max(getVal('savings') + getVal('bank') + getVal('debtsFor') - getVal('debtsOn'), 0);
+  const zakat  = total >= nisab ? total * ZAKAT_RATE : 0;
+  const reached = total >= nisab;
 
-function safeAddBadge(badge) {
-  if (window.islamiCalc) {
-    window.islamiCalc.addBadge(badge);
-  } else {
-    window.addEventListener("islamiCalcReady",
-      () => window.islamiCalc?.addBadge(badge),
-      { once: true }
-    );
-  }
-}
+  setText('rm-total', fmt(total) + ' ' + u);
+  setText('rm-nisab', fmt(nisab) + ' ' + u);
+  setText('rm-zakat', fmt(zakat));
 
-// ===== تبديل التبويبات =====
-function switchTab(tab) {
-  document.querySelectorAll(".zakat-section").forEach(s => s.style.display = "none");
-  document.querySelectorAll(".zakat-tab").forEach(b => b.classList.remove("active"));
-  document.getElementById("tab-" + tab).style.display = "block";
-  document.querySelector(`[data-tab="${tab}"]`).classList.add("active");
-  document.querySelectorAll(".calc-result").forEach(r => r.classList.remove("show"));
-  activeTab = tab;
-}
+  const st = document.getElementById('rm-status');
+  st.textContent = nisabStatusHTML(total, nisab, reached);
+  st.className   = 'zk-result__nisab ' + (reached ? 'reached' : 'not-reached');
 
-function updateCurrency() {
-  activeCurrency = document.getElementById("currency").value;
-  document.querySelectorAll(".currency-unit-label").forEach(el => el.textContent = unit());
-}
-
-function toggleJewelryNote() {
-  const v = document.getElementById("goldPurpose").value;
-  const n = document.getElementById("jewelry-note");
-  if (n) n.style.display = v === "jewelry" ? "block" : "none";
-}
-
-// ✅ تنبيه ازدواج الأسهم عند اختيار المضاربة
-function handleStocksTypeChange() {
-  const type = document.getElementById("stocksType").value;
-  const warn = document.getElementById("stocksDoubleWarn");
-  if (warn) warn.style.display = type === "trade" ? "block" : "none";
-}
-
-// ===== نصاب مركزي =====
-function calcNisab() {
-  const p = getVal("goldPriceForNisab");
-  if (p > 0) return p * GOLD_NISAB_G;
-  return NISAB_APPROX[activeCurrency] ?? NISAB_APPROX.SAR;
-}
-
-// ===== [1] زكاة المال =====
-function calcMoneyZakat() {
-  if (!validate("savings","bank","debtsFor","debtsOn")) return;
-  if (!hasInput("savings","bank","debtsFor","debtsOn")) {
-    showToast("⚠️ أدخل مبلغاً واحداً على الأقل", "toast-error");
-    return;
-  }
-
-  const nisab   = calcNisab();
-  const u       = unit();
-  const zakawi  = Math.max(
-    getVal("savings") + getVal("bank") + getVal("debtsFor") - getVal("debtsOn"),
-    0
-  );
-  const zakat   = zakawi >= nisab ? zakawi * ZAKAT_RATE : 0;
-
-  setText("total-money-display", fmt(zakawi) + " " + u);
-  setText("nisab-value",         fmt(nisab) + " " + u);
-  setText("zakat-money",         fmt(zakat));
-  document.querySelectorAll(".currency-unit-label").forEach(el => el.textContent = u);
-
-  const check = document.getElementById("nisab-check");
-  if (check) check.innerHTML = zakawi >= nisab
-    ? `<span style="color:var(--success);font-weight:700;">✅ مالك بلغ النصاب — الزكاة واجبة (بشرط حولان الحول)</span>`
-    : `<span style="color:var(--warning);font-weight:700;">⚠️ مالك ${fmt(zakawi)} ${u} أقل من النصاب ${fmt(nisab)} ${u} — لا زكاة الآن</span>`;
-
-  setText("money-note", zakawi >= nisab
+  setText('rm-note', reached
     ? `الزكاة الواجبة ${fmt(zakat)} ${u} — بارك الله في مالك`
-    : "تأكد من سعر الذهب الحالي لحساب النصاب بدقة أكبر"
-  );
+    : 'تأكد من سعر الذهب الحالي لحساب النصاب بدقة أكبر');
 
-  showResult("result-money");
-  if (zakawi >= nisab) {
-    showToast("✅ الزكاة: " + fmt(zakat) + " " + u, "toast-gold");
-    safeAddXP(30, "zakat_money");
-  }
+  showResult('money');
+  if (reached) { showToast('✅ الزكاة: ' + fmt(zakat) + ' ' + u, 'toast-gold'); safeAddXP(30, 'zakat_money'); }
 }
 
-// ===== [2] زكاة الذهب =====
-function calcGoldZakat() {
-  if (!validate("goldWeight","goldPrice")) return;
+// ============================================================
+// CALC GOLD
+// ============================================================
+function calcGold() {
+  if (!validate('goldWeight','goldPrice')) return;
+  const weight  = getVal('goldWeight');
+  const price   = getVal('goldPrice');
+  if (!weight) { showToast('❌ أدخل وزن الذهب', 'toast-error'); return; }
+  if (!price)  { showToast('❌ أدخل سعر الجرام', 'toast-error'); return; }
 
-  const weight   = getVal("goldWeight");
-  const price    = getVal("goldPrice");
-  const karatNum = parseInt(document.getElementById("goldKarat").value);
+  const karat     = parseInt(document.getElementById('goldKarat').value);
+  const pureWt    = weight * (karat / 24);
+  const totalVal  = weight * price;
+  const reached   = pureWt >= GOLD_NISAB_G;
+  const zakat     = reached ? totalVal * ZAKAT_RATE : 0;
+  const u         = unit();
+  const purpose   = document.getElementById('goldPurpose').value;
 
-  if (!weight) { showToast("❌ أدخل وزن الذهب", "toast-error");   return; }
-  if (!price)  { showToast("❌ أدخل سعر الجرام", "toast-error"); return; }
+  setText('rg-weight', fmt(weight) + ' جرام');
+  setText('rg-pure',   fmt(pureWt) + ' جرام (عيار 24)');
+  setText('rg-value',  fmt(totalVal) + ' ' + u);
 
-  const pureWeight   = weight * (karatNum / 24);
-  const totalValue   = weight * price;
-  const reachedNisab = pureWeight >= GOLD_NISAB_G;
-  const zakat        = reachedNisab ? totalValue * ZAKAT_RATE : 0;
-  const u            = unit();
-  const purpose      = document.getElementById("goldPurpose").value;
+  const st = document.getElementById('rg-status');
+  st.textContent = reached
+    ? `✅ الوزن الخالص ${fmt(pureWt)} جرام ≥ 85 جرام — بلغ النصاب`
+    : `⚠️ الوزن الخالص ${fmt(pureWt)} جرام أقل من 85 جرام — لم يبلغ النصاب`;
+  st.className   = 'zk-result__nisab ' + (reached ? 'reached' : 'not-reached');
 
-  setText("gold-total-weight", fmt(weight) + " جرام");
-  setText("gold-pure-weight",  fmt(pureWeight) + " جرام (مكافئ عيار 24)");
-  setText("gold-total-value",  fmt(totalValue) + " " + u);
-  setText("zakat-gold",        fmt(zakat));
+  setText('rg-zakat', fmt(zakat));
+  setText('rg-note', !reached
+    ? `لا زكاة — الوزن الخالص ${fmt(pureWt)} جرام أقل من النصاب`
+    : purpose === 'jewelry'
+      ? `⚠️ ذهب الزينة — الأحوط إخراج ${fmt(zakat)} ${u}`
+      : `بارك الله في مالك — الزكاة ${fmt(zakat)} ${u}`);
 
-  const nisabStatus = document.getElementById("gold-nisab-status");
-  if (nisabStatus) nisabStatus.innerHTML = reachedNisab
-    ? `<span style="color:var(--success);">✅ بلغ النصاب (${fmt(pureWeight)} ≥ 85 جرام)</span>`
-    : `<span style="color:var(--warning);">⚠️ لم يبلغ (${fmt(pureWeight)} &lt; 85 جرام)</span>`;
-
-  let note = "";
-  if (!reachedNisab) {
-    note = `الوزن الخالص ${fmt(pureWeight)} جرام أقل من 85 جرام — لا زكاة`;
-  } else if (purpose === "jewelry") {
-    note = `⚠️ ذهب الزينة فيه خلاف — الأحوط إخراج ${fmt(zakat)} ${u}`;
-  } else {
-    note = `بارك الله في مالك. الزكاة ${fmt(zakat)} ${u}`;
-  }
-  setText("gold-note", note);
-
-  showResult("result-gold");
-  if (reachedNisab) {
-    showToast("🥇 زكاة الذهب: " + fmt(zakat) + " " + u, "toast-gold");
-    safeAddXP(30, "zakat_gold");
-  }
+  showResult('gold');
+  if (reached) { showToast('🥇 زكاة الذهب: ' + fmt(zakat) + ' ' + u, 'toast-gold'); safeAddXP(30, 'zakat_gold'); }
 }
 
-// ===== [3] زكاة الفضة =====
-function calcSilverZakat() {
-  if (!validate("silverWeight","silverPrice")) return;
+// ============================================================
+// CALC SILVER
+// ============================================================
+function calcSilver() {
+  if (!validate('silverWeight','silverPrice')) return;
+  const weight  = getVal('silverWeight');
+  const price   = getVal('silverPrice');
+  if (!weight) { showToast('❌ أدخل وزن الفضة', 'toast-error'); return; }
+  if (!price)  { showToast('❌ أدخل سعر الجرام', 'toast-error'); return; }
 
-  const weight = getVal("silverWeight");
-  const price  = getVal("silverPrice");
+  const totalVal = weight * price;
+  const reached  = weight >= SILVER_NISAB_G;
+  const zakat    = reached ? totalVal * ZAKAT_RATE : 0;
+  const u        = unit();
 
-  if (!weight) { showToast("❌ أدخل وزن الفضة", "toast-error");    return; }
-  if (!price)  { showToast("❌ أدخل سعر الجرام", "toast-error"); return; }
+  setText('rs-weight', fmt(weight) + ' جرام');
+  setText('rs-value',  fmt(totalVal) + ' ' + u);
 
-  const totalValue   = weight * price;
-  const reachedNisab = weight >= SILVER_NISAB_G;
-  const zakat        = reachedNisab ? totalValue * ZAKAT_RATE : 0;
-  const u            = unit();
+  const st = document.getElementById('rs-status');
+  st.textContent = reached
+    ? `✅ ${fmt(weight)} جرام ≥ 595 جرام — بلغ النصاب`
+    : `⚠️ ${fmt(weight)} جرام أقل من 595 جرام — لم يبلغ النصاب`;
+  st.className   = 'zk-result__nisab ' + (reached ? 'reached' : 'not-reached');
 
-  setText("silver-weight-display", fmt(weight) + " جرام");
-  setText("silver-total-value",    fmt(totalValue) + " " + u);
-  setText("zakat-silver",          fmt(zakat));
-
-  const ns = document.getElementById("silver-nisab-status");
-  if (ns) ns.innerHTML = reachedNisab
-    ? `<span style="color:var(--success);">✅ بلغ النصاب</span>`
-    : `<span style="color:var(--warning);">⚠️ لم يبلغ (${fmt(weight)} &lt; 595 جرام)</span>`;
-
-  setText("silver-note", reachedNisab
+  setText('rs-zakat', fmt(zakat));
+  setText('rs-note', reached
     ? `زكاة الفضة الواجبة ${fmt(zakat)} ${u}`
-    : `فضتك ${fmt(weight)} جرام لم تبلغ نصاب 595 جرام — لا زكاة`
-  );
+    : `فضتك لم تبلغ نصاب 595 جرام`);
 
-  showResult("result-silver");
-  if (reachedNisab) {
-    showToast("🥈 زكاة الفضة: " + fmt(zakat) + " " + u, "toast-gold");
-    safeAddXP(30, "zakat_silver");
-  }
+  showResult('silver');
+  if (reached) { showToast('🥈 زكاة الفضة: ' + fmt(zakat) + ' ' + u, 'toast-gold'); safeAddXP(30, 'zakat_silver'); }
 }
 
-// ===== [4] زكاة التجارة =====
-function calcTradeZakat() {
-  if (!validate("tradeGoods","tradeCash","tradeDebtsFor","tradeDebtsOn")) return;
-  if (!hasInput("tradeGoods","tradeCash","tradeDebtsFor")) {
-    showToast("⚠️ أدخل بيانات التجارة أولاً", "toast-error");
-    return;
+// ============================================================
+// CALC TRADE
+// ============================================================
+function calcTrade() {
+  if (!validate('tradeGoods','tradeCash','tradeDebtsFor','tradeDebtsOn')) return;
+  if (!hasInput('tradeGoods','tradeCash','tradeDebtsFor')) {
+    showToast('⚠️ أدخل بيانات التجارة أولاً', 'toast-error'); return;
   }
+  const nisab  = calcNisab();
+  const total  = Math.max(getVal('tradeGoods') + getVal('tradeCash') + getVal('tradeDebtsFor') - getVal('tradeDebtsOn'), 0);
+  const zakat  = total >= nisab ? total * ZAKAT_RATE : 0;
+  const reached = total >= nisab;
+  const u      = unit();
 
-  const nisab = calcNisab();
-  const total = Math.max(
-    getVal("tradeGoods") + getVal("tradeCash") + getVal("tradeDebtsFor") - getVal("tradeDebtsOn"),
-    0
-  );
-  const zakat = total >= nisab ? total * ZAKAT_RATE : 0;
-  const u     = unit();
+  setText('rt-total', fmt(total) + ' ' + u);
+  setText('rt-nisab', fmt(nisab) + ' ' + u);
 
-  setText("trade-total", fmt(total) + " " + u);
-  setText("zakat-trade", fmt(zakat));
-  setText("trade-note", total >= nisab
+  const st = document.getElementById('rt-status');
+  st.textContent = nisabStatusHTML(total, nisab, reached);
+  st.className   = 'zk-result__nisab ' + (reached ? 'reached' : 'not-reached');
+
+  setText('rt-zakat', fmt(zakat));
+  setText('rt-note', reached
     ? `زكاة التجارة ${fmt(zakat)} ${u} — بارك الله في تجارتك`
-    : `وعاء التجارة ${fmt(total)} ${u} لم يبلغ النصاب ${fmt(nisab)} ${u} — لا زكاة`
-  );
+    : `وعاء التجارة لم يبلغ النصاب`);
 
-  showResult("result-trade");
-  if (total >= nisab) {
-    showToast("🏪 زكاة التجارة: " + fmt(zakat) + " " + u, "toast-gold");
-    safeAddXP(30, "zakat_trade");
-  }
+  showResult('trade');
+  if (reached) { showToast('🏪 زكاة التجارة: ' + fmt(zakat) + ' ' + u, 'toast-gold'); safeAddXP(30, 'zakat_trade'); }
 }
 
-// ===== [5] زكاة الأسهم — ✅ إصلاح شرعي =====
-// المصدر: islamqa.info #125504
-// ✅ أسهم المضاربة: الوعاء = القيمة السوقية فقط
-//    (الأرباح الموزعة عادةً مُضمَّنة في السعر — لا تُضاف مرتين)
-// ✅ أسهم الدخل:   الوعاء = الأرباح الموزعة فقط
-function calcStocksZakat() {
-  if (!validate("stocksValue","stocksDividends")) return;
+// ============================================================
+// CALC STOCKS
+// ============================================================
+function calcStocks() {
+  if (!validate('stocksValue','stocksDividends')) return;
+  const value     = getVal('stocksValue');
+  const dividends = getVal('stocksDividends');
+  if (!value && !dividends) { showToast('⚠️ أدخل قيمة الأسهم أو الأرباح', 'toast-error'); return; }
 
-  const value     = getVal("stocksValue");
-  const dividends = getVal("stocksDividends");
-  const type      = document.getElementById("stocksType").value;
+  const type   = document.getElementById('stocksType').value;
+  const nisab  = calcNisab();
+  const u      = unit();
+  const base   = type === 'trade' ? value : dividends;
+  const zakat  = base >= nisab ? base * ZAKAT_RATE : 0;
+  const reached = base >= nisab;
 
-  if (value === 0 && dividends === 0) {
-    showToast("⚠️ أدخل قيمة الأسهم أو الأرباح", "toast-error");
-    return;
-  }
+  setText('rst-base',  fmt(base) + ' ' + u);
+  setText('rst-nisab', fmt(nisab) + ' ' + u);
+  setText('rst-type',  type === 'trade' ? 'مضاربة' : 'دخل');
 
+  const st = document.getElementById('rst-status');
+  st.textContent = nisabStatusHTML(base, nisab, reached);
+  st.className   = 'zk-result__nisab ' + (reached ? 'reached' : 'not-reached');
+
+  setText('rst-zakat', fmt(zakat));
+  setText('rst-note', reached
+    ? `${type === 'trade' ? 'على القيمة السوقية' : 'على الأرباح الموزعة'} — الزكاة ${fmt(zakat)} ${u}`
+    : `الوعاء لم يبلغ النصاب`);
+
+  showResult('stocks');
+  if (reached) { showToast('📈 زكاة الأسهم: ' + fmt(zakat) + ' ' + u, 'toast-gold'); safeAddXP(30, 'zakat_stocks'); }
+}
+
+// ============================================================
+// CALC TOTAL
+// ============================================================
+function calcTotal() {
   const nisab = calcNisab();
   const u     = unit();
 
-  // ✅ الإصلاح الشرعي الجوهري:
-  // - مضاربة: الوعاء = القيمة السوقية فقط
-  // - دخل:    الوعاء = الأرباح الموزعة فقط
-  const base  = type === "trade" ? value : dividends;
-  const zakat = base >= nisab ? base * ZAKAT_RATE : 0;
+  const moneyTotal  = Math.max(getVal('savings') + getVal('bank') + getVal('debtsFor') - getVal('debtsOn'), 0);
+  const goldValue   = getVal('goldWeight') * getVal('goldPrice');
+  const silverValue = getVal('silverWeight') * getVal('silverPrice');
+  const tradeTotal  = Math.max(getVal('tradeGoods') + getVal('tradeCash') + getVal('tradeDebtsFor') - getVal('tradeDebtsOn'), 0);
+  const stocksType  = document.getElementById('stocksType')?.value;
+  const stocksBase  = stocksType === 'trade' ? getVal('stocksValue') : getVal('stocksDividends');
 
-  setText("stocks-base",  fmt(base) + " " + u);
-  setText("zakat-stocks", fmt(zakat));
+  const grand   = moneyTotal + goldValue + silverValue + tradeTotal + stocksBase;
+  const zakat   = grand >= nisab ? grand * ZAKAT_RATE : 0;
+  const reached = grand >= nisab;
 
-  const nisabEl = document.getElementById("stocks-nisab-status");
-  if (nisabEl) nisabEl.innerHTML = base >= nisab
-    ? `<span style="color:var(--success);">✅ بلغ النصاب</span>`
-    : `<span style="color:var(--warning);">⚠️ لم يبلغ (${fmt(base)} &lt; ${fmt(nisab)} ${u})</span>`;
+  const rows = [
+    { icon:'💵', lbl:'أموال نقدية وبنكية', val:moneyTotal,  show:true },
+    { icon:'🥇', lbl:'قيمة الذهب',          val:goldValue,   show:goldValue > 0 },
+    { icon:'🥈', lbl:'قيمة الفضة',          val:silverValue, show:silverValue > 0 },
+    { icon:'🏪', lbl:'وعاء التجارة',         val:tradeTotal,  show:tradeTotal > 0 },
+    { icon:'📈', lbl:'وعاء الأسهم',          val:stocksBase,  show:stocksBase > 0 },
+  ];
 
-  setText("stocks-note", base >= nisab
-    ? `${type === "trade" ? "على القيمة السوقية" : "على الأرباح الموزعة"} — الزكاة ${fmt(zakat)} ${u}`
-    : `الوعاء ${fmt(base)} ${u} لم يبلغ النصاب ${fmt(nisab)} ${u} — لا زكاة`
-  );
+  document.getElementById('total-breakdown').innerHTML =
+    rows.filter(r => r.show).map(r =>
+      `<div class="zk-brow">
+        <span class="zk-brow__lbl">${r.icon} ${r.lbl}</span>
+        <span class="zk-brow__val">${fmt(r.val)} ${u}</span>
+      </div>`
+    ).join('') +
+    `<div class="zk-brow total">
+      <span class="zk-brow__lbl">📊 الوعاء الإجمالي</span>
+      <span class="zk-brow__val">${fmt(grand)} ${u}</span>
+    </div>
+    <div class="zk-brow">
+      <span class="zk-brow__lbl">🏅 النصاب</span>
+      <span class="zk-brow__val">${fmt(nisab)} ${u}</span>
+    </div>`;
 
-  showResult("result-stocks");
-  if (base >= nisab) {
-    showToast("📈 زكاة الأسهم: " + fmt(zakat) + " " + u, "toast-gold");
-    safeAddXP(30, "zakat_stocks");
+  const st = document.getElementById('rtot-status');
+  st.textContent = nisabStatusHTML(grand, nisab, reached);
+  st.className   = 'zk-result__nisab ' + (reached ? 'reached' : 'not-reached');
+
+  setText('rtot-zakat', fmt(zakat));
+  showResult('total');
+
+  if (reached) {
+    showToast('📊 إجمالي الزكاة: ' + fmt(zakat) + ' ' + u, 'toast-gold');
+    safeAddXP(50, 'zakat_total');
+    window.islamiCalc?.addBadge?.('zakat_calc');
+    window.islamiCalc?.logActivity?.('حسب الزكاة الشاملة', 'zakat_total', '💰', '', 50);
   }
 }
 
-// ===== [6] الإجمالي — ✅ إصلاح ازدواج الأسهم =====
-function calcTotalZakat() {
-  const nisab = calcNisab();
-  const u     = unit();
+// ============================================================
+// SHARE / COPY / RESET
+// ============================================================
+const ZAKAT_IDS = {
+  money:'rm-zakat', gold:'rg-zakat', silver:'rs-zakat',
+  trade:'rt-zakat', stocks:'rst-zakat', total:'rtot-zakat'
+};
 
-  const moneyTotal = Math.max(
-    getVal("savings") + getVal("bank") + getVal("debtsFor") - getVal("debtsOn"), 0
-  );
-  const goldValue   = getVal("goldWeight") * getVal("goldPrice");
-  const silverValue = getVal("silverWeight") * getVal("silverPrice");
-  const tradeTotal  = Math.max(
-    getVal("tradeGoods") + getVal("tradeCash") + getVal("tradeDebtsFor") - getVal("tradeDebtsOn"), 0
-  );
+const ZAKAT_LABELS = {
+  money:'زكاة المال', gold:'زكاة الذهب', silver:'زكاة الفضة',
+  trade:'زكاة التجارة', stocks:'زكاة الأسهم', total:'إجمالي الزكاة'
+};
 
-  // ✅ الإصلاح: مضاربة = قيمة سوقية فقط — دخل = أرباح فقط
-  const stocksType = document.getElementById("stocksType")?.value;
-  const stocksBase = stocksType === "trade"
-    ? getVal("stocksValue")
-    : getVal("stocksDividends");
-
-  const grandTotal = moneyTotal + goldValue + silverValue + tradeTotal + stocksBase;
-  const zakat      = grandTotal >= nisab ? grandTotal * ZAKAT_RATE : 0;
-
-  const breakdownEl = document.getElementById("total-breakdown");
-  if (breakdownEl) {
-    const rows = [
-      { show: true,             icon:"💵", label:"أموال نقدية وبنكية", val: moneyTotal  },
-      { show: goldValue   > 0,  icon:"🥇", label:"قيمة الذهب",          val: goldValue   },
-      { show: silverValue > 0,  icon:"🥈", label:"قيمة الفضة",          val: silverValue },
-      { show: tradeTotal  > 0,  icon:"🏪", label:"وعاء التجارة",         val: tradeTotal  },
-      { show: stocksBase  > 0,  icon:"📈", label:"وعاء الأسهم",          val: stocksBase  },
-    ];
-    breakdownEl.innerHTML =
-      rows.filter(r => r.show)
-          .map(r => `<div class="breakdown-row"><span>${r.icon} ${r.label}</span><span>${fmt(r.val)} ${u}</span></div>`)
-          .join("") +
-      `<div class="breakdown-row total-row"><span>📊 الوعاء الإجمالي</span><span>${fmt(grandTotal)} ${u}</span></div>
-       <div class="breakdown-row"><span>🏅 النصاب</span><span>${fmt(nisab)} ${u}</span></div>`;
-  }
-
-  setText("zakat-total",       fmt(zakat));
-  setText("total-zakat-unit",  u);
-  setText("grand-total-value", `المجموع: ${fmt(grandTotal)} ${u}`);
-  setText("total-nisab-check", grandTotal >= nisab
-    ? `✅ مجموع أموالك ${fmt(grandTotal)} ${u} بلغ النصاب — الزكاة واجبة بشرط الحول`
-    : `⚠️ مجموع أموالك ${fmt(grandTotal)} ${u} أقل من النصاب ${fmt(nisab)} ${u} — لا زكاة الآن`
-  );
-
-  showResult("result-total");
-  if (grandTotal >= nisab) {
-    showToast("📊 إجمالي الزكاة: " + fmt(zakat) + " " + u, "toast-gold");
-    safeAddXP(50, "zakat_total");
-    safeAddBadge("zakat_calc");
-  }
-}
-
-// ===== مشاركة النتيجة — ✅ unit() لكل التبويبات =====
 function shareResult(tab) {
-  const ids = {
-    money:"zakat-money", gold:"zakat-gold", silver:"zakat-silver",
-    trade:"zakat-trade", stocks:"zakat-stocks", total:"zakat-total"
-  };
-  const labels = {
-    money:"زكاة المال", gold:"زكاة الذهب", silver:"زكاة الفضة",
-    trade:"زكاة التجارة", stocks:"زكاة الأسهم", total:"إجمالي الزكاة"
-  };
-
-  const val  = document.getElementById(ids[tab])?.textContent || "0";
-  // ✅ الإصلاح: unit() لكل التبويبات — لا "ريال" ثابتة
-  const u    = unit();
-  const text = `✅ حسبت ${labels[tab]} على IslamiCalc\n💰 المبلغ الواجب: ${val} ${u}\nاحسب زكاتك: https://islamicalc.com/zakat`;
-
+  const val  = document.getElementById(ZAKAT_IDS[tab])?.textContent || '0';
+  const text = `✅ حسبت ${ZAKAT_LABELS[tab]} على IslamiCalc\n💰 المبلغ الواجب: ${val} ${unit()}\nاحسب زكاتك: https://islamicalc.com/zakat`;
   if (navigator.share) {
-    navigator.share({ title: "حاسبة الزكاة — IslamiCalc", text });
+    navigator.share({ title: 'حاسبة الزكاة — IslamiCalc', text });
   } else {
     navigator.clipboard?.writeText(text);
-    showToast("✅ تم نسخ النتيجة!", "toast-success");
+    showToast('✅ تم نسخ النتيجة!', 'toast-success');
   }
 }
 
-// ===== إعادة التعيين =====
-function resetForm(tab) {
+function copyResult(tab) {
+  const val  = document.getElementById(ZAKAT_IDS[tab])?.textContent || '0';
+  const text = `${ZAKAT_LABELS[tab]}: ${val} ${unit()}`;
+  navigator.clipboard?.writeText(text);
+  showToast('📋 تم النسخ: ' + text, 'toast-success');
+}
+
+function resetTab(tab) {
   document.querySelectorAll(`#tab-${tab} input`).forEach(i => {
-    i.value = "";
-    i.style.borderColor = "";
+    i.value = '';
+    i.closest('.zk-input-wrap')?.classList.remove('error');
   });
-  const r = document.getElementById("result-" + tab);
-  if (r) r.classList.remove("show");
+  document.getElementById('res-' + tab)?.classList.remove('on');
 }
 
-function openLoginModal() {
-  const m = document.getElementById("loginModal");
-  if (m) m.classList.add("open");
+function resetAll() {
+  ['money','gold','silver','trade','stocks','total'].forEach(resetTab);
+  showToast('🔄 تم إعادة تعيين جميع الحقول');
 }
 
-// ===== Modal click outside =====
-document.getElementById("loginModal")?.addEventListener("click", function(e) {
-  if (e.target === this) this.classList.remove("open");
-});
+// ============================================================
+// FAQ
+// ============================================================
+function toggleFaq(btn) {
+  const item = btn.closest('.zk-faq__item');
+  const wasOpen = item.classList.contains('open');
+  document.querySelectorAll('.zk-faq__item').forEach(i => i.classList.remove('open'));
+  if (!wasOpen) item.classList.add('open');
+}
 
-// ===== Enter للحساب =====
-const calcFns = {
-  money: calcMoneyZakat, gold: calcGoldZakat,
-  silver: calcSilverZakat, trade: calcTradeZakat,
-  stocks: calcStocksZakat, total: calcTotalZakat
+// ============================================================
+// ENTER KEY
+// ============================================================
+const TAB_CALCS = {
+  money: calcMoney, gold: calcGold, silver: calcSilver,
+  trade: calcTrade, stocks: calcStocks, total: calcTotal
 };
-document.querySelectorAll(".form-input").forEach(input => {
-  input.addEventListener("keypress", e => {
-    if (e.key === "Enter") calcFns[activeTab]?.();
+
+document.querySelectorAll('.zk-input').forEach(inp => {
+  inp.addEventListener('keypress', e => {
+    if (e.key === 'Enter') TAB_CALCS[activeTab]?.();
   });
 });
 
-// ===== Theme =====
-const themeBtn = document.getElementById("themeBtn");
-function initTheme() {
-  const s = localStorage.getItem("theme") || "dark";
-  document.documentElement.setAttribute("data-theme", s);
-  if (themeBtn) themeBtn.querySelector("circle") || (themeBtn.title = s === "dark" ? "وضع فاتح" : "وضع داكن");
-}
-themeBtn?.addEventListener("click", () => {
-  const n = document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark";
-  document.documentElement.setAttribute("data-theme", n);
-  localStorage.setItem("theme", n);
-});
-
-// ===== Mobile Menu =====
-document.getElementById("menuToggle")?.addEventListener("click", () => {
-  const m = document.getElementById("navMenu");
-  if (!m) return;
-  m.classList.toggle("open");
-});
-
-initTheme();
+// ============================================================
+// INIT
+// ============================================================
+updateNisabCard();
 </script>
 
 </body>
