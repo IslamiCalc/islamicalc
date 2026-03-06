@@ -546,62 +546,357 @@
     .zk-result__num { font-size: 1.8rem; }
   }
   </style>
-  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
-  <style>
-    [data-lucide] {
-      stroke: currentColor;
-      stroke-width: 1.8;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-      fill: none;
-      flex-shrink: 0;
-      vertical-align: middle;
-    }
-    .ic-nav__link-icon[data-lucide] { width:17px;height:17px;margin-left:4px;opacity:.85; }
-    .ic-nav__link:hover [data-lucide], .ic-nav__link.active [data-lucide] { opacity:1; }
-  </style>
 </head>
 <body>
 
 <!-- ============================================================
      NAVBAR
      ============================================================ -->
+<!-- ═══════════════════════════════════════════════════
+     IslamiCalc  ·  Redesigned Navigation Bar
+     Drop this <header> block into every page, replacing
+     the existing <header class="ic-nav" …> … </header>
+═══════════════════════════════════════════════════ -->
+
 <header class="ic-nav" id="icNav">
   <div class="ic-nav__inner">
+
+    <!-- ── Logo ────────────────────────────── -->
     <a href="/" class="ic-nav__logo">
-      <div class="ic-nav__logo-mark">☪</div>
+      <div class="ic-nav__logo-mark">
+        <!-- Geometric Islamic star SVG -->
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+             xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M12 2L14.09 8.26L21 9L15.54 14.74L17.18 22L12 18.77
+                   L6.82 22L8.46 14.74L3 9L9.91 8.26L12 2Z"
+                fill="rgba(255,255,255,0.95)" stroke="none"/>
+        </svg>
+      </div>
       <span class="ic-nav__logo-text">IslamiCalc</span>
     </a>
-    <nav class="ic-nav__links">
-      <a href="/"       class="ic-nav__link">🏠 الرئيسية</a>
-      <a href="/khatma" class="ic-nav__link">📖 الختمة</a>
-      <a href="/arena"  class="ic-nav__link">🏆 الميدان</a>
-      <a href="/zakat"  class="ic-nav__link active"><i data-lucide="coins" style="width:18px;height:18px;display:inline-block;vertical-align:middle;"></i> الزكاة</a>
-      <a href="/prayer" class="ic-nav__link">🕌 الصلاة</a>
-      <a href="/athkar" class="ic-nav__link">📿 الأذكار</a>
-    </nav>
+
+    <!-- ── Spacer pushes actions to the right ── -->
+    <div class="ic-nav__spacer"></div>
+
+    <!-- ── Right Actions ────────────────────── -->
     <div class="ic-nav__actions">
-      <button id="themeBtn" class="ic-nav__icon-btn">🌙</button>
-      <button id="loginBtn" class="ic-nav__login-btn">دخول</button>
-      <button class="ic-nav__mobile-toggle" id="mobileToggle"><i data-lucide="menu" style="width:20px;height:20px;display:inline-block;vertical-align:middle;"></i></button>
-    </div>
-  </div>
-  <div class="ic-nav__mobile" id="mobileMenu">
-    <a href="/">🏠 الرئيسية</a>
-    <a href="/khatma">📖 الختمة</a>
-    <a href="/arena">🏆 الميدان</a>
-    <a href="/zakat"><i data-lucide="coins" style="width:18px;height:18px;display:inline-block;vertical-align:middle;"></i> الزكاة</a>
-    <a href="/prayer">🕌 الصلاة</a>
-    <a href="/athkar">📿 الأذكار</a>
-  </div>
+
+      <!-- Theme Toggle -->
+      <button id="themeBtn" class="ic-nav__icon-btn" aria-label="تبديل السمة">
+        <svg class="ic-nav__icon-btn-svg" width="18" height="18" viewBox="0 0 24 24"
+             fill="none" stroke="currentColor" stroke-width="2"
+             stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="5"/>
+          <line x1="12" y1="1" x2="12" y2="3"/>
+          <line x1="12" y1="21" x2="12" y2="23"/>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+          <line x1="1" y1="12" x2="3" y2="12"/>
+          <line x1="21" y1="12" x2="23" y2="12"/>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+        </svg>
+      </button>
+
+      <!-- Login / Profile button -->
+      <button id="loginBtn" class="ic-nav__login-btn">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2.5"
+             stroke-linecap="round" stroke-linejoin="round"
+             style="flex-shrink:0" aria-hidden="true">
+          <circle cx="12" cy="8" r="4"/>
+          <path d="M4 20c0-4 3.58-7 8-7s8 3 8 7"/>
+        </svg>
+        <span id="loginBtnLabel">تسجيل الدخول</span>
+      </button>
+
+      <!-- Hamburger — always visible -->
+      <button id="menuToggle" class="ic-nav__hamburger" aria-label="فتح القائمة"
+              aria-expanded="false" aria-controls="sideDrawer">
+        <span class="ic-nav__hamburger-bar"></span>
+        <span class="ic-nav__hamburger-bar"></span>
+        <span class="ic-nav__hamburger-bar"></span>
+      </button>
+
+    </div><!-- /actions -->
+  </div><!-- /inner -->
 </header>
+
+<!-- ═══════════════════════════════════════════════════
+     Side Drawer (opens on hamburger click)
+═══════════════════════════════════════════════════ -->
+<div id="drawerOverlay" class="ic-drawer-overlay" aria-hidden="true"></div>
+
+<aside id="sideDrawer" class="ic-drawer" role="dialog"
+       aria-modal="true" aria-label="القائمة الرئيسية">
+
+  <!-- Drawer Header -->
+  <div class="ic-drawer__header">
+    <a href="/" class="ic-drawer__logo">
+      <div class="ic-nav__logo-mark ic-nav__logo-mark--sm">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+             xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M12 2L14.09 8.26L21 9L15.54 14.74L17.18 22L12 18.77
+                   L6.82 22L8.46 14.74L3 9L9.91 8.26L12 2Z"
+                fill="rgba(255,255,255,0.95)"/>
+        </svg>
+      </div>
+      <span class="ic-nav__logo-text">IslamiCalc</span>
+    </a>
+    <button id="drawerClose" class="ic-drawer__close" aria-label="إغلاق القائمة">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+           stroke="currentColor" stroke-width="2.5"
+           stroke-linecap="round" stroke-linejoin="round">
+        <line x1="18" y1="6" x2="6" y2="18"/>
+        <line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+    </button>
+  </div>
+
+  <!-- User Profile Section -->
+  <div class="ic-drawer__profile" id="drawerProfile">
+    <div class="ic-drawer__avatar" id="drawerAvatar">
+      <!-- Initials / avatar injected by JS -->
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none"
+           stroke="rgba(255,255,255,0.8)" stroke-width="2"
+           stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="8" r="4"/>
+        <path d="M4 20c0-4 3.58-7 8-7s8 3 8 7"/>
+      </svg>
+    </div>
+    <div class="ic-drawer__profile-info">
+      <span class="ic-drawer__profile-name" id="drawerName">مرحباً بك</span>
+      <span class="ic-drawer__profile-sub" id="drawerSub">سجّل دخولك للمتابعة</span>
+    </div>
+    <button id="drawerLoginBtn" class="ic-drawer__profile-cta">دخول</button>
+  </div>
+
+  <!-- Quick XP Bar (shown when logged in) -->
+  <div class="ic-drawer__xp" id="drawerXP" style="display:none">
+    <div class="ic-drawer__xp-track">
+      <div class="ic-drawer__xp-fill" id="drawerXPFill" style="width:0%"></div>
+    </div>
+    <span class="ic-drawer__xp-lbl" id="drawerXPLbl">0 XP</span>
+  </div>
+
+  <!-- Divider -->
+  <div class="ic-drawer__divider"></div>
+
+  <!-- Main Navigation -->
+  <nav class="ic-drawer__nav" aria-label="التنقل الرئيسي">
+    <p class="ic-drawer__section-label">التنقل</p>
+    <ul class="ic-drawer__list">
+      <li>
+        <a href="/" class="ic-drawer__link" data-page="home">
+          <span class="ic-drawer__link-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+              <polyline points="9 22 9 12 15 12 15 22"/>
+            </svg>
+          </span>
+          <span>الرئيسية</span>
+        </a>
+      </li>
+      <li>
+        <a href="/khatma" class="ic-drawer__link" data-page="khatma">
+          <span class="ic-drawer__link-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+              <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+            </svg>
+          </span>
+          <span>ختمة القرآن</span>
+        </a>
+      </li>
+      <li>
+        <a href="/arena" class="ic-drawer__link" data-page="arena">
+          <span class="ic-drawer__link-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+            </svg>
+          </span>
+          <span>الميدان</span>
+          <span class="ic-drawer__badge ic-drawer__badge--gold">XP</span>
+        </a>
+      </li>
+      <li>
+        <a href="/athkar" class="ic-drawer__link" data-page="athkar">
+          <span class="ic-drawer__link-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="3"/>
+              <path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/>
+            </svg>
+          </span>
+          <span>الأذكار</span>
+        </a>
+      </li>
+    </ul>
+
+    <p class="ic-drawer__section-label" style="margin-top:var(--s-3)">الأدوات</p>
+    <ul class="ic-drawer__list">
+      <li>
+        <a href="/prayer" class="ic-drawer__link" data-page="prayer">
+          <span class="ic-drawer__link-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <polyline points="12 6 12 12 16 14"/>
+            </svg>
+          </span>
+          <span>مواقيت الصلاة</span>
+        </a>
+      </li>
+      <li>
+        <a href="/zakat" class="ic-drawer__link" data-page="zakat">
+          <span class="ic-drawer__link-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="12" y1="1" x2="12" y2="23"/>
+              <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+            </svg>
+          </span>
+          <span>حساب الزكاة</span>
+        </a>
+      </li>
+      <li>
+        <a href="/hijri" class="ic-drawer__link" data-page="hijri">
+          <span class="ic-drawer__link-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+              <line x1="16" y1="2" x2="16" y2="6"/>
+              <line x1="8" y1="2" x2="8" y2="6"/>
+              <line x1="3" y1="10" x2="21" y2="10"/>
+            </svg>
+          </span>
+          <span>التقويم الهجري</span>
+        </a>
+      </li>
+    </ul>
+
+    <p class="ic-drawer__section-label" style="margin-top:var(--s-3)">المزيد</p>
+    <ul class="ic-drawer__list">
+      <li>
+        <a href="/about" class="ic-drawer__link" data-page="about">
+          <span class="ic-drawer__link-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <line x1="12" y1="8" x2="12" y2="12"/>
+              <line x1="12" y1="16" x2="12.01" y2="16"/>
+            </svg>
+          </span>
+          <span>من نحن</span>
+        </a>
+      </li>
+      <li>
+        <a href="/contact" class="ic-drawer__link" data-page="contact">
+          <span class="ic-drawer__link-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+            </svg>
+          </span>
+          <span>تواصل معنا</span>
+        </a>
+      </li>
+      <li>
+        <a href="/profile" class="ic-drawer__link" data-page="profile">
+          <span class="ic-drawer__link-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+              <circle cx="12" cy="7" r="4"/>
+            </svg>
+          </span>
+          <span>الملف الشخصي</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- Footer of drawer -->
+  <div class="ic-drawer__footer">
+    <span class="ic-drawer__footer-copy">© 2026 IslamiCalc</span>
+    <button id="drawerThemeBtn" class="ic-drawer__theme-toggle" aria-label="تبديل السمة">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
+           stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79z"/>
+      </svg>
+      <span>السمة</span>
+    </button>
+  </div>
+
+</aside>
+
+<!-- Drawer JS — inline, zero dependencies -->
+<script>
+(function () {
+  const toggle   = document.getElementById('menuToggle');
+  const drawer   = document.getElementById('sideDrawer');
+  const overlay  = document.getElementById('drawerOverlay');
+  const closeBtn = document.getElementById('drawerClose');
+  const body     = document.body;
+
+  function openDrawer() {
+    drawer.classList.add('ic-drawer--open');
+    overlay.classList.add('ic-drawer-overlay--visible');
+    body.style.overflow = 'hidden';
+    toggle.setAttribute('aria-expanded', 'true');
+    // focus first link
+    drawer.querySelector('.ic-drawer__link')?.focus();
+  }
+  function closeDrawer() {
+    drawer.classList.remove('ic-drawer--open');
+    overlay.classList.remove('ic-drawer-overlay--visible');
+    body.style.overflow = '';
+    toggle.setAttribute('aria-expanded', 'false');
+    toggle.focus();
+  }
+
+  toggle?.addEventListener('click', () =>
+    drawer.classList.contains('ic-drawer--open') ? closeDrawer() : openDrawer()
+  );
+  closeBtn?.addEventListener('click', closeDrawer);
+  overlay?.addEventListener('click', closeDrawer);
+
+  // Close on ESC
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && drawer.classList.contains('ic-drawer--open')) closeDrawer();
+  });
+
+  // Close on nav link click (mobile)
+  drawer?.querySelectorAll('.ic-drawer__link').forEach(a => {
+    a.addEventListener('click', closeDrawer);
+  });
+
+  // Mark active link
+  const page = location.pathname.replace(/^\//, '').split('/')[0] || 'home';
+  drawer?.querySelectorAll('.ic-drawer__link').forEach(a => {
+    if (a.dataset.page === page) {
+      a.classList.add('active');
+      a.setAttribute('aria-current', 'page');
+    }
+  });
+
+  // Drawer theme toggle mirrors main themeBtn
+  document.getElementById('drawerThemeBtn')?.addEventListener('click', () => {
+    document.getElementById('themeBtn')?.click();
+  });
+})();
+</script>
+
 
 <!-- ============================================================
      HERO
      ============================================================ -->
 <div class="zk-hero">
   <div class="zk-hero__inner">
-    <div class="ic-section__eyebrow" style="margin-bottom:var(--s-4)"><i data-lucide="coins" style="width:18px;height:18px;display:inline-block;vertical-align:middle;"></i> الركن الثالث</div>
+    <div class="ic-section__eyebrow" style="margin-bottom:var(--s-4)">💰 الركن الثالث</div>
     <h1 class="zk-hero__title">
       حاسبة الزكاة الإسلامية<br>
       <span style="background:linear-gradient(135deg,var(--zk-1),var(--zk-3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">بدقة شرعية موثّقة</span>
@@ -664,11 +959,11 @@
   <!-- Tab Bar -->
   <div class="zk-tabs">
     <button class="zk-tab active" data-tab="money"   onclick="switchTab('money')">💵 المال</button>
-    <button class="zk-tab"        data-tab="gold"    onclick="switchTab('gold')"><i data-lucide="circle-dollar-sign" style="width:16px;height:16px;display:inline-block;vertical-align:middle;"></i> الذهب</button>
+    <button class="zk-tab"        data-tab="gold"    onclick="switchTab('gold')">🥇 الذهب</button>
     <button class="zk-tab"        data-tab="silver"  onclick="switchTab('silver')">🥈 الفضة</button>
     <button class="zk-tab"        data-tab="trade"   onclick="switchTab('trade')">🏪 التجارة</button>
     <button class="zk-tab"        data-tab="stocks"  onclick="switchTab('stocks')">📈 الأسهم</button>
-    <button class="zk-tab"        data-tab="total"   onclick="switchTab('total')"><i data-lucide="bar-chart-2" style="width:15px;height:15px;display:inline-block;vertical-align:middle;"></i> الإجمالي</button>
+    <button class="zk-tab"        data-tab="total"   onclick="switchTab('total')">📊 الإجمالي</button>
   </div>
 
   <!-- ══════════════════════════════════════
@@ -739,7 +1034,7 @@
         <div class="zk-result__actions">
           <button class="zk-act-btn share" onclick="shareResult('money')">📤 مشاركة</button>
           <button class="zk-act-btn copy"  onclick="copyResult('money')">📋 نسخ</button>
-          <button class="zk-act-btn reset" onclick="resetTab('money')"><i data-lucide="rotate-ccw" style="width:15px;height:15px;display:inline-block;vertical-align:middle;"></i> إعادة</button>
+          <button class="zk-act-btn reset" onclick="resetTab('money')">🔄 إعادة</button>
         </div>
       </div>
     </div>
@@ -750,7 +1045,7 @@
   ══════════════════════════════════════ -->
   <div class="zk-card" id="tab-gold">
     <div class="zk-card-head">
-      <div class="zk-card-icon"><i data-lucide="circle-dollar-sign" style="width:16px;height:16px;display:inline-block;vertical-align:middle;"></i></div>
+      <div class="zk-card-icon">🥇</div>
       <div>
         <div class="zk-card-title">زكاة الذهب</div>
         <div class="zk-card-src">المصدر: <a href="https://islamqa.info/ar/214221" target="_blank">islamqa.info #214221</a> + <a href="https://islamqa.info/ar/145545" target="_blank">#145545</a></div>
@@ -765,7 +1060,7 @@
 
       <div class="zk-fields zk-fields--3">
         <div class="zk-field">
-          <div class="zk-field__lbl"><span class="zk-field__icon"><i data-lucide="scale" style="width:16px;height:16px;display:inline-block;vertical-align:middle;"></i></span> الوزن الكلي (جرام)</div>
+          <div class="zk-field__lbl"><span class="zk-field__icon">⚖️</span> الوزن الكلي (جرام)</div>
           <div class="zk-input-wrap">
             <input class="zk-input" type="number" id="goldWeight" placeholder="مثال: 120" min="0" step="0.01" inputmode="decimal">
             <span class="zk-input-unit">جرام</span>
@@ -793,19 +1088,19 @@
       <div class="zk-field" style="margin-bottom:var(--s-4)">
         <div class="zk-field__lbl"><span class="zk-field__icon">💍</span> الغرض من الذهب</div>
         <select class="zk-select" id="goldPurpose" onchange="onGoldPurposeChange()">
-          <option value="savings"><i data-lucide="coins" style="width:18px;height:18px;display:inline-block;vertical-align:middle;"></i> للادخار أو الاستثمار — زكاته واجبة اتفاقاً</option>
+          <option value="savings">💰 للادخار أو الاستثمار — زكاته واجبة اتفاقاً</option>
           <option value="jewelry">💍 للزينة الشخصية — فيه خلاف بين العلماء</option>
         </select>
         <div class="zk-jewelry-note" id="jewelry-note">
           <strong>خلاف العلماء في ذهب الزينة:</strong><br>
           • <strong>الجمهور</strong> (مالك + الشافعي + أحمد): لا زكاة في ذهب الزينة المُستخدَم<br>
           • <strong>الأحناف + ابن باز رحمه الله</strong>: تجب الزكاة احتياطاً<br>
-          <i data-lucide="check-circle" style="width:15px;height:15px;display:inline-block;vertical-align:middle;"></i> <strong>الأحوط والأبرأ للذمة: إخراج الزكاة</strong><br>
+          ✅ <strong>الأحوط والأبرأ للذمة: إخراج الزكاة</strong><br>
           المصدر: <a href="https://binbaz.org.sa" target="_blank">binbaz.org.sa</a>
         </div>
       </div>
 
-      <button class="zk-calc-btn" onclick="calcGold()"><i data-lucide="circle-dollar-sign" style="width:16px;height:16px;display:inline-block;vertical-align:middle;"></i> احسب زكاة الذهب</button>
+      <button class="zk-calc-btn" onclick="calcGold()">🥇 احسب زكاة الذهب</button>
 
       <div class="zk-result" id="res-gold">
         <div class="zk-result__grid">
@@ -824,7 +1119,7 @@
         <div class="zk-result__actions">
           <button class="zk-act-btn share" onclick="shareResult('gold')">📤 مشاركة</button>
           <button class="zk-act-btn copy"  onclick="copyResult('gold')">📋 نسخ</button>
-          <button class="zk-act-btn reset" onclick="resetTab('gold')"><i data-lucide="rotate-ccw" style="width:15px;height:15px;display:inline-block;vertical-align:middle;"></i> إعادة</button>
+          <button class="zk-act-btn reset" onclick="resetTab('gold')">🔄 إعادة</button>
         </div>
       </div>
     </div>
@@ -849,7 +1144,7 @@
 
       <div class="zk-fields zk-fields--2">
         <div class="zk-field">
-          <div class="zk-field__lbl"><span class="zk-field__icon"><i data-lucide="scale" style="width:16px;height:16px;display:inline-block;vertical-align:middle;"></i></span> وزن الفضة (جرام)</div>
+          <div class="zk-field__lbl"><span class="zk-field__icon">⚖️</span> وزن الفضة (جرام)</div>
           <div class="zk-input-wrap">
             <input class="zk-input" type="number" id="silverWeight" placeholder="مثال: 700" min="0" step="0.01" inputmode="decimal">
             <span class="zk-input-unit">جرام</span>
@@ -882,7 +1177,7 @@
         <div class="zk-result__actions">
           <button class="zk-act-btn share" onclick="shareResult('silver')">📤 مشاركة</button>
           <button class="zk-act-btn copy"  onclick="copyResult('silver')">📋 نسخ</button>
-          <button class="zk-act-btn reset" onclick="resetTab('silver')"><i data-lucide="rotate-ccw" style="width:15px;height:15px;display:inline-block;vertical-align:middle;"></i> إعادة</button>
+          <button class="zk-act-btn reset" onclick="resetTab('silver')">🔄 إعادة</button>
         </div>
       </div>
     </div>
@@ -954,7 +1249,7 @@
         <div class="zk-result__actions">
           <button class="zk-act-btn share" onclick="shareResult('trade')">📤 مشاركة</button>
           <button class="zk-act-btn copy"  onclick="copyResult('trade')">📋 نسخ</button>
-          <button class="zk-act-btn reset" onclick="resetTab('trade')"><i data-lucide="rotate-ccw" style="width:15px;height:15px;display:inline-block;vertical-align:middle;"></i> إعادة</button>
+          <button class="zk-act-btn reset" onclick="resetTab('trade')">🔄 إعادة</button>
         </div>
       </div>
     </div>
@@ -979,7 +1274,7 @@
       </div>
 
       <div class="zk-field" style="margin-bottom:var(--s-4)">
-        <div class="zk-field__lbl"><span class="zk-field__icon"><i data-lucide="bar-chart-2" style="width:15px;height:15px;display:inline-block;vertical-align:middle;"></i></span> نوع الاحتفاظ</div>
+        <div class="zk-field__lbl"><span class="zk-field__icon">📊</span> نوع الاحتفاظ</div>
         <select class="zk-select" id="stocksType" onchange="onStocksTypeChange()">
           <option value="trade">للمضاربة والبيع — زكاة على القيمة السوقية</option>
           <option value="income">للتوزيعات والدخل — زكاة على الأرباح فقط</option>
@@ -988,7 +1283,7 @@
 
       <div class="zk-fields zk-fields--2">
         <div class="zk-field">
-          <div class="zk-field__lbl"><span class="zk-field__icon"><i data-lucide="coins" style="width:18px;height:18px;display:inline-block;vertical-align:middle;"></i></span> القيمة السوقية الحالية</div>
+          <div class="zk-field__lbl"><span class="zk-field__icon">💰</span> القيمة السوقية الحالية</div>
           <div class="zk-input-wrap">
             <input class="zk-input" type="number" id="stocksValue" placeholder="0" min="0" inputmode="decimal">
             <span class="zk-input-unit unit-lbl">ريال</span>
@@ -1022,7 +1317,7 @@
         <div class="zk-result__actions">
           <button class="zk-act-btn share" onclick="shareResult('stocks')">📤 مشاركة</button>
           <button class="zk-act-btn copy"  onclick="copyResult('stocks')">📋 نسخ</button>
-          <button class="zk-act-btn reset" onclick="resetTab('stocks')"><i data-lucide="rotate-ccw" style="width:15px;height:15px;display:inline-block;vertical-align:middle;"></i> إعادة</button>
+          <button class="zk-act-btn reset" onclick="resetTab('stocks')">🔄 إعادة</button>
         </div>
       </div>
     </div>
@@ -1033,7 +1328,7 @@
   ══════════════════════════════════════ -->
   <div class="zk-card" id="tab-total">
     <div class="zk-card-head">
-      <div class="zk-card-icon"><i data-lucide="bar-chart-2" style="width:15px;height:15px;display:inline-block;vertical-align:middle;"></i></div>
+      <div class="zk-card-icon">📊</div>
       <div>
         <div class="zk-card-title">الإجمالي الشامل</div>
         <div class="zk-card-src">المصدر: <a href="https://islamqa.info/ar/585436" target="_blank">islamqa.info #585436</a></div>
@@ -1046,11 +1341,11 @@
       </div>
 
       <div class="zk-houl">
-        <span class="zk-houl__icon"><i data-lucide="lightbulb" style="width:14px;height:14px;display:inline-block;vertical-align:middle;"></i></span>
+        <span class="zk-houl__icon">💡</span>
         <span>أدخل بياناتك في التبويبات السابقة أولاً ثم اضغط الزر أدناه لحساب الإجمالي الشامل.</span>
       </div>
 
-      <button class="zk-calc-btn" onclick="calcTotal()"><i data-lucide="bar-chart-2" style="width:15px;height:15px;display:inline-block;vertical-align:middle;"></i> احسب الإجمالي الشامل</button>
+      <button class="zk-calc-btn" onclick="calcTotal()">📊 احسب الإجمالي الشامل</button>
 
       <div class="zk-result" id="res-total">
         <div class="zk-breakdown" id="total-breakdown"></div>
@@ -1063,7 +1358,7 @@
         <div class="zk-result__actions">
           <button class="zk-act-btn share" onclick="shareResult('total')">📤 مشاركة</button>
           <button class="zk-act-btn copy"  onclick="copyResult('total')">📋 نسخ</button>
-          <button class="zk-act-btn reset" onclick="resetAll()"><i data-lucide="rotate-ccw" style="width:15px;height:15px;display:inline-block;vertical-align:middle;"></i> إعادة الكل</button>
+          <button class="zk-act-btn reset" onclick="resetAll()">🔄 إعادة الكل</button>
         </div>
       </div>
     </div>
@@ -1076,7 +1371,7 @@
     <div class="zk-sec">📚 أسئلة فقهية شائعة</div>
 
     <div class="zk-faq__item">
-      <button class="zk-faq__q" onclick="toggleFaq(this)"><i data-lucide="scale" style="width:16px;height:16px;display:inline-block;vertical-align:middle;"></i> ما شروط وجوب الزكاة الخمسة؟</button>
+      <button class="zk-faq__q" onclick="toggleFaq(this)">⚖️ ما شروط وجوب الزكاة الخمسة؟</button>
       <div class="zk-faq__a">
         خمسة شروط: (1) <strong>الإسلام</strong> (2) <strong>الحرية</strong> (3) <strong>ملك النصاب</strong> كاملاً (4) <strong>حولان الحول</strong> — مرور سنة هجرية كاملة (5) <strong>ألا تكون الأموال</strong> محتاجاً إليها للحوائج الأصلية.<br>
         المصدر: الشرح الممتع — ابن عثيمين رحمه الله
@@ -1084,7 +1379,7 @@
     </div>
 
     <div class="zk-faq__item">
-      <button class="zk-faq__q" onclick="toggleFaq(this)"><i data-lucide="coins" style="width:18px;height:18px;display:inline-block;vertical-align:middle;"></i> كيف أعرف نصاب المال بالريال السعودي؟</button>
+      <button class="zk-faq__q" onclick="toggleFaq(this)">💰 كيف أعرف نصاب المال بالريال السعودي؟</button>
       <div class="zk-faq__a">
         النصاب = 85 جرام ذهب × سعر الجرام عيار 24 اليوم.<br>
         مثال: إذا كان سعر الجرام 315 ريال → النصاب = 85 × 315 = <strong>26,775 ريال</strong>.<br>
@@ -1133,7 +1428,7 @@
 <div id="loginModal" class="ic-modal">
   <div class="ic-modal__backdrop" id="modalBackdrop"></div>
   <div class="ic-modal__box">
-    <div class="ic-modal__icon"><i data-lucide="coins" style="width:18px;height:18px;display:inline-block;vertical-align:middle;"></i></div>
+    <div class="ic-modal__icon">💰</div>
     <h3 class="ic-modal__title">سجّل دخولك لحفظ حساباتك</h3>
     <p class="ic-modal__sub">نتائج الزكاة تُحفظ وتُزامَن عبر أجهزتك</p>
     <div class="ic-modal__actions">
@@ -1251,7 +1546,7 @@ function showResult(id) {
 function nisabStatusHTML(amount, nisab, reached) {
   const u = unit();
   return reached
-    ? `<i data-lucide="check-circle" style="width:15px;height:15px;display:inline-block;vertical-align:middle;"></i> مجموعك ${fmt(amount)} ${u} بلغ النصاب ${fmt(nisab)} ${u} — الزكاة واجبة بشرط حولان الحول`
+    ? `✅ مجموعك ${fmt(amount)} ${u} بلغ النصاب ${fmt(nisab)} ${u} — الزكاة واجبة بشرط حولان الحول`
     : `⚠️ مجموعك ${fmt(amount)} ${u} أقل من النصاب ${fmt(nisab)} ${u} — لا زكاة الآن`;
 }
 
@@ -1363,7 +1658,7 @@ function calcMoney() {
     : 'تأكد من سعر الذهب الحالي لحساب النصاب بدقة أكبر');
 
   showResult('money');
-  if (reached) { showToast('<i data-lucide="check-circle" style="width:15px;height:15px;display:inline-block;vertical-align:middle;"></i> الزكاة: ' + fmt(zakat) + ' ' + u, 'toast-gold'); safeAddXP(30, 'zakat_money'); }
+  if (reached) { showToast('✅ الزكاة: ' + fmt(zakat) + ' ' + u, 'toast-gold'); safeAddXP(30, 'zakat_money'); }
 }
 
 // ============================================================
@@ -1390,7 +1685,7 @@ function calcGold() {
 
   const st = document.getElementById('rg-status');
   st.textContent = reached
-    ? `<i data-lucide="check-circle" style="width:15px;height:15px;display:inline-block;vertical-align:middle;"></i> الوزن الخالص ${fmt(pureWt)} جرام ≥ 85 جرام — بلغ النصاب`
+    ? `✅ الوزن الخالص ${fmt(pureWt)} جرام ≥ 85 جرام — بلغ النصاب`
     : `⚠️ الوزن الخالص ${fmt(pureWt)} جرام أقل من 85 جرام — لم يبلغ النصاب`;
   st.className   = 'zk-result__nisab ' + (reached ? 'reached' : 'not-reached');
 
@@ -1402,7 +1697,7 @@ function calcGold() {
       : `بارك الله في مالك — الزكاة ${fmt(zakat)} ${u}`);
 
   showResult('gold');
-  if (reached) { showToast('<i data-lucide="circle-dollar-sign" style="width:16px;height:16px;display:inline-block;vertical-align:middle;"></i> زكاة الذهب: ' + fmt(zakat) + ' ' + u, 'toast-gold'); safeAddXP(30, 'zakat_gold'); }
+  if (reached) { showToast('🥇 زكاة الذهب: ' + fmt(zakat) + ' ' + u, 'toast-gold'); safeAddXP(30, 'zakat_gold'); }
 }
 
 // ============================================================
@@ -1425,7 +1720,7 @@ function calcSilver() {
 
   const st = document.getElementById('rs-status');
   st.textContent = reached
-    ? `<i data-lucide="check-circle" style="width:15px;height:15px;display:inline-block;vertical-align:middle;"></i> ${fmt(weight)} جرام ≥ 595 جرام — بلغ النصاب`
+    ? `✅ ${fmt(weight)} جرام ≥ 595 جرام — بلغ النصاب`
     : `⚠️ ${fmt(weight)} جرام أقل من 595 جرام — لم يبلغ النصاب`;
   st.className   = 'zk-result__nisab ' + (reached ? 'reached' : 'not-reached');
 
@@ -1521,7 +1816,7 @@ function calcTotal() {
 
   const rows = [
     { icon:'💵', lbl:'أموال نقدية وبنكية', val:moneyTotal,  show:true },
-    { icon:'<i data-lucide="circle-dollar-sign" style="width:16px;height:16px;display:inline-block;vertical-align:middle;"></i>', lbl:'قيمة الذهب',          val:goldValue,   show:goldValue > 0 },
+    { icon:'🥇', lbl:'قيمة الذهب',          val:goldValue,   show:goldValue > 0 },
     { icon:'🥈', lbl:'قيمة الفضة',          val:silverValue, show:silverValue > 0 },
     { icon:'🏪', lbl:'وعاء التجارة',         val:tradeTotal,  show:tradeTotal > 0 },
     { icon:'📈', lbl:'وعاء الأسهم',          val:stocksBase,  show:stocksBase > 0 },
@@ -1535,7 +1830,7 @@ function calcTotal() {
       </div>`
     ).join('') +
     `<div class="zk-brow total">
-      <span class="zk-brow__lbl"><i data-lucide="bar-chart-2" style="width:15px;height:15px;display:inline-block;vertical-align:middle;"></i> الوعاء الإجمالي</span>
+      <span class="zk-brow__lbl">📊 الوعاء الإجمالي</span>
       <span class="zk-brow__val">${fmt(grand)} ${u}</span>
     </div>
     <div class="zk-brow">
@@ -1551,10 +1846,10 @@ function calcTotal() {
   showResult('total');
 
   if (reached) {
-    showToast('<i data-lucide="bar-chart-2" style="width:15px;height:15px;display:inline-block;vertical-align:middle;"></i> إجمالي الزكاة: ' + fmt(zakat) + ' ' + u, 'toast-gold');
+    showToast('📊 إجمالي الزكاة: ' + fmt(zakat) + ' ' + u, 'toast-gold');
     safeAddXP(50, 'zakat_total');
     window.islamiCalc?.addBadge?.('zakat_calc');
-    window.islamiCalc?.logActivity?.('حسب الزكاة الشاملة', 'zakat_total', '<i data-lucide="coins" style="width:18px;height:18px;display:inline-block;vertical-align:middle;"></i>', '', 50);
+    window.islamiCalc?.logActivity?.('حسب الزكاة الشاملة', 'zakat_total', '💰', '', 50);
   }
 }
 
@@ -1573,12 +1868,12 @@ const ZAKAT_LABELS = {
 
 function shareResult(tab) {
   const val  = document.getElementById(ZAKAT_IDS[tab])?.textContent || '0';
-  const text = `<i data-lucide="check-circle" style="width:15px;height:15px;display:inline-block;vertical-align:middle;"></i> حسبت ${ZAKAT_LABELS[tab]} على IslamiCalc\n<i data-lucide="coins" style="width:18px;height:18px;display:inline-block;vertical-align:middle;"></i> المبلغ الواجب: ${val} ${unit()}\nاحسب زكاتك: https://islamicalc.com/zakat`;
+  const text = `✅ حسبت ${ZAKAT_LABELS[tab]} على IslamiCalc\n💰 المبلغ الواجب: ${val} ${unit()}\nاحسب زكاتك: https://islamicalc.com/zakat`;
   if (navigator.share) {
     navigator.share({ title: 'حاسبة الزكاة — IslamiCalc', text });
   } else {
     navigator.clipboard?.writeText(text);
-    showToast('<i data-lucide="check-circle" style="width:15px;height:15px;display:inline-block;vertical-align:middle;"></i> تم نسخ النتيجة!', 'toast-success');
+    showToast('✅ تم نسخ النتيجة!', 'toast-success');
   }
 }
 
@@ -1599,7 +1894,7 @@ function resetTab(tab) {
 
 function resetAll() {
   ['money','gold','silver','trade','stocks','total'].forEach(resetTab);
-  showToast('<i data-lucide="rotate-ccw" style="width:15px;height:15px;display:inline-block;vertical-align:middle;"></i> تم إعادة تعيين جميع الحقول');
+  showToast('🔄 تم إعادة تعيين جميع الحقول');
 }
 
 // ============================================================
@@ -1632,6 +1927,5 @@ document.querySelectorAll('.zk-input').forEach(inp => {
 updateNisabCard();
 </script>
 
-  <script>if(typeof lucide!=='undefined')lucide.createIcons();</script>
 </body>
 </html>

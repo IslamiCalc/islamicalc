@@ -15,7 +15,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/style.css">
 
-  <!-- <i data-lucide="check-circle" style="width:15px;height:15px;display:inline-block;vertical-align:middle;"></i> Firebase كموديول -->
+  <!-- ✅ Firebase كموديول -->
   <script type="module" src="/firebase.js"></script>
 
   <style>
@@ -136,70 +136,348 @@
       .profile-top{flex-direction:column;align-items:flex-start;gap:16px}
     }
   </style>
-  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
-  <style>
-    [data-lucide] {
-      stroke: currentColor;
-      stroke-width: 1.8;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-      fill: none;
-      flex-shrink: 0;
-      vertical-align: middle;
-    }
-    .ic-nav__link-icon[data-lucide] { width:17px;height:17px;margin-left:4px;opacity:.85; }
-    .ic-nav__link:hover [data-lucide], .ic-nav__link.active [data-lucide] { opacity:1; }
-  </style>
 </head>
 
 <body>
 <!-- ===== Navbar ===== -->
-<nav class="navbar">
-  <a href="/" class="navbar-brand">
-    <div class="navbar-logo">☪</div>
-    <span class="navbar-title">IslamiCalc</span>
-  </a>
-  <ul class="navbar-menu" id="navMenu">
-    <li><a href="/">🏠 الرئيسية</a></li>
-    <li><a href="/zakat">🧮 الزكاة</a></li>
-    <li><a href="/khatma"><i data-lucide="book-open" style="width:16px;height:16px;display:inline-block;vertical-align:middle;"></i> القرآن</a></li>
-    <li><a href="/prayer">🕌 الصلاة</a></li>
-    <li><a href="/athkar">📿 الأذكار</a></li>
-    <li><a href="/arena"><i data-lucide="trophy" style="width:16px;height:16px;display:inline-block;vertical-align:middle;"></i> الميدان</a></li>
-    <li><a href="/profile" class="active" id="navProfile"><i data-lucide="user" style="width:18px;height:18px;display:inline-block;vertical-align:middle;"></i> بروفايلي</a></li>
-  </ul>
-  <div class="navbar-actions">
-    <button class="theme-btn" id="themeBtn">
-      <svg id="iconSun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none">
-        <circle cx="12" cy="12" r="5"/>
-        <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
-        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
-        <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
-        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
-      </svg>
-      <svg id="iconMoon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-      </svg>
-    </button>
-    <button class="login-btn" id="loginBtn" onclick="openLoginModal()">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M15 12H3"/>
-      </svg>
-      <span>دخول</span>
-    </button>
-    <button class="menu-toggle" id="menuToggle" aria-expanded="false">
-      <svg id="iconMenu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <line x1="3" y1="6" x2="21" y2="6"/>
-        <line x1="3" y1="12" x2="21" y2="12"/>
-        <line x1="3" y1="18" x2="21" y2="18"/>
-      </svg>
-      <svg id="iconClose" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none">
+<!-- ═══════════════════════════════════════════════════
+     IslamiCalc  ·  Redesigned Navigation Bar
+     Drop this <header> block into every page, replacing
+     the existing <header class="ic-nav" …> … </header>
+═══════════════════════════════════════════════════ -->
+
+<header class="ic-nav" id="icNav">
+  <div class="ic-nav__inner">
+
+    <!-- ── Logo ────────────────────────────── -->
+    <a href="/" class="ic-nav__logo">
+      <div class="ic-nav__logo-mark">
+        <!-- Geometric Islamic star SVG -->
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+             xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M12 2L14.09 8.26L21 9L15.54 14.74L17.18 22L12 18.77
+                   L6.82 22L8.46 14.74L3 9L9.91 8.26L12 2Z"
+                fill="rgba(255,255,255,0.95)" stroke="none"/>
+        </svg>
+      </div>
+      <span class="ic-nav__logo-text">IslamiCalc</span>
+    </a>
+
+    <!-- ── Spacer pushes actions to the right ── -->
+    <div class="ic-nav__spacer"></div>
+
+    <!-- ── Right Actions ────────────────────── -->
+    <div class="ic-nav__actions">
+
+      <!-- Theme Toggle -->
+      <button id="themeBtn" class="ic-nav__icon-btn" aria-label="تبديل السمة">
+        <svg class="ic-nav__icon-btn-svg" width="18" height="18" viewBox="0 0 24 24"
+             fill="none" stroke="currentColor" stroke-width="2"
+             stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="5"/>
+          <line x1="12" y1="1" x2="12" y2="3"/>
+          <line x1="12" y1="21" x2="12" y2="23"/>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+          <line x1="1" y1="12" x2="3" y2="12"/>
+          <line x1="21" y1="12" x2="23" y2="12"/>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+        </svg>
+      </button>
+
+      <!-- Login / Profile button -->
+      <button id="loginBtn" class="ic-nav__login-btn">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2.5"
+             stroke-linecap="round" stroke-linejoin="round"
+             style="flex-shrink:0" aria-hidden="true">
+          <circle cx="12" cy="8" r="4"/>
+          <path d="M4 20c0-4 3.58-7 8-7s8 3 8 7"/>
+        </svg>
+        <span id="loginBtnLabel">تسجيل الدخول</span>
+      </button>
+
+      <!-- Hamburger — always visible -->
+      <button id="menuToggle" class="ic-nav__hamburger" aria-label="فتح القائمة"
+              aria-expanded="false" aria-controls="sideDrawer">
+        <span class="ic-nav__hamburger-bar"></span>
+        <span class="ic-nav__hamburger-bar"></span>
+        <span class="ic-nav__hamburger-bar"></span>
+      </button>
+
+    </div><!-- /actions -->
+  </div><!-- /inner -->
+</header>
+
+<!-- ═══════════════════════════════════════════════════
+     Side Drawer (opens on hamburger click)
+═══════════════════════════════════════════════════ -->
+<div id="drawerOverlay" class="ic-drawer-overlay" aria-hidden="true"></div>
+
+<aside id="sideDrawer" class="ic-drawer" role="dialog"
+       aria-modal="true" aria-label="القائمة الرئيسية">
+
+  <!-- Drawer Header -->
+  <div class="ic-drawer__header">
+    <a href="/" class="ic-drawer__logo">
+      <div class="ic-nav__logo-mark ic-nav__logo-mark--sm">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+             xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M12 2L14.09 8.26L21 9L15.54 14.74L17.18 22L12 18.77
+                   L6.82 22L8.46 14.74L3 9L9.91 8.26L12 2Z"
+                fill="rgba(255,255,255,0.95)"/>
+        </svg>
+      </div>
+      <span class="ic-nav__logo-text">IslamiCalc</span>
+    </a>
+    <button id="drawerClose" class="ic-drawer__close" aria-label="إغلاق القائمة">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+           stroke="currentColor" stroke-width="2.5"
+           stroke-linecap="round" stroke-linejoin="round">
         <line x1="18" y1="6" x2="6" y2="18"/>
         <line x1="6" y1="6" x2="18" y2="18"/>
       </svg>
     </button>
   </div>
-</nav>
+
+  <!-- User Profile Section -->
+  <div class="ic-drawer__profile" id="drawerProfile">
+    <div class="ic-drawer__avatar" id="drawerAvatar">
+      <!-- Initials / avatar injected by JS -->
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none"
+           stroke="rgba(255,255,255,0.8)" stroke-width="2"
+           stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="8" r="4"/>
+        <path d="M4 20c0-4 3.58-7 8-7s8 3 8 7"/>
+      </svg>
+    </div>
+    <div class="ic-drawer__profile-info">
+      <span class="ic-drawer__profile-name" id="drawerName">مرحباً بك</span>
+      <span class="ic-drawer__profile-sub" id="drawerSub">سجّل دخولك للمتابعة</span>
+    </div>
+    <button id="drawerLoginBtn" class="ic-drawer__profile-cta">دخول</button>
+  </div>
+
+  <!-- Quick XP Bar (shown when logged in) -->
+  <div class="ic-drawer__xp" id="drawerXP" style="display:none">
+    <div class="ic-drawer__xp-track">
+      <div class="ic-drawer__xp-fill" id="drawerXPFill" style="width:0%"></div>
+    </div>
+    <span class="ic-drawer__xp-lbl" id="drawerXPLbl">0 XP</span>
+  </div>
+
+  <!-- Divider -->
+  <div class="ic-drawer__divider"></div>
+
+  <!-- Main Navigation -->
+  <nav class="ic-drawer__nav" aria-label="التنقل الرئيسي">
+    <p class="ic-drawer__section-label">التنقل</p>
+    <ul class="ic-drawer__list">
+      <li>
+        <a href="/" class="ic-drawer__link" data-page="home">
+          <span class="ic-drawer__link-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+              <polyline points="9 22 9 12 15 12 15 22"/>
+            </svg>
+          </span>
+          <span>الرئيسية</span>
+        </a>
+      </li>
+      <li>
+        <a href="/khatma" class="ic-drawer__link" data-page="khatma">
+          <span class="ic-drawer__link-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+              <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+            </svg>
+          </span>
+          <span>ختمة القرآن</span>
+        </a>
+      </li>
+      <li>
+        <a href="/arena" class="ic-drawer__link" data-page="arena">
+          <span class="ic-drawer__link-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+            </svg>
+          </span>
+          <span>الميدان</span>
+          <span class="ic-drawer__badge ic-drawer__badge--gold">XP</span>
+        </a>
+      </li>
+      <li>
+        <a href="/athkar" class="ic-drawer__link" data-page="athkar">
+          <span class="ic-drawer__link-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="3"/>
+              <path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/>
+            </svg>
+          </span>
+          <span>الأذكار</span>
+        </a>
+      </li>
+    </ul>
+
+    <p class="ic-drawer__section-label" style="margin-top:var(--s-3)">الأدوات</p>
+    <ul class="ic-drawer__list">
+      <li>
+        <a href="/prayer" class="ic-drawer__link" data-page="prayer">
+          <span class="ic-drawer__link-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <polyline points="12 6 12 12 16 14"/>
+            </svg>
+          </span>
+          <span>مواقيت الصلاة</span>
+        </a>
+      </li>
+      <li>
+        <a href="/zakat" class="ic-drawer__link" data-page="zakat">
+          <span class="ic-drawer__link-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="12" y1="1" x2="12" y2="23"/>
+              <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+            </svg>
+          </span>
+          <span>حساب الزكاة</span>
+        </a>
+      </li>
+      <li>
+        <a href="/hijri" class="ic-drawer__link" data-page="hijri">
+          <span class="ic-drawer__link-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+              <line x1="16" y1="2" x2="16" y2="6"/>
+              <line x1="8" y1="2" x2="8" y2="6"/>
+              <line x1="3" y1="10" x2="21" y2="10"/>
+            </svg>
+          </span>
+          <span>التقويم الهجري</span>
+        </a>
+      </li>
+    </ul>
+
+    <p class="ic-drawer__section-label" style="margin-top:var(--s-3)">المزيد</p>
+    <ul class="ic-drawer__list">
+      <li>
+        <a href="/about" class="ic-drawer__link" data-page="about">
+          <span class="ic-drawer__link-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <line x1="12" y1="8" x2="12" y2="12"/>
+              <line x1="12" y1="16" x2="12.01" y2="16"/>
+            </svg>
+          </span>
+          <span>من نحن</span>
+        </a>
+      </li>
+      <li>
+        <a href="/contact" class="ic-drawer__link" data-page="contact">
+          <span class="ic-drawer__link-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+            </svg>
+          </span>
+          <span>تواصل معنا</span>
+        </a>
+      </li>
+      <li>
+        <a href="/profile" class="ic-drawer__link" data-page="profile">
+          <span class="ic-drawer__link-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+              <circle cx="12" cy="7" r="4"/>
+            </svg>
+          </span>
+          <span>الملف الشخصي</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- Footer of drawer -->
+  <div class="ic-drawer__footer">
+    <span class="ic-drawer__footer-copy">© 2026 IslamiCalc</span>
+    <button id="drawerThemeBtn" class="ic-drawer__theme-toggle" aria-label="تبديل السمة">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
+           stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79z"/>
+      </svg>
+      <span>السمة</span>
+    </button>
+  </div>
+
+</aside>
+
+<!-- Drawer JS — inline, zero dependencies -->
+<script>
+(function () {
+  const toggle   = document.getElementById('menuToggle');
+  const drawer   = document.getElementById('sideDrawer');
+  const overlay  = document.getElementById('drawerOverlay');
+  const closeBtn = document.getElementById('drawerClose');
+  const body     = document.body;
+
+  function openDrawer() {
+    drawer.classList.add('ic-drawer--open');
+    overlay.classList.add('ic-drawer-overlay--visible');
+    body.style.overflow = 'hidden';
+    toggle.setAttribute('aria-expanded', 'true');
+    // focus first link
+    drawer.querySelector('.ic-drawer__link')?.focus();
+  }
+  function closeDrawer() {
+    drawer.classList.remove('ic-drawer--open');
+    overlay.classList.remove('ic-drawer-overlay--visible');
+    body.style.overflow = '';
+    toggle.setAttribute('aria-expanded', 'false');
+    toggle.focus();
+  }
+
+  toggle?.addEventListener('click', () =>
+    drawer.classList.contains('ic-drawer--open') ? closeDrawer() : openDrawer()
+  );
+  closeBtn?.addEventListener('click', closeDrawer);
+  overlay?.addEventListener('click', closeDrawer);
+
+  // Close on ESC
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && drawer.classList.contains('ic-drawer--open')) closeDrawer();
+  });
+
+  // Close on nav link click (mobile)
+  drawer?.querySelectorAll('.ic-drawer__link').forEach(a => {
+    a.addEventListener('click', closeDrawer);
+  });
+
+  // Mark active link
+  const page = location.pathname.replace(/^\//, '').split('/')[0] || 'home';
+  drawer?.querySelectorAll('.ic-drawer__link').forEach(a => {
+    if (a.dataset.page === page) {
+      a.classList.add('active');
+      a.setAttribute('aria-current', 'page');
+    }
+  });
+
+  // Drawer theme toggle mirrors main themeBtn
+  document.getElementById('drawerThemeBtn')?.addEventListener('click', () => {
+    document.getElementById('themeBtn')?.click();
+  });
+})();
+</script>
+
 
 <div class="toast" id="toast"></div>
 
@@ -257,24 +535,24 @@
   <div class="profile-body">
 
     <!-- Stats -->
-    <div class="sec-hd"><i data-lucide="bar-chart-2" style="width:15px;height:15px;display:inline-block;vertical-align:middle;"></i> إحصائياتك الكلية</div>
+    <div class="sec-hd">📊 إحصائياتك الكلية</div>
     <div class="stats-grid-4">
       <div class="stat-card" style="--sc:#f0c96e"><div class="stat-icon">⭐</div><div class="stat-num" id="st-xp">0</div><div class="stat-lbl">نقطة XP</div></div>
-      <div class="stat-card" style="--sc:#3fb950"><div class="stat-icon"><i data-lucide="check-circle" style="width:15px;height:15px;display:inline-block;vertical-align:middle;"></i></div><div class="stat-num" id="st-correct">0</div><div class="stat-lbl">إجابة صحيحة</div></div>
-      <div class="stat-card" style="--sc:#58a6ff"><div class="stat-icon"><i data-lucide="book-open" style="width:16px;height:16px;display:inline-block;vertical-align:middle;"></i></div><div class="stat-num" id="st-surahs">0</div><div class="stat-lbl">سورة مكتملة</div></div>
-      <div class="stat-card" style="--sc:#f85149"><div class="stat-icon"><i data-lucide="flame" style="width:15px;height:15px;display:inline-block;vertical-align:middle;"></i></div><div class="stat-num" id="st-streak">0</div><div class="stat-lbl">أفضل سلسلة</div></div>
+      <div class="stat-card" style="--sc:#3fb950"><div class="stat-icon">✅</div><div class="stat-num" id="st-correct">0</div><div class="stat-lbl">إجابة صحيحة</div></div>
+      <div class="stat-card" style="--sc:#58a6ff"><div class="stat-icon">📖</div><div class="stat-num" id="st-surahs">0</div><div class="stat-lbl">سورة مكتملة</div></div>
+      <div class="stat-card" style="--sc:#f85149"><div class="stat-icon">🔥</div><div class="stat-num" id="st-streak">0</div><div class="stat-lbl">أفضل سلسلة</div></div>
       <div class="stat-card" style="--sc:#a78bfa"><div class="stat-icon">🎮</div><div class="stat-num" id="st-played">0</div><div class="stat-lbl">جولة لُعبت</div></div>
       <div class="stat-card" style="--sc:#79c0ff"><div class="stat-icon">📄</div><div class="stat-num" id="st-pages">0</div><div class="stat-lbl">صفحة مقروءة</div></div>
       <div class="stat-card" style="--sc:#40916c"><div class="stat-icon">🌿</div><div class="stat-num" id="st-athkar">0</div><div class="stat-lbl">ذكر مكتمل</div></div>
-      <div class="stat-card" style="--sc:#ffa657"><div class="stat-icon"><i data-lucide="target" style="width:15px;height:15px;display:inline-block;vertical-align:middle;"></i></div><div class="stat-num" id="st-acc">0%</div><div class="stat-lbl">دقة الإجابة</div></div>
+      <div class="stat-card" style="--sc:#ffa657"><div class="stat-icon">🎯</div><div class="stat-num" id="st-acc">0%</div><div class="stat-lbl">دقة الإجابة</div></div>
     </div>
 
     <!-- Heatmap -->
-    <div class="sec-hd"><i data-lucide="calendar" style="width:15px;height:15px;display:inline-block;vertical-align:middle;"></i> نشاطك — آخر 12 أسبوع</div>
+    <div class="sec-hd">📅 نشاطك — آخر 12 أسبوع</div>
     <div class="heatmap-wrap">
       <div class="heatmap-title">
         <span>سجل النشاط اليومي</span>
-        <span class="heatmap-streak" id="hm-streak"><i data-lucide="flame" style="width:15px;height:15px;display:inline-block;vertical-align:middle;"></i> 0 يوم متتالي</span>
+        <span class="heatmap-streak" id="hm-streak">🔥 0 يوم متتالي</span>
       </div>
       <div class="heatmap-grid" id="heatmap-grid"></div>
       <div class="hm-legend">
@@ -293,7 +571,7 @@
     <div class="modules-grid">
       <div class="module-card" style="--mc:#58a6ff">
         <div class="mod-top">
-          <div class="mod-icon" style="background:rgba(88,166,255,.1)"><i data-lucide="book-open" style="width:16px;height:16px;display:inline-block;vertical-align:middle;"></i></div>
+          <div class="mod-icon" style="background:rgba(88,166,255,.1)">📖</div>
           <div><div class="mod-name">ختمة القرآن</div><div class="mod-sub" id="mod-khatma-sub">0 / 114 سورة</div></div>
         </div>
         <div class="mod-bar"><div class="mod-fill" id="mod-khatma-fill" style="width:0%;background:#58a6ff"></div></div>
@@ -330,7 +608,7 @@
     </div>
 
     <!-- Achievements -->
-    <div class="sec-hd"><i data-lucide="trophy" style="width:16px;height:16px;display:inline-block;vertical-align:middle;"></i> الإنجازات</div>
+    <div class="sec-hd">🏆 الإنجازات</div>
     <div class="achv-grid" id="achv-grid"></div>
 
     <!-- Activity -->
@@ -341,7 +619,7 @@
     </div>
 
     <!-- Settings -->
-    <div class="sec-hd"><i data-lucide="settings" style="width:16px;height:16px;display:inline-block;vertical-align:middle;"></i> الإعدادات</div>
+    <div class="sec-hd">⚙️ الإعدادات</div>
     <div class="settings-card">
       <div class="settings-hd">إعدادات التطبيق</div>
       <div class="setting-row">
@@ -355,7 +633,7 @@
         <div class="toggle on" id="toggle-vibrate" onclick="toggleSetting('vibrate',this)"></div>
       </div>
       <div class="setting-row">
-        <div class="setting-icon"><i data-lucide="bell" style="width:15px;height:15px;display:inline-block;vertical-align:middle;"></i></div>
+        <div class="setting-icon">🔔</div>
         <div class="setting-info"><div class="setting-name">تذكير الأذكار</div><div class="setting-sub">تذكير يومي بأذكار الصباح والمساء</div></div>
         <div class="toggle" id="toggle-notif" onclick="toggleSetting('notif',this)"></div>
       </div>
@@ -395,7 +673,7 @@
 <!-- Login Modal -->
 <div class="modal" id="loginModal">
   <div class="modal-box">
-    <h2><i data-lucide="user" style="width:18px;height:18px;display:inline-block;vertical-align:middle;"></i> بروفايلي</h2>
+    <h2>👤 بروفايلي</h2>
     <p>سجّل دخولك لحفظ تقدمك ومزامنته عبر أجهزتك</p>
     <button class="google-btn" onclick="window.islamiCalc?.loginWithGoogle()">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="margin-left:8px;vertical-align:middle">
@@ -418,27 +696,27 @@
 const LEVELS=[
   {min:0,   name:"المبتدئ",     icon:"🌱"},
   {min:100, name:"الطالب",      icon:"📚"},
-  {min:300, name:"الراسخ",      icon:"<i data-lucide="target" style="width:15px;height:15px;display:inline-block;vertical-align:middle;"></i>"},
+  {min:300, name:"الراسخ",      icon:"🎯"},
   {min:600, name:"العارف",      icon:"💡"},
   {min:1000,name:"الحافظ",      icon:"🛡"},
   {min:1500,name:"الفقيه",      icon:"⚖️"},
   {min:2200,name:"الشيخ",       icon:"🎓"},
-  {min:3000,name:"العلّامة",    icon:"<i data-lucide="star" style="width:15px;height:15px;display:inline-block;vertical-align:middle;"></i>"},
+  {min:3000,name:"العلّامة",    icon:"🌟"},
   {min:4000,name:"إمام الميدان",icon:"👑"},
 ];
-const AVATARS=["🕌","🌙","⭐","<i data-lucide="book-open" style="width:16px;height:16px;display:inline-block;vertical-align:middle;"></i>","🤲","🌿","☪","🏔","🌊","🦅","🌺","<i data-lucide="target" style="width:15px;height:15px;display:inline-block;vertical-align:middle;"></i>","⚔️","🔱","💎"];
+const AVATARS=["🕌","🌙","⭐","📖","🤲","🌿","☪","🏔","🌊","🦅","🌺","🎯","⚔️","🔱","💎"];
 
 // ================================================================
 // ACHIEVEMENTS
 // ================================================================
 const ACHIEVEMENTS=[
   {id:"first_game", icon:"🎮",name:"أول خطوة",      desc:"العب أول جولة في الميدان",           check:s=>s.maydan?.played>=1},
-  {id:"streak5",    icon:"<i data-lucide="flame" style="width:15px;height:15px;display:inline-block;vertical-align:middle;"></i>",name:"سلسلة النار",    desc:"حقق سلسلة 5 إجابات صحيحة",          check:s=>s.maydan?.bestStreak>=5},
-  {id:"streak10",   icon:"<i data-lucide="zap" style="width:15px;height:15px;display:inline-block;vertical-align:middle;"></i>",name:"البرق",           desc:"حقق سلسلة 10 إجابات متتالية",       check:s=>s.maydan?.bestStreak>=10},
+  {id:"streak5",    icon:"🔥",name:"سلسلة النار",    desc:"حقق سلسلة 5 إجابات صحيحة",          check:s=>s.maydan?.bestStreak>=5},
+  {id:"streak10",   icon:"⚡",name:"البرق",           desc:"حقق سلسلة 10 إجابات متتالية",       check:s=>s.maydan?.bestStreak>=10},
   {id:"xp100",      icon:"🌱",name:"أول مئة",        desc:"اجمع 100 نقطة XP",                   check:s=>s.maydan?.xp>=100},
   {id:"xp1000",     icon:"💫",name:"ألف نقطة",       desc:"اجمع 1000 نقطة XP",                  check:s=>s.maydan?.xp>=1000},
-  {id:"khatma_10",  icon:"<i data-lucide="book-open" style="width:16px;height:16px;display:inline-block;vertical-align:middle;"></i>",name:"عاشر السور",     desc:"أكمل 10 سور في الختمة",              check:s=>Object.keys(s.khatma||{}).length>=10},
-  {id:"khatma_full",icon:"<i data-lucide="trophy" style="width:16px;height:16px;display:inline-block;vertical-align:middle;"></i>",name:"الختمة الكاملة", desc:"أكمل ختمة القرآن كاملاً",            check:s=>Object.keys(s.khatma||{}).length>=114},
+  {id:"khatma_10",  icon:"📖",name:"عاشر السور",     desc:"أكمل 10 سور في الختمة",              check:s=>Object.keys(s.khatma||{}).length>=10},
+  {id:"khatma_full",icon:"🏆",name:"الختمة الكاملة", desc:"أكمل ختمة القرآن كاملاً",            check:s=>Object.keys(s.khatma||{}).length>=114},
   {id:"athkar_sabah",icon:"🌅",name:"أذكار الصباح",  desc:"أكمل أذكار الصباح كاملةً",          check:s=>calcAthkarPct(s,'sabah')>=100},
   {id:"athkar_all", icon:"🌿",name:"الذاكر",          desc:"أكمل جميع أقسام الأذكار",            check:s=>calcAthkarPct(s,'all')>=100},
   {id:"prophet_read",icon:"⭐",name:"قارئ السير",    desc:"افتح صفحة الأنبياء",                 check:s=>!!s.visitedProphets},
@@ -513,13 +791,13 @@ function renderProfile(user){
   document.getElementById('p-xp-fill').style.width     = pct+'%';
   document.getElementById('p-xp-num').textContent      = lvN ? `${xp} / ${lvN.min} XP` : `${xp} XP — الحد الأقصى!`;
   document.getElementById('p-xp-cur').textContent      = lvD.name;
-  document.getElementById('p-xp-next').textContent     = lvN ? lvN.name : '<i data-lucide="trophy" style="width:16px;height:16px;display:inline-block;vertical-align:middle;"></i> المستوى الأعلى';
+  document.getElementById('p-xp-next').textContent     = lvN ? lvN.name : '🏆 المستوى الأعلى';
 
   // Tags
   const tags=[];
-  if(xp>=1000) tags.push('<i data-lucide="trophy" style="width:16px;height:16px;display:inline-block;vertical-align:middle;"></i> '+lvD.name);
-  if(m.bestStreak>=5) tags.push('<i data-lucide="flame" style="width:15px;height:15px;display:inline-block;vertical-align:middle;"></i> سلسلة '+m.bestStreak);
-  if(Object.keys(d.khatma).length>=114) tags.push('<i data-lucide="book-open" style="width:16px;height:16px;display:inline-block;vertical-align:middle;"></i> ختمة كاملة');
+  if(xp>=1000) tags.push('🏆 '+lvD.name);
+  if(m.bestStreak>=5) tags.push('🔥 سلسلة '+m.bestStreak);
+  if(Object.keys(d.khatma).length>=114) tags.push('📖 ختمة كاملة');
   document.getElementById('p-tags').innerHTML=tags.map(t=>`<span class="ptag">${t}</span>`).join('');
 
   // Stats
@@ -616,7 +894,7 @@ function renderHeatmap(hm){
     const k2=d2.toISOString().split('T')[0];
     if(hm[k2]) s++; else break;
   }
-  document.getElementById('hm-streak').textContent=`<i data-lucide="flame" style="width:15px;height:15px;display:inline-block;vertical-align:middle;"></i> ${s} يوم متتالي`;
+  document.getElementById('hm-streak').textContent=`🔥 ${s} يوم متتالي`;
 }
 
 // ================================================================
@@ -702,7 +980,7 @@ function saveProfile(){
   document.getElementById('p-avatar').textContent=selAvatar;
   document.getElementById('p-name').textContent=name;
   closeEdit();
-  showToast('<i data-lucide="check-circle" style="width:15px;height:15px;display:inline-block;vertical-align:middle;"></i> تم حفظ البروفايل');
+  showToast('✅ تم حفظ البروفايل');
 }
 
 // ================================================================
@@ -720,7 +998,7 @@ function doLogout(){
 }
 
 // ================================================================
-// TOAST — <i data-lucide="check-circle" style="width:15px;height:15px;display:inline-block;vertical-align:middle;"></i> يستخدم #toast الموجود
+// TOAST — ✅ يستخدم #toast الموجود
 // ================================================================
 let toastTimer;
 function showToast(msg, type=''){
@@ -733,7 +1011,7 @@ function showToast(msg, type=''){
 }
 
 // ================================================================
-// LOGIN MODAL — <i data-lucide="check-circle" style="width:15px;height:15px;display:inline-block;vertical-align:middle;"></i> إصلاح Race Condition
+// LOGIN MODAL — ✅ إصلاح Race Condition
 // ================================================================
 function openLoginModal(){
   if(window.islamiCalc?.openLoginModal){ window.islamiCalc.openLoginModal(); return; }
@@ -784,7 +1062,7 @@ document.getElementById('edit-modal')?.addEventListener('click',function(e){
 });
 
 // ================================================================
-// <i data-lucide="check-circle" style="width:15px;height:15px;display:inline-block;vertical-align:middle;"></i> Firebase Auth — إصلاح Race Condition + Fallback
+// ✅ Firebase Auth — إصلاح Race Condition + Fallback
 // ================================================================
 window.addEventListener('islamiCalcReady',(e)=>{
   const user=e.detail?.user || window.islamiCalc?.getCurrentUser?.();
@@ -803,7 +1081,7 @@ window.addEventListener('islamiCalcReady',(e)=>{
   }
 },{once:true});
 
-// <i data-lucide="check-circle" style="width:15px;height:15px;display:inline-block;vertical-align:middle;"></i> Fallback محسّن — يمنع ظهور gate لمستخدم مسجّل
+// ✅ Fallback محسّن — يمنع ظهور gate لمستخدم مسجّل
 setTimeout(()=>{
   const content=document.getElementById('profile-content');
   const gate=document.getElementById('gate');
@@ -814,6 +1092,5 @@ setTimeout(()=>{
   }
 },2500);
 </script>
-  <script>if(typeof lucide!=='undefined')lucide.createIcons();</script>
 </body>
 </html>
