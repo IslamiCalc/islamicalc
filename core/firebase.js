@@ -1,5 +1,5 @@
 /* ============================================================
-   firebase.js — IslamiCalc Firebase Module v3.0
+   firebase.js — IslamiCalc Firebase Module v3.1
    متكامل مع Store + Events
    ============================================================ */
 
@@ -36,23 +36,23 @@ import { EVENTS } from '/core/events.js';
 // CONFIG
 // ============================================================
 const firebaseConfig = {
-  apiKey:            "YOUR_API_KEY",
-  authDomain:        "islamicalc-app.firebaseapp.com",
-  projectId:         "islamicalc-app",
-  storageBucket:     "islamicalc-app.appspot.com",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId:             "YOUR_APP_ID",
-  measurementId:     "YOUR_MEASUREMENT_ID",
+  apiKey:            "AIzaSyAFzGPiCFB6vEH-wylbW4zRxxgB_2vZSIs",
+  authDomain:        "islamicalc.firebaseapp.com",
+  projectId:         "islamicalc",
+  storageBucket:     "islamicalc.firebasestorage.app",
+  messagingSenderId: "708228371498",
+  appId:             "1:708228371498:web:b71ec4a97af9f8fa0c9f53",
+  measurementId:     "G-F2P38XX70Q",
 };
 
 // ============================================================
-// INIT — مرة واحدة فقط في المشروع كله
+// INIT
 // ============================================================
-const app      = initializeApp(firebaseConfig);
+const app       = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
-const auth     = getAuth(app);
-const db       = getFirestore(app);
-const provider = new GoogleAuthProvider();
+const auth      = getAuth(app);
+const db        = getFirestore(app);
+const provider  = new GoogleAuthProvider();
 provider.setCustomParameters({ prompt: 'select_account' });
 
 // ============================================================
@@ -78,16 +78,16 @@ const XP_CONFIG = {
 };
 
 const BADGE_RULES = [
-  { id:'first_login',  label:'أول خطوة',    icon:'🌱', condition: p => p.xp >= 25            },
-  { id:'xp_100',       label:'مئة نقطة',    icon:'💯', condition: p => p.xp >= 100           },
-  { id:'xp_500',       label:'خمسمئة نقطة', icon:'⭐', condition: p => p.xp >= 500           },
-  { id:'xp_1000',      label:'ألف نقطة',    icon:'🌟', condition: p => p.xp >= 1000          },
-  { id:'khatma_1',     label:'ختمة أولى',   icon:'📖', condition: p => p.khatmaStats?.completed >= 1  },
-  { id:'khatma_3',     label:'ثلاث ختمات',  icon:'📚', condition: p => p.khatmaStats?.completed >= 3  },
-  { id:'streak_7',     label:'أسبوع متواصل',icon:'🔥', condition: p => p.khatmaStats?.streak >= 7     },
-  { id:'streak_30',    label:'شهر متواصل',  icon:'🏆', condition: p => p.khatmaStats?.streak >= 30    },
-  { id:'tasbih_1000',  label:'ألف تسبيحة',  icon:'📿', condition: p => p.athkarStats?.totalTasbih >= 1000 },
-  { id:'arena_win_10', label:'عشر انتصارات',icon:'🥇', condition: p => p.arenaStats?.wins >= 10        },
+  { id:'first_login',  label:'أول خطوة',     icon:'🌱', condition: p => p.xp >= 25                       },
+  { id:'xp_100',       label:'مئة نقطة',     icon:'💯', condition: p => p.xp >= 100                      },
+  { id:'xp_500',       label:'خمسمئة نقطة',  icon:'⭐', condition: p => p.xp >= 500                      },
+  { id:'xp_1000',      label:'ألف نقطة',     icon:'🌟', condition: p => p.xp >= 1000                     },
+  { id:'khatma_1',     label:'ختمة أولى',    icon:'📖', condition: p => p.khatmaStats?.completed >= 1    },
+  { id:'khatma_3',     label:'ثلاث ختمات',   icon:'📚', condition: p => p.khatmaStats?.completed >= 3    },
+  { id:'streak_7',     label:'أسبوع متواصل', icon:'🔥', condition: p => p.khatmaStats?.streak >= 7       },
+  { id:'streak_30',    label:'شهر متواصل',   icon:'🏆', condition: p => p.khatmaStats?.streak >= 30      },
+  { id:'tasbih_1000',  label:'ألف تسبيحة',   icon:'📿', condition: p => p.athkarStats?.totalTasbih >= 1000 },
+  { id:'arena_win_10', label:'عشر انتصارات', icon:'🥇', condition: p => p.arenaStats?.wins >= 10         },
 ];
 
 // ============================================================
@@ -149,7 +149,6 @@ async function loadUserProfile(uid) {
       xp:      _userProfile.xp || 0,
     });
 
-    // Check badges
     await checkBadges();
 
     Events.emit(EVENTS.AUTH_PROFILE_LOADED, {
@@ -174,14 +173,10 @@ async function _addXPImmediate(amount, reason) {
     });
 
     if (_userProfile) _userProfile.xp = (_userProfile.xp || 0) + amount;
-
-    // Sync to Store → XP Bar updates automatically
     Store.set('xp', _userProfile?.xp || 0);
     if (_userProfile) Store.set('profile', { ..._userProfile });
 
     _floatXP(amount);
-
-    // Check level up
     _checkLevelUp(amount);
 
   } catch (err) {
@@ -204,7 +199,6 @@ function addXP(amount, reason) {
   _floatXP(amount);
   _checkLevelUp(amount);
 
-  // Batch flush after 3s
   clearTimeout(_xpFlushTimer);
   _xpFlushTimer = setTimeout(_flushXP, 3000);
 
@@ -214,11 +208,11 @@ function addXP(amount, reason) {
 async function _flushXP() {
   if (!_xpQueue.length || !_currentUser) return;
 
-  const batch  = [..._xpQueue];
-  _xpQueue = [];
+  const batch = [..._xpQueue];
+  _xpQueue    = [];
 
-  const total    = batch.reduce((s, e) => s + e.amount, 0);
-  const updates  = { xp: increment(total) };
+  const total   = batch.reduce((s, e) => s + e.amount, 0);
+  const updates = { xp: increment(total) };
 
   batch.forEach(({ amount, reason }) => {
     updates[`xpLog.${reason}`] = increment(amount);
@@ -227,16 +221,17 @@ async function _flushXP() {
   try {
     await updateDoc(doc(db, 'users', _currentUser.uid), updates);
     await checkBadges();
+    await _updateLeaderboard();
   } catch (err) {
     console.error('[Firebase] flushXP error:', err);
-    _xpQueue = [...batch, ..._xpQueue]; // re-queue
+    _xpQueue = [...batch, ..._xpQueue];
   }
 }
 
 function _checkLevelUp(addedAmount) {
   if (!_userProfile) return;
-  const xp      = _userProfile.xp || 0;
-  const before  = xp - addedAmount;
+  const xp     = _userProfile.xp || 0;
+  const before = xp - addedAmount;
   const lvlNow  = Store.computeLevel(xp);
   const lvlPrev = Store.computeLevel(before);
 
@@ -255,7 +250,7 @@ function _floatXP(amount) {
   el.style.cssText = `
     position:fixed; bottom:80px; left:50%;
     transform:translateX(-50%);
-    background:linear-gradient(135deg,#8b5cf6,#fbbf24);
+    background:linear-gradient(135deg,#059669,#fbbf24);
     color:#fff; padding:6px 18px; border-radius:999px;
     font-weight:900; font-size:14px; font-family:inherit;
     pointer-events:none; z-index:9999;
@@ -275,6 +270,25 @@ function _floatXP(amount) {
         100% { opacity:0; transform:translateX(-50%) translateY(-50px); }
       }`;
     document.head.appendChild(s);
+  }
+}
+
+// ============================================================
+// LEADERBOARD UPDATE
+// ============================================================
+async function _updateLeaderboard() {
+  if (!_currentUser || !_userProfile) return;
+  try {
+    await setDoc(doc(db, 'leaderboard', _currentUser.uid), {
+      uid:         _currentUser.uid,
+      displayName: _userProfile.displayName || 'مسلم كريم',
+      photoURL:    _userProfile.photoURL    || '',
+      xp:          _userProfile.xp         || 0,
+      level:       Store.computeLevel(_userProfile.xp || 0).name,
+      updatedAt:   serverTimestamp(),
+    }, { merge: true });
+  } catch (err) {
+    console.error('[Firebase] updateLeaderboard error:', err);
   }
 }
 
@@ -312,61 +326,15 @@ async function checkBadges() {
 }
 
 // ============================================================
-// ACTIVITY LOG
+// LEADERBOARD READ
 // ============================================================
-async function logActivity(label, type, icon = '⭐', detail = '', xp = 0) {
-  if (!_currentUser) return;
+async function getLeaderboard(limitCount = 10) {
   try {
-    await updateDoc(doc(db, 'users', _currentUser.uid), {
-      activity: arrayUnion({
-        label, type, icon, detail, xp,
-        date: todayStr(),
-        timestamp: serverTimestamp(),
-      }),
-    });
-  } catch (err) {
-    console.error('[Firebase] logActivity error:', err);
-  }
-}
-
-// ============================================================
-// KHATMA SYNC
-// ============================================================
-async function syncKhatma(data) {
-  if (!_currentUser) return;
-  const update = {
-    'khatmaStats.currentPage': data.page     || 1,
-    'khatmaStats.currentJuz':  data.juz      || 1,
-    'khatmaStats.streak':      data.streak   || 0,
-    'khatmaStats.lastRead':    todayStr(),
-    'khatmaStats.completed':   data.completed || 0,
-  };
-  try {
-    await updateDoc(doc(db, 'users', _currentUser.uid), update);
-    if (_userProfile) {
-      _userProfile.khatmaStats = {
-        ...(_userProfile.khatmaStats || {}),
-        ...data,
-        lastRead: todayStr(),
-      };
-      Store.set('profile', { ..._userProfile });
-    }
-  } catch (err) {
-    console.error('[Firebase] syncKhatma error:', err);
-  }
-}
-
-async function loadKhatma() {
-  if (!_currentUser || !_userProfile) return null;
-  return _userProfile.khatmaStats || null;
-}
-
-// ============================================================
-// LEADERBOARD
-// ============================================================
-async function getLeaderboard(limitN = 10) {
-  try {
-    const q    = query(collection(db, 'users'), orderBy('xp','desc'), limit(limitN));
+    const q    = query(
+      collection(db, 'leaderboard'),
+      orderBy('xp', 'desc'),
+      limit(limitCount)
+    );
     const snap = await getDocs(q);
     return snap.docs.map((d, i) => ({ rank: i + 1, ...d.data() }));
   } catch (err) {
@@ -376,125 +344,88 @@ async function getLeaderboard(limitN = 10) {
 }
 
 // ============================================================
-// AUTH FLOWS
+// AUTH — تسجيل الدخول بـ Google
 // ============================================================
 async function loginWithGoogle() {
   try {
-    const result  = await signInWithPopup(auth, provider);
-    _currentUser  = result.user;
-    await loadUserProfile(_currentUser.uid);
-
-    Events.emit(EVENTS.AUTH_LOGIN, {
-      user:    _currentUser,
-      profile: _userProfile,
-    });
-    Events.emit(EVENTS.UI_MODAL_CLOSE);
-    Events.emit(EVENTS.UI_TOAST, {
-      message: '👋 أهلاً ' + (_currentUser.displayName?.split(' ')[0] || ''),
-      type: 'success'
-    });
-
+    const result = await signInWithPopup(auth, provider);
+    return result.user;
   } catch (err) {
     if (err.code !== 'auth/popup-closed-by-user') {
       console.error('[Firebase] loginWithGoogle error:', err);
-      Events.emit(EVENTS.UI_TOAST, {
-        message: '❌ فشل تسجيل الدخول — حاول مجدداً',
-        type: 'error'
-      });
+      Events.emit(EVENTS.UI_TOAST, { message:'❌ فشل تسجيل الدخول، حاول مرة أخرى', type:'error' });
     }
+    return null;
   }
 }
 
+// ============================================================
+// AUTH — تسجيل الخروج
+// ============================================================
 async function logout() {
   try {
     await _flushXP();
     await signOut(auth);
-
     _currentUser = null;
     _userProfile = null;
-
-    Store.patch({
-      user:    null,
-      profile: null,
-      xp:      0,
-    });
-
-    document.getElementById('ic-xp-bar')?.remove();
-
-    Events.emit(EVENTS.AUTH_LOGOUT);
-    Events.emit(EVENTS.UI_TOAST, { message: '👋 تم تسجيل الخروج' });
-
+    Store.patch({ user: null, profile: null, xp: 0 });
+    Events.emit(EVENTS.AUTH_LOGOUT, {});
+    Events.emit(EVENTS.UI_TOAST, { message:'👋 تم تسجيل الخروج', type:'' });
   } catch (err) {
     console.error('[Firebase] logout error:', err);
   }
 }
 
+// ============================================================
+// USER MENU
+// ============================================================
 function showUserMenu() {
-  if (!_currentUser || !_userProfile) return;
-  const xp  = _userProfile.xp || 0;
-  const lvl = Store.computeLevel(xp);
-  const msg = [
-    `${lvl.icon} ${lvl.name}`,
-    `✨ ${xp.toLocaleString('ar')} نقطة`,
-    `🏅 ${(_userProfile.badges || []).slice(-3).join(' ') || 'لا توجد شارات بعد'}`,
-    '\nتسجيل الخروج؟',
-  ].join('\n');
-
-  if (confirm(msg)) logout();
+  const profile = Store.get('profile');
+  if (!profile) return;
+  const lvl  = Store.computeLevel(profile.xp || 0);
+  const name = profile.displayName || 'مسلم كريم';
+  Events.emit(EVENTS.UI_TOAST, {
+    message: `${lvl.icon} ${name} — ${profile.xp || 0} XP`,
+    type: 'gold'
+  });
 }
 
 // ============================================================
-// AUTH STATE LISTENER
+// AUTH STATE OBSERVER
 // ============================================================
 onAuthStateChanged(auth, async user => {
+  _currentUser = user;
+
   if (user) {
-    _currentUser = user;
+    Store.set('user', {
+      uid:         user.uid,
+      displayName: user.displayName,
+      email:       user.email,
+      photoURL:    user.photoURL,
+    });
     await loadUserProfile(user.uid);
   } else {
-    _currentUser = null;
-    _userProfile = null;
     Store.patch({ user: null, profile: null, xp: 0, authReady: true });
   }
 
+  Events.emit(EVENTS.AUTH_READY, { user });
   Store.set('authReady', true);
-
-  // Signal ready to App.js
-  window.islamiCalc = islamiCalc;
-  window.dispatchEvent(new Event('islamiCalcReady'));
-  Events.emit(EVENTS.AUTH_READY, { user: _currentUser, profile: _userProfile });
 });
 
 // ============================================================
-// PUBLIC API
+// EXPOSE GLOBAL API — window.islamiCalc
 // ============================================================
-const islamiCalc = {
-  // Auth
+window.islamiCalc = {
   loginWithGoogle,
   logout,
   showUserMenu,
-  getCurrentUser:  () => _currentUser,
-  getUserProfile:  () => _userProfile,
-
-  // XP
   addXP,
-  addXPImmediate:  _addXPImmediate,
-  XP_CONFIG,
-
-  // Data
-  logActivity,
-  syncKhatma,
-  loadKhatma,
   getLeaderboard,
   checkBadges,
-
-  // Firebase instances
-  db,
-  auth,
-  todayStr,
+  XP_CONFIG,
+  get user()    { return _currentUser;  },
+  get profile() { return _userProfile; },
+  get db()      { return db; },
 };
 
-window.islamiCalc = islamiCalc;
-window.dispatchEvent(new Event('islamiCalcReady'));
-
-export default islamiCalc;
-export { auth, db, addXP, logActivity, syncKhatma, getLeaderboard };
+export { addXP, loginWithGoogle, logout, getLeaderboard, XP_CONFIG };

@@ -29,22 +29,54 @@ service cloud.firestore {
       // ✅ الحذف: ممنوع نهائياً من الـ client
       //    (الحذف يتم فقط عبر Cloud Functions أو Console)
       allow delete: if false;
+
+      // ============================================================
+      // users/{uid}/khatmas/{khatmaId} — ختمات المستخدم
+      // ============================================================
+      match /khatmas/{khatmaId} {
+        allow read, write: if request.auth != null
+                           && request.auth.uid == uid;
+      }
+
+      // ============================================================
+      // users/{uid}/activity/{docId} — سجل النشاط
+      // ============================================================
+      match /activity/{docId} {
+        allow read:   if request.auth != null
+                      && request.auth.uid == uid;
+        // الكتابة فقط للإضافة — لا حذف ولا تعديل
+        allow create: if request.auth != null
+                      && request.auth.uid == uid;
+        allow update, delete: if false;
+      }
     }
 
     // ============================================================
-    // leaderboard — ✅ قراءة مصرّح بها فقط
+    // leaderboard — قراءة عامة للمسجّلين، كتابة عبر Cloud Functions
     // ============================================================
     match /leaderboard/{docId} {
-      // قراءة مصرّح بها للمستخدمين المسجّلين فقط
       allow read:  if request.auth != null;
-      // الكتابة عبر Cloud Functions فقط — ممنوعة من الـ client
       allow write: if false;
     }
 
     // ============================================================
-    // أي مسار آخر غير معرّف — محجوب بشكل افتراضي
-    // ملاحظة: إذا أضفت sub-collections مستقبلاً (مثل /users/{uid}/activity)
-    // أضف لها rule صريحة قبل هذا الـ wildcard
+    // arenaQuestions — قراءة فقط لجميع المستخدمين المسجّلين
+    // ============================================================
+    match /arenaQuestions/{docId} {
+      allow read:  if request.auth != null;
+      allow write: if false;
+    }
+
+    // ============================================================
+    // arenaAnswers/{uid} — إجابات الميدان — المستخدم يكتب لنفسه فقط
+    // ============================================================
+    match /arenaAnswers/{uid} {
+      allow read, write: if request.auth != null
+                         && request.auth.uid == uid;
+    }
+
+    // ============================================================
+    // أي مسار آخر غير معرّف — محجوب افتراضياً
     // ============================================================
     match /{document=**} {
       allow read, write: if false;
@@ -55,17 +87,17 @@ service cloud.firestore {
     // ============================================================
     function validUserData(data) {
       return
-        // XP: عدد صحيح موجب — حد 50,000 للمرحلة الحالية
+        // XP: عدد صحيح موجب — حد 100,000
         data.xp is number
         && data.xp >= 0
-        && data.xp <= 50000
+        && data.xp <= 100000
 
-        // المستوى: 1 إلى 9
+        // المستوى: 1 إلى 20
         && data.level is number
         && data.level >= 1
-        && data.level <= 9
+        && data.level <= 20
 
-        // الـ streak: 0 إلى 3650 يوم (10 سنوات كحد منطقي)
+        // الـ streak: 0 إلى 3650 يوم
         && data.streak is number
         && data.streak >= 0
         && data.streak <= 3650
@@ -74,9 +106,9 @@ service cloud.firestore {
         && data.name is string
         && data.name.size() <= 40
 
-        // الشارات: قائمة لا تتجاوز 50 عنصر
+        // الشارات: قائمة لا تتجاوز 100 عنصر
         && data.badges is list
-        && data.badges.size() <= 50;
+        && data.badges.size() <= 100;
     }
   }
 }

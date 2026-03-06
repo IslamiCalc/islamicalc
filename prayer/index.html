@@ -9,7 +9,8 @@
   <link rel="stylesheet" href="/style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-  <script type="module" src="/firebase.js"></script>
+  <script type="module" src="/core/firebase.js"></script>
+  <script type="module" src="/core/app.js"></script>
 
   <style>
   /* ============================================================
@@ -830,65 +831,23 @@ let currentLng = 46.6753;
 let currentCity = 'الرياض';
 let weekOffset  = 0;
 
-// ============================================================
-// THEME + NAV
-// ============================================================
-(function () {
-  const s = localStorage.getItem('theme');
-  const h = new Date().getHours();
-  document.documentElement.setAttribute('data-theme',
-    s || (h >= 19 || h < 6 ? 'dark' : 'light'));
-})();
 
-document.getElementById('themeBtn')?.addEventListener('click', () => {
-  const n = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-  document.documentElement.setAttribute('data-theme', n);
-  localStorage.setItem('theme', n);
-  document.getElementById('themeBtn').textContent = n === 'dark' ? '🌙' : '☀️';
-});
 
-window.addEventListener('scroll', () => {
-  document.getElementById('icNav')?.classList.toggle('ic-nav--scrolled', scrollY > 20);
-}, { passive: true });
 
-document.getElementById('mobileToggle')?.addEventListener('click', () => {
-  document.getElementById('mobileMenu')?.classList.toggle('ic-nav__mobile--open');
-});
 
-document.getElementById('loginBtn')?.addEventListener('click', () => {
-  window.islamiCalc?.getCurrentUser?.()
-    ? window.islamiCalc.showUserMenu?.()
-    : document.getElementById('loginModal')?.classList.add('ic-modal--open');
-});
 
-document.getElementById('modalBackdrop')?.addEventListener('click', () => {
-  document.getElementById('loginModal')?.classList.remove('ic-modal--open');
-});
-
-document.getElementById('guestBrowseBtn')?.addEventListener('click', () => {
-  document.getElementById('loginModal')?.classList.remove('ic-modal--open');
-});
-
-document.getElementById('googleLoginBtn')?.addEventListener('click', () => {
-  window.islamiCalc?.loginWithGoogle?.();
-});
 
 // ============================================================
 // HELPERS
 // ============================================================
-window.showToast = function(msg, cls = '') {
-  const el = document.getElementById('toast');
-  if (!el) return;
-  el.textContent = msg;
-  el.className   = 'ic-toast show ' + cls;
-  clearTimeout(el._t);
-  el._t = setTimeout(() => el.classList.remove('show'), 3500);
-};
 
 function safeAddXP(amount, reason) {
-  if (window.islamiCalc) window.islamiCalc.addXP?.(amount, reason);
-  else window.addEventListener('islamiCalcReady',
-    () => window.islamiCalc?.addXP?.(amount, reason), { once: true });
+  if (window.islamiCalc?.addXP) {
+    window.islamiCalc.addXP(amount, reason);
+  } else {
+    window.addEventListener('islamiCalcReady',
+      () => window.islamiCalc?.addXP?.(amount, reason), { once: true });
+  }
 }
 
 function updateDates() {

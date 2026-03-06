@@ -16,7 +16,8 @@
   <link rel="stylesheet" href="/style.css">
 
   <!-- ✅ Firebase كموديول -->
-  <script type="module" src="/firebase.js"></script>
+  <script type="module" src="/core/firebase.js"></script>
+  <script type="module" src="/core/app.js"></script>
 
   <style>
     .profile-hero{background:linear-gradient(135deg,#0d1117 0%,#0d1015 40%,#0d1a0d 100%);padding:88px 24px 44px;position:relative;overflow:hidden}
@@ -732,39 +733,6 @@ document.getElementById('loginModal')?.addEventListener('click',function(e){
 
 // ================================================================
 // THEME
-// ================================================================
-(function(){
-  const s=localStorage.getItem('theme')||'dark';
-  document.documentElement.setAttribute('data-theme',s);
-  document.getElementById('iconSun').style.display  = s==='dark'?'none':'block';
-  document.getElementById('iconMoon').style.display = s==='dark'?'block':'none';
-})();
-document.getElementById('themeBtn')?.addEventListener('click',()=>{
-  const n=document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark';
-  document.documentElement.setAttribute('data-theme',n);
-  localStorage.setItem('theme',n);
-  document.getElementById('iconSun').style.display  = n==='dark'?'none':'block';
-  document.getElementById('iconMoon').style.display = n==='dark'?'block':'none';
-});
-
-// ================================================================
-// MOBILE MENU
-// ================================================================
-document.getElementById('menuToggle')?.addEventListener('click',()=>{
-  const open=document.getElementById('navMenu').classList.toggle('open');
-  document.getElementById('menuToggle').setAttribute('aria-expanded',open);
-  document.getElementById('iconMenu').style.display  = open?'none':'block';
-  document.getElementById('iconClose').style.display = open?'block':'none';
-});
-document.addEventListener('click',e=>{
-  const toggle=document.getElementById('menuToggle');
-  const menu=document.getElementById('navMenu');
-  if(!toggle?.contains(e.target)&&!menu?.contains(e.target)){
-    menu?.classList.remove('open');
-    document.getElementById('iconMenu').style.display  = 'block';
-    document.getElementById('iconClose').style.display = 'none';
-  }
-});
 document.getElementById('edit-modal')?.addEventListener('click',function(e){
   if(e.target===this) closeEdit();
 });

@@ -35,6 +35,8 @@
       border:1px solid rgba(245,158,11,0.3);border-radius:14px;padding:20px;text-align:center;}
     .niyyah-text{font-size:18px;font-weight:700;line-height:2;color:var(--text-primary);margin-bottom:12px;}
   </style>
+  <script type="module" src="/core/firebase.js"></script>
+  <script type="module" src="/core/app.js"></script>
 </head>
 <body>
 <nav class="navbar">
@@ -256,13 +258,6 @@
 <div class="toast" id="toast"></div>
 
 <script>
-// ─── Theme & Nav ───
-const themeBtn=document.getElementById("themeBtn");
-const htmlEl=document.documentElement;
-(function(){const s=localStorage.getItem("theme")||"dark";htmlEl.setAttribute("data-theme",s);themeBtn.textContent=s==="dark"?"☀️":"🌙";})();
-themeBtn.addEventListener("click",()=>{const n=htmlEl.getAttribute("data-theme")==="dark"?"light":"dark";htmlEl.setAttribute("data-theme",n);localStorage.setItem("theme",n);themeBtn.textContent=n==="dark"?"☀️":"🌙";});
-document.getElementById("menuToggle").addEventListener("click",()=>{const m=document.getElementById("navMenu");m.classList.toggle("open");document.getElementById("menuToggle").textContent=m.classList.contains("open")?"✕":"☰";});
-function showToast(msg,type=""){const t=document.getElementById("toast");t.textContent=msg;t.className="toast show "+(type||"");setTimeout(()=>t.classList.remove("show"),3000);}
 
 // ─── State ───
 let currentType="ramadan";

@@ -1,979 +1,530 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl" data-theme="dark">
+<html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <title>IslamiCalc — منصة إسلامية تفاعلية</title>
-  <meta name="description" content="اختم القرآن، تحدّ الأصدقاء في الميدان، احسب زكاتك، وتعلّم في منصة إسلامية تفاعلية مجانية.">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta property="og:title"       content="IslamiCalc — منصة إسلامية تفاعلية">
-  <meta property="og:description" content="ختمة القرآن • ميدان التحديات • أدوات إسلامية • تعلّم وتقدّم">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IslamiCalc — منصة إسلامية ذكية</title>
+  <meta name="description" content="منصة إسلامية متكاملة: ختمة القرآن، أوقات الصلاة، الأذكار، الزكاة، الميدان الديني وأكثر.">
+  <meta name="theme-color" content="#10b981">
+
+  <!-- Open Graph -->
+  <meta property="og:title"       content="IslamiCalc — منصة إسلامية ذكية">
+  <meta property="og:description" content="ختمة القرآن · أوقات الصلاة · الأذكار · الزكاة · الميدان الديني">
   <meta property="og:type"        content="website">
-  <meta property="og:url"         content="https://islamicalc.com/">
-  <meta property="og:locale"      content="ar_SA">
-  <link rel="canonical"    href="https://islamicalc.com/">
-  <link rel="manifest"     href="/manifest.json">
-  <link rel="stylesheet"   href="/style.css">
-  <link rel="preconnect"   href="https://fonts.googleapis.com">
-  <link rel="preconnect"   href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-  <script type="module" src="/firebase.js"></script>
+  <meta property="og:url"         content="https://islamicalc.web.app">
+  <meta property="og:image"       content="/assets/og-image.png">
+
+  <!-- Manifest -->
+  <link rel="manifest" href="/manifest.json">
+  <link rel="icon"     href="/favicon.ico" type="image/x-icon">
+
+  <!-- Style -->
+  <link rel="stylesheet" href="/style.css">
+
+  <!-- Firebase + App (module) -->
+  <script type="module" src="/core/firebase.js"></script>
+  <script type="module" src="/core/app.js"></script>
 </head>
+
 <body>
 
-<!-- ============================================================
-     NAVBAR
-     ============================================================ -->
-<header class="ic-nav" id="icNav">
-  <div class="ic-nav__inner">
+  <!-- ============================================================
+       NAVBAR
+       ============================================================ -->
+  <nav class="ic-nav" id="icNav" role="navigation" aria-label="القائمة الرئيسية">
+    <div class="ic-nav__inner">
 
-    <!-- Logo -->
-    <a href="/" class="ic-nav__logo">
-      <div class="ic-nav__logo-mark">☪</div>
-      <span class="ic-nav__logo-text">IslamiCalc</span>
-    </a>
-
-    <!-- Desktop Links -->
-    <nav class="ic-nav__links" id="navLinks">
-      <a href="/khatma"  class="ic-nav__link">
-        <span class="ic-nav__link-icon">📖</span> ختمة القرآن
+      <!-- Logo -->
+      <a href="/" class="ic-nav__logo">
+        <div class="ic-nav__logo-mark">☪️</div>
+        <span class="ic-nav__logo-text">IslamiCalc</span>
       </a>
-      <a href="/arena"   class="ic-nav__link">
-        <span class="ic-nav__link-icon">🏆</span> الميدان
-      </a>
-      <div class="ic-nav__dropdown">
-        <button class="ic-nav__link ic-nav__link--drop">
-          🧮 الأدوات <span class="ic-nav__chevron">▾</span>
-        </button>
-        <div class="ic-nav__dropdown-panel">
-          <a href="/zakat">💰 حاسبة الزكاة</a>
-          <a href="/prayer">🕌 أوقات الصلاة</a>
-          <a href="/athkar">📿 الأذكار</a>
-          <a href="/hijri">📅 المحوّل الهجري</a>
-          <a href="/events">🌙 الأحداث الإسلامية</a>
-          <a href="/inheritance">⚖️ الميراث</a>
-          <a href="/qadha">🔄 قضاء الصلوات</a>
-          <a href="/fasting">🌙 تتبع الصيام</a>
-        </div>
-      </div>
-      <div class="ic-nav__dropdown">
-        <button class="ic-nav__link ic-nav__link--drop">
-          📚 تعلّم <span class="ic-nav__chevron">▾</span>
-        </button>
-        <div class="ic-nav__dropdown-panel">
-          <a href="/asma">🧡 أسماء الله الحسنى</a>
-          <a href="/prophets">✨ قصص الأنبياء</a>
-          <a href="/seerah">🕌 السيرة النبوية</a>
-          <a href="/fiqh">📜 أسئلة فقهية</a>
-        </div>
-      </div>
-    </nav>
 
-    <!-- Actions -->
-    <div class="ic-nav__actions">
-      <button id="themeBtn" class="ic-nav__icon-btn" aria-label="تبديل الوضع">🌙</button>
-      <a href="/arena" class="ic-nav__challenge-btn">⚡ تحدّ الآن</a>
-      <button id="loginBtn" class="ic-nav__login-btn">دخول</button>
-      <button class="ic-nav__mobile-toggle" id="mobileToggle" aria-label="القائمة">☰</button>
+      <!-- Desktop Links -->
+      <ul class="ic-nav__links" role="list">
+        <li>
+          <a href="/khatma" class="ic-nav__link">
+            <span class="ic-nav__link-icon">📖</span> ختمة
+          </a>
+        </li>
+        <li>
+          <a href="/prayer" class="ic-nav__link">
+            <span class="ic-nav__link-icon">🕌</span> صلاة
+          </a>
+        </li>
+        <li>
+          <a href="/athkar" class="ic-nav__link">
+            <span class="ic-nav__link-icon">📿</span> أذكار
+          </a>
+        </li>
+        <li>
+          <a href="/arena" class="ic-nav__link">
+            <span class="ic-nav__link-icon">⚔️</span> ميدان
+          </a>
+        </li>
+        <li>
+          <a href="/zakat" class="ic-nav__link">
+            <span class="ic-nav__link-icon">💰</span> زكاة
+          </a>
+        </li>
+
+        <!-- أدوات Dropdown -->
+        <li class="ic-nav__dropdown" id="toolsDropdown">
+          <button class="ic-nav__link" id="toolsBtn" aria-expanded="false" aria-haspopup="true">
+            <span class="ic-nav__link-icon">🧮</span>
+            أدوات
+            <span class="ic-nav__chevron">▾</span>
+          </button>
+          <div class="ic-nav__dropdown-panel" id="toolsPanel" role="menu">
+            <a href="/hijri"       role="menuitem">📅 التقويم الهجري</a>
+            <a href="/inheritance" role="menuitem">⚖️ حاسبة الميراث</a>
+            <a href="/fasting"     role="menuitem">🌙 قضاء الصيام</a>
+            <a href="/kafara"      role="menuitem">📜 الكفارة</a>
+          </div>
+        </li>
+      </ul>
+
+      <!-- Actions -->
+      <div class="ic-nav__actions">
+        <!-- Theme Toggle -->
+        <button class="ic-nav__icon-btn" id="themeBtn" aria-label="تبديل الثيم" title="تبديل الثيم">
+          🌙
+        </button>
+
+        <!-- Challenge Button -->
+        <a href="/arena" class="ic-nav__challenge-btn">⚔️ تحدَّ الآن</a>
+
+        <!-- Login / Profile -->
+        <button class="ic-nav__login-btn" id="loginBtn" aria-label="تسجيل الدخول">
+          دخول
+        </button>
+      </div>
+
+      <!-- Mobile Toggle -->
+      <button class="ic-nav__mobile-toggle" id="mobileToggle" aria-label="القائمة" aria-expanded="false">
+        ☰
+      </button>
     </div>
 
-  </div>
-
-  <!-- Mobile Menu -->
-  <div class="ic-nav__mobile" id="mobileMenu">
-    <a href="/khatma">📖 ختمة القرآن</a>
-    <a href="/arena">🏆 الميدان</a>
-    <a href="/zakat">💰 الزكاة</a>
-    <a href="/prayer">🕌 الصلاة</a>
-    <a href="/athkar">📿 الأذكار</a>
-    <a href="/asma">🧡 أسماء الله</a>
-    <a href="/prophets">✨ الأنبياء</a>
-    <a href="/profile">👤 بروفايلي</a>
-    <div class="ic-nav__mobile-cta">
-      <button id="mobileLoginBtn" class="ic-btn ic-btn--primary ic-btn--full">دخول بـ Google</button>
+    <!-- Mobile Menu -->
+    <div class="ic-nav__mobile" id="mobileMenu" role="dialog" aria-label="القائمة الجانبية">
+      <a href="/khatma">📖 ختمة القرآن</a>
+      <a href="/prayer">🕌 أوقات الصلاة</a>
+      <a href="/athkar">📿 الأذكار والتسبيح</a>
+      <a href="/arena">⚔️ الميدان الديني</a>
+      <a href="/zakat">💰 حاسبة الزكاة</a>
+      <a href="/hijri">📅 التقويم الهجري</a>
+      <a href="/inheritance">⚖️ حاسبة الميراث</a>
+      <a href="/fasting">🌙 قضاء الصيام</a>
+      <a href="/kafara">📜 الكفارة</a>
+      <div class="ic-nav__mobile-cta">
+        <button class="ic-btn ic-btn--primary ic-btn--full" id="mobileLoginBtn"
+                onclick="document.getElementById('loginBtn').click()">
+          دخول بـ Google
+        </button>
+      </div>
     </div>
-  </div>
-</header>
+  </nav>
 
-<main>
-
-<!-- ============================================================
-     [1] HERO SECTION
-     ============================================================ -->
-<section class="ic-hero">
-  <!-- خلفية ديناميكية -->
-  <div class="ic-hero__bg">
+  <!-- ============================================================
+       HERO
+       ============================================================ -->
+  <!-- Background Orbs -->
+  <div class="ic-hero__bg" aria-hidden="true">
     <div class="ic-hero__orb ic-hero__orb--1"></div>
     <div class="ic-hero__orb ic-hero__orb--2"></div>
     <div class="ic-hero__orb ic-hero__orb--3"></div>
     <div class="ic-hero__grid"></div>
   </div>
 
-  <div class="ic-hero__content">
+  <section class="ic-hero" aria-label="القسم الرئيسي">
 
-    <!-- Badge -->
-    <div class="ic-hero__badge">
-      <span class="ic-badge ic-badge--ramadan">
-        🌙 رمضان 1447هـ قادم — <strong id="heroRamadanDays">--</strong> يوماً
-      </span>
-    </div>
-
-    <!-- Headline -->
-    <h1 class="ic-hero__title">
-      منصتك الإسلامية<br>
-      <span class="ic-hero__title-highlight">للتعلم والتقدم</span>
-    </h1>
-
-    <p class="ic-hero__sub">
-      اختم القرآن الكريم، تحدّ الأصدقاء في الميدان، احسب زكاتك، وتعلّم دينك
-      بطريقة ممتعة وتفاعلية — مع نظام XP ومستويات وأوسمة تحفّزك كل يوم.
-    </p>
-
-    <!-- CTAs -->
-    <div class="ic-hero__ctas">
-      <a href="/khatma" class="ic-btn ic-btn--hero ic-btn--primary">
-        📖 ابدأ ختمتك الآن
-        <span class="ic-btn__arrow">←</span>
-      </a>
-      <a href="/arena" class="ic-btn ic-btn--hero ic-btn--secondary">
-        🏆 ادخل تحدي الميدان
-      </a>
-    </div>
-
-    <!-- Social Proof -->
-    <div class="ic-hero__proof">
-      <div class="ic-hero__proof-avatars">
-        <div class="ic-avatar ic-avatar--xs" style="background:linear-gradient(135deg,#10b981,#059669)">م</div>
-        <div class="ic-avatar ic-avatar--xs" style="background:linear-gradient(135deg,#f59e0b,#d97706)">أ</div>
-        <div class="ic-avatar ic-avatar--xs" style="background:linear-gradient(135deg,#3b82f6,#1d4ed8)">س</div>
-        <div class="ic-avatar ic-avatar--xs" style="background:linear-gradient(135deg,#8b5cf6,#6d28d9)">ع</div>
-      </div>
-      <span class="ic-hero__proof-text">انضم إلى آلاف المستخدمين في رحلتهم القرآنية</span>
-    </div>
-  </div>
-
-  <!-- Hero Visual — بطاقة تفاعلية -->
-  <aside class="ic-hero__visual">
-
-    <!-- بطاقة الختمة -->
-    <div class="ic-card ic-card--3d ic-card--khatma">
-      <div class="ic-card__header">
-        <span>📖 ختمتي الحالية</span>
-        <span class="ic-badge ic-badge--streak">🔥 12 يوم</span>
-      </div>
-      <div class="ic-khatma-mini">
-        <div class="ic-khatma-mini__circle">
-          <svg viewBox="0 0 100 100">
-            <circle cx="50" cy="50" r="42" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="8"/>
-            <circle cx="50" cy="50" r="42" fill="none" stroke="url(#khatmaGrad)"
-              stroke-width="8" stroke-linecap="round"
-              stroke-dasharray="263.9" stroke-dashoffset="198"
-              transform="rotate(-90 50 50)"/>
-            <defs>
-              <linearGradient id="khatmaGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%"   stop-color="#10b981"/>
-                <stop offset="100%" stop-color="#fbbf24"/>
-              </linearGradient>
-            </defs>
-          </svg>
-          <div class="ic-khatma-mini__pct">25%</div>
-        </div>
-        <div class="ic-khatma-mini__info">
-          <div class="ic-khatma-mini__stat">
-            <strong>151</strong><small>صفحة مكتملة</small>
-          </div>
-          <div class="ic-khatma-mini__stat">
-            <strong>453</strong><small>صفحة متبقية</small>
-          </div>
-          <div class="ic-khatma-mini__stat">
-            <strong>20</strong><small>صفحة/يوم</small>
-          </div>
-        </div>
-      </div>
-      <a href="/khatma" class="ic-btn ic-btn--sm ic-btn--primary">تابع القراءة ←</a>
-    </div>
-
-    <!-- بطاقة الصلاة -->
-    <div class="ic-card ic-card--3d ic-card--prayer">
-      <div class="ic-card__header">
-        <span>🕌 الصلاة القادمة</span>
-        <span class="ic-badge ic-badge--live">● مباشر</span>
-      </div>
-      <div class="ic-prayer-mini">
-        <div class="ic-prayer-mini__name" id="heroNextPrayer">العشاء</div>
-        <div class="ic-prayer-mini__countdown" id="heroCountdown">--:--:--</div>
-        <div class="ic-prayer-mini__note" id="heroPrayerNote"></div>
-      </div>
-    </div>
-
-    <!-- بطاقة XP -->
-    <div class="ic-card ic-card--3d ic-card--xp">
-      <div class="ic-card__header">
-        <span>⭐ مستواك اليوم</span>
-      </div>
-      <div class="ic-xp-mini">
-        <div class="ic-xp-mini__level">🎓 الراسخ</div>
-        <div class="ic-xp-mini__bar-wrap">
-          <div class="ic-xp-mini__bar" style="width:67%"></div>
-        </div>
-        <div class="ic-xp-mini__nums">
-          <span>670 XP</span><span>إلى 1000 XP</span>
-        </div>
-      </div>
-    </div>
-
-  </aside>
-</section>
-
-<!-- ============================================================
-     [2] STATS BAR
-     ============================================================ -->
-<section class="ic-stats-bar">
-  <div class="ic-stats-bar__inner">
-    <div class="ic-stats-bar__item">
-      <strong class="ic-stats-bar__num ic-text--gradient">١٢٠٠+</strong>
-      <span>مستخدم نشط</span>
-    </div>
-    <div class="ic-stats-bar__divider"></div>
-    <div class="ic-stats-bar__item">
-      <strong class="ic-stats-bar__num ic-text--gradient">٣٤٠+</strong>
-      <span>ختمة مكتملة</span>
-    </div>
-    <div class="ic-stats-bar__divider"></div>
-    <div class="ic-stats-bar__item">
-      <strong class="ic-stats-bar__num ic-text--gradient">٨٥٠٠+</strong>
-      <span>سؤال أُجيب عليه</span>
-    </div>
-    <div class="ic-stats-bar__divider"></div>
-    <div class="ic-stats-bar__item">
-      <strong class="ic-stats-bar__num ic-text--gradient">٥٠+</strong>
-      <span>دولة</span>
-    </div>
-  </div>
-</section>
-
-<!-- ============================================================
-     [3] KHATMA — المحور الأول
-     ============================================================ -->
-<section class="ic-section ic-section--khatma">
-  <div class="ic-section__inner">
-
-    <div class="ic-section__header">
-      <div class="ic-section__eyebrow">📖 المحور الأول</div>
-      <h2 class="ic-section__title">ختمة القرآن الكريم</h2>
-      <p class="ic-section__sub">اختر خطتك، تتبع تقدمك يومياً، واكسب XP مع كل صفحة تقرأها</p>
-    </div>
-
-    <div class="ic-khatma-showcase">
-
-      <!-- الخطط -->
-      <div class="ic-khatma-plans">
-        <h3 class="ic-label">اختر خطة ختمتك</h3>
-        <div class="ic-plans-grid">
-          <div class="ic-plan-card ic-plan-card--featured">
-            <div class="ic-plan-card__badge">الأشهر</div>
-            <div class="ic-plan-card__icon">🌙</div>
-            <div class="ic-plan-card__name">خطة رمضان</div>
-            <div class="ic-plan-card__days">30 يوماً</div>
-            <div class="ic-plan-card__pages">20 صفحة/يوم</div>
-          </div>
-          <div class="ic-plan-card">
-            <div class="ic-plan-card__icon">⚡</div>
-            <div class="ic-plan-card__name">الأسبوع المبارك</div>
-            <div class="ic-plan-card__days">7 أيام</div>
-            <div class="ic-plan-card__pages">86 صفحة/يوم</div>
-          </div>
-          <div class="ic-plan-card">
-            <div class="ic-plan-card__icon">📅</div>
-            <div class="ic-plan-card__name">النصف الشهري</div>
-            <div class="ic-plan-card__days">15 يوماً</div>
-            <div class="ic-plan-card__pages">40 صفحة/يوم</div>
-          </div>
-          <div class="ic-plan-card">
-            <div class="ic-plan-card__icon">⚙️</div>
-            <div class="ic-plan-card__name">خطتي المخصصة</div>
-            <div class="ic-plan-card__days">أنت تحدد</div>
-            <div class="ic-plan-card__pages">مرن</div>
-          </div>
-        </div>
-        <a href="/khatma" class="ic-btn ic-btn--primary ic-btn--lg">
-          📖 ابدأ ختمتك الآن ←
-        </a>
+    <!-- Content -->
+    <div class="ic-hero__content">
+      <div class="ic-hero__badge">
+        <span class="ic-badge ic-badge--ramadan">🌙 رمضان كريم</span>
       </div>
 
-      <!-- الميزات -->
-      <div class="ic-khatma-features">
-        <div class="ic-feature-item">
-          <div class="ic-feature-item__icon">🔥</div>
-          <div>
-            <strong>Streak يومي</strong>
-            <p>لا تنقطع — يوم بيوم تبني عادة القراءة</p>
-          </div>
-        </div>
-        <div class="ic-feature-item">
-          <div class="ic-feature-item__icon">⭐</div>
-          <div>
-            <strong>XP عند كل صفحة</strong>
-            <p>اكسب نقاط وارتقِ في مستويات IslamiCalc</p>
-          </div>
-        </div>
-        <div class="ic-feature-item">
-          <div class="ic-feature-item__icon">📊</div>
-          <div>
-            <strong>إحصائيات مفصلة</strong>
-            <p>شوف تقدمك، ختماتك السابقة، ومعدل قراءتك</p>
-          </div>
-        </div>
-        <div class="ic-feature-item">
-          <div class="ic-feature-item__icon">🔔</div>
-          <div>
-            <strong>تذكير يومي</strong>
-            <p>نذكّرك بورد القرآن قبل ما ينتهي يومك</p>
-          </div>
-        </div>
-      </div>
+      <h1 class="ic-hero__title">
+        منصتك الإسلامية
+        <span class="ic-hero__title-highlight">الذكية</span>
+      </h1>
 
-    </div>
-  </div>
-</section>
-
-<!-- ============================================================
-     [4] ARENA — الميدان
-     ============================================================ -->
-<section class="ic-section ic-section--arena">
-  <div class="ic-section__inner">
-
-    <div class="ic-section__header">
-      <div class="ic-section__eyebrow">🏆 الميدان</div>
-      <h2 class="ic-section__title">تحدّ نفسك وتحدّ الأصدقاء</h2>
-      <p class="ic-section__sub">أسئلة في القرآن والفقه والسيرة والعقيدة — من يتصدر الميدان هذا الأسبوع؟</p>
-    </div>
-
-    <div class="ic-arena-showcase">
-
-      <!-- بطاقة التحدي اليومي -->
-      <div class="ic-card ic-card--3d ic-card--daily">
-        <div class="ic-card__tag">⚡ تحدي اليوم</div>
-        <div class="ic-daily-q">
-          <div class="ic-daily-q__xp">+20 XP</div>
-          <p class="ic-daily-q__text" id="arenaQuestion">جاري التحميل...</p>
-          <div class="ic-daily-q__options" id="arenaOptions"></div>
-          <div class="ic-daily-q__result" id="arenaResult" style="display:none"></div>
-        </div>
-      </div>
-
-      <!-- لوحة المتصدرين -->
-      <div class="ic-card ic-card--3d ic-card--leaderboard">
-        <div class="ic-card__header">
-          <span>🏆 المتصدرون هذا الأسبوع</span>
-          <a href="/arena/leaderboard" class="ic-link">عرض الكل</a>
-        </div>
-        <div class="ic-lb-list" id="miniLeaderboard">
-          <div class="ic-lb-item">
-            <span class="ic-lb-item__rank ic-lb-item__rank--1">🥇</span>
-            <div class="ic-avatar ic-avatar--sm" style="background:linear-gradient(135deg,#10b981,#059669)">م</div>
-            <div class="ic-lb-item__info"><strong>محمد أ.</strong><small>الفقيه</small></div>
-            <span class="ic-lb-item__xp">2,840 XP</span>
-          </div>
-          <div class="ic-lb-item">
-            <span class="ic-lb-item__rank ic-lb-item__rank--2">🥈</span>
-            <div class="ic-avatar ic-avatar--sm" style="background:linear-gradient(135deg,#f59e0b,#d97706)">أ</div>
-            <div class="ic-lb-item__info"><strong>أحمد س.</strong><small>الحافظ</small></div>
-            <span class="ic-lb-item__xp">2,310 XP</span>
-          </div>
-          <div class="ic-lb-item">
-            <span class="ic-lb-item__rank ic-lb-item__rank--3">🥉</span>
-            <div class="ic-avatar ic-avatar--sm" style="background:linear-gradient(135deg,#8b5cf6,#6d28d9)">س</div>
-            <div class="ic-lb-item__info"><strong>سارة م.</strong><small>الراسخ</small></div>
-            <span class="ic-lb-item__xp">1,980 XP</span>
-          </div>
-          <div class="ic-lb-item ic-lb-item--me" id="myRankItem" style="display:none">
-            <span class="ic-lb-item__rank">--</span>
-            <div class="ic-avatar ic-avatar--sm" style="background:var(--emerald-600)">أ</div>
-            <div class="ic-lb-item__info"><strong>أنت</strong><small>--</small></div>
-            <span class="ic-lb-item__xp" id="myXP">-- XP</span>
-          </div>
-        </div>
-        <a href="/arena" class="ic-btn ic-btn--primary ic-btn--full" style="margin-top:16px">
-          ⚔️ ادخل الميدان الآن
-        </a>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<!-- ============================================================
-     [5] TOOLS GRID
-     ============================================================ -->
-<section class="ic-section ic-section--tools">
-  <div class="ic-section__inner">
-
-    <div class="ic-section__header">
-      <div class="ic-section__eyebrow">🧮 الأدوات</div>
-      <h2 class="ic-section__title">صندوق الأدوات الإسلامية</h2>
-      <p class="ic-section__sub">كل ما تحتاجه في عبادتك اليومية</p>
-    </div>
-
-    <div class="ic-tools-grid">
-
-      <!-- أدوات رئيسية — صف أول -->
-      <a href="/zakat" class="ic-tool-card ic-tool-card--featured">
-        <div class="ic-tool-card__glow"></div>
-        <div class="ic-tool-card__icon">💰</div>
-        <h3>حاسبة الزكاة</h3>
-        <p>زكاة الذهب والأموال والتجارة والأسهم بنصاب ديناميكي</p>
-        <span class="ic-tool-card__cta">احسب الآن ←</span>
-      </a>
-
-      <a href="/prayer" class="ic-tool-card ic-tool-card--featured">
-        <div class="ic-tool-card__glow"></div>
-        <div class="ic-tool-card__icon">🕌</div>
-        <h3>أوقات الصلاة</h3>
-        <p>مواقيت دقيقة لمدينتك مع اتجاه القبلة وعداد تنازلي</p>
-        <span class="ic-tool-card__cta">أوقاتي ←</span>
-      </a>
-
-      <a href="/athkar" class="ic-tool-card ic-tool-card--featured">
-        <div class="ic-tool-card__glow"></div>
-        <div class="ic-tool-card__icon">📿</div>
-        <h3>الأذكار اليومية</h3>
-        <p>أذكار الصباح والمساء مع سبحة إلكترونية وXP</p>
-        <span class="ic-tool-card__cta">اذكر الله ←</span>
-      </a>
-
-      <!-- أدوات ثانوية — صف ثاني -->
-      <a href="/hijri"       class="ic-tool-card"><div class="ic-tool-card__icon">📅</div><h3>المحوّل الهجري</h3><p>هجري ↔ ميلادي بدقة</p></a>
-      <a href="/events"      class="ic-tool-card"><div class="ic-tool-card__icon">🌙</div><h3>الأحداث الإسلامية</h3><p>رمضان • العيد • الحج • المولد</p></a>
-      <a href="/inheritance" class="ic-tool-card"><div class="ic-tool-card__icon">⚖️</div><h3>حاسبة الميراث</h3><p>توزيع الميراث الشرعي</p></a>
-      <a href="/qadha"       class="ic-tool-card"><div class="ic-tool-card__icon">🔄</div><h3>قضاء الصلوات</h3><p>احسب ما عليك من صلوات</p></a>
-      <a href="/zakat/fitra" class="ic-tool-card"><div class="ic-tool-card__icon">🌾</div><h3>زكاة الفطر</h3><p>المقدار الواجب لهذا العام</p></a>
-      <a href="/kafara"      class="ic-tool-card"><div class="ic-tool-card__icon">📋</div><h3>الكفارات</h3><p>كفارة اليمين والصيام والإفطار</p></a>
-      <a href="/fasting"     class="ic-tool-card"><div class="ic-tool-card__icon">🌙</div><h3>تتبع الصيام</h3><p>صيام القضاء والتطوع</p></a>
-      <a href="/asma"        class="ic-tool-card"><div class="ic-tool-card__icon">🧡</div><h3>أسماء الله الحسنى</h3><p>99 اسماً بمعانيها الكاملة</p></a>
-      <a href="/khatma"      class="ic-tool-card"><div class="ic-tool-card__icon">📖</div><h3>حاسبة الختمة</h3><p>احسب خطة ختمتك المثالية</p></a>
-
-    </div>
-  </div>
-</section>
-
-<!-- ============================================================
-     [6] LEARN — قسم التعلم
-     ============================================================ -->
-<section class="ic-section ic-section--learn">
-  <div class="ic-section__inner">
-
-    <div class="ic-section__header">
-      <div class="ic-section__eyebrow">📚 تعلّم</div>
-      <h2 class="ic-section__title">تعلّم دينك بطريقة تفاعلية</h2>
-      <p class="ic-section__sub">محتوى تعليمي منظّم وممتع في القرآن والسيرة والفقه</p>
-    </div>
-
-    <div class="ic-learn-grid">
-
-      <a href="/asma" class="ic-learn-card ic-learn-card--asma">
-        <div class="ic-learn-card__bg"></div>
-        <div class="ic-learn-card__content">
-          <div class="ic-learn-card__icon">🧡</div>
-          <h3>أسماء الله الحسنى</h3>
-          <p>تعرّف على 99 اسماً لله مع معانيها من مصادر موثوقة — ببطاقات تفاعلية</p>
-          <span class="ic-learn-card__cta">ابدأ ←</span>
-        </div>
-      </a>
-
-      <a href="/prophets" class="ic-learn-card ic-learn-card--prophets">
-        <div class="ic-learn-card__bg"></div>
-        <div class="ic-learn-card__content">
-          <div class="ic-learn-card__icon">✨</div>
-          <h3>قصص الأنبياء</h3>
-          <p>قصص الأنبياء كاملة بأسلوب حديث وممتع مع XP عند كل قصة</p>
-          <span class="ic-learn-card__cta">اقرأ ←</span>
-        </div>
-      </a>
-
-      <a href="/seerah" class="ic-learn-card ic-learn-card--seerah">
-        <div class="ic-learn-card__bg"></div>
-        <div class="ic-learn-card__content">
-          <div class="ic-learn-card__icon">🕌</div>
-          <h3>السيرة النبوية</h3>
-          <p>سيرة النبي ﷺ على شكل خط زمني تفاعلي</p>
-          <span class="ic-learn-card__cta">اكتشف ←</span>
-        </div>
-      </a>
-
-      <a href="/fiqh" class="ic-learn-card ic-learn-card--fiqh">
-        <div class="ic-learn-card__bg"></div>
-        <div class="ic-learn-card__content">
-          <div class="ic-learn-card__icon">📜</div>
-          <h3>أسئلة فقهية</h3>
-          <p>تعلّم الفقه العملي من خلال أسئلة يومية مع شرح مبسط</p>
-          <span class="ic-learn-card__cta">تعلّم ←</span>
-        </div>
-      </a>
-
-    </div>
-  </div>
-</section>
-
-<!-- ============================================================
-     [7] آية اليوم + حديث اليوم
-     ============================================================ -->
-<section class="ic-section ic-section--daily-content">
-  <div class="ic-section__inner">
-    <div class="ic-daily-content-grid">
-
-      <div class="ic-card ic-card--3d ic-card--verse">
-        <div class="ic-card__eyebrow">📖 آية اليوم</div>
-        <blockquote class="ic-verse-text" id="verseText">
-          ﴿ فَاذْكُرُونِي أَذْكُرْكُمْ وَاشْكُرُوا لِي وَلَا تَكْفُرُونِ ﴾
-        </blockquote>
-        <cite class="ic-verse-source" id="verseSource">سورة البقرة: 152</cite>
-      </div>
-
-      <div class="ic-card ic-card--3d ic-card--hadith">
-        <div class="ic-card__eyebrow">💬 حديث اليوم</div>
-        <blockquote class="ic-hadith-text" id="hadithText">
-          "خيركم من تعلّم القرآن وعلّمه"
-        </blockquote>
-        <cite class="ic-hadith-source">رواه البخاري</cite>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<!-- ============================================================
-     [8] عداد رمضان
-     ============================================================ -->
-<section class="ic-section ic-section--ramadan">
-  <div class="ic-section__inner">
-    <div class="ic-ramadan">
-      <div class="ic-ramadan__bg">
-        <div class="ic-ramadan__star ic-ramadan__star--1">✦</div>
-        <div class="ic-ramadan__star ic-ramadan__star--2">✦</div>
-        <div class="ic-ramadan__star ic-ramadan__star--3">✦</div>
-        <div class="ic-ramadan__star ic-ramadan__star--4">✦</div>
-      </div>
-      <div class="ic-ramadan__content">
-        <div class="ic-ramadan__label">العد التنازلي</div>
-        <h2 class="ic-ramadan__title">رمضان المبارك 1447هـ</h2>
-        <div class="ic-ramadan__counter">
-          <div class="ic-ramadan__unit">
-            <strong id="ramadanDays">--</strong>
-            <span>يوم</span>
-          </div>
-          <div class="ic-ramadan__sep">:</div>
-          <div class="ic-ramadan__unit">
-            <strong id="ramadanHours">--</strong>
-            <span>ساعة</span>
-          </div>
-          <div class="ic-ramadan__sep">:</div>
-          <div class="ic-ramadan__unit">
-            <strong id="ramadanMins">--</strong>
-            <span>دقيقة</span>
-          </div>
-          <div class="ic-ramadan__sep">:</div>
-          <div class="ic-ramadan__unit">
-            <strong id="ramadanSecs">--</strong>
-            <span>ثانية</span>
-          </div>
-        </div>
-        <p class="ic-ramadan__sub">
-          استعد بنية الختمة، حاسبة الزكاة، وترتيب العبادات
-        </p>
-        <div class="ic-ramadan__actions">
-          <a href="/khatma" class="ic-btn ic-btn--primary">📖 خطط لختمة رمضان</a>
-          <a href="/zakat"  class="ic-btn ic-btn--outline ic-btn--gold">💰 احسب زكاتك</a>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ============================================================
-     [9] CTA FINAL
-     ============================================================ -->
-<section class="ic-section ic-section--final-cta">
-  <div class="ic-section__inner">
-    <div class="ic-final-cta">
-      <div class="ic-final-cta__bg"></div>
-      <h2 class="ic-final-cta__title">
-        ابدأ رحلتك الإسلامية اليوم
-      </h2>
-      <p class="ic-final-cta__sub">
-        سجّل مجاناً واحتفظ بتقدمك على جميع أجهزتك
+      <p class="ic-hero__sub">
+        ختمة القرآن · أوقات الصلاة · الأذكار · الزكاة · الميدان الديني —
+        كل ما تحتاجه في مكان واحد مع نظام XP وشارات.
       </p>
-      <div class="ic-final-cta__actions">
-        <button id="finalCTABtn" class="ic-btn ic-btn--primary ic-btn--lg ic-btn--glow">
-          🚀 ابدأ مجاناً الآن
-        </button>
-        <a href="/khatma" class="ic-btn ic-btn--ghost">تصفح بدون حساب</a>
+
+      <div class="ic-hero__ctas">
+        <a href="/khatma" class="ic-btn ic-btn--primary ic-btn--hero ic-btn--glow">
+          ابدأ ختمتك <span class="ic-btn__arrow">←</span>
+        </a>
+        <a href="/arena" class="ic-btn ic-btn--secondary ic-btn--hero">
+          ⚔️ الميدان الديني
+        </a>
+      </div>
+
+      <!-- Social Proof -->
+      <div class="ic-hero__proof">
+        <div class="ic-hero__proof-avatars">
+          <div class="ic-avatar ic-avatar--xs">🧑</div>
+          <div class="ic-avatar ic-avatar--xs">👩</div>
+          <div class="ic-avatar ic-avatar--xs">👨</div>
+          <div class="ic-avatar ic-avatar--xs">🧕</div>
+        </div>
+        <span class="ic-hero__proof-text">+12,000 مستخدم نشط</span>
+      </div>
+    </div>
+
+    <!-- Visual Cards -->
+    <div class="ic-hero__visual">
+
+      <!-- Khatma Mini Card -->
+      <div class="ic-card ic-card--3d ic-card--khatma">
+        <div class="ic-card__header">
+          <span>📖 ختمتي</span>
+          <span class="ic-badge ic-badge--em">جارية</span>
+        </div>
+        <div class="ic-khatma-mini">
+          <div class="ic-khatma-mini__circle">
+            <svg viewBox="0 0 80 80">
+              <circle cx="40" cy="40" r="34" fill="none" stroke="rgba(16,185,129,0.15)" stroke-width="8"/>
+              <circle cx="40" cy="40" r="34" fill="none" stroke="#10b981" stroke-width="8"
+                      stroke-dasharray="213.6" stroke-dashoffset="107"
+                      stroke-linecap="round" transform="rotate(-90 40 40)"/>
+            </svg>
+            <span class="ic-khatma-mini__pct">50%</span>
+          </div>
+          <div class="ic-khatma-mini__info">
+            <div class="ic-khatma-mini__stat">
+              <strong>300</strong><small>صفحة مقروءة</small>
+            </div>
+            <div class="ic-khatma-mini__stat">
+              <strong>15</strong><small>جزء من 30</small>
+            </div>
+          </div>
+        </div>
+        <a href="/khatma" class="ic-btn ic-btn--primary ic-btn--sm ic-btn--full">
+          تابع الختمة ←
+        </a>
+      </div>
+
+      <!-- Prayer Mini Card -->
+      <div class="ic-card ic-card--3d ic-card--prayer">
+        <div class="ic-card__header">
+          <span>🕌 الصلاة القادمة</span>
+          <span class="ic-badge ic-badge--em ic-badge--live">● مباشر</span>
+        </div>
+        <div class="ic-prayer-mini">
+          <div class="ic-prayer-mini__name">العصر</div>
+          <div class="ic-prayer-mini__countdown" id="heroPrayerCountdown">02:34:18</div>
+          <div class="ic-prayer-mini__note">الرياض · التوقيت المحلي</div>
+        </div>
+      </div>
+
+      <!-- XP Mini Card -->
+      <div class="ic-card ic-card--3d ic-card--xp">
+        <div class="ic-card__header">
+          <span>⚡ نقاط XP</span>
+          <span class="ic-text--gold" id="heroXPDisplay">— نقطة</span>
+        </div>
+        <div class="ic-xp-mini">
+          <div class="ic-xp-mini__level" id="heroLevelName">سجّل دخولك لعرض مستواك</div>
+          <div class="ic-xp-mini__bar-wrap">
+            <div class="ic-xp-mini__bar" id="heroXPBar" style="width:0%"></div>
+          </div>
+          <div class="ic-xp-mini__nums">
+            <span id="heroXPCurrent">0</span>
+            <span id="heroXPNext">100</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============================================================
+       STATS BAR
+       ============================================================ -->
+  <div class="ic-stats-bar" aria-label="إحصائيات المنصة">
+    <div class="ic-stats-bar__inner">
+      <div class="ic-stats-bar__item">
+        <span class="ic-stats-bar__num ic-text--em">+12K</span>
+        <span>مستخدم نشط</span>
+      </div>
+      <div class="ic-stats-bar__divider" aria-hidden="true"></div>
+      <div class="ic-stats-bar__item">
+        <span class="ic-stats-bar__num ic-text--gold">+3.2M</span>
+        <span>صفحة مقروءة</span>
+      </div>
+      <div class="ic-stats-bar__divider" aria-hidden="true"></div>
+      <div class="ic-stats-bar__item">
+        <span class="ic-stats-bar__num ic-text--em">+180K</span>
+        <span>ختمة مكتملة</span>
+      </div>
+      <div class="ic-stats-bar__divider" aria-hidden="true"></div>
+      <div class="ic-stats-bar__item">
+        <span class="ic-stats-bar__num ic-text--gold">+5M</span>
+        <span>تسبيحة يومياً</span>
       </div>
     </div>
   </div>
-</section>
 
-</main>
+  <!-- ============================================================
+       SECTION: أدوات
+       ============================================================ -->
+  <section class="ic-section ic-section--tools" aria-label="الأدوات">
+    <div class="ic-container">
+      <div class="ic-section__header">
+        <span class="ic-section__eyebrow">🧮 الأدوات</span>
+        <h2 class="ic-section__title">كل ما تحتاجه في مكان واحد</h2>
+        <p class="ic-section__sub">أدوات إسلامية دقيقة وسهلة الاستخدام مع نظام نقاط لتحفيزك</p>
+      </div>
 
-<!-- ============================================================
-     FOOTER
-     ============================================================ -->
-<footer class="ic-footer">
-  <div class="ic-footer__inner">
-
-    <div class="ic-footer__brand">
-      <a href="/" class="ic-footer__logo">
-        <div class="ic-nav__logo-mark">☪</div>
-        <span>IslamiCalc</span>
-      </a>
-      <p>منصة إسلامية تفاعلية تجمع ختمة القرآن، الميدان، والأدوات الإسلامية في مكان واحد.</p>
+      <div class="ic-tools-grid">
+        <a href="/khatma" class="ic-tool-card ic-tool-card--featured">
+          <div class="ic-tool-card__glow"></div>
+          <div class="ic-tool-card__icon">📖</div>
+          <h3>ختمة القرآن</h3>
+          <p>تتبع ختمتك بالصفحات أو الأجزاء مع مؤشر تقدم وقارئ مصحف كامل</p>
+          <span class="ic-tool-card__cta">ابدأ الآن ←</span>
+        </a>
+        <a href="/prayer" class="ic-tool-card">
+          <div class="ic-tool-card__glow"></div>
+          <div class="ic-tool-card__icon">🕌</div>
+          <h3>أوقات الصلاة</h3>
+          <p>أوقات الصلاة بدقة حسب موقعك مع عداد تنازلي للصلاة القادمة</p>
+          <span class="ic-tool-card__cta">عرض الأوقات ←</span>
+        </a>
+        <a href="/athkar" class="ic-tool-card">
+          <div class="ic-tool-card__glow"></div>
+          <div class="ic-tool-card__icon">📿</div>
+          <h3>الأذكار والتسبيح</h3>
+          <p>أذكار الصباح والمساء وتسبيح رقمي احترافي مع تتبع الإنجاز</p>
+          <span class="ic-tool-card__cta">ابدأ الأذكار ←</span>
+        </a>
+        <a href="/arena" class="ic-tool-card">
+          <div class="ic-tool-card__glow"></div>
+          <div class="ic-tool-card__icon">⚔️</div>
+          <h3>الميدان الديني</h3>
+          <p>تحدّ نفسك بأسئلة إسلامية يومية واكسب XP وتسلق لوحة المتصدرين</p>
+          <span class="ic-tool-card__cta">تحدَّ الآن ←</span>
+        </a>
+        <a href="/zakat" class="ic-tool-card">
+          <div class="ic-tool-card__glow"></div>
+          <div class="ic-tool-card__icon">💰</div>
+          <h3>حاسبة الزكاة</h3>
+          <p>احسب زكاة المال والذهب والفضة بدقة مع شرح تفصيلي للنتائج</p>
+          <span class="ic-tool-card__cta">احسب الآن ←</span>
+        </a>
+        <a href="/inheritance" class="ic-tool-card">
+          <div class="ic-tool-card__glow"></div>
+          <div class="ic-tool-card__icon">⚖️</div>
+          <h3>حاسبة الميراث</h3>
+          <p>توزيع الميراث الشرعي تلقائياً حسب أحكام الفرائض الإسلامية</p>
+          <span class="ic-tool-card__cta">احسب الآن ←</span>
+        </a>
+      </div>
     </div>
+  </section>
 
-    <div class="ic-footer__col">
-      <h4>الأدوات</h4>
-      <ul>
-        <li><a href="/zakat">حاسبة الزكاة</a></li>
-        <li><a href="/prayer">أوقات الصلاة</a></li>
-        <li><a href="/athkar">الأذكار</a></li>
-        <li><a href="/hijri">المحوّل الهجري</a></li>
-        <li><a href="/events">الأحداث الإسلامية</a></li>
-      </ul>
+  <!-- ============================================================
+       SECTION: الميدان (Arena Preview)
+       ============================================================ -->
+  <section class="ic-section ic-section--arena" aria-label="الميدان الديني">
+    <div class="ic-container">
+      <div class="ic-section__header">
+        <span class="ic-section__eyebrow">⚔️ الميدان</span>
+        <h2 class="ic-section__title">نافس واكسب نقاط XP</h2>
+        <p class="ic-section__sub">سؤال يومي إسلامي، إجابة صحيحة = XP + ترقي في لوحة المتصدرين</p>
+      </div>
+
+      <div class="ic-arena-showcase">
+        <!-- Daily Question Preview -->
+        <div class="ic-card ic-card--3d ic-card--daily" aria-label="السؤال اليومي">
+          <div class="ic-daily-q__xp">+20 XP</div>
+          <div class="ic-daily-q__text">
+            كم عدد أركان الإسلام الخمسة التي ذكرها النبي ﷺ؟
+          </div>
+          <div class="ic-daily-q__options">
+            <button class="ic-quiz-option">3</button>
+            <button class="ic-quiz-option">4</button>
+            <button class="ic-quiz-option">5</button>
+            <button class="ic-quiz-option">6</button>
+          </div>
+          <div style="margin-top:16px; text-align:center">
+            <a href="/arena" class="ic-btn ic-btn--gold ic-btn--sm">العب الآن ←</a>
+          </div>
+        </div>
+
+        <!-- Leaderboard Preview -->
+        <div class="ic-card ic-card--3d ic-card--leaderboard" aria-label="لوحة المتصدرين">
+          <div class="ic-card__header">
+            <span>🏆 المتصدرون</span>
+            <span class="ic-badge ic-badge--live">● مباشر</span>
+          </div>
+          <div class="ic-lb-list" id="heroLeaderboard">
+            <div class="ic-lb-item">
+              <span class="ic-lb-item__rank ic-lb-item__rank--1">🥇</span>
+              <div class="ic-lb-item__info"><strong>أبو عبدالله</strong><small>المستوى 🌟 نجم</small></div>
+              <span class="ic-lb-item__xp">4,820 XP</span>
+            </div>
+            <div class="ic-lb-item">
+              <span class="ic-lb-item__rank ic-lb-item__rank--2">🥈</span>
+              <div class="ic-lb-item__info"><strong>أم محمد</strong><small>المستوى ⭐ متقدم</small></div>
+              <span class="ic-lb-item__xp">3,540 XP</span>
+            </div>
+            <div class="ic-lb-item">
+              <span class="ic-lb-item__rank ic-lb-item__rank--3">🥉</span>
+              <div class="ic-lb-item__info"><strong>الطالب الصادق</strong><small>المستوى ⭐ متقدم</small></div>
+              <span class="ic-lb-item__xp">2,890 XP</span>
+            </div>
+            <div class="ic-lb-item ic-lb-item--me">
+              <span class="ic-lb-item__rank">4</span>
+              <div class="ic-lb-item__info"><strong>أنت</strong><small>سجّل دخولك لتظهر هنا</small></div>
+              <span class="ic-lb-item__xp">—</span>
+            </div>
+          </div>
+          <div style="margin-top:16px">
+            <a href="/arena" class="ic-btn ic-btn--secondary ic-btn--sm ic-btn--full">عرض الترتيب كامل ←</a>
+          </div>
+        </div>
+      </div>
     </div>
+  </section>
 
-    <div class="ic-footer__col">
-      <h4>المنصة</h4>
-      <ul>
-        <li><a href="/khatma">ختمة القرآن</a></li>
-        <li><a href="/arena">الميدان</a></li>
-        <li><a href="/asma">أسماء الله</a></li>
-        <li><a href="/prophets">قصص الأنبياء</a></li>
-        <li><a href="/profile">بروفايلي</a></li>
-      </ul>
+  <!-- ============================================================
+       SECTION: رمضان
+       ============================================================ -->
+  <section class="ic-section ic-section--ramadan" aria-label="رمضان">
+    <div class="ic-container">
+      <div class="ic-ramadan">
+        <div class="ic-ramadan__bg" aria-hidden="true">
+          <span class="ic-ramadan__star ic-ramadan__star--1">✦</span>
+          <span class="ic-ramadan__star ic-ramadan__star--2">✦</span>
+          <span class="ic-ramadan__star ic-ramadan__star--3">✦</span>
+          <span class="ic-ramadan__star ic-ramadan__star--4">✦</span>
+        </div>
+        <div class="ic-ramadan__content">
+          <div class="ic-ramadan__label">🌙 رمضان المبارك</div>
+          <h2 class="ic-ramadan__title">ختم القرآن في رمضان</h2>
+          <p class="ic-ramadan__sub">مع IslamiCalc تقرأ صفحة واحدة بعد كل صلاة وتكمل الختمة في 30 يوماً</p>
+          <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin-top:24px">
+            <a href="/khatma" class="ic-btn ic-btn--gold ic-btn--lg">
+              ابدأ ختمة رمضان ←
+            </a>
+            <a href="/athkar" class="ic-btn ic-btn--secondary ic-btn--lg">
+              📿 أذكار رمضان
+            </a>
+          </div>
+        </div>
+      </div>
     </div>
+  </section>
 
-    <div class="ic-footer__col">
-      <h4>روابط</h4>
-      <ul>
-        <li><a href="/about">عن المنصة</a></li>
-        <li><a href="/privacy">الخصوصية</a></li>
-        <li><a href="/terms">الشروط</a></li>
-        <li><a href="/contact">تواصل معنا</a></li>
-      </ul>
+  <!-- ============================================================
+       FOOTER
+       ============================================================ -->
+  <footer class="ic-footer" role="contentinfo">
+    <div class="ic-container">
+      <div class="ic-footer__inner">
+        <div class="ic-footer__brand">
+          <div class="ic-nav__logo-mark" style="width:28px;height:28px;font-size:14px">☪️</div>
+          <span class="ic-nav__logo-text" style="font-size:16px">IslamiCalc</span>
+        </div>
+        <nav class="ic-footer__links" aria-label="روابط ثانوية">
+          <a href="/about">من نحن</a>
+          <a href="/privacy">الخصوصية</a>
+          <a href="/terms">الشروط</a>
+          <a href="/contact">تواصل</a>
+          <a href="/faq">الأسئلة الشائعة</a>
+        </nav>
+        <p class="ic-footer__copy">© 2026 IslamiCalc — صُنع بـ ❤️ لخدمة المسلمين</p>
+      </div>
     </div>
+  </footer>
 
+  <!-- ============================================================
+       LOGIN MODAL
+       ============================================================ -->
+  <div class="ic-modal" id="loginModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="ic-modal__backdrop" id="modalBackdrop"></div>
+    <div class="ic-modal__box">
+      <button class="ic-modal__close" id="modalCloseBtn" aria-label="إغلاق">✕</button>
+      <div class="ic-modal__icon">☪️</div>
+      <h2 class="ic-modal__title" id="modalTitle">أهلاً بك في IslamiCalc</h2>
+      <p class="ic-modal__sub">سجّل دخولك لحفظ تقدمك وكسب نقاط XP وشارات</p>
+
+      <div class="ic-modal__actions">
+        <button class="ic-btn ic-btn--google ic-btn--full" id="googleLoginBtn">
+          <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/>
+            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+          </svg>
+          متابعة بـ Google
+        </button>
+
+        <div class="ic-modal__divider"><span>أو</span></div>
+
+        <button class="ic-btn ic-btn--ghost ic-btn--full" id="guestBrowseBtn">
+          تصفح بدون تسجيل
+        </button>
+      </div>
+
+      <p class="ic-modal__note">
+        بالدخول توافق على <a href="/terms">الشروط</a> و<a href="/privacy">الخصوصية</a>
+      </p>
+    </div>
   </div>
 
-  <div class="ic-footer__bottom">
-    <span>© 2026 IslamiCalc — جميع الحقوق محفوظة</span>
-    <span>صنع بحب في العالم الإسلامي 🌙</span>
-  </div>
-</footer>
-
-<!-- Modal الدخول -->
-<div id="loginModal" class="ic-modal">
-  <div class="ic-modal__backdrop" id="modalBackdrop"></div>
-  <div class="ic-modal__box">
-    <div class="ic-modal__icon">☪</div>
-    <h3 class="ic-modal__title">انضم إلى IslamiCalc</h3>
-    <p class="ic-modal__sub">سجّل دخولك لحفظ تقدمك في القرآن، XP، والأوسمة</p>
-    <div class="ic-modal__actions">
-      <button id="googleLoginBtn" class="ic-btn ic-btn--google ic-btn--full">
-        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" style="flex-shrink:0">
-          <path d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.875 2.684-6.615z" fill="#4285F4"/>
-          <path d="M9 18c2.43 0 4.467-.806 5.956-2.184l-2.908-2.258c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18z" fill="#34A853"/>
-          <path d="M3.964 10.707A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.707V4.961H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.039l3.007-2.332z" fill="#FBBC05"/>
-          <path d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.961L3.964 7.293C4.672 5.163 6.656 3.58 9 3.58z" fill="#EA4335"/>
-        </svg>
-        الدخول بحساب Google
-      </button>
-      <button id="guestBrowseBtn" class="ic-btn ic-btn--ghost ic-btn--full">
-        تصفح بدون حساب
-      </button>
-    </div>
-    <p class="ic-modal__note">
-      بالدخول توافق على <a href="/privacy">سياسة الخصوصية</a>
-    </p>
-  </div>
-</div>
-
-<div id="toast" class="ic-toast"></div>
-
-<!-- ============================================================
-     JAVASCRIPT
-     ============================================================ -->
-<script>
-// ── Theme ──────────────────────────────────────────────────────
-(function () {
-  const saved = localStorage.getItem("theme");
-  const hour  = new Date().getHours();
-  document.documentElement.setAttribute("data-theme",
-    saved || (hour >= 19 || hour < 6 ? "dark" : "light"));
-})();
-
-document.getElementById("themeBtn")?.addEventListener("click", () => {
-  const next = document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark";
-  document.documentElement.setAttribute("data-theme", next);
-  localStorage.setItem("theme", next);
-  document.getElementById("themeBtn").textContent = next === "dark" ? "🌙" : "☀️";
-});
-
-// ── Navbar scroll ──────────────────────────────────────────────
-window.addEventListener("scroll", () => {
-  document.getElementById("icNav")?.classList.toggle("ic-nav--scrolled", scrollY > 20);
-}, { passive: true });
-
-// ── Mobile menu ────────────────────────────────────────────────
-document.getElementById("mobileToggle")?.addEventListener("click", () => {
-  document.getElementById("mobileMenu")?.classList.toggle("ic-nav__mobile--open");
-});
-
-// ── Navbar Dropdown ────────────────────────────────────────────
-document.querySelectorAll(".ic-nav__link--drop").forEach(btn => {
-  btn.addEventListener("click", (e) => {
-    e.stopPropagation();
-    const panel = btn.nextElementSibling;
-    document.querySelectorAll(".ic-nav__dropdown-panel.open").forEach(p => {
-      if (p !== panel) p.classList.remove("open");
-    });
-    panel?.classList.toggle("open");
-  });
-});
-
-document.addEventListener("click", () => {
-  document.querySelectorAll(".ic-nav__dropdown-panel.open")
-    .forEach(p => p.classList.remove("open"));
-});
-
-// ── Login Modal ────────────────────────────────────────────────
-function openLogin() {
-  document.getElementById("loginModal")?.classList.add("ic-modal--open");
-}
-
-document.getElementById("modalBackdrop")?.addEventListener("click", () => {
-  document.getElementById("loginModal")?.classList.remove("ic-modal--open");
-});
-
-document.getElementById("guestBrowseBtn")?.addEventListener("click", () => {
-  document.getElementById("loginModal")?.classList.remove("ic-modal--open");
-});
-
-document.getElementById("loginBtn")?.addEventListener("click", () => {
-  if (window.islamiCalc?.getCurrentUser?.()) {
-    window.islamiCalc.showUserMenu?.();
-  } else {
-    openLogin();
-  }
-});
-
-["finalCTABtn", "mobileLoginBtn"].forEach(id => {
-  document.getElementById(id)?.addEventListener("click", () => {
-    if (window.islamiCalc?.getCurrentUser?.()) {
-      window.location.href = "/profile";
-    } else {
-      openLogin();
-    }
-  });
-});
-
-document.getElementById("googleLoginBtn")?.addEventListener("click", () => {
-  window.islamiCalc?.loginWithGoogle?.();
-});
-
-window.addEventListener("islamiCalcReady", (e) => {
-  const user    = e.detail?.user;
-  const loginBtn = document.getElementById("loginBtn");
-  if (!loginBtn) return;
-  if (user) {
-    loginBtn.onclick = () => window.islamiCalc?.showUserMenu?.();
-    document.getElementById("myRankItem")?.style && (document.getElementById("myRankItem").style.display = "flex");
-    const xp = e.detail?.doc?.xp || 0;
-    const xpEl = document.getElementById("myXP");
-    if (xpEl) xpEl.textContent = xp.toLocaleString("ar") + " XP";
-  }
-}, { once: true });
-
-// ── آية اليوم ─────────────────────────────────────────────────
-const VERSES = [
-  { text:"﴿ فَاذْكُرُونِي أَذْكُرْكُمْ وَاشْكُرُوا لِي وَلَا تَكْفُرُونِ ﴾", src:"البقرة: 152" },
-  { text:"﴿ إِنَّ مَعَ الْعُسْرِ يُسْرًا ﴾",                                   src:"الشرح: 6"   },
-  { text:"﴿ وَهُوَ مَعَكُمْ أَيْنَ مَا كُنتُمْ ﴾",                             src:"الحديد: 4"  },
-  { text:"﴿ أَلَا بِذِكْرِ اللَّهِ تَطْمَئِنُّ الْقُلُوبُ ﴾",                 src:"الرعد: 28"  },
-  { text:"﴿ وَمَن يَتَوَكَّلْ عَلَى اللَّهِ فَهُوَ حَسْبُهُ ﴾",               src:"الطلاق: 3"  },
-  { text:"﴿ إِنَّ اللَّهَ مَعَ الصَّابِرِينَ ﴾",                               src:"البقرة: 153"},
-  { text:"﴿ وَقُل رَّبِّ زِدْنِي عِلْمًا ﴾",                                   src:"طه: 114"    },
-];
-
-const HADITHS = [
-  { text:""خيركم من تعلّم القرآن وعلّمه"",       src:"رواه البخاري" },
-  { text:""إن الله يرفع بهذا الكتاب أقواماً"",   src:"رواه مسلم"    },
-  { text:""من قرأ حرفاً من كتاب الله فله حسنة"", src:"رواه الترمذي" },
-];
-
-(function initDailyContent() {
-  const d   = new Date().getDate();
-  const v   = VERSES [d % VERSES.length];
-  const h   = HADITHS[d % HADITHS.length];
-  const vt  = document.getElementById("verseText");
-  const vs  = document.getElementById("verseSource");
-  const ht  = document.getElementById("hadithText");
-  if (vt) vt.textContent = v.text;
-  if (vs) vs.textContent = v.src;
-  if (ht) ht.textContent = h.text;
-})();
-
-// ── سؤال الميدان ────────────────────────────────────────────────
-const ARENA_QUESTIONS = [
-  { q:"كم نصاب الذهب بالجرام؟", opts:["40","85","120","200"], a:1, xp:20, exp:"نصاب الذهب 85 جراماً من الذهب الخالص." },
-  { q:"كم عدد سور القرآن الكريم؟", opts:["110","112","114","116"], a:2, xp:15, exp:"القرآن الكريم 114 سورة." },
-  { q:"ما نسبة الزكاة في الأموال؟", opts:["1%","2.5%","5%","10%"], a:1, xp:15, exp:"ربع العشر = 2.5%." },
-  { q:"ما أول ما فُرض من العبادات؟", opts:["الصوم","الحج","الصلاة","الزكاة"], a:2, xp:20, exp:"الصلاة أول ما فُرض." },
-  { q:"كم عدد أركان الإسلام؟", opts:["3","4","5","6"], a:2, xp:10, exp:"أركان الإسلام خمسة." },
-];
-
-(function initArenaQuestion() {
-  const idx = new Date().getDate() % ARENA_QUESTIONS.length;
-  const q   = ARENA_QUESTIONS[idx];
-  const qEl = document.getElementById("arenaQuestion");
-  const oEl = document.getElementById("arenaOptions");
-  const rEl = document.getElementById("arenaResult");
-  if (!qEl || !oEl || !rEl) return;
-
-  qEl.textContent = q.q;
-
-  q.opts.forEach((opt, i) => {
-    const btn       = document.createElement("button");
-    btn.className   = "ic-quiz-option";
-    btn.textContent = opt;
-    btn.addEventListener("click", () => {
-      oEl.querySelectorAll("button").forEach(b => {
-        b.disabled = true;
-        b.classList.add(b === btn ? (i === q.a ? "correct" : "wrong") : "");
-        if (i !== q.a) oEl.querySelectorAll("button")[q.a]?.classList.add("reveal");
+  <!-- ============================================================
+       Dropdown JS (inline — بسيط ومباشر)
+       ============================================================ -->
+  <script>
+    // Tools Dropdown
+    const toolsBtn   = document.getElementById('toolsBtn');
+    const toolsPanel = document.getElementById('toolsPanel');
+    if (toolsBtn && toolsPanel) {
+      toolsBtn.addEventListener('click', e => {
+        e.stopPropagation();
+        const open = toolsPanel.classList.toggle('open');
+        toolsBtn.setAttribute('aria-expanded', open);
       });
-      rEl.style.display = "block";
-      const correct = i === q.a;
-      rEl.textContent = (correct ? "✅ " : "❌ ") + q.exp;
-      rEl.className   = "ic-daily-q__result " + (correct ? "correct" : "wrong");
-      if (correct) window.islamiCalc?.addXP?.(q.xp, "arena_daily");
-    });
-    oEl.appendChild(btn);
-  });
-})();
-
-// ── Ramadan Countdown ──────────────────────────────────────────
-(function initRamadan() {
-  const target = new Date("2026-03-01T00:00:00");
-
-  function update() {
-    const now  = new Date();
-    const diff = target - now;
-
-    if (diff <= 0) {
-      document.getElementById("ramadanDays")?.closest(".ic-ramadan__counter") &&
-        (document.getElementById("ramadanDays").closest(".ic-ramadan__counter").innerHTML =
-          '<div class="ic-ramadan__welcome">🌙 رمضان مبارك</div>');
-      return;
+      document.addEventListener('click', () => {
+        toolsPanel.classList.remove('open');
+        toolsBtn.setAttribute('aria-expanded', 'false');
+      });
     }
 
-    const days  = Math.floor(diff / 86400000);
-    const hours = Math.floor((diff % 86400000) / 3600000);
-    const mins  = Math.floor((diff % 3600000)  / 60000);
-    const secs  = Math.floor((diff % 60000)    / 1000);
+    // Modal close btn
+    document.getElementById('modalCloseBtn')?.addEventListener('click', () => {
+      document.getElementById('loginModal')?.classList.remove('ic-modal--open');
+    });
 
-    const set = (id, val) => {
-      const el = document.getElementById(id);
-      if (el) el.textContent = String(val).padStart(2, "0");
-    };
-
-    set("ramadanDays",  days);
-    set("ramadanHours", hours);
-    set("ramadanMins",  mins);
-    set("ramadanSecs",  secs);
-
-    const heroEl = document.getElementById("heroRamadanDays");
-    if (heroEl) heroEl.textContent = days;
-  }
-
-  update();
-  setInterval(update, 1000);
-})();
-
-// ── Mini Prayer Times ──────────────────────────────────────────
-let _miniTimes = {};
-let _miniTimer = null;
-
-function _parsePrayerTime(str, base) {
-  const [h, m] = str.split(":").map(Number);
-  return new Date(base.getFullYear(), base.getMonth(), base.getDate(), h, m);
-}
-
-function _getNextPrayer() {
-  const now   = new Date();
-  const order = ["Fajr","Dhuhr","Asr","Maghrib","Isha"];
-  const names = { Fajr:"الفجر", Dhuhr:"الظهر", Asr:"العصر", Maghrib:"المغرب", Isha:"العشاء" };
-
-  for (const k of order) {
-    const raw = _miniTimes[k];
-    if (!raw) continue;
-    const t = _parsePrayerTime(raw, now);
-    if (t > now) return { name: names[k], date: t };
-  }
-
-  const fajr = _miniTimes.Fajr;
-  if (!fajr) return null;
-  const tomorrow = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
-  return { name: "الفجر", date: _parsePrayerTime(fajr, tomorrow) };
-}
-
-function _updatePrayerUI() {
-  const next = _getNextPrayer();
-  if (!next) return;
-
-  const diff  = Math.max(0, next.date - Date.now());
-  const total = Math.floor(diff / 1000);
-  const hh    = Math.floor(total / 3600);
-  const mm    = Math.floor((total % 3600) / 60);
-  const ss    = total % 60;
-
-  const nameEl = document.getElementById("heroNextPrayer");
-  const cdEl   = document.getElementById("heroCountdown");
-  if (nameEl) nameEl.textContent = next.name;
-  if (cdEl)   cdEl.textContent   =
-    `${String(hh).padStart(2,"0")}:${String(mm).padStart(2,"0")}:${String(ss).padStart(2,"0")}`;
-}
-
-async function _fetchPrayer(lat, lng) {
-  const now  = new Date();
-  const date = `${now.getDate()}-${now.getMonth()+1}-${now.getFullYear()}`;
-  try {
-    const r = await fetch(
-      `https://api.aladhan.com/v1/timings/${date}?latitude=${lat}&longitude=${lng}&method=4`
-    );
-    const d = await r.json();
-    if (d.code !== 200) throw new Error();
-    _miniTimes = d.data.timings;
-    if (_miniTimer) clearInterval(_miniTimer);
-    _miniTimer = setInterval(_updatePrayerUI, 1000);
-    _updatePrayerUI();
-  } catch {
-    const el = document.getElementById("heroPrayerNote");
-    if (el) el.textContent = "تعذّر جلب أوقات الصلاة";
-  }
-}
-
-if (navigator.geolocation) {
-  navigator.geolocation.getCurrentPosition(
-    p => _fetchPrayer(p.coords.latitude, p.coords.longitude),
-    () => {
-      const el = document.getElementById("heroPrayerNote");
-      if (el) el.textContent = "الرياض (افتراضي)";
-      _fetchPrayer(24.7136, 46.6753);
-    },
-    { timeout: 6000 }
-  );
-} else {
-  _fetchPrayer(24.7136, 46.6753);
-}
-</script>
+    // Hero XP update from Store
+    document.addEventListener('DOMContentLoaded', () => {
+      // Load real leaderboard after auth ready
+      document.addEventListener('islamiCalcReady', async () => {
+        const lb = await window.islamiCalc?.getLeaderboard?.(4);
+        if (!lb?.length) return;
+        const list = document.getElementById('heroLeaderboard');
+        if (!list) return;
+        const medals = ['🥇','🥈','🥉','4'];
+        list.innerHTML = lb.map((p,i) => `
+          <div class="ic-lb-item ${p.uid === window.islamiCalc?.user?.uid ? 'ic-lb-item--me' : ''}">
+            <span class="ic-lb-item__rank ${i<3?'ic-lb-item__rank--'+(i+1):''}">${medals[i]}</span>
+            <div class="ic-lb-item__info">
+              <strong>${p.displayName}</strong>
+              <small>المستوى ${p.level}</small>
+            </div>
+            <span class="ic-lb-item__xp">${p.xp?.toLocaleString('ar')} XP</span>
+          </div>
+        `).join('');
+      });
+    });
+  </script>
 
 </body>
 </html>

@@ -10,6 +10,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/style.css">
   <title>الأسئلة الشائعة | IslamiCalc</title>
+  <script type="module" src="/core/firebase.js"></script>
+  <script type="module" src="/core/app.js"></script>
 </head>
 <body>
 <nav class="navbar">
@@ -83,13 +85,5 @@
 </div>
 </main>
 <div class="toast" id="toast"></div>
-<script>
-const themeBtn=document.getElementById("themeBtn");
-const htmlEl=document.documentElement;
-(function(){const s=localStorage.getItem("theme")||"dark";htmlEl.setAttribute("data-theme",s);themeBtn.textContent=s==="dark"?"☀️":"🌙";})();
-themeBtn.addEventListener("click",()=>{const n=htmlEl.getAttribute("data-theme")==="dark"?"light":"dark";htmlEl.setAttribute("data-theme",n);localStorage.setItem("theme",n);themeBtn.textContent=n==="dark"?"☀️":"🌙";});
-document.getElementById("menuToggle").addEventListener("click",()=>{const m=document.getElementById("navMenu");m.classList.toggle("open");document.getElementById("menuToggle").textContent=m.classList.contains("open")?"✕":"☰";});
-function showToast(msg,type=""){const t=document.getElementById("toast");t.textContent=msg;t.className="toast show "+type;setTimeout(()=>t.classList.remove("show"),3000);}
-</script>
 </body>
 </html>

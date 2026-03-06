@@ -15,7 +15,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/style.css">
-  <script type="module" src="/firebase.js"></script>
+  <script type="module" src="/core/firebase.js"></script>
+  <script type="module" src="/core/app.js"></script>
 
   <style>
     .age-hero{background:linear-gradient(135deg,#0d1117 0%,#0a1628 45%,#0d1a12 100%);padding:88px 24px 44px;position:relative;overflow:hidden;text-align:center}
@@ -59,6 +60,8 @@
     .age-empty{font-size:13px;color:var(--text-muted);text-align:center;margin-top:40px}
     @media(max-width:768px){.age-wrap{grid-template-columns:minmax(0,1fr);}.age-hero{padding-top:80px}}
   </style>
+  <script type="module" src="/core/firebase.js"></script>
+  <script type="module" src="/core/app.js"></script>
 </head>
 
 <body>
@@ -196,22 +199,6 @@
 </div>
 
 <script>
-// ===== Theme =====
-(function(){
-  const saved=localStorage.getItem('theme')||'dark';
-  document.documentElement.setAttribute('data-theme',saved);
-  const sun=document.getElementById('iconSun');
-  const moon=document.getElementById('iconMoon');
-  if(sun) sun.style.display = saved==='dark'?'none':'block';
-  if(moon) moon.style.display=saved==='dark'?'block':'none';
-})();
-document.getElementById('themeBtn')?.addEventListener('click',()=>{
-  const cur=document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark';
-  document.documentElement.setAttribute('data-theme',cur);
-  localStorage.setItem('theme',cur);
-  document.getElementById('iconSun').style.display = cur==='dark'?'none':'block';
-  document.getElementById('iconMoon').style.display= cur==='dark'?'block':'none';
-});
 
 // ===== Mobile Menu =====
 document.getElementById('menuToggle')?.addEventListener('click',()=>{
@@ -232,7 +219,6 @@ document.addEventListener('click',e=>{
 
 // ===== Toast =====
 let toastTimer;
-function showToast(msg,type=''){
   const t=document.getElementById('toast');
   if(!t) return;
   t.textContent=msg;

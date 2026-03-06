@@ -1,89 +1,85 @@
 /* ============================================================
-   events.js — IslamiCalc Global Event Bus
+   events.js — IslamiCalc Global Event Bus v1.1
    تواصل بين المكونات بدون coupling
    ============================================================ */
 
 const Events = (() => {
 
-  const _handlers  = {}; // { eventName: [fn, fn, ...] }
+  const _handlers  = {};
   const _onceQueue = new Set();
   const _log       = [];
   const MAX_LOG    = 50;
 
   // ============================================================
-  // EVENT CATALOGUE — كل الأحداث الممكنة في المشروع
+  // EVENT CATALOGUE
   // ============================================================
   const EVENTS = {
     // Auth
-    AUTH_READY:         'auth:ready',
-    AUTH_LOGIN:         'auth:login',
-    AUTH_LOGOUT:        'auth:logout',
-    AUTH_PROFILE_LOADED:'auth:profile_loaded',
+    AUTH_READY:           'auth:ready',
+    AUTH_LOGIN:           'auth:login',
+    AUTH_LOGOUT:          'auth:logout',
+    AUTH_PROFILE_LOADED:  'auth:profile_loaded',   // ✅ مُضاف
 
     // XP + Gamification
-    XP_ADDED:           'xp:added',
-    XP_LEVEL_UP:        'xp:level_up',
-    BADGE_UNLOCKED:     'badge:unlocked',
-    STREAK_UPDATED:     'streak:updated',
+    XP_ADDED:             'xp:added',
+    XP_LEVEL_UP:          'xp:level_up',
+    BADGE_UNLOCKED:       'badge:unlocked',
+    STREAK_UPDATED:       'streak:updated',
 
     // Khatma
-    KHATMA_PAGE_READ:   'khatma:page_read',
-    KHATMA_JUZ_DONE:    'khatma:juz_done',
-    KHATMA_COMPLETE:    'khatma:complete',
+    KHATMA_PAGE_READ:     'khatma:page_read',
+    KHATMA_JUZ_DONE:      'khatma:juz_done',
+    KHATMA_COMPLETE:      'khatma:complete',
 
     // Arena
-    ARENA_ANSWER:       'arena:answer',
-    ARENA_WIN:          'arena:win',
-    ARENA_STREAK:       'arena:streak',
+    ARENA_ANSWER:         'arena:answer',
+    ARENA_WIN:            'arena:win',
+    ARENA_STREAK:         'arena:streak',
 
     // Athkar
-    ATHKAR_DONE:        'athkar:done',
-    ATHKAR_CAT_DONE:    'athkar:cat_done',
-    TASBIH_ROUND:       'tasbih:round',
+    ATHKAR_DONE:          'athkar:done',
+    ATHKAR_CAT_DONE:      'athkar:cat_done',
+    TASBIH_ROUND:         'tasbih:round',
 
     // Prayer
-    PRAYER_LOADED:      'prayer:loaded',
-    PRAYER_TIME_IN:     'prayer:time_in',
+    PRAYER_LOADED:        'prayer:loaded',
+    PRAYER_TIME_IN:       'prayer:time_in',
 
     // Zakat
-    ZAKAT_CALC:         'zakat:calc',
+    ZAKAT_CALC:           'zakat:calc',
 
     // UI
-    UI_TOAST:           'ui:toast',
-    UI_MODAL_OPEN:      'ui:modal_open',
-    UI_MODAL_CLOSE:     'ui:modal_close',
-    UI_THEME_CHANGE:    'ui:theme_change',
-    UI_PAGE_CHANGE:     'ui:page_change',
+    UI_TOAST:             'ui:toast',
+    UI_MODAL_OPEN:        'ui:modal_open',
+    UI_MODAL_CLOSE:       'ui:modal_close',
+    UI_THEME_CHANGE:      'ui:theme_change',
+    UI_PAGE_CHANGE:       'ui:page_change',
 
     // Network
-    NET_ONLINE:         'net:online',
-    NET_OFFLINE:        'net:offline',
+    NET_ONLINE:           'net:online',
+    NET_OFFLINE:          'net:offline',
   };
 
   // ============================================================
-  // on(event, fn) — الاشتراك في حدث
+  // on(event, fn)
   // ============================================================
   function on(event, fn) {
     if (!_handlers[event]) _handlers[event] = [];
     _handlers[event].push(fn);
-
-    return () => off(event, fn); // unsubscribe
+    return () => off(event, fn);
   }
 
   // ============================================================
-  // once(event, fn) — الاشتراك لمرة واحدة فقط
+  // once(event, fn)
   // ============================================================
   function once(event, fn) {
-    const wrapper = (...args) => {
-      fn(...args);
-      off(event, wrapper);
-    };
+    const wrapper = (...args) => { fn(...args); off(event, wrapper); };
     _onceQueue.add(wrapper);
     return on(event, wrapper);
   }
 
   // ============================================================
-  // off(event, fn) — إلغاء الاشتراك
+  // off(event, fn)
   // ============================================================
   function off(event, fn) {
     if (!_handlers[event]) return;
@@ -91,29 +87,24 @@ const Events = (() => {
   }
 
   // ============================================================
-  // emit(event, data) — إطلاق حدث
+  // emit(event, data)
   // ============================================================
   function emit(event, data = {}) {
-    // Log
     if (_log.length >= MAX_LOG) _log.shift();
     _log.push({ event, data, ts: Date.now() });
 
-    // Run handlers
-    const handlers = _handlers[event] || [];
-    handlers.forEach(fn => {
+    (_handlers[event] || []).forEach(fn => {
       try { fn(data); }
       catch (err) { console.error(`[Events] Error in handler for "${event}":`, err); }
     });
 
-    // Wildcard handlers
     (_handlers['*'] || []).forEach(fn => {
-      try { fn({ event, data }); }
-      catch {}
+      try { fn({ event, data }); } catch {}
     });
   }
 
   // ============================================================
-  // emitAsync(event, data) — إطلاق حدث وانتظار كل الـ handlers
+  // emitAsync(event, data)
   // ============================================================
   async function emitAsync(event, data = {}) {
     const handlers = _handlers[event] || [];
@@ -121,7 +112,7 @@ const Events = (() => {
   }
 
   // ============================================================
-  // waitFor(event, timeout?) — انتظر حدث محدد
+  // waitFor(event, timeout?)
   // ============================================================
   function waitFor(event, timeout = 10000) {
     return new Promise((resolve, reject) => {
@@ -134,22 +125,18 @@ const Events = (() => {
         clearTimeout(timer);
         resolve(data);
       }
-
       once(event, handler);
     });
   }
 
   // ============================================================
-  // AUTO EVENTS — أحداث تلقائية من المتصفح
+  // AUTO EVENTS
   // ============================================================
   if (typeof window !== 'undefined') {
     window.addEventListener('online',  () => emit(EVENTS.NET_ONLINE));
     window.addEventListener('offline', () => emit(EVENTS.NET_OFFLINE));
-
-    // Page visibility change
     document.addEventListener('visibilitychange', () => {
-      if (!document.hidden) emit('page:visible');
-      else emit('page:hidden');
+      emit(document.hidden ? 'page:hidden' : 'page:visible');
     });
   }
 
@@ -165,13 +152,8 @@ const Events = (() => {
     console.groupEnd();
   }
 
-  if (typeof window !== 'undefined') {
-    window.__IC_EVENTS_DEBUG__ = debug;
-  }
+  if (typeof window !== 'undefined') window.__IC_EVENTS_DEBUG__ = debug;
 
-  // ============================================================
-  // RETURN PUBLIC API
-  // ============================================================
   return { on, once, off, emit, emitAsync, waitFor, debug, EVENTS };
 
 })();

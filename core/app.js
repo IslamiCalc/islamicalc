@@ -82,6 +82,19 @@ const App = (() => {
     // Update nav UI when auth changes
     Store.subscribe('profile', updateNavAuth);
     Store.subscribe('user',    updateNavAuth);
+    
+    // Inject XP bar when profile loads
+Events.on(EVENTS.AUTH_PROFILE_LOADED, () => {
+  injectXPBar();
+  document.body.classList.add('has-xp-bar');
+});
+
+// Remove XP bar on logout
+Events.on(EVENTS.AUTH_LOGOUT, () => {
+  document.getElementById('ic-xp-bar')?.remove();
+  document.body.classList.remove('has-xp-bar');
+});
+
   }
 
   function updateNavAuth() {

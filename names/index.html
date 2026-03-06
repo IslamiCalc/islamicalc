@@ -5,6 +5,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../style.css">
+<script type="module" src="/core/firebase.js"></script>
+<script type="module" src="/core/app.js"></script>
 <style>
 .name-card{background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:16px;cursor:pointer;transition:.22s;}
 .name-card:hover{border-color:var(--gold);transform:translateY(-2px);}
@@ -31,11 +33,7 @@
     <h1 style="font-size:24px;font-weight:900;">الأسماء الإسلامية</h1>
     <p style="color:var(--text-muted);font-size:13px;" id="countLabel">120 اسم • معاني وأحكام شرعية</p>
   </div>
-
-  <!-- بحث -->
   <input type="text" id="searchName" class="form-input" placeholder="🔍 ابحث بالاسم أو المعنى..." oninput="render()" style="margin-bottom:12px;">
-
-  <!-- فلاتر -->
   <div style="display:flex;gap:8px;overflow-x:auto;padding-bottom:8px;margin-bottom:12px;scrollbar-width:none;">
     <button class="filter-btn active" data-f="all" onclick="setFilter(this)">الكل</button>
     <button class="filter-btn" data-f="male" onclick="setFilter(this)">👦 ذكور</button>
@@ -46,11 +44,7 @@
     <button class="filter-btn" data-f="makruh" onclick="setFilter(this)">⚠️ مكروهة</button>
     <button class="filter-btn" data-f="favs" onclick="setFilter(this)">💛 مفضلاتي</button>
   </div>
-
-  <!-- حروف -->
   <div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:14px;" id="letterGrid"></div>
-
-  <!-- شبكة الأسماء -->
   <div id="namesGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;"></div>
   <p id="emptyMsg" style="text-align:center;color:var(--text-muted);padding:40px;display:none;">لا توجد نتائج 🔍</p>
 </div></main>
@@ -66,14 +60,7 @@
 <div class="toast" id="toast"></div>
 
 <script>
-const themeBtn=document.getElementById("themeBtn");
-const htmlEl=document.documentElement;
-(function(){const s=localStorage.getItem("theme")||"dark";htmlEl.setAttribute("data-theme",s);themeBtn.textContent=s==="dark"?"☀️":"🌙";})();
-themeBtn.addEventListener("click",()=>{const n=htmlEl.getAttribute("data-theme")==="dark"?"light":"dark";htmlEl.setAttribute("data-theme",n);localStorage.setItem("theme",n);themeBtn.textContent=n==="dark"?"☀️":"🌙";});
-function showToast(m,t=""){const el=document.getElementById("toast");el.textContent=m;el.className="toast show "+(t||"");setTimeout(()=>el.classList.remove("show"),2500);}
-
 const NAMES=[
-  // ─── ذكور ───
   {id:"muhammad",n:"محمد",g:"male",m:"المحمود كثيراً",r:"loved",tags:["prophet"]},
   {id:"ahmad",n:"أحمد",g:"male",m:"أكثر حمداً",r:"loved",tags:["prophet"]},
   {id:"ibrahim",n:"إبراهيم",g:"male",m:"أب الجماعة الكثيرة",r:"loved",tags:["prophet"]},
@@ -105,7 +92,6 @@ const NAMES=[
   {id:"anas",n:"أنس",g:"male",m:"الأنس والألفة",r:"allowed",tags:[]},
   {id:"hasan",n:"حسن",g:"male",m:"الحسن الجميل",r:"loved",tags:[]},
   {id:"husayn",n:"حسين",g:"male",m:"الحسين الجميل",r:"loved",tags:[]},
-  {id:"omar2",n:"عمر",g:"male",m:"المعمّر الطويل",r:"loved",tags:[]},
   {id:"yasser",n:"ياسر",g:"male",m:"السهل اليسير",r:"allowed",tags:[]},
   {id:"faris",n:"فارس",g:"male",m:"الفارس الشجاع",r:"allowed",tags:[]},
   {id:"nasser",n:"ناصر",g:"male",m:"الناصر المنتصر",r:"allowed",tags:[]},
@@ -134,8 +120,6 @@ const NAMES=[
   {id:"murra",n:"مرة",g:"male",m:"المرارة",r:"makruh",tags:[],note:"يُكره لمعناه غير المحبوب"},
   {id:"abduluzza",n:"عبد العزى",g:"male",m:"عبد العزى",r:"haram",tags:[],note:"تعبيد لغير الله محرّم"},
   {id:"abdulkaaba",n:"عبد الكعبة",g:"male",m:"عبد الكعبة",r:"haram",tags:[],note:"لا يجوز"},
-
-  // ─── إناث ───
   {id:"maryam",n:"مريم",g:"female",m:"الخادمة العابدة",r:"loved",tags:[]},
   {id:"khadija",n:"خديجة",g:"female",m:"الولودة المبكرة",r:"loved",tags:["sahabi"]},
   {id:"aisha",n:"عائشة",g:"female",m:"الحياة والنشاط",r:"loved",tags:["sahabi"]},
@@ -186,7 +170,7 @@ function buildLetters(){
   const used=new Set(NAMES.map(n=>n.n[0]));
   document.getElementById("letterGrid").innerHTML=
     `<button class="letter-btn active" data-l="" onclick="setLetter(this)">الكل</button>`+
-    LETTERS.filter(l=>used.has(l)||[...used].some(u=>u===l)).map(l=>
+    LETTERS.filter(l=>[...used].some(u=>u===l)).map(l=>
       `<button class="letter-btn" data-l="${l}" onclick="setLetter(this)">${l}</button>`).join("");
 }
 function setLetter(el){
@@ -202,11 +186,11 @@ function toggleFav(id,e){
   if(favs.includes(id)) favs=favs.filter(f=>f!==id);
   else favs.push(id);
   localStorage.setItem("nameFavs",JSON.stringify(favs));
-  render();showToast(favs.includes(id)?"💛 أُضيف للمفضلة":"تم الإزالة من المفضلة");
+  render();
+  window.showToast?window.showToast(favs.includes(id)?"💛 أُضيف للمفضلة":"تم الإزالة من المفضلة"):null;
 }
 const BADGE={loved:"badge-loved",allowed:"badge-allowed",makruh:"badge-makruh",haram:"badge-haram"};
 const BADGE_TXT={loved:"✅ محبوب",allowed:"⚪ مباح",makruh:"⚠️ مكروه",haram:"🚫 محرّم"};
-const COLOR={loved:"#10b981",allowed:"#94a3b8",makruh:"#f59e0b",haram:"#ef4444"};
 
 function render(){
   const q=(document.getElementById("searchName").value||"").trim();

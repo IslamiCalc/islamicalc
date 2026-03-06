@@ -8,7 +8,8 @@
   <link rel="stylesheet" href="/style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-  <script type="module" src="/firebase.js"></script>
+  <script type="module" src="/core/firebase.js"></script>
+  <script type="module" src="/core/app.js"></script>
 
   <style>
   /* ============================================================
@@ -1087,100 +1088,6 @@ let session = {};
 let selDiff = null, selCat = null, quizMode = 'classic';
 let timer   = null;
 
-// ============================================================
-// THEME + NAVBAR
-// ============================================================
-(function () {
-  const s = localStorage.getItem('theme');
-  const h = new Date().getHours();
-  document.documentElement.setAttribute('data-theme',
-    s || (h >= 19 || h < 6 ? 'dark' : 'light'));
-})();
-
-document.getElementById('themeBtn')?.addEventListener('click', () => {
-  const n = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-  document.documentElement.setAttribute('data-theme', n);
-  localStorage.setItem('theme', n);
-  document.getElementById('themeBtn').textContent = n === 'dark' ? '🌙' : '☀️';
-});
-
-window.addEventListener('scroll', () => {
-  document.getElementById('icNav')?.classList.toggle('ic-nav--scrolled', scrollY > 20);
-}, { passive: true });
-
-document.getElementById('mobileToggle')?.addEventListener('click', () => {
-  document.getElementById('mobileMenu')?.classList.toggle('ic-nav__mobile--open');
-});
-
-document.getElementById('loginBtn')?.addEventListener('click', () => {
-  window.islamiCalc?.getCurrentUser?.()
-    ? window.islamiCalc.showUserMenu?.()
-    : document.getElementById('loginModal')?.classList.add('ic-modal--open');
-});
-
-document.getElementById('modalBackdrop')?.addEventListener('click', () => {
-  document.getElementById('loginModal')?.classList.remove('ic-modal--open');
-});
-
-document.getElementById('guestBrowseBtn')?.addEventListener('click', () => {
-  document.getElementById('loginModal')?.classList.remove('ic-modal--open');
-});
-
-document.getElementById('googleLoginBtn')?.addEventListener('click', () => {
-  window.islamiCalc?.loginWithGoogle?.();
-});
-
-// ============================================================
-// HELPERS
-// ============================================================
-function getLevel(xp) {
-  for (let i = LEVELS.length - 1; i >= 0; i--)
-    if (xp >= LEVELS[i].min) return i;
-  return 0;
-}
-
-function getLevelData(xp)  { return LEVELS[getLevel(xp)]; }
-function getNextLevel(xp)  { const l = getLevel(xp); return l < LEVELS.length-1 ? LEVELS[l+1] : null; }
-
-function saveState() { localStorage.setItem('arena', JSON.stringify(state)); }
-
-function shuffle(arr) { return [...arr].sort(() => Math.random() - 0.5); }
-
-function getQuestions(cats, diff, count) {
-  let pool = QUESTIONS.filter(q => {
-    const catOk  = cats.includes('all') || cats.includes(q.cat);
-    const diffOk = diff === 'all' || q.diff === diff;
-    return catOk && diffOk;
-  });
-  return shuffle(pool).slice(0, count);
-}
-
-function showView(id) {
-  ['ar-dashboard', 'ar-level', 'ar-quiz', 'ar-result'].forEach(i => {
-    const el = document.getElementById(i);
-    if (el) el.style.display = 'none';
-  });
-  // ar-level is ar-screen (class based)
-  document.querySelectorAll('.ar-screen').forEach(e => e.classList.remove('on'));
-
-  const el = document.getElementById(id);
-  if (!el) return;
-  if (el.classList.contains('ar-screen')) el.classList.add('on');
-  else el.style.display = 'block';
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-// ============================================================
-// TOAST
-// ============================================================
-window.showToast = function(msg, cls = '') {
-  const el = document.getElementById('toast');
-  if (!el) return;
-  el.textContent = msg;
-  el.className   = 'ic-toast show ' + cls;
-  clearTimeout(el._t);
-  el._t = setTimeout(() => el.classList.remove('show'), 3000);
-};
 
 // ============================================================
 // INIT DASHBOARD
@@ -1645,7 +1552,12 @@ function replayQuiz() {
 // XP
 // ============================================================
 function addXP(amount, reason) {
-  window.islamiCalc?.addXP?.(amount, reason);
+  if (window.islamiCalc?.addXP) {
+    window.islamiCalc.addXP(amount, reason);
+  } else {
+    window.addEventListener('islamiCalcReady',
+      () => window.islamiCalc?.addXP?.(amount, reason), { once: true });
+  }
 }
 
 // ============================================================

@@ -374,7 +374,8 @@
 
 <div id="toast" class="toast"></div>
 
-<script type="module" src="/firebase.js"></script>
+<script type="module" src="/core/firebase.js"></script>
+  <script type="module" src="/core/app.js"></script>
 <script>
 // ===================================================================
 // بيانات الأنبياء الـ25
@@ -905,51 +906,6 @@ document.addEventListener("keydown", e => {
 
 // ================================================================
 // Theme
-// ================================================================
-const themeBtn  = document.getElementById("themeBtn");
-const iconSun   = document.getElementById("iconSun");
-const iconMoon  = document.getElementById("iconMoon");
-
-(function(){
-  const s = localStorage.getItem("theme") || "dark";
-  document.documentElement.setAttribute("data-theme", s);
-  iconSun.style.display  = s === "dark" ? "none"  : "block";
-  iconMoon.style.display = s === "dark" ? "block" : "none";
-})();
-
-themeBtn.addEventListener("click", () => {
-  const n = document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark";
-  document.documentElement.setAttribute("data-theme", n);
-  localStorage.setItem("theme", n);
-  iconSun.style.display  = n === "dark" ? "none"  : "block";
-  iconMoon.style.display = n === "dark" ? "block" : "none";
-});
-
-// ================================================================
-// Menu Toggle
-// ================================================================
-const menuToggle  = document.getElementById("menuToggle");
-const navMenu     = document.getElementById("navMenu");
-const iconMenuEl  = document.getElementById("iconMenu");
-const iconCloseEl = document.getElementById("iconClose");
-
-menuToggle.addEventListener("click", () => {
-  const open = navMenu.classList.toggle("open");
-  menuToggle.setAttribute("aria-expanded", open);
-  iconMenuEl.style.display  = open ? "none"  : "block";
-  iconCloseEl.style.display = open ? "block" : "none";
-});
-
-document.addEventListener("click", (e) => {
-  if (!menuToggle.contains(e.target) && !navMenu.contains(e.target)) {
-    navMenu.classList.remove("open");
-    iconMenuEl.style.display  = "block";
-    iconCloseEl.style.display = "none";
-  }
-});
-
-// ================================================================
-// Firebase — حالة تسجيل الدخول
 // ================================================================
 window.addEventListener("islamiCalcReady", () => {
   const user = window.islamiCalc?.getCurrentUser?.();

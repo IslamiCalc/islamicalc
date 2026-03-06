@@ -12,7 +12,9 @@
 .step-num{background:var(--primary);color:white;border-radius:50%;width:26px;height:26px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;flex-shrink:0;}
 .hadith-box{background:rgba(245,158,11,0.06);border-right:3px solid var(--gold);padding:12px 14px;border-radius:0 10px 10px 0;margin:10px 0;}
 .calc-row{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--border);font-size:13px;}
-.calc-row:last-child{border-bottom:none;}</style></head><body>
+.calc-row:last-child{border-bottom:none;}</style>  <script type="module" src="/core/firebase.js"></script>
+  <script type="module" src="/core/app.js"></script>
+</head><body>
 <nav class="navbar">
   <a href="../index.html" class="navbar-brand"><div class="navbar-logo">☪</div><span class="navbar-title">IslamiCalc</span></a>
   <div class="navbar-actions"><button class="theme-btn" id="themeBtn">🌙</button></div>
@@ -89,10 +91,6 @@
 </div></main>
 <div class="toast" id="toast"></div>
 <script>
-const themeBtn=document.getElementById("themeBtn");
-const htmlEl=document.documentElement;
-(function(){const s=localStorage.getItem("theme")||"dark";htmlEl.setAttribute("data-theme",s);themeBtn.textContent=s==="dark"?"☀️":"🌙";})();
-themeBtn.addEventListener("click",()=>{const n=htmlEl.getAttribute("data-theme")==="dark"?"light":"dark";htmlEl.setAttribute("data-theme",n);localStorage.setItem("theme",n);themeBtn.textContent=n==="dark"?"☀️":"🌙";});
 
 function sel(el){
   document.querySelectorAll(".type-btn").forEach(b=>b.classList.remove("active"));el.classList.add("active");

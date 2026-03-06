@@ -2217,153 +2217,96 @@ button, input, select, textarea { font-family: var(--font); }
   .ic-hero__bg { display: none !important; }
   body { background: #fff !important; color: #000 !important; }
 }
+
 /* ============================================================
-   EXTENSION v2.0 — New Pages (Zakat, Prayer, Athkar)
-   أضف هذا في نهاية style.css القديم
+   Additional Animations (used by inner pages)
    ============================================================ */
 
-/* ── Override Variables for New Pages ── */
-:root {
-  --r-2xl: 20px;
-  --s-7:   28px;
-  --text-xs:  12px;
-  --text-sm:  14px;
-  --text-base: 16px;
-  --text-lg:  18px;
-  --text-xl:  20px;
-  --text-2xl: 24px;
-}
-
-/* ── Modal (مشترك) ── */
-.ic-modal {
-  display:  none;
-  position: fixed;
-  inset:    0;
-  z-index:  200;
-  padding:  var(--s-4);
-  align-items: center;
-  justify-content: center;
-}
-
-.ic-modal--open { display: flex; }
-
-.ic-modal__backdrop {
-  position: absolute;
-  inset:    0;
-  background: rgba(0,0,0,0.75);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-}
-
-.ic-modal__box {
-  position:      relative;
-  background:    var(--surface);
-  border:        1px solid var(--border-2);
-  border-radius: var(--r-2xl);
-  padding:       var(--s-8) var(--s-6);
-  max-width:     420px;
-  width:         100%;
-  text-align:    center;
-  box-shadow:    var(--shadow-xl);
-  animation:     modalPop var(--t-base) var(--ease-spring);
-}
-
-.ic-modal__box::before {
-  content:  '';
-  position: absolute;
-  top: 0; right: 0; left: 0;
-  height: 2px;
-  background: linear-gradient(90deg, var(--em-600), var(--gd-400), var(--em-400));
-  border-radius: var(--r-2xl) var(--r-2xl) 0 0;
-}
-
-.ic-modal__icon  { font-size: 3rem; margin-bottom: var(--s-4); }
-.ic-modal__title { font-size: var(--text-xl); font-weight: 900; margin-bottom: var(--s-2); }
-.ic-modal__sub   { font-size: var(--text-sm); color: var(--text-2); margin-bottom: var(--s-6); line-height: 1.8; }
-.ic-modal__actions { display: flex; flex-direction: column; gap: var(--s-3); margin-bottom: var(--s-4); }
-.ic-modal__note  { font-size: var(--text-xs); color: var(--text-3); }
-.ic-modal__note a { color: var(--em-400); }
-
+/* Modal entry animation */
 @keyframes modalPop {
   from { transform: scale(0.85) translateY(20px); opacity: 0; }
-  to   { transform: scale(1)    translateY(0);    opacity: 1; }
+  to   { transform: scale(1) translateY(0); opacity: 1; }
 }
 
-/* ── Toast ── */
-.ic-toast {
-  position:      fixed;
-  bottom:        -80px;
-  left:          50%;
-  transform:     translateX(-50%);
-  z-index:       300;
-  background:    var(--surface-2);
-  border:        1px solid var(--border-2);
-  border-radius: var(--r-full);
-  padding:       12px var(--s-6);
-  font-size:     var(--text-sm);
-  font-weight:   700;
-  color:         var(--text-1);
-  white-space:   nowrap;
-  box-shadow:    var(--shadow-xl);
-  transition:    bottom var(--t-base) var(--ease-spring);
-  max-width:     90vw;
-  text-align:    center;
-}
-
-.ic-toast.show         { bottom: var(--s-8); }
-.ic-toast.toast-success{ background:rgba(16,185,129,0.1); border-color:rgba(16,185,129,0.3); color:#34d399; }
-.ic-toast.toast-error  { background:rgba(239,68,68,0.1);  border-color:rgba(239,68,68,0.3);  color:#f87171; }
-.ic-toast.toast-gold   { background:rgba(245,158,11,0.1); border-color:rgba(245,158,11,0.3); color:#fbbf24; }
-
-/* ── ic-btn--google & ic-btn--full (إذا ما موجودة) ── */
-.ic-btn--google {
-  background:   #fff;
-  border:       1px solid rgba(0,0,0,0.12);
-  color:        #1a1a1a;
-  box-shadow:   0 2px 8px rgba(0,0,0,0.1);
-}
-
-.ic-btn--google:hover {
-  box-shadow:  0 4px 16px rgba(0,0,0,0.15);
-  transform:   translateY(-1px);
-}
-
-.ic-btn--full { width: 100%; }
-
-/* ── Section Eyebrow (new pages) ── */
-.ic-section__eyebrow {
-  display:       inline-flex;
-  align-items:   center;
-  gap:           var(--s-2);
-  padding:       5px 14px;
-  background:    rgba(16,185,129,0.08);
-  border:        1px solid rgba(16,185,129,0.2);
-  border-radius: var(--r-full);
-  font-size:     var(--text-xs);
-  font-weight:   800;
-  color:         var(--em-400);
-}
-
-/* ── Skeleton ── */
+/* Skeleton shimmer alias */
 @keyframes shimmer {
   from { background-position: 200% 0; }
   to   { background-position: -200% 0; }
 }
 
-.ic-skeleton {
-  background: linear-gradient(
-    90deg,
-    var(--surface-2) 25%,
-    var(--surface-3) 50%,
-    var(--surface-2) 75%
-  );
-  background-size: 200% 100%;
-  animation: shimmer 1.5s infinite;
-  border-radius: var(--r-md);
+/* .ic-modal__box animation hook */
+.ic-modal--open .ic-modal__box {
+  animation: modalPop var(--t-base) var(--ease-spring);
 }
 
-/* ── Mobile Nav Toggle ── */
-@media (max-width: 640px) {
-  .ic-nav__links         { display: none; }
-  .ic-nav__mobile-toggle { display: flex; }
+/* ============================================================
+   XP Bar — مشترك لكل الصفحات (تُحقن ديناميكياً من app.js)
+   ============================================================ */
+.ic-xp-bar {
+  position: fixed;
+  top: 64px;
+  right: 0; left: 0;
+  z-index: 999;
+  height: 4px;
+  background: var(--bg-3);
+  overflow: visible;
+}
+
+.ic-xp-bar__inner {
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 6px var(--s-6) 0;
+  height: 28px;
+  background: var(--bg-2);
+  border-bottom: 1px solid var(--border);
+  font-size: var(--text-xs);
+}
+
+.ic-xp-bar__lvl  { font-size: 14px; }
+.ic-xp-bar__name { font-weight: 700; color: var(--gd-400); min-width: 60px; }
+
+.ic-xp-bar__track {
+  flex: 1;
+  height: 6px;
+  background: var(--bg-4);
+  border-radius: var(--r-full);
+  overflow: hidden;
+}
+
+.ic-xp-bar__fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--em-500), var(--gd-400));
+  border-radius: var(--r-full);
+  transition: width 0.6s var(--ease-out);
+  position: relative;
+}
+
+.ic-xp-bar__fill::after {
+  content: '';
+  position: absolute;
+  top: 0; right: 0; left: 0; bottom: 0;
+  background: linear-gradient(180deg, rgba(255,255,255,0.35) 0%, transparent 100%);
+  border-radius: var(--r-full);
+}
+
+.ic-xp-bar__pts {
+  font-weight: 700;
+  color: var(--text-3);
+  font-family: var(--font-en);
+  min-width: 70px;
+  text-align: left;
+}
+
+/* Body padding when XP bar is visible */
+body.has-xp-bar { padding-top: calc(64px + 28px) !important; }
+
+/* Hide when logged out */
+.ic-xp-bar--hidden { display: none; }
+
+[data-theme="light"] .ic-xp-bar__inner {
+  background: var(--surface);
+  border-bottom-color: var(--border);
 }
