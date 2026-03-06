@@ -9,8 +9,7 @@
   <link rel="stylesheet" href="/style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-  <script type="module" src="/core/firebase.js"></script>
-  <script type="module" src="/core/app.js"></script>
+  <script type="module" src="/firebase.js"></script>
 
   <style>
   /* ============================================================
@@ -496,6 +495,20 @@
     .at-tasbih-tap { width: 110px; height: 110px; font-size: 2.2rem; }
   }
   </style>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <style>
+    [data-lucide] {
+      stroke: currentColor;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      fill: none;
+      flex-shrink: 0;
+      vertical-align: middle;
+    }
+    .ic-nav__link-icon[data-lucide] { width:17px;height:17px;margin-left:4px;opacity:.85; }
+    .ic-nav__link:hover [data-lucide], .ic-nav__link.active [data-lucide] { opacity:1; }
+  </style>
 </head>
 <body>
 
@@ -514,12 +527,12 @@
       <a href="/arena"  class="ic-nav__link">🏆 الميدان</a>
       <a href="/zakat"  class="ic-nav__link">💰 الزكاة</a>
       <a href="/prayer" class="ic-nav__link">🕌 الصلاة</a>
-      <a href="/athkar" class="ic-nav__link active">📿 الأذكار</a>
+      <a href="/athkar" class="ic-nav__link active"><i data-lucide="circle-dot" style="width:16px;height:16px;display:inline-block;vertical-align:middle;"></i> الأذكار</a>
     </nav>
     <div class="ic-nav__actions">
-      <button id="themeBtn" class="ic-nav__icon-btn">🌙</button>
+      <button id="themeBtn" class="ic-nav__icon-btn"><i data-lucide="moon" style="width:16px;height:16px;display:inline-block;vertical-align:middle;"></i></button>
       <button id="loginBtn" class="ic-nav__login-btn">دخول</button>
-      <button class="ic-nav__mobile-toggle" id="mobileToggle">☰</button>
+      <button class="ic-nav__mobile-toggle" id="mobileToggle"><i data-lucide="menu" style="width:20px;height:20px;display:inline-block;vertical-align:middle;"></i></button>
     </div>
   </div>
   <div class="ic-nav__mobile" id="mobileMenu">
@@ -528,7 +541,7 @@
     <a href="/arena">🏆 الميدان</a>
     <a href="/zakat">💰 الزكاة</a>
     <a href="/prayer">🕌 الصلاة</a>
-    <a href="/athkar">📿 الأذكار</a>
+    <a href="/athkar"><i data-lucide="circle-dot" style="width:16px;height:16px;display:inline-block;vertical-align:middle;"></i> الأذكار</a>
   </div>
 </header>
 
@@ -537,7 +550,7 @@
      ============================================================ -->
 <div class="at-hero">
   <div class="at-hero__inner">
-    <div class="ic-section__eyebrow" style="margin-bottom:var(--s-4)">📿 الأذكار والأدعية</div>
+    <div class="ic-section__eyebrow" style="margin-bottom:var(--s-4)"><i data-lucide="circle-dot" style="width:16px;height:16px;display:inline-block;vertical-align:middle;"></i> الأذكار والأدعية</div>
     <h1 class="at-hero__title">
       اذكر الله وأنت مطمئن<br>
       <span style="background:linear-gradient(135deg,var(--at-1),var(--at-gd));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">﴿أَلَا بِذِكْرِ اللَّهِ تَطْمَئِنُّ الْقُلُوبُ﴾</span>
@@ -576,7 +589,7 @@
   <div id="at-dashboard">
 
     <!-- Tasbih -->
-    <div class="at-sec">📿 عداد التسبيح</div>
+    <div class="at-sec"><i data-lucide="circle-dot" style="width:16px;height:16px;display:inline-block;vertical-align:middle;"></i> عداد التسبيح</div>
     <div class="at-tasbih-card">
       <div class="at-tasbih-num"   id="tsb-num">0</div>
       <div class="at-tasbih-label" id="tsb-label">سبحان الله</div>
@@ -586,7 +599,7 @@
       <div class="at-tasbih-circles" id="tsb-dots">
         <!-- 33 dots injected by JS -->
       </div>
-      <button class="at-tasbih-tap" id="tsb-btn" onclick="tapTasbih()">📿</button>
+      <button class="at-tasbih-tap" id="tsb-btn" onclick="tapTasbih()"><i data-lucide="circle-dot" style="width:16px;height:16px;display:inline-block;vertical-align:middle;"></i></button>
       <div class="at-tasbih-row">
         <select class="at-tasbih-select" id="tsb-select" onchange="changeTasbih()">
           <option value="subhan">سبحان الله</option>
@@ -598,7 +611,7 @@
           <option value="salah">اللهم صلِّ على محمد</option>
         </select>
         <span class="at-tasbih-rounds" id="tsb-rounds">0 جولة</span>
-        <button class="at-tasbih-reset" onclick="resetTasbih()">🔄 إعادة</button>
+        <button class="at-tasbih-reset" onclick="resetTasbih()"><i data-lucide="rotate-ccw" style="width:15px;height:15px;display:inline-block;vertical-align:middle;"></i> إعادة</button>
       </div>
       <div class="at-tasbih-total">
         إجمالي تسبيحاتك اليوم: <span id="tsb-total">0</span>
@@ -623,7 +636,7 @@
     </div>
     <div id="dhikr-list"></div>
     <div id="all-done-banner" style="display:none;text-align:center;padding:var(--s-8) 0">
-      <div style="font-size:3rem;margin-bottom:var(--s-3)">✅</div>
+      <div style="font-size:3rem;margin-bottom:var(--s-3)"><i data-lucide="check-circle" style="width:16px;height:16px;display:inline-block;vertical-align:middle;"></i></div>
       <div style="font-size:var(--text-2xl);font-weight:900;color:var(--at-em);margin-bottom:var(--s-2)">أتممت الأذكار!</div>
       <div style="font-size:var(--text-sm);color:var(--text-2)">بارك الله فيك — داوم على الذكر كل يوم</div>
     </div>
@@ -635,7 +648,7 @@
 <div id="loginModal" class="ic-modal">
   <div class="ic-modal__backdrop" id="modalBackdrop"></div>
   <div class="ic-modal__box">
-    <div class="ic-modal__icon">📿</div>
+    <div class="ic-modal__icon"><i data-lucide="circle-dot" style="width:16px;height:16px;display:inline-block;vertical-align:middle;"></i></div>
     <h3 class="ic-modal__title">سجّل دخولك لحفظ تقدمك</h3>
     <p class="ic-modal__sub">تقدمك في الأذكار والتسبيح يُحفظ ويُزامَن عبر أجهزتك</p>
     <div class="ic-modal__actions">
@@ -656,16 +669,16 @@
 // DATA — CATEGORIES
 // ============================================================
 const CATS = [
-  { id:'sabah',    name:'أذكار الصباح',       icon:'🌅', color:'#fbbf24', count:12 },
+  { id:'sabah',    name:'أذكار الصباح',       icon:'<i data-lucide="sunrise" style="width:16px;height:16px;display:inline-block;vertical-align:middle;"></i>', color:'#fbbf24', count:12 },
   { id:'masaa',    name:'أذكار المساء',        icon:'🌆', color:'#f87171', count:12 },
-  { id:'nawm',     name:'أذكار النوم',         icon:'🌙', color:'#a78bfa', count:8  },
-  { id:'istiqadh', name:'أذكار الاستيقاظ',    icon:'☀️', color:'#fb923c', count:5  },
+  { id:'nawm',     name:'أذكار النوم',         icon:'<i data-lucide="moon" style="width:16px;height:16px;display:inline-block;vertical-align:middle;"></i>', color:'#a78bfa', count:8  },
+  { id:'istiqadh', name:'أذكار الاستيقاظ',    icon:'<i data-lucide="sun" style="width:16px;height:16px;display:inline-block;vertical-align:middle;"></i>', color:'#fb923c', count:5  },
   { id:'salah',    name:'أذكار بعد الصلاة',   icon:'🕌', color:'#34d399', count:10 },
   { id:'quran',    name:'أذكار قرآنية',        icon:'📖', color:'#58a6ff', count:7  },
   { id:'akl',      name:'أذكار الطعام',        icon:'🍽️', color:'#d2a8ff', count:4  },
   { id:'safar',    name:'أذكار السفر',         icon:'✈️', color:'#60a5fa', count:6  },
   { id:'masjid',   name:'دخول المسجد وخروجه', icon:'🕌', color:'#4ade80', count:4  },
-  { id:'doaa',     name:'أدعية مأثورة',        icon:'🤲', color:'#c084fc', count:10 },
+  { id:'doaa',     name:'أدعية مأثورة',        icon:'<i data-lucide="hands" style="width:16px;height:16px;display:inline-block;vertical-align:middle;"></i>', color:'#c084fc', count:10 },
 ];
 
 // ============================================================
@@ -798,24 +811,65 @@ let appState = JSON.parse(localStorage.getItem('athkar') || 'null') || {
 let activeCat  = null;
 let catCounters = {}; // { idx: current_count }
 
+// ============================================================
+// THEME + NAV
+// ============================================================
+(function () {
+  const s = localStorage.getItem('theme');
+  const h = new Date().getHours();
+  document.documentElement.setAttribute('data-theme',
+    s || (h >= 19 || h < 6 ? 'dark' : 'light'));
+})();
 
+document.getElementById('themeBtn')?.addEventListener('click', () => {
+  const n = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', n);
+  localStorage.setItem('theme', n);
+  document.getElementById('themeBtn').textContent = n === 'dark' ? '<i data-lucide="moon" style="width:16px;height:16px;display:inline-block;vertical-align:middle;"></i>' : '<i data-lucide="sun" style="width:16px;height:16px;display:inline-block;vertical-align:middle;"></i>';
+});
 
+window.addEventListener('scroll', () => {
+  document.getElementById('icNav')?.classList.toggle('ic-nav--scrolled', scrollY > 20);
+}, { passive: true });
 
+document.getElementById('mobileToggle')?.addEventListener('click', () => {
+  document.getElementById('mobileMenu')?.classList.toggle('ic-nav__mobile--open');
+});
 
+document.getElementById('loginBtn')?.addEventListener('click', () => {
+  window.islamiCalc?.getCurrentUser?.()
+    ? window.islamiCalc.showUserMenu?.()
+    : document.getElementById('loginModal')?.classList.add('ic-modal--open');
+});
 
+document.getElementById('modalBackdrop')?.addEventListener('click', () => {
+  document.getElementById('loginModal')?.classList.remove('ic-modal--open');
+});
 
+document.getElementById('guestBrowseBtn')?.addEventListener('click', () => {
+  document.getElementById('loginModal')?.classList.remove('ic-modal--open');
+});
+
+document.getElementById('googleLoginBtn')?.addEventListener('click', () => {
+  window.islamiCalc?.loginWithGoogle?.();
+});
 
 // ============================================================
 // HELPERS
 // ============================================================
+window.showToast = function(msg, cls = '') {
+  const el = document.getElementById('toast');
+  if (!el) return;
+  el.textContent = msg;
+  el.className   = 'ic-toast show ' + cls;
+  clearTimeout(el._t);
+  el._t = setTimeout(() => el.classList.remove('show'), 3500);
+};
 
 function safeAddXP(amount, reason) {
-  if (window.islamiCalc?.addXP) {
-    window.islamiCalc.addXP(amount, reason);
-  } else {
-    window.addEventListener('islamiCalcReady',
-      () => window.islamiCalc?.addXP?.(amount, reason), { once: true });
-  }
+  if (window.islamiCalc) window.islamiCalc.addXP?.(amount, reason);
+  else window.addEventListener('islamiCalcReady',
+    () => window.islamiCalc?.addXP?.(amount, reason), { once: true });
 }
 
 function saveState() { localStorage.setItem('athkar', JSON.stringify(appState)); }
@@ -870,7 +924,7 @@ function renderCatGrid() {
         <div class="at-cat__prog">
           <div class="at-cat__fill" style="width:${pct}%;background:${isDone ? 'var(--at-em)' : cat.color}"></div>
         </div>
-        <div class="at-cat__pct">${isDone ? '✅ مكتمل' : pct + '% مكتمل'}</div>
+        <div class="at-cat__pct">${isDone ? '<i data-lucide="check-circle" style="width:16px;height:16px;display:inline-block;vertical-align:middle;"></i> مكتمل' : pct + '% مكتمل'}</div>
       </div>`;
   }).join('');
 }
@@ -941,7 +995,7 @@ function renderDhikrList(catId, dhikrs) {
             id="cb-${i}"
             onclick="tapCounter(${i})"
             ${isDone ? 'disabled' : ''}>
-            ${isDone ? '✅' : '📿'}
+            ${isDone ? '<i data-lucide="check-circle" style="width:16px;height:16px;display:inline-block;vertical-align:middle;"></i>' : '<i data-lucide="circle-dot" style="width:16px;height:16px;display:inline-block;vertical-align:middle;"></i>'}
           </button>
           <div class="at-counter-info">
             <div class="at-counter-nums">
@@ -949,7 +1003,7 @@ function renderDhikrList(catId, dhikrs) {
               <span class="at-counter-sep">/</span>
               <span class="at-counter-tot">${tot}</span>
             </div>
-            <div class="at-counter-lbl">${isDone ? 'اكتمل ✅' : 'اضغط للعدّ'}</div>
+            <div class="at-counter-lbl">${isDone ? 'اكتمل <i data-lucide="check-circle" style="width:16px;height:16px;display:inline-block;vertical-align:middle;"></i>' : 'اضغط للعدّ'}</div>
             <div class="at-mini-track">
               <div class="at-mini-fill" id="mf-${i}" style="width:${pct}%"></div>
             </div>
@@ -961,7 +1015,7 @@ function renderDhikrList(catId, dhikrs) {
         </div>
 
         <div class="at-done-badge ${isDone ? 'show' : ''}" id="db-${i}">
-          ✅ اكتملت التسبيحة — بارك الله فيك
+          <i data-lucide="check-circle" style="width:16px;height:16px;display:inline-block;vertical-align:middle;"></i> اكتملت التسبيحة — بارك الله فيك
         </div>
       </div>`;
   }).join('');
@@ -994,7 +1048,7 @@ function tapCounter(idx) {
   if (fillEl)  fillEl.style.width    = pct + '%';
 
   if (done) {
-    if (btnEl)   { btnEl.disabled = true; btnEl.classList.add('done'); btnEl.textContent = '✅'; }
+    if (btnEl)   { btnEl.disabled = true; btnEl.classList.add('done'); btnEl.textContent = '<i data-lucide="check-circle" style="width:16px;height:16px;display:inline-block;vertical-align:middle;"></i>'; }
     if (badgeEl) badgeEl.classList.add('show');
     if (cardEl)  cardEl.classList.add('done');
 
@@ -1004,7 +1058,7 @@ function tapCounter(idx) {
     saveState();
 
     safeAddXP(5, 'dhikr_done');
-    showToast('✅ ' + dhikrs[idx].ar.slice(0, 30) + '...', 'toast-success');
+    showToast('<i data-lucide="check-circle" style="width:16px;height:16px;display:inline-block;vertical-align:middle;"></i> ' + dhikrs[idx].ar.slice(0, 30) + '...', 'toast-success');
 
     // Check if all done
     checkAllDone();
@@ -1032,7 +1086,7 @@ function checkAllDone() {
 
     safeAddXP(50, 'cat_done');
     showToast('🎉 أتممت ' + CATS.find(c => c.id === activeCat)?.name + '!', 'toast-gold');
-    window.islamiCalc?.logActivity?.('أتمّ فئة أذكار: ' + activeCat, 'athkar_done', '📿', '', 50);
+    window.islamiCalc?.logActivity?.('أتمّ فئة أذكار: ' + activeCat, 'athkar_done', '<i data-lucide="circle-dot" style="width:16px;height:16px;display:inline-block;vertical-align:middle;"></i>', '', 50);
   }
 }
 
@@ -1168,5 +1222,6 @@ renderCatGrid();
 updateHeroStats();
 </script>
 
+  <script>if(typeof lucide!=='undefined')lucide.createIcons();</script>
 </body>
 </html>

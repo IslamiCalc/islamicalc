@@ -24,6 +24,26 @@
   <!-- Firebase + App (module) -->
   <script type="module" src="/core/firebase.js"></script>
   <script type="module" src="/core/app.js"></script>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <style>
+    /* Lucide Icons */
+    [data-lucide] {
+      stroke: currentColor;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      fill: none;
+      flex-shrink: 0;
+    }
+    .ic-nav__link-icon[data-lucide] {
+      width: 17px; height: 17px;
+      margin-left: 4px;
+      opacity: 0.85;
+    }
+    .ic-nav__link:hover [data-lucide],
+    .ic-nav__link.active [data-lucide] { opacity: 1; }
+    [data-theme="light"] [data-lucide] { stroke: currentColor; }
+  </style>
 </head>
 
 <body>
@@ -36,7 +56,7 @@
 
       <!-- Logo -->
       <a href="/" class="ic-nav__logo">
-        <div class="ic-nav__logo-mark">☪️</div>
+        
         <span class="ic-nav__logo-text">IslamiCalc</span>
       </a>
 
@@ -44,42 +64,42 @@
       <ul class="ic-nav__links" role="list">
         <li>
           <a href="/khatma" class="ic-nav__link">
-            <span class="ic-nav__link-icon">📖</span> ختمة
+            <i data-lucide="book-open" style="width:17px;height:17px;display:inline-block;vertical-align:middle;" class="ic-nav__link-icon"></i> ختمة
           </a>
         </li>
         <li>
           <a href="/prayer" class="ic-nav__link">
-            <span class="ic-nav__link-icon">🕌</span> صلاة
+            <i data-lucide="clock" style="width:17px;height:17px;display:inline-block;vertical-align:middle;" class="ic-nav__link-icon"></i> صلاة
           </a>
         </li>
         <li>
           <a href="/athkar" class="ic-nav__link">
-            <span class="ic-nav__link-icon">📿</span> أذكار
+            <i data-lucide="circle-dot" style="width:17px;height:17px;display:inline-block;vertical-align:middle;" class="ic-nav__link-icon"></i> أذكار
           </a>
         </li>
         <li>
           <a href="/arena" class="ic-nav__link">
-            <span class="ic-nav__link-icon">⚔️</span> ميدان
+            <i data-lucide="swords" style="width:17px;height:17px;display:inline-block;vertical-align:middle;" class="ic-nav__link-icon"></i> ميدان
           </a>
         </li>
         <li>
           <a href="/zakat" class="ic-nav__link">
-            <span class="ic-nav__link-icon">💰</span> زكاة
+            <i data-lucide="coins" style="width:17px;height:17px;display:inline-block;vertical-align:middle;" class="ic-nav__link-icon"></i> زكاة
           </a>
         </li>
 
         <!-- أدوات Dropdown -->
         <li class="ic-nav__dropdown" id="toolsDropdown">
           <button class="ic-nav__link" id="toolsBtn" aria-expanded="false" aria-haspopup="true">
-            <span class="ic-nav__link-icon">🧮</span>
+            <i data-lucide="calculator" style="width:17px;height:17px;display:inline-block;vertical-align:middle;" class="ic-nav__link-icon"></i>
             أدوات
             <span class="ic-nav__chevron">▾</span>
           </button>
           <div class="ic-nav__dropdown-panel" id="toolsPanel" role="menu">
-            <a href="/hijri"       role="menuitem">📅 التقويم الهجري</a>
-            <a href="/inheritance" role="menuitem">⚖️ حاسبة الميراث</a>
-            <a href="/fasting"     role="menuitem">🌙 قضاء الصيام</a>
-            <a href="/kafara"      role="menuitem">📜 الكفارة</a>
+            <a href="/hijri"       role="menuitem"><i data-lucide="calendar" style="width:15px;height:15px;display:inline-block;vertical-align:middle;"></i> التقويم الهجري</a>
+            <a href="/inheritance" role="menuitem"><i data-lucide="scale" style="width:15px;height:15px;display:inline-block;vertical-align:middle;"></i> حاسبة الميراث</a>
+            <a href="/fasting"     role="menuitem"><i data-lucide="moon" style="width:15px;height:15px;display:inline-block;vertical-align:middle;"></i> قضاء الصيام</a>
+            <a href="/kafara"      role="menuitem"><i data-lucide="scroll" style="width:15px;height:15px;display:inline-block;vertical-align:middle;"></i> الكفارة</a>
           </div>
         </li>
       </ul>
@@ -102,7 +122,7 @@
 
       <!-- Mobile Toggle -->
       <button class="ic-nav__mobile-toggle" id="mobileToggle" aria-label="القائمة" aria-expanded="false">
-        ☰
+        <i data-lucide="menu" style="width:20px;height:20px;display:inline-block;vertical-align:middle;"></i>
       </button>
     </div>
 
@@ -113,10 +133,10 @@
       <a href="/athkar">📿 الأذكار والتسبيح</a>
       <a href="/arena">⚔️ الميدان الديني</a>
       <a href="/zakat">💰 حاسبة الزكاة</a>
-      <a href="/hijri">📅 التقويم الهجري</a>
-      <a href="/inheritance">⚖️ حاسبة الميراث</a>
-      <a href="/fasting">🌙 قضاء الصيام</a>
-      <a href="/kafara">📜 الكفارة</a>
+      <a href="/hijri"><i data-lucide="calendar" style="width:15px;height:15px;display:inline-block;vertical-align:middle;"></i> التقويم الهجري</a>
+      <a href="/inheritance"><i data-lucide="scale" style="width:15px;height:15px;display:inline-block;vertical-align:middle;"></i> حاسبة الميراث</a>
+      <a href="/fasting"><i data-lucide="moon" style="width:15px;height:15px;display:inline-block;vertical-align:middle;"></i> قضاء الصيام</a>
+      <a href="/kafara"><i data-lucide="scroll" style="width:15px;height:15px;display:inline-block;vertical-align:middle;"></i> الكفارة</a>
       <div class="ic-nav__mobile-cta">
         <button class="ic-btn ic-btn--primary ic-btn--full" id="mobileLoginBtn"
                 onclick="document.getElementById('loginBtn').click()">
@@ -167,10 +187,10 @@
       <!-- Social Proof -->
       <div class="ic-hero__proof">
         <div class="ic-hero__proof-avatars">
-          <div class="ic-avatar ic-avatar--xs">🧑</div>
-          <div class="ic-avatar ic-avatar--xs">👩</div>
-          <div class="ic-avatar ic-avatar--xs">👨</div>
-          <div class="ic-avatar ic-avatar--xs">🧕</div>
+          <div class="ic-avatar ic-avatar--xs"><i data-lucide="user" style="width:16px;height:16px;display:inline-block;vertical-align:middle;"></i></div>
+          <div class="ic-avatar ic-avatar--xs"><i data-lucide="user" style="width:16px;height:16px;display:inline-block;vertical-align:middle;"></i></div>
+          <div class="ic-avatar ic-avatar--xs"><i data-lucide="user" style="width:16px;height:16px;display:inline-block;vertical-align:middle;"></i></div>
+          <div class="ic-avatar ic-avatar--xs"><i data-lucide="user" style="width:16px;height:16px;display:inline-block;vertical-align:middle;"></i></div>
         </div>
         <span class="ic-hero__proof-text">+12,000 مستخدم نشط</span>
       </div>
@@ -225,7 +245,7 @@
       <!-- XP Mini Card -->
       <div class="ic-card ic-card--3d ic-card--xp">
         <div class="ic-card__header">
-          <span>⚡ نقاط XP</span>
+          <span><i data-lucide="zap" style="width:16px;height:16px;display:inline-block;vertical-align:middle;"></i> نقاط XP</span>
           <span class="ic-text--gold" id="heroXPDisplay">— نقطة</span>
         </div>
         <div class="ic-xp-mini">
@@ -360,7 +380,7 @@
         <!-- Leaderboard Preview -->
         <div class="ic-card ic-card--3d ic-card--leaderboard" aria-label="لوحة المتصدرين">
           <div class="ic-card__header">
-            <span>🏆 المتصدرون</span>
+            <span><i data-lucide="trophy" style="width:16px;height:16px;display:inline-block;vertical-align:middle;"></i> المتصدرون</span>
             <span class="ic-badge ic-badge--live">● مباشر</span>
           </div>
           <div class="ic-lb-list" id="heroLeaderboard">
@@ -450,7 +470,7 @@
   <div class="ic-modal" id="loginModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
     <div class="ic-modal__backdrop" id="modalBackdrop"></div>
     <div class="ic-modal__box">
-      <button class="ic-modal__close" id="modalCloseBtn" aria-label="إغلاق">✕</button>
+      <button class="ic-modal__close" id="modalCloseBtn" aria-label="إغلاق"><i data-lucide="x" style="width:18px;height:18px;display:inline-block;vertical-align:middle;"></i></button>
       <div class="ic-modal__icon">☪️</div>
       <h2 class="ic-modal__title" id="modalTitle">أهلاً بك في IslamiCalc</h2>
       <p class="ic-modal__sub">سجّل دخولك لحفظ تقدمك وكسب نقاط XP وشارات</p>
@@ -526,5 +546,8 @@
     });
   </script>
 
+  <script>
+    if (typeof lucide !== 'undefined') lucide.createIcons();
+  </script>
 </body>
 </html>

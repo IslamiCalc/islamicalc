@@ -9,8 +9,7 @@
   <link rel="stylesheet" href="/style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-  <script type="module" src="/core/firebase.js"></script>
-  <script type="module" src="/core/app.js"></script>
+  <script type="module" src="/firebase.js"></script>
 
   <script type="application/ld+json">
   {"@context":"https://schema.org","@type":"WebPage","name":"حاسبة الزكاة الإسلامية","description":"احسب زكاة المال والذهب والفضة والتجارة والأسهم بدقة شرعية","url":"https://islamicalc.com/zakat/"}
@@ -547,6 +546,20 @@
     .zk-result__num { font-size: 1.8rem; }
   }
   </style>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <style>
+    [data-lucide] {
+      stroke: currentColor;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      fill: none;
+      flex-shrink: 0;
+      vertical-align: middle;
+    }
+    .ic-nav__link-icon[data-lucide] { width:17px;height:17px;margin-left:4px;opacity:.85; }
+    .ic-nav__link:hover [data-lucide], .ic-nav__link.active [data-lucide] { opacity:1; }
+  </style>
 </head>
 <body>
 
@@ -563,21 +576,21 @@
       <a href="/"       class="ic-nav__link">🏠 الرئيسية</a>
       <a href="/khatma" class="ic-nav__link">📖 الختمة</a>
       <a href="/arena"  class="ic-nav__link">🏆 الميدان</a>
-      <a href="/zakat"  class="ic-nav__link active">💰 الزكاة</a>
+      <a href="/zakat"  class="ic-nav__link active"><i data-lucide="coins" style="width:18px;height:18px;display:inline-block;vertical-align:middle;"></i> الزكاة</a>
       <a href="/prayer" class="ic-nav__link">🕌 الصلاة</a>
       <a href="/athkar" class="ic-nav__link">📿 الأذكار</a>
     </nav>
     <div class="ic-nav__actions">
       <button id="themeBtn" class="ic-nav__icon-btn">🌙</button>
       <button id="loginBtn" class="ic-nav__login-btn">دخول</button>
-      <button class="ic-nav__mobile-toggle" id="mobileToggle">☰</button>
+      <button class="ic-nav__mobile-toggle" id="mobileToggle"><i data-lucide="menu" style="width:20px;height:20px;display:inline-block;vertical-align:middle;"></i></button>
     </div>
   </div>
   <div class="ic-nav__mobile" id="mobileMenu">
     <a href="/">🏠 الرئيسية</a>
     <a href="/khatma">📖 الختمة</a>
     <a href="/arena">🏆 الميدان</a>
-    <a href="/zakat">💰 الزكاة</a>
+    <a href="/zakat"><i data-lucide="coins" style="width:18px;height:18px;display:inline-block;vertical-align:middle;"></i> الزكاة</a>
     <a href="/prayer">🕌 الصلاة</a>
     <a href="/athkar">📿 الأذكار</a>
   </div>
@@ -588,7 +601,7 @@
      ============================================================ -->
 <div class="zk-hero">
   <div class="zk-hero__inner">
-    <div class="ic-section__eyebrow" style="margin-bottom:var(--s-4)">💰 الركن الثالث</div>
+    <div class="ic-section__eyebrow" style="margin-bottom:var(--s-4)"><i data-lucide="coins" style="width:18px;height:18px;display:inline-block;vertical-align:middle;"></i> الركن الثالث</div>
     <h1 class="zk-hero__title">
       حاسبة الزكاة الإسلامية<br>
       <span style="background:linear-gradient(135deg,var(--zk-1),var(--zk-3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">بدقة شرعية موثّقة</span>
@@ -651,11 +664,11 @@
   <!-- Tab Bar -->
   <div class="zk-tabs">
     <button class="zk-tab active" data-tab="money"   onclick="switchTab('money')">💵 المال</button>
-    <button class="zk-tab"        data-tab="gold"    onclick="switchTab('gold')">🥇 الذهب</button>
+    <button class="zk-tab"        data-tab="gold"    onclick="switchTab('gold')"><i data-lucide="circle-dollar-sign" style="width:16px;height:16px;display:inline-block;vertical-align:middle;"></i> الذهب</button>
     <button class="zk-tab"        data-tab="silver"  onclick="switchTab('silver')">🥈 الفضة</button>
     <button class="zk-tab"        data-tab="trade"   onclick="switchTab('trade')">🏪 التجارة</button>
     <button class="zk-tab"        data-tab="stocks"  onclick="switchTab('stocks')">📈 الأسهم</button>
-    <button class="zk-tab"        data-tab="total"   onclick="switchTab('total')">📊 الإجمالي</button>
+    <button class="zk-tab"        data-tab="total"   onclick="switchTab('total')"><i data-lucide="bar-chart-2" style="width:15px;height:15px;display:inline-block;vertical-align:middle;"></i> الإجمالي</button>
   </div>
 
   <!-- ══════════════════════════════════════
@@ -726,7 +739,7 @@
         <div class="zk-result__actions">
           <button class="zk-act-btn share" onclick="shareResult('money')">📤 مشاركة</button>
           <button class="zk-act-btn copy"  onclick="copyResult('money')">📋 نسخ</button>
-          <button class="zk-act-btn reset" onclick="resetTab('money')">🔄 إعادة</button>
+          <button class="zk-act-btn reset" onclick="resetTab('money')"><i data-lucide="rotate-ccw" style="width:15px;height:15px;display:inline-block;vertical-align:middle;"></i> إعادة</button>
         </div>
       </div>
     </div>
@@ -737,7 +750,7 @@
   ══════════════════════════════════════ -->
   <div class="zk-card" id="tab-gold">
     <div class="zk-card-head">
-      <div class="zk-card-icon">🥇</div>
+      <div class="zk-card-icon"><i data-lucide="circle-dollar-sign" style="width:16px;height:16px;display:inline-block;vertical-align:middle;"></i></div>
       <div>
         <div class="zk-card-title">زكاة الذهب</div>
         <div class="zk-card-src">المصدر: <a href="https://islamqa.info/ar/214221" target="_blank">islamqa.info #214221</a> + <a href="https://islamqa.info/ar/145545" target="_blank">#145545</a></div>
@@ -752,7 +765,7 @@
 
       <div class="zk-fields zk-fields--3">
         <div class="zk-field">
-          <div class="zk-field__lbl"><span class="zk-field__icon">⚖️</span> الوزن الكلي (جرام)</div>
+          <div class="zk-field__lbl"><span class="zk-field__icon"><i data-lucide="scale" style="width:16px;height:16px;display:inline-block;vertical-align:middle;"></i></span> الوزن الكلي (جرام)</div>
           <div class="zk-input-wrap">
             <input class="zk-input" type="number" id="goldWeight" placeholder="مثال: 120" min="0" step="0.01" inputmode="decimal">
             <span class="zk-input-unit">جرام</span>
@@ -780,19 +793,19 @@
       <div class="zk-field" style="margin-bottom:var(--s-4)">
         <div class="zk-field__lbl"><span class="zk-field__icon">💍</span> الغرض من الذهب</div>
         <select class="zk-select" id="goldPurpose" onchange="onGoldPurposeChange()">
-          <option value="savings">💰 للادخار أو الاستثمار — زكاته واجبة اتفاقاً</option>
+          <option value="savings"><i data-lucide="coins" style="width:18px;height:18px;display:inline-block;vertical-align:middle;"></i> للادخار أو الاستثمار — زكاته واجبة اتفاقاً</option>
           <option value="jewelry">💍 للزينة الشخصية — فيه خلاف بين العلماء</option>
         </select>
         <div class="zk-jewelry-note" id="jewelry-note">
           <strong>خلاف العلماء في ذهب الزينة:</strong><br>
           • <strong>الجمهور</strong> (مالك + الشافعي + أحمد): لا زكاة في ذهب الزينة المُستخدَم<br>
           • <strong>الأحناف + ابن باز رحمه الله</strong>: تجب الزكاة احتياطاً<br>
-          ✅ <strong>الأحوط والأبرأ للذمة: إخراج الزكاة</strong><br>
+          <i data-lucide="check-circle" style="width:15px;height:15px;display:inline-block;vertical-align:middle;"></i> <strong>الأحوط والأبرأ للذمة: إخراج الزكاة</strong><br>
           المصدر: <a href="https://binbaz.org.sa" target="_blank">binbaz.org.sa</a>
         </div>
       </div>
 
-      <button class="zk-calc-btn" onclick="calcGold()">🥇 احسب زكاة الذهب</button>
+      <button class="zk-calc-btn" onclick="calcGold()"><i data-lucide="circle-dollar-sign" style="width:16px;height:16px;display:inline-block;vertical-align:middle;"></i> احسب زكاة الذهب</button>
 
       <div class="zk-result" id="res-gold">
         <div class="zk-result__grid">
@@ -811,7 +824,7 @@
         <div class="zk-result__actions">
           <button class="zk-act-btn share" onclick="shareResult('gold')">📤 مشاركة</button>
           <button class="zk-act-btn copy"  onclick="copyResult('gold')">📋 نسخ</button>
-          <button class="zk-act-btn reset" onclick="resetTab('gold')">🔄 إعادة</button>
+          <button class="zk-act-btn reset" onclick="resetTab('gold')"><i data-lucide="rotate-ccw" style="width:15px;height:15px;display:inline-block;vertical-align:middle;"></i> إعادة</button>
         </div>
       </div>
     </div>
@@ -836,7 +849,7 @@
 
       <div class="zk-fields zk-fields--2">
         <div class="zk-field">
-          <div class="zk-field__lbl"><span class="zk-field__icon">⚖️</span> وزن الفضة (جرام)</div>
+          <div class="zk-field__lbl"><span class="zk-field__icon"><i data-lucide="scale" style="width:16px;height:16px;display:inline-block;vertical-align:middle;"></i></span> وزن الفضة (جرام)</div>
           <div class="zk-input-wrap">
             <input class="zk-input" type="number" id="silverWeight" placeholder="مثال: 700" min="0" step="0.01" inputmode="decimal">
             <span class="zk-input-unit">جرام</span>
@@ -869,7 +882,7 @@
         <div class="zk-result__actions">
           <button class="zk-act-btn share" onclick="shareResult('silver')">📤 مشاركة</button>
           <button class="zk-act-btn copy"  onclick="copyResult('silver')">📋 نسخ</button>
-          <button class="zk-act-btn reset" onclick="resetTab('silver')">🔄 إعادة</button>
+          <button class="zk-act-btn reset" onclick="resetTab('silver')"><i data-lucide="rotate-ccw" style="width:15px;height:15px;display:inline-block;vertical-align:middle;"></i> إعادة</button>
         </div>
       </div>
     </div>
@@ -941,7 +954,7 @@
         <div class="zk-result__actions">
           <button class="zk-act-btn share" onclick="shareResult('trade')">📤 مشاركة</button>
           <button class="zk-act-btn copy"  onclick="copyResult('trade')">📋 نسخ</button>
-          <button class="zk-act-btn reset" onclick="resetTab('trade')">🔄 إعادة</button>
+          <button class="zk-act-btn reset" onclick="resetTab('trade')"><i data-lucide="rotate-ccw" style="width:15px;height:15px;display:inline-block;vertical-align:middle;"></i> إعادة</button>
         </div>
       </div>
     </div>
@@ -966,7 +979,7 @@
       </div>
 
       <div class="zk-field" style="margin-bottom:var(--s-4)">
-        <div class="zk-field__lbl"><span class="zk-field__icon">📊</span> نوع الاحتفاظ</div>
+        <div class="zk-field__lbl"><span class="zk-field__icon"><i data-lucide="bar-chart-2" style="width:15px;height:15px;display:inline-block;vertical-align:middle;"></i></span> نوع الاحتفاظ</div>
         <select class="zk-select" id="stocksType" onchange="onStocksTypeChange()">
           <option value="trade">للمضاربة والبيع — زكاة على القيمة السوقية</option>
           <option value="income">للتوزيعات والدخل — زكاة على الأرباح فقط</option>
@@ -975,7 +988,7 @@
 
       <div class="zk-fields zk-fields--2">
         <div class="zk-field">
-          <div class="zk-field__lbl"><span class="zk-field__icon">💰</span> القيمة السوقية الحالية</div>
+          <div class="zk-field__lbl"><span class="zk-field__icon"><i data-lucide="coins" style="width:18px;height:18px;display:inline-block;vertical-align:middle;"></i></span> القيمة السوقية الحالية</div>
           <div class="zk-input-wrap">
             <input class="zk-input" type="number" id="stocksValue" placeholder="0" min="0" inputmode="decimal">
             <span class="zk-input-unit unit-lbl">ريال</span>
@@ -1009,7 +1022,7 @@
         <div class="zk-result__actions">
           <button class="zk-act-btn share" onclick="shareResult('stocks')">📤 مشاركة</button>
           <button class="zk-act-btn copy"  onclick="copyResult('stocks')">📋 نسخ</button>
-          <button class="zk-act-btn reset" onclick="resetTab('stocks')">🔄 إعادة</button>
+          <button class="zk-act-btn reset" onclick="resetTab('stocks')"><i data-lucide="rotate-ccw" style="width:15px;height:15px;display:inline-block;vertical-align:middle;"></i> إعادة</button>
         </div>
       </div>
     </div>
@@ -1020,7 +1033,7 @@
   ══════════════════════════════════════ -->
   <div class="zk-card" id="tab-total">
     <div class="zk-card-head">
-      <div class="zk-card-icon">📊</div>
+      <div class="zk-card-icon"><i data-lucide="bar-chart-2" style="width:15px;height:15px;display:inline-block;vertical-align:middle;"></i></div>
       <div>
         <div class="zk-card-title">الإجمالي الشامل</div>
         <div class="zk-card-src">المصدر: <a href="https://islamqa.info/ar/585436" target="_blank">islamqa.info #585436</a></div>
@@ -1033,11 +1046,11 @@
       </div>
 
       <div class="zk-houl">
-        <span class="zk-houl__icon">💡</span>
+        <span class="zk-houl__icon"><i data-lucide="lightbulb" style="width:14px;height:14px;display:inline-block;vertical-align:middle;"></i></span>
         <span>أدخل بياناتك في التبويبات السابقة أولاً ثم اضغط الزر أدناه لحساب الإجمالي الشامل.</span>
       </div>
 
-      <button class="zk-calc-btn" onclick="calcTotal()">📊 احسب الإجمالي الشامل</button>
+      <button class="zk-calc-btn" onclick="calcTotal()"><i data-lucide="bar-chart-2" style="width:15px;height:15px;display:inline-block;vertical-align:middle;"></i> احسب الإجمالي الشامل</button>
 
       <div class="zk-result" id="res-total">
         <div class="zk-breakdown" id="total-breakdown"></div>
@@ -1050,7 +1063,7 @@
         <div class="zk-result__actions">
           <button class="zk-act-btn share" onclick="shareResult('total')">📤 مشاركة</button>
           <button class="zk-act-btn copy"  onclick="copyResult('total')">📋 نسخ</button>
-          <button class="zk-act-btn reset" onclick="resetAll()">🔄 إعادة الكل</button>
+          <button class="zk-act-btn reset" onclick="resetAll()"><i data-lucide="rotate-ccw" style="width:15px;height:15px;display:inline-block;vertical-align:middle;"></i> إعادة الكل</button>
         </div>
       </div>
     </div>
@@ -1063,7 +1076,7 @@
     <div class="zk-sec">📚 أسئلة فقهية شائعة</div>
 
     <div class="zk-faq__item">
-      <button class="zk-faq__q" onclick="toggleFaq(this)">⚖️ ما شروط وجوب الزكاة الخمسة؟</button>
+      <button class="zk-faq__q" onclick="toggleFaq(this)"><i data-lucide="scale" style="width:16px;height:16px;display:inline-block;vertical-align:middle;"></i> ما شروط وجوب الزكاة الخمسة؟</button>
       <div class="zk-faq__a">
         خمسة شروط: (1) <strong>الإسلام</strong> (2) <strong>الحرية</strong> (3) <strong>ملك النصاب</strong> كاملاً (4) <strong>حولان الحول</strong> — مرور سنة هجرية كاملة (5) <strong>ألا تكون الأموال</strong> محتاجاً إليها للحوائج الأصلية.<br>
         المصدر: الشرح الممتع — ابن عثيمين رحمه الله
@@ -1071,7 +1084,7 @@
     </div>
 
     <div class="zk-faq__item">
-      <button class="zk-faq__q" onclick="toggleFaq(this)">💰 كيف أعرف نصاب المال بالريال السعودي؟</button>
+      <button class="zk-faq__q" onclick="toggleFaq(this)"><i data-lucide="coins" style="width:18px;height:18px;display:inline-block;vertical-align:middle;"></i> كيف أعرف نصاب المال بالريال السعودي؟</button>
       <div class="zk-faq__a">
         النصاب = 85 جرام ذهب × سعر الجرام عيار 24 اليوم.<br>
         مثال: إذا كان سعر الجرام 315 ريال → النصاب = 85 × 315 = <strong>26,775 ريال</strong>.<br>
@@ -1120,7 +1133,7 @@
 <div id="loginModal" class="ic-modal">
   <div class="ic-modal__backdrop" id="modalBackdrop"></div>
   <div class="ic-modal__box">
-    <div class="ic-modal__icon">💰</div>
+    <div class="ic-modal__icon"><i data-lucide="coins" style="width:18px;height:18px;display:inline-block;vertical-align:middle;"></i></div>
     <h3 class="ic-modal__title">سجّل دخولك لحفظ حساباتك</h3>
     <p class="ic-modal__sub">نتائج الزكاة تُحفظ وتُزامَن عبر أجهزتك</p>
     <div class="ic-modal__actions">
@@ -1162,14 +1175,99 @@ let activeTab      = 'money';
 
 // ============================================================
 // THEME
+// ============================================================
+(function () {
+  const s = localStorage.getItem('theme');
+  const h = new Date().getHours();
+  document.documentElement.setAttribute('data-theme',
+    s || (h >= 19 || h < 6 ? 'dark' : 'light'));
+})();
+
+document.getElementById('themeBtn')?.addEventListener('click', () => {
+  const n = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', n);
+  localStorage.setItem('theme', n);
+  document.getElementById('themeBtn').textContent = n === 'dark' ? '🌙' : '☀️';
+});
+
+window.addEventListener('scroll', () => {
+  document.getElementById('icNav')?.classList.toggle('ic-nav--scrolled', scrollY > 20);
+}, { passive: true });
+
+document.getElementById('mobileToggle')?.addEventListener('click', () => {
+  document.getElementById('mobileMenu')?.classList.toggle('ic-nav__mobile--open');
+});
+
+document.getElementById('loginBtn')?.addEventListener('click', () => {
+  window.islamiCalc?.getCurrentUser?.()
+    ? window.islamiCalc.showUserMenu?.()
+    : document.getElementById('loginModal')?.classList.add('ic-modal--open');
+});
+
+document.getElementById('modalBackdrop')?.addEventListener('click', () => {
+  document.getElementById('loginModal')?.classList.remove('ic-modal--open');
+});
+
+document.getElementById('guestBrowseBtn')?.addEventListener('click', () => {
+  document.getElementById('loginModal')?.classList.remove('ic-modal--open');
+});
+
+document.getElementById('googleLoginBtn')?.addEventListener('click', () => {
+  window.islamiCalc?.loginWithGoogle?.();
+});
+
+// ============================================================
+// HELPERS
+// ============================================================
+function fmt(n) {
+  if (isNaN(n) || n == null) return '0';
+  return Number(n.toFixed(2)).toLocaleString('ar-SA');
+}
+
+function getVal(id) {
+  const v = parseFloat(document.getElementById(id)?.value);
+  return isNaN(v) || v < 0 ? 0 : v;
+}
+
+function unit() { return CURRENCIES[activeCurrency] || 'ريال'; }
+
+function setText(id, val) {
+  const el = document.getElementById(id);
+  if (el) el.textContent = val;
+}
+
+function calcNisab() {
+  const p = getVal('goldPriceGlobal');
+  return p > 0 ? p * GOLD_NISAB_G : (NISAB_APPROX[activeCurrency] ?? NISAB_APPROX.SAR);
+}
+
+function showResult(id) {
+  const el = document.getElementById('res-' + id);
+  if (!el) return;
+  el.classList.add('on');
+  el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function nisabStatusHTML(amount, nisab, reached) {
+  const u = unit();
+  return reached
+    ? `<i data-lucide="check-circle" style="width:15px;height:15px;display:inline-block;vertical-align:middle;"></i> مجموعك ${fmt(amount)} ${u} بلغ النصاب ${fmt(nisab)} ${u} — الزكاة واجبة بشرط حولان الحول`
+    : `⚠️ مجموعك ${fmt(amount)} ${u} أقل من النصاب ${fmt(nisab)} ${u} — لا زكاة الآن`;
+}
+
+window.showToast = function(msg, cls = '') {
+  const el = document.getElementById('toast');
+  if (!el) return;
+  el.textContent = msg;
+  el.className   = 'ic-toast show ' + cls;
+  clearTimeout(el._t);
+  el._t = setTimeout(() => el.classList.remove('show'), 3500);
+};
 
 function safeAddXP(amount, reason) {
-  if (window.islamiCalc?.addXP) {
-    window.islamiCalc.addXP(amount, reason);
-  } else {
-    window.addEventListener('islamiCalcReady',
-      () => window.islamiCalc?.addXP?.(amount, reason), { once: true });
-  }
+  if (window.islamiCalc) window.islamiCalc.addXP?.(amount, reason);
+  else window.addEventListener('islamiCalcReady',
+    () => window.islamiCalc?.addXP?.(amount, reason), { once: true });
 }
 
 // ============================================================
@@ -1265,7 +1363,7 @@ function calcMoney() {
     : 'تأكد من سعر الذهب الحالي لحساب النصاب بدقة أكبر');
 
   showResult('money');
-  if (reached) { showToast('✅ الزكاة: ' + fmt(zakat) + ' ' + u, 'toast-gold'); safeAddXP(30, 'zakat_money'); }
+  if (reached) { showToast('<i data-lucide="check-circle" style="width:15px;height:15px;display:inline-block;vertical-align:middle;"></i> الزكاة: ' + fmt(zakat) + ' ' + u, 'toast-gold'); safeAddXP(30, 'zakat_money'); }
 }
 
 // ============================================================
@@ -1292,7 +1390,7 @@ function calcGold() {
 
   const st = document.getElementById('rg-status');
   st.textContent = reached
-    ? `✅ الوزن الخالص ${fmt(pureWt)} جرام ≥ 85 جرام — بلغ النصاب`
+    ? `<i data-lucide="check-circle" style="width:15px;height:15px;display:inline-block;vertical-align:middle;"></i> الوزن الخالص ${fmt(pureWt)} جرام ≥ 85 جرام — بلغ النصاب`
     : `⚠️ الوزن الخالص ${fmt(pureWt)} جرام أقل من 85 جرام — لم يبلغ النصاب`;
   st.className   = 'zk-result__nisab ' + (reached ? 'reached' : 'not-reached');
 
@@ -1304,7 +1402,7 @@ function calcGold() {
       : `بارك الله في مالك — الزكاة ${fmt(zakat)} ${u}`);
 
   showResult('gold');
-  if (reached) { showToast('🥇 زكاة الذهب: ' + fmt(zakat) + ' ' + u, 'toast-gold'); safeAddXP(30, 'zakat_gold'); }
+  if (reached) { showToast('<i data-lucide="circle-dollar-sign" style="width:16px;height:16px;display:inline-block;vertical-align:middle;"></i> زكاة الذهب: ' + fmt(zakat) + ' ' + u, 'toast-gold'); safeAddXP(30, 'zakat_gold'); }
 }
 
 // ============================================================
@@ -1327,7 +1425,7 @@ function calcSilver() {
 
   const st = document.getElementById('rs-status');
   st.textContent = reached
-    ? `✅ ${fmt(weight)} جرام ≥ 595 جرام — بلغ النصاب`
+    ? `<i data-lucide="check-circle" style="width:15px;height:15px;display:inline-block;vertical-align:middle;"></i> ${fmt(weight)} جرام ≥ 595 جرام — بلغ النصاب`
     : `⚠️ ${fmt(weight)} جرام أقل من 595 جرام — لم يبلغ النصاب`;
   st.className   = 'zk-result__nisab ' + (reached ? 'reached' : 'not-reached');
 
@@ -1423,7 +1521,7 @@ function calcTotal() {
 
   const rows = [
     { icon:'💵', lbl:'أموال نقدية وبنكية', val:moneyTotal,  show:true },
-    { icon:'🥇', lbl:'قيمة الذهب',          val:goldValue,   show:goldValue > 0 },
+    { icon:'<i data-lucide="circle-dollar-sign" style="width:16px;height:16px;display:inline-block;vertical-align:middle;"></i>', lbl:'قيمة الذهب',          val:goldValue,   show:goldValue > 0 },
     { icon:'🥈', lbl:'قيمة الفضة',          val:silverValue, show:silverValue > 0 },
     { icon:'🏪', lbl:'وعاء التجارة',         val:tradeTotal,  show:tradeTotal > 0 },
     { icon:'📈', lbl:'وعاء الأسهم',          val:stocksBase,  show:stocksBase > 0 },
@@ -1437,7 +1535,7 @@ function calcTotal() {
       </div>`
     ).join('') +
     `<div class="zk-brow total">
-      <span class="zk-brow__lbl">📊 الوعاء الإجمالي</span>
+      <span class="zk-brow__lbl"><i data-lucide="bar-chart-2" style="width:15px;height:15px;display:inline-block;vertical-align:middle;"></i> الوعاء الإجمالي</span>
       <span class="zk-brow__val">${fmt(grand)} ${u}</span>
     </div>
     <div class="zk-brow">
@@ -1453,10 +1551,10 @@ function calcTotal() {
   showResult('total');
 
   if (reached) {
-    showToast('📊 إجمالي الزكاة: ' + fmt(zakat) + ' ' + u, 'toast-gold');
+    showToast('<i data-lucide="bar-chart-2" style="width:15px;height:15px;display:inline-block;vertical-align:middle;"></i> إجمالي الزكاة: ' + fmt(zakat) + ' ' + u, 'toast-gold');
     safeAddXP(50, 'zakat_total');
     window.islamiCalc?.addBadge?.('zakat_calc');
-    window.islamiCalc?.logActivity?.('حسب الزكاة الشاملة', 'zakat_total', '💰', '', 50);
+    window.islamiCalc?.logActivity?.('حسب الزكاة الشاملة', 'zakat_total', '<i data-lucide="coins" style="width:18px;height:18px;display:inline-block;vertical-align:middle;"></i>', '', 50);
   }
 }
 
@@ -1475,12 +1573,12 @@ const ZAKAT_LABELS = {
 
 function shareResult(tab) {
   const val  = document.getElementById(ZAKAT_IDS[tab])?.textContent || '0';
-  const text = `✅ حسبت ${ZAKAT_LABELS[tab]} على IslamiCalc\n💰 المبلغ الواجب: ${val} ${unit()}\nاحسب زكاتك: https://islamicalc.com/zakat`;
+  const text = `<i data-lucide="check-circle" style="width:15px;height:15px;display:inline-block;vertical-align:middle;"></i> حسبت ${ZAKAT_LABELS[tab]} على IslamiCalc\n<i data-lucide="coins" style="width:18px;height:18px;display:inline-block;vertical-align:middle;"></i> المبلغ الواجب: ${val} ${unit()}\nاحسب زكاتك: https://islamicalc.com/zakat`;
   if (navigator.share) {
     navigator.share({ title: 'حاسبة الزكاة — IslamiCalc', text });
   } else {
     navigator.clipboard?.writeText(text);
-    showToast('✅ تم نسخ النتيجة!', 'toast-success');
+    showToast('<i data-lucide="check-circle" style="width:15px;height:15px;display:inline-block;vertical-align:middle;"></i> تم نسخ النتيجة!', 'toast-success');
   }
 }
 
@@ -1501,7 +1599,7 @@ function resetTab(tab) {
 
 function resetAll() {
   ['money','gold','silver','trade','stocks','total'].forEach(resetTab);
-  showToast('🔄 تم إعادة تعيين جميع الحقول');
+  showToast('<i data-lucide="rotate-ccw" style="width:15px;height:15px;display:inline-block;vertical-align:middle;"></i> تم إعادة تعيين جميع الحقول');
 }
 
 // ============================================================
@@ -1534,5 +1632,6 @@ document.querySelectorAll('.zk-input').forEach(inp => {
 updateNisabCard();
 </script>
 
+  <script>if(typeof lucide!=='undefined')lucide.createIcons();</script>
 </body>
 </html>

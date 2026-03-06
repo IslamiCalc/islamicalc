@@ -11,8 +11,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&family=Inter:wght@400;600;700;800;900&family=Scheherazade+New:wght@400;700&display=swap" rel="stylesheet">
-  <script type="module" src="/core/firebase.js"></script>
-  <script type="module" src="/core/app.js"></script>
+  <script type="module" src="/firebase.js"></script>
 
   <style>
   /* ============================================================
@@ -908,6 +907,20 @@
     .kh-reader-info { grid-template-columns: repeat(3,1fr); }
   }
   </style>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <style>
+    [data-lucide] {
+      stroke: currentColor;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      fill: none;
+      flex-shrink: 0;
+      vertical-align: middle;
+    }
+    .ic-nav__link-icon[data-lucide] { width:17px;height:17px;margin-left:4px;opacity:.85; }
+    .ic-nav__link:hover [data-lucide], .ic-nav__link.active [data-lucide] { opacity:1; }
+  </style>
 </head>
 <body>
 
@@ -925,13 +938,13 @@
       <a href="/khatma" class="ic-nav__link active">📖 الختمة</a>
       <a href="/arena"  class="ic-nav__link">🏆 الميدان</a>
       <a href="/zakat"  class="ic-nav__link">💰 الزكاة</a>
-      <a href="/prayer" class="ic-nav__link">🕌 الصلاة</a>
+      <a href="/prayer" class="ic-nav__link"><i data-lucide="building" style="width:16px;height:16px;display:inline-block;vertical-align:middle;"></i> الصلاة</a>
       <a href="/athkar" class="ic-nav__link">📿 الأذكار</a>
     </nav>
     <div class="ic-nav__actions">
       <button id="themeBtn" class="ic-nav__icon-btn">🌙</button>
       <button id="loginBtn" class="ic-nav__login-btn">دخول</button>
-      <button class="ic-nav__mobile-toggle" id="mobileToggle">☰</button>
+      <button class="ic-nav__mobile-toggle" id="mobileToggle"><i data-lucide="menu" style="width:20px;height:20px;display:inline-block;vertical-align:middle;"></i></button>
     </div>
   </div>
   <div class="ic-nav__mobile" id="mobileMenu">
@@ -939,7 +952,7 @@
     <a href="/khatma">📖 الختمة</a>
     <a href="/arena">🏆 الميدان</a>
     <a href="/zakat">💰 الزكاة</a>
-    <a href="/prayer">🕌 الصلاة</a>
+    <a href="/prayer"><i data-lucide="building" style="width:16px;height:16px;display:inline-block;vertical-align:middle;"></i> الصلاة</a>
     <a href="/athkar">📿 الأذكار</a>
     <a href="/profile">👤 بروفايلي</a>
   </div>
@@ -994,8 +1007,8 @@
 
       <!-- Mode Toggle -->
       <div class="kh-mode-bar">
-        <button class="kh-mode-btn active" id="mb-surah" onclick="setMode('surah')">📖 قراءة بالسور</button>
-        <button class="kh-mode-btn" id="mb-page" onclick="setMode('page')">📄 قراءة بالصفحات</button>
+        <button class="kh-mode-btn active" id="mb-surah" onclick="setMode('surah')"><i data-lucide="book-open" style="width:15px;height:15px;display:inline-block;vertical-align:middle;"></i> قراءة بالسور</button>
+        <button class="kh-mode-btn" id="mb-page" onclick="setMode('page')"><i data-lucide="file-text" style="width:15px;height:15px;display:inline-block;vertical-align:middle;"></i> قراءة بالصفحات</button>
       </div>
     </div>
   </div>
@@ -1016,7 +1029,7 @@
 
     <!-- Bookmark Bar -->
     <div class="kh-bookmark-bar" id="kh-bookmark-bar">
-      <div class="kh-bookmark-bar__icon">🔖</div>
+      <div class="kh-bookmark-bar__icon"><i data-lucide="bookmark" style="width:15px;height:15px;display:inline-block;vertical-align:middle;"></i></div>
       <div class="kh-bookmark-bar__text">
         وقفتك الأخيرة: صفحة <span id="bm-pg-lbl">--</span>
         <small class="kh-bookmark-bar__sub">اضغط للمتابعة من حيث توقفت</small>
@@ -1024,20 +1037,20 @@
       <button class="ic-btn ic-btn--sm ic-btn--primary" onclick="openPage(parseInt(document.getElementById('bm-pg-lbl').textContent))">
         متابعة ←
       </button>
-      <button class="ic-btn ic-btn--sm ic-btn--ghost" onclick="clearBookmark()">✕</button>
+      <button class="ic-btn ic-btn--sm ic-btn--ghost" onclick="clearBookmark()"><i data-lucide="x" style="width:18px;height:18px;display:inline-block;vertical-align:middle;"></i></button>
     </div>
 
     <!-- Plan Box -->
     <div class="kh-section">
-      <div class="kh-section__title">🎯 خطة الختمة</div>
+      <div class="kh-section__title"><i data-lucide="target" style="width:15px;height:15px;display:inline-block;vertical-align:middle;"></i> خطة الختمة</div>
       <div class="kh-plan-box">
         <div class="kh-plan-btns">
-          <button class="kh-pbtn" onclick="setPlan(7,this)">📅 أسبوع</button>
-          <button class="kh-pbtn" onclick="setPlan(15,this)">🗓 15 يوم</button>
-          <button class="kh-pbtn" onclick="setPlan(30,this)">📆 شهر</button>
-          <button class="kh-pbtn" onclick="setPlan(60,this)">🌙 شهرين</button>
-          <button class="kh-pbtn" onclick="setPlan(90,this)">📖 3 أشهر</button>
-          <button class="kh-pbtn danger" id="plan-cancel" style="display:none" onclick="cancelPlan()">✕ إلغاء الخطة</button>
+          <button class="kh-pbtn" onclick="setPlan(7,this)"><i data-lucide="calendar" style="width:14px;height:14px;display:inline-block;vertical-align:middle;"></i> أسبوع</button>
+          <button class="kh-pbtn" onclick="setPlan(15,this)"><i data-lucide="calendar-days" style="width:14px;height:14px;display:inline-block;vertical-align:middle;"></i> 15 يوم</button>
+          <button class="kh-pbtn" onclick="setPlan(30,this)"><i data-lucide="calendar" style="width:14px;height:14px;display:inline-block;vertical-align:middle;"></i> شهر</button>
+          <button class="kh-pbtn" onclick="setPlan(60,this)"><i data-lucide="moon" style="width:14px;height:14px;display:inline-block;vertical-align:middle;"></i> شهرين</button>
+          <button class="kh-pbtn" onclick="setPlan(90,this)"><i data-lucide="book-open" style="width:14px;height:14px;display:inline-block;vertical-align:middle;"></i> 3 أشهر</button>
+          <button class="kh-pbtn danger" id="plan-cancel" style="display:none" onclick="cancelPlan()"><i data-lucide="x" style="width:14px;height:14px;display:inline-block;vertical-align:middle;"></i> إلغاء الخطة</button>
         </div>
         <div class="kh-plan-detail" id="plan-detail"></div>
       </div>
@@ -1064,7 +1077,7 @@
     </div>
 
     <div class="kh-reset-row">
-      <button class="kh-reset-btn" onclick="resetProgress()">🔄 إعادة تعيين التقدم</button>
+      <button class="kh-reset-btn" onclick="resetProgress()"><i data-lucide="rotate-ccw" style="width:15px;height:15px;display:inline-block;vertical-align:middle;"></i> إعادة تعيين التقدم</button>
     </div>
 
   </div>
@@ -1085,7 +1098,7 @@
         <div class="kh-rib__lbl">الصفحة</div>
       </div>
       <div class="kh-rib" style="--rc:var(--em-400)">
-        <div class="kh-rib__icon">📚</div>
+        <div class="kh-rib__icon"><i data-lucide="library" style="width:16px;height:16px;display:inline-block;vertical-align:middle;"></i></div>
         <div class="kh-rib__val" id="rJuzNum">—</div>
         <div class="kh-rib__lbl">الجزء</div>
       </div>
@@ -1108,15 +1121,15 @@
           <div class="kh-rtitle" id="readerTitle">سورة الفاتحة</div>
           <div class="kh-rmeta" id="readerMeta">7 آيات • مكية</div>
         </div>
-        <button class="kh-bm-btn" id="bookmark-page-btn" onclick="togglePageBookmark()">🔖 حفظ المكان</button>
+        <button class="kh-bm-btn" id="bookmark-page-btn" onclick="togglePageBookmark()"><i data-lucide="bookmark" style="width:15px;height:15px;display:inline-block;vertical-align:middle;"></i> حفظ المكان</button>
       </div>
 
       <!-- Waqfa Bar -->
       <div class="kh-waqfa-bar" id="waqfa-bar">
-        <span style="font-size:20px">🔖</span>
+        <span style="font-size:20px"><i data-lucide="bookmark" style="width:15px;height:15px;display:inline-block;vertical-align:middle;"></i></span>
         <div class="kh-waqfa-bar__txt">
           وقفتك الأخيرة: آية <span id="waqfa-lbl">—</span>
-          <small class="kh-waqfa-bar__sub">اضغط رقم الآية 🔖 لحفظ وقفة جديدة</small>
+          <small class="kh-waqfa-bar__sub">اضغط رقم الآية <i data-lucide="bookmark" style="width:14px;height:14px;display:inline-block;vertical-align:middle;"></i> لحفظ وقفة جديدة</small>
         </div>
         <button class="ic-btn ic-btn--sm ic-btn--primary" onclick="scrollToWaqfa()">↓ اذهب إليها</button>
         <button class="ic-btn ic-btn--sm ic-btn--ghost" onclick="clearWaqfa()">✕ مسح</button>
@@ -1124,7 +1137,7 @@
 
       <div class="kh-bismillah" id="readerBismillah">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
 
-      <div class="kh-tafsir-hint">💡 اضغط على أي <strong>كلمة</strong> لقراءة تفسيرها | اضغط على <strong>رقم الآية 🔖</strong> لحفظ وقفتك</div>
+      <div class="kh-tafsir-hint"><i data-lucide="lightbulb" style="width:14px;height:14px;display:inline-block;vertical-align:middle;"></i> اضغط على أي <strong>كلمة</strong> لقراءة تفسيرها | اضغط على <strong>رقم الآية <i data-lucide="bookmark" style="width:14px;height:14px;display:inline-block;vertical-align:middle;"></i></strong> لحفظ وقفتك</div>
 
       <div class="kh-mushaf">
         <div class="kh-loading" id="readerLoading">
@@ -1211,6 +1224,762 @@ const _apiCache = {};
 
 // ============================================================
 // THEME
+// ============================================================
+(function () {
+  const s = localStorage.getItem('theme');
+  const h = new Date().getHours();
+  document.documentElement.setAttribute('data-theme',
+    s || (h >= 19 || h < 6 ? 'dark' : 'light'));
+})();
+
+document.getElementById('themeBtn').addEventListener('click', () => {
+  const n = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', n);
+  localStorage.setItem('theme', n);
+  document.getElementById('themeBtn').textContent = n === 'dark' ? '🌙' : '☀️';
+});
+
+// ============================================================
+// NAVBAR
+// ============================================================
+window.addEventListener('scroll', () => {
+  document.getElementById('icNav')?.classList.toggle('ic-nav--scrolled', scrollY > 20);
+}, { passive: true });
+
+document.getElementById('mobileToggle')?.addEventListener('click', () => {
+  document.getElementById('mobileMenu')?.classList.toggle('ic-nav__mobile--open');
+});
+
+document.getElementById('loginBtn')?.addEventListener('click', () => {
+  if (window.islamiCalc?.getCurrentUser?.()) {
+    window.islamiCalc.showUserMenu?.();
+  } else {
+    document.getElementById('loginModal')?.classList.add('ic-modal--open');
+  }
+});
+
+document.getElementById('modalBackdrop')?.addEventListener('click', () => {
+  document.getElementById('loginModal')?.classList.remove('ic-modal--open');
+});
+
+document.getElementById('guestBrowseBtn')?.addEventListener('click', () => {
+  document.getElementById('loginModal')?.classList.remove('ic-modal--open');
+});
+
+document.getElementById('googleLoginBtn')?.addEventListener('click', () => {
+  window.islamiCalc?.loginWithGoogle?.();
+});
+
+// ============================================================
+// HELPERS
+// ============================================================
+function getPageNum(surah, ayah) {
+  for (let i = PAGE_MAP.length - 1; i >= 0; i--) {
+    if (PAGE_MAP[i][0] < surah || (PAGE_MAP[i][0] === surah && PAGE_MAP[i][1] <= ayah))
+      return i + 1;
+  }
+  return 1;
+}
+
+function getJuz(surah, ayah) {
+  for (let i = JUZ_START.length - 1; i >= 0; i--) {
+    if (JUZ_START[i][0] < surah || (JUZ_START[i][0] === surah && JUZ_START[i][1] <= ayah))
+      return i + 1;
+  }
+  return 1;
+}
+
+function donePagesCount() { return Object.keys(pprog).length; }
+
+function stripBasmala(txt) {
+  const patterns = [
+    /^بِسْمِ\s+[^\s]+\s+[^\s]+\s+[^\s]+\s*/,
+    /^بسم\s+الله\s+الرحمن\s+الرحيم\s*/,
+    /^بِسْمِ\s+ٱللَّهِ\s+ٱلرَّحْمَٰنِ\s+ٱلرَّحِيمِ\s*/,
+  ];
+  const fw = txt.trim().split(/\s+/)[0];
+  if (['بِسْمِ','بسم'].some(w => fw.startsWith(w))) {
+    for (const p of patterns) {
+      const m = txt.match(p);
+      if (m) return txt.slice(m[0].length).trim();
+    }
+    return txt.trim().split(/\s+/).slice(4).join(' ');
+  }
+  return txt;
+}
+
+// ============================================================
+// INIT
+// ============================================================
+function init() {
+  setMode(readMode, true);
+  renderFeat();
+  renderGrid();
+  renderPageGrid();
+  updateStats();
+  renderPlan();
+  renderStreakBanner();
+}
+
+window.addEventListener('islamiCalcReady', (e) => {
+  const streak = e.detail?.doc?.streak || parseInt(localStorage.getItem('userStreak') || '0');
+  if (streak >= 2) {
+    document.getElementById('streakNum').textContent = streak;
+    document.getElementById('streakBanner').classList.add('show');
+  }
+});
+
+function renderStreakBanner() {
+  const streak = parseInt(localStorage.getItem('userStreak') || '0');
+  if (streak >= 2) {
+    document.getElementById('streakNum').textContent = streak;
+    document.getElementById('streakBanner').classList.add('show');
+  }
+}
+
+// ============================================================
+// MODE
+// ============================================================
+function setMode(m, silent) {
+  readMode = m;
+  if (!silent) localStorage.setItem('kmode', m);
+  document.getElementById('mb-surah').classList.toggle('active', m === 'surah');
+  document.getElementById('mb-page').classList.toggle('active', m === 'page');
+  document.getElementById('view-surah').style.display = m === 'surah' ? 'block' : 'none';
+  document.getElementById('view-page').style.display  = m === 'page'  ? 'block' : 'none';
+}
+
+// ============================================================
+// STATS
+// ============================================================
+function updateStats() {
+  const sd  = Object.keys(prog).length;
+  const pct = Math.round(sd / 114 * 100);
+  let ay = 0;
+  for (const k in prog) ay += SURAHS[k-1][1];
+
+  document.getElementById('sd').textContent   = sd;
+  document.getElementById('sr').textContent   = 114 - sd;
+  document.getElementById('sp2').textContent  = donePagesCount();
+  document.getElementById('sa').textContent   = ay;
+  document.getElementById('pfill').style.width = pct + '%';
+  document.getElementById('plbl').textContent  = sd + ' / 114 سورة';
+  document.getElementById('pct-lbl').textContent = pct + '%';
+
+  if (bookmark > 0) {
+    document.getElementById('kh-bookmark-bar').classList.add('show');
+    document.getElementById('bm-pg-lbl').textContent = bookmark;
+  } else {
+    document.getElementById('kh-bookmark-bar').classList.remove('show');
+  }
+}
+
+// ============================================================
+// FEATURED
+// ============================================================
+function renderFeat() {
+  document.getElementById('feat-grid').innerHTML = FEATURED.map(f => {
+    const done = !!prog[f.n];
+    return `
+      <div class="kh-fcard" style="--fc:${f.col}" onclick="openSurah(${f.n})">
+        ${done ? '<div class="kh-fcard__check">✓</div>' : ''}
+        <div class="kh-fcard__top">
+          <span style="font-size:22px">${f.ic}</span>
+          <div>
+            <div class="kh-fcard__name">سورة ${SURAHS[f.n-1][0]}</div>
+            <div style="font-size:10px;color:var(--text-3)">${SURAHS[f.n-1][1]} آية</div>
+          </div>
+        </div>
+        <div class="kh-fcard__badge" style="background:${f.col}20;color:${f.col}">${f.badge}</div>
+        <div class="kh-fcard__desc">${f.desc}</div>
+      </div>`;
+  }).join('');
+}
+
+// ============================================================
+// SURAH GRID
+// ============================================================
+function renderGrid() {
+  document.getElementById('sgrid').innerHTML = SURAHS.map((s, i) => {
+    const n = i + 1, done = !!prog[n];
+    return `
+      <div class="kh-scard ${done ? 'done' : ''}" onclick="openSurah(${n})">
+        <div class="kh-snum">${done ? '✓' : n}</div>
+        <div>
+          <div class="kh-sname">سورة ${s[0]}</div>
+          <div class="kh-smeta">${s[1]} آية • ${s[2]}</div>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+// ============================================================
+// PAGE GRID
+// ============================================================
+function renderPageGrid() {
+  const el = document.getElementById('pgrid');
+  let h = '';
+  for (let j = 0; j < 30; j++) {
+    const [ps, pe] = JUZ_RANGES[j];
+    const col      = JUZ_COLORS[j];
+    const doneJ    = [...Array(pe - ps + 1)].filter((_, i) => pprog[ps + i]).length;
+    const totalJ   = pe - ps + 1;
+    const juzPct   = Math.round(doneJ / totalJ * 100);
+    h += `
+      <div class="kh-juz-header" style="--jc:${col}">
+        <span class="kh-juz-title">الجزء ${JUZ_NAMES[j]}</span>
+        <span class="kh-juz-meta">${ps}–${pe} &nbsp;•&nbsp; ${doneJ}/${totalJ}</span>
+        <div class="kh-juz-pbar"><div class="kh-juz-pfill" style="width:${juzPct}%;background:${col}"></div></div>
+      </div>
+      <div class="kh-juz-pages">`;
+    for (let p = ps; p <= pe; p++) {
+      const done  = !!pprog[p];
+      const bm    = p === bookmark;
+      const style = done ? `border-color:${col}50;background:${col}12` : bm ? `border-color:${col}` : '';
+      h += `
+        <div class="kh-pcard ${done ? 'done' : ''} ${bm ? 'bm' : ''}" style="${style}" onclick="openPage(${p})">
+          <div class="kh-pnum">${bm ? '<i data-lucide="bookmark" style="width:14px;height:14px;display:inline-block;vertical-align:middle;"></i>' : p}</div>
+        </div>`;
+    }
+    h += '</div>';
+  }
+  el.innerHTML = h;
+}
+
+// ============================================================
+// PLAN
+// ============================================================
+function setPlan(days, btn) {
+  document.querySelectorAll('.kh-pbtn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const start   = new Date(); start.setHours(0,0,0,0);
+  const existing = JSON.parse(localStorage.getItem('kpl') || 'null');
+  plan = { days, start: start.getTime(), done: existing?.done || {} };
+  localStorage.setItem('kpl', JSON.stringify(plan));
+  document.getElementById('plan-cancel').style.display = 'block';
+  renderPlan();
+  window.islamiCalc?.logActivity?.('بدأ خطة ختمة ' + days + ' يوم', 'khatma_plan', '📅', '', 10);
+}
+
+function cancelPlan() {
+  plan = null;
+  localStorage.removeItem('kpl');
+  document.querySelectorAll('.kh-pbtn').forEach(b => b.classList.remove('active'));
+  document.getElementById('plan-cancel').style.display = 'none';
+  document.getElementById('plan-detail').classList.remove('show');
+  document.getElementById('plan-detail').innerHTML = '';
+}
+
+function renderPlan() {
+  const el = document.getElementById('plan-detail');
+  if (!plan) { el.classList.remove('show'); el.innerHTML = ''; return; }
+
+  const { days, start, done = {} } = plan;
+  const now     = new Date(); now.setHours(0,0,0,0);
+  const startD  = new Date(start);
+  const elapsed = Math.floor((now - startD) / 86400000);
+  const daysDone = Object.keys(done).length;
+  const pct     = Math.min(Math.round(daysDone / days * 100), 100);
+  const pDay    = 114 / days;
+  const todayIdx = Math.min(elapsed, days - 1);
+  const todayStart = Math.floor(todayIdx * pDay) + 1;
+  const todayEnd   = Math.min(Math.floor((todayIdx + 1) * pDay), 114);
+
+  const daysHtml = `<div class="kh-day-track">${
+    [...Array(days)].map((_, d) => {
+      let cls = '';
+      if (done[d])   cls = 'done';
+      else if (d < elapsed) cls = 'late';
+      else if (d === elapsed) cls = 'today';
+      return `<div class="kh-day ${cls}" title="يوم ${d+1}">${d+1}</div>`;
+    }).join('')
+  }</div>`;
+
+  const tagsHtml = [...Array(todayEnd - todayStart + 1)].map((_, i) => {
+    const s = todayStart + i;
+    const d = !!prog[s];
+    return `<span class="kh-stag ${d ? 'done' : ''}" onclick="openSurah(${s})">${d ? '✓' : ''} سورة ${SURAHS[s-1][0]}</span>`;
+  }).join('');
+
+  el.innerHTML = `
+    <div class="kh-plan-info">
+      <div class="kh-plan-info__header">
+        <span>📅 ختمة ${days} يوم — اليوم ${elapsed+1} / ${days}</span>
+        <span>${pct}% مكتمل</span>
+      </div>
+      <div class="kh-plan-pbar"><div class="kh-plan-pfill" style="width:${pct}%"></div></div>
+      <div class="kh-plan-meta">
+        <b>سور اليوم:</b> سورة ${SURAHS[todayStart-1][0]} → سورة ${SURAHS[todayEnd-1][0]}
+      </div>
+      ${daysHtml}
+      <div class="kh-today-label">سور ورد اليوم:</div>
+      <div class="kh-today-tags">${tagsHtml}</div>
+    </div>`;
+  el.classList.add('show');
+}
+
+// ============================================================
+// BOOKMARK
+// ============================================================
+function clearBookmark() {
+  bookmark = 0;
+  localStorage.removeItem('kbm');
+  document.getElementById('kh-bookmark-bar').classList.remove('show');
+}
+
+function togglePageBookmark() {
+  const btn = document.getElementById('bookmark-page-btn');
+  if (bookmark === curPage) {
+    bookmark = 0;
+    localStorage.removeItem('kbm');
+    btn.classList.remove('active');
+    btn.textContent = '<i data-lucide="bookmark" style="width:14px;height:14px;display:inline-block;vertical-align:middle;"></i> حفظ المكان';
+    window.showToast?.('🗑 تم مسح الوقفة');
+  } else {
+    bookmark = curPage;
+    localStorage.setItem('kbm', curPage);
+    btn.classList.add('active');
+    btn.textContent = '✅ وقفتك هنا';
+    window.showToast?.('✅ تم حفظ وقفتك في صفحة ' + curPage, 'toast-success');
+  }
+}
+
+// ============================================================
+// WAQFA
+// ============================================================
+function saveWaqfa(surah, ayah) {
+  waqfa = { surah, ayah };
+  localStorage.setItem('kwaqfa', JSON.stringify(waqfa));
+  window.showToast?.('<i data-lucide="bookmark" style="width:14px;height:14px;display:inline-block;vertical-align:middle;"></i> تم حفظ وقفتك عند آية ' + ayah, 'toast-success');
+  renderWaqfaBar();
+  window.islamiCalc?.addXP?.(5, 'waqfa_saved');
+}
+
+function clearWaqfa() {
+  waqfa = null;
+  localStorage.removeItem('kwaqfa');
+  document.getElementById('waqfa-bar').classList.remove('show');
+  document.querySelectorAll('.kh-anum.waqfa-mark').forEach(e => e.classList.remove('waqfa-mark'));
+}
+
+function scrollToWaqfa() {
+  if (!waqfa) return;
+  const el = document.querySelector(`.kh-anum[data-s="${waqfa.surah}"][data-a="${waqfa.ayah}"]`);
+  if (el) { el.scrollIntoView({ behavior: 'smooth', block: 'center' }); el.classList.add('waqfa-mark'); }
+}
+
+function renderWaqfaBar() {
+  const bar = document.getElementById('waqfa-bar');
+  const lbl = document.getElementById('waqfa-lbl');
+  if (waqfa) {
+    bar.classList.add('show');
+    lbl.textContent = waqfa.ayah + ' من سورة ' + SURAHS[waqfa.surah - 1][0];
+  } else {
+    bar.classList.remove('show');
+  }
+}
+
+// ============================================================
+// OPEN / CLOSE READER
+// ============================================================
+function openSurah(n) {
+  openPage(getPageNum(n, 1));
+}
+
+function openPage(p) {
+  if (p < 1 || p > 604) return;
+  curPage = p;
+  document.getElementById('kh-dashboard').style.display = 'none';
+  document.getElementById('kh-reader').style.display    = 'block';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  updateReaderUI();
+  loadPageContent(p);
+  renderWaqfaBar();
+}
+
+function closeReader() {
+  document.getElementById('kh-reader').style.display    = 'none';
+  document.getElementById('kh-dashboard').style.display = 'block';
+  renderGrid();
+  renderPageGrid();
+  updateStats();
+}
+
+function updateReaderUI() {
+  const p   = curPage;
+  const [ss, sa] = PAGE_MAP[p - 1];
+  const juz = getJuz(ss, sa);
+  const done = donePagesCount();
+
+  document.getElementById('rPageNum').textContent    = p;
+  document.getElementById('rJuzNum').textContent     = juz;
+  document.getElementById('rDoneCount').textContent  = done;
+  document.getElementById('nav-page-lbl').textContent = p;
+  document.getElementById('nav-prev').disabled       = p <= 1;
+  document.getElementById('rfoot-prev').disabled     = p <= 1;
+
+  const alreadyDone = !!pprog[p];
+  const doneBtn  = document.getElementById('btn-done');
+  const nextBtn  = document.getElementById('rfoot-next');
+  doneBtn.textContent = alreadyDone ? '✅ مكتملة' : '✅ أكملت هذه الصفحة';
+  doneBtn.disabled    = alreadyDone;
+  nextBtn.className   = alreadyDone ? 'kh-btn-next ready' : 'kh-btn-next';
+
+  const bmBtn = document.getElementById('bookmark-page-btn');
+  const isBm  = bookmark === p;
+  bmBtn.className   = 'kh-bm-btn' + (isBm ? ' active' : '');
+  bmBtn.textContent = isBm ? '✅ وقفتك هنا' : '<i data-lucide="bookmark" style="width:14px;height:14px;display:inline-block;vertical-align:middle;"></i> حفظ المكان';
+}
+
+// ============================================================
+// LOAD PAGE CONTENT
+// ============================================================
+async function loadPageContent(p) {
+  const content = document.getElementById('readerContent');
+  const loading = document.getElementById('readerLoading');
+  content.style.display = 'none';
+  loading.style.display = 'block';
+
+  if (_apiCache[p]) {
+    renderPage(_apiCache[p], p);
+    return;
+  }
+
+  try {
+    const { ss, sa, es, ea } = getPageAyahRange(p);
+    const requests = [];
+    let s = ss, a = sa;
+
+    while (s < es || (s === es && a < ea)) {
+      const surah    = SURAHS[s - 1];
+      const totalAy  = surah[1];
+      const endAyah  = s === es ? ea - 1 : totalAy;
+      requests.push(
+        fetch(`https://api.alquran.cloud/v1/surah/${s}/ar.alafasy`)
+          .then(r => r.json())
+          .then(d => ({ s, startAyah: a, endAyah, data: d.data }))
+      );
+      s++;
+      a = 1;
+    }
+
+    const results = await Promise.all(requests);
+    _apiCache[p]  = results;
+    renderPage(results, p);
+
+  } catch {
+    loading.style.display = 'none';
+    content.style.display = 'block';
+    content.innerHTML = '<div style="text-align:center;padding:48px;color:var(--error)">❌ تعذّر تحميل الصفحة — تحقق من اتصالك بالإنترنت</div>';
+  }
+}
+
+function getPageAyahRange(p) {
+  const s = PAGE_MAP[p - 1];
+  const e = PAGE_MAP[p] || [114, 7];
+  return { ss: s[0], sa: s[1], es: e[0], ea: e[1] };
+}
+
+function renderPage(results, p) {
+  const loading = document.getElementById('readerLoading');
+  const content = document.getElementById('readerContent');
+  loading.style.display = 'none';
+  content.style.display = 'block';
+
+  const juz = getJuz(results[0].s, results[0].startAyah);
+
+  let html = '';
+
+  results.forEach((res, ri) => {
+    if (!res.data) return;
+    const { s, startAyah, endAyah, data } = res;
+    const surahName = SURAHS[s - 1][0];
+    const surahType = SURAHS[s - 1][2];
+
+    if (ri > 0 || startAyah === 1) {
+      html += `<span class="kh-page-sep">— سورة ${surahName} — ${surahType} —</span>`;
+    }
+
+    const isFatiha  = s === 1;
+    const isTawbah  = s === 9;
+    const showBism  = startAyah === 1 && !isFatiha && !isTawbah;
+
+    if (showBism) {
+      html += `<div style="text-align:center;font-family:'Scheherazade New',serif;font-size:22px;color:var(--gd-400);padding:12px 0 4px;opacity:0.9;">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>`;
+    }
+
+    const ayahs = data.ayahs.filter(ay => ay.numberInSurah >= startAyah && ay.numberInSurah <= endAyah);
+
+    ayahs.forEach(ay => {
+      const text = (ay.numberInSurah === 1 && !isFatiha && !isTawbah)
+        ? stripBasmala(ay.text) : ay.text;
+
+      const words = text.split(' ').map((w, wi) =>
+        `<span class="kh-aword" data-s="${s}" data-a="${ay.numberInSurah}" data-w="${wi}" onclick="wordClick(this)">${w}</span>`
+      ).join(' ');
+
+      html += `${words} <span class="kh-anum" data-s="${s}" data-a="${ay.numberInSurah}" onclick="anumClick(this)">${ay.numberInSurah}</span> `;
+    });
+  });
+
+  // Update header info
+  const firstS = results[0].s;
+  document.getElementById('readerTitle').textContent = 'الصفحة ' + p + ' — سورة ' + SURAHS[firstS-1][0];
+  document.getElementById('readerMeta').textContent  = 'الجزء ' + juz;
+
+   const showBismMain = results.length === 1 && results[0].startAyah === 1 && results[0].s === 1;
+  document.getElementById('readerBismillah').style.display = showBismMain ? 'block' : 'none';
+
+  content.innerHTML = html;
+
+  // علّم الوقفة المحفوظة
+  if (waqfa) {
+    const wEl = document.querySelector(`.kh-anum[data-s="${waqfa.surah}"][data-a="${waqfa.ayah}"]`);
+    if (wEl) wEl.classList.add('waqfa-mark');
+  }
+}
+
+// ============================================================
+// WORD CLICK → TAFSIR
+// ============================================================
+async function wordClick(el) {
+  const surah = parseInt(el.dataset.s);
+  const ayah  = parseInt(el.dataset.a);
+  // Highlight
+  document.querySelectorAll('.kh-aword.hl').forEach(e => e.classList.remove('hl'));
+  el.classList.add('hl');
+  openTafsir(surah, ayah);
+}
+
+async function openTafsir(surah, ayah) {
+  const drawer = document.getElementById('tafsirDrawer');
+  const txtEl  = document.getElementById('tafsirTxt');
+  const ayahEl = document.getElementById('tafsirAyah');
+  drawer.classList.add('open');
+  txtEl.textContent  = 'جاري التحميل...';
+  ayahEl.textContent = '';
+
+  const key = `tf_${surah}_${ayah}`;
+  if (sessionStorage.getItem(key)) {
+    const d = JSON.parse(sessionStorage.getItem(key));
+    ayahEl.textContent = d.ayah;
+    txtEl.textContent  = d.tafsir;
+    return;
+  }
+
+  try {
+    const [ayahR, tafsirR] = await Promise.all([
+      fetch(`https://api.alquran.cloud/v1/ayah/${surah}:${ayah}`).then(r => r.json()),
+      fetch(`https://api.alquran.cloud/v1/ayah/${surah}:${ayah}/ar.muyassar`).then(r => r.json())
+    ]);
+    const ayahTxt   = ayahR.data?.text || '';
+    const tafsirTxt = tafsirR.data?.text || 'التفسير غير متاح حالياً';
+    ayahEl.textContent = ayahTxt;
+    txtEl.textContent  = tafsirTxt;
+    sessionStorage.setItem(key, JSON.stringify({ ayah: ayahTxt, tafsir: tafsirTxt }));
+  } catch {
+    txtEl.textContent = '⚠️ تعذّر تحميل التفسير';
+  }
+}
+
+function closeTafsir() {
+  document.getElementById('tafsirDrawer').classList.remove('open');
+  document.querySelectorAll('.kh-aword.hl').forEach(e => e.classList.remove('hl'));
+}
+
+// ============================================================
+// ANUM CLICK → WAQFA
+// ============================================================
+function anumClick(el) {
+  const surah = parseInt(el.dataset.s);
+  const ayah  = parseInt(el.dataset.a);
+  if (waqfa && waqfa.surah === surah && waqfa.ayah === ayah) {
+    clearWaqfa();
+    window.showToast?.('🗑 تم مسح الوقفة');
+  } else {
+    document.querySelectorAll('.kh-anum.waqfa-mark').forEach(e => e.classList.remove('waqfa-mark'));
+    el.classList.add('waqfa-mark');
+    saveWaqfa(surah, ayah);
+  }
+}
+
+// ============================================================
+// NAVIGATION
+// ============================================================
+function goToNextPage() {
+  if (curPage < 604) openPage(curPage + 1);
+}
+
+function goToPrevPage() {
+  if (curPage > 1) openPage(curPage - 1);
+}
+
+// ============================================================
+// MARK DONE
+// ============================================================
+function markDone() {
+  const p = curPage;
+  if (pprog[p]) return;
+
+  pprog[p] = Date.now();
+  localStorage.setItem('kpp', JSON.stringify(pprog));
+
+  // XP
+  const xpGained = 15;
+  window.islamiCalc?.addXP?.(xpGained, 'khatma_page');
+  window.showToast?.('✅ صفحة ' + p + ' مكتملة! +' + xpGained + ' XP 🎉', 'toast-success');
+
+  // تحقق من اكتمال السورة
+  checkSurahCompletion(p);
+
+  // تحديث Streak
+  updateStreak();
+
+  // تحديث الزر
+  const doneBtn = document.getElementById('btn-done');
+  doneBtn.textContent = '✅ مكتملة';
+  doneBtn.disabled    = true;
+  document.getElementById('rfoot-next').className = 'kh-btn-next ready';
+
+  // رسم XP float
+  spawnXPFloat(xpGained);
+
+  // حفظ للسحابة
+  window.islamiCalc?.saveProgress?.({ khatmaPages: pprog });
+}
+
+function checkSurahCompletion(donePage) {
+  SURAHS.forEach((s, i) => {
+    const n      = i + 1;
+    const startP = getPageNum(n, 1);
+    const endP   = n < 114 ? getPageNum(n + 1, 1) - 1 : 604;
+    const allDone = [...Array(endP - startP + 1)].every((_, j) => pprog[startP + j]);
+    if (allDone && !prog[n]) {
+      prog[n] = Date.now();
+      localStorage.setItem('kp', JSON.stringify(prog));
+      window.showToast?.('🌟 أكملت سورة ' + s[0] + '! +50 XP', 'toast-gold');
+      window.islamiCalc?.addXP?.(50, 'khatma_surah_' + n);
+      window.islamiCalc?.logActivity?.('أكمل سورة ' + s[0], 'khatma_complete', '📖', '', 50);
+      spawnXPFloat(50);
+    }
+  });
+
+  if (Object.keys(prog).length === 114) {
+    window.showToast?.('🎉🎉 ختمة مكتملة! مبروك +500 XP', 'toast-gold');
+    window.islamiCalc?.addXP?.(500, 'khatma_full');
+    window.islamiCalc?.unlockBadge?.('khatma_complete', '📖 خاتم القرآن');
+    confettiBurst();
+  }
+}
+
+function updateStreak() {
+  const todayKey = new Date().toDateString();
+  const lastRead = localStorage.getItem('lastReadDay');
+  const streak   = parseInt(localStorage.getItem('userStreak') || '0');
+
+  if (lastRead === todayKey) return;
+
+  const yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() - 1);
+  const newStreak = lastRead === yesterday.toDateString() ? streak + 1 : 1;
+
+  localStorage.setItem('userStreak', newStreak);
+  localStorage.setItem('lastReadDay', todayKey);
+
+  if (newStreak > 1) {
+    document.getElementById('streakNum').textContent = newStreak;
+    document.getElementById('streakBanner').classList.add('show');
+    window.islamiCalc?.updateStreak?.(newStreak);
+  }
+}
+
+// ============================================================
+// RESET
+// ============================================================
+function resetProgress() {
+  if (!confirm('هل أنت متأكد؟ سيتم مسح كل تقدمك في الختمة.')) return;
+  prog = {}; pprog = {};
+  localStorage.removeItem('kp');
+  localStorage.removeItem('kpp');
+  localStorage.removeItem('kbm');
+  localStorage.removeItem('kwaqfa');
+  bookmark = 0; waqfa = null;
+  updateStats();
+  renderGrid();
+  renderPageGrid();
+  renderFeat();
+  window.showToast?.('🔄 تم إعادة التعيين');
+}
+
+// ============================================================
+// XP FLOAT
+// ============================================================
+function spawnXPFloat(xp) {
+  const el       = document.createElement('div');
+  el.className   = 'xp-float';
+  el.textContent = '+' + xp + ' XP ⭐';
+  el.style.cssText = `
+    position: fixed;
+    top: 50%; left: 50%;
+    z-index: 99999;
+    animation: xpRise 1.3s var(--ease-out) forwards;
+    pointer-events: none;
+    font-size: 22px;
+    font-weight: 900;
+    color: var(--gd-400);
+    text-shadow: 0 0 20px rgba(245,158,11,0.6);
+    white-space: nowrap;
+  `;
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 1400);
+}
+
+// ============================================================
+// CONFETTI
+// ============================================================
+function confettiBurst() {
+  const colors = ['#10b981','#fbbf24','#a78bfa','#f87171','#60a5fa'];
+  for (let i = 0; i < 80; i++) {
+    const c = document.createElement('div');
+    Object.assign(c.style, {
+      position: 'fixed',
+      top: '40%',
+      left: Math.random() * 100 + 'vw',
+      width: (Math.random() * 8 + 4) + 'px',
+      height: (Math.random() * 8 + 4) + 'px',
+      background: colors[Math.floor(Math.random() * colors.length)],
+      borderRadius: Math.random() > 0.5 ? '50%' : '2px',
+      zIndex: '99998',
+      pointerEvents: 'none',
+      animation: `confettiFall ${Math.random() * 1.5 + 0.8}s ease-in forwards`,
+      animationDelay: Math.random() * 0.5 + 's',
+    });
+    document.body.appendChild(c);
+    setTimeout(() => c.remove(), 2500);
+  }
+
+  if (!document.getElementById('confettiStyle')) {
+    const s = document.createElement('style');
+    s.id = 'confettiStyle';
+    s.textContent = `
+      @keyframes confettiFall {
+        0%   { transform: translateY(0) rotate(0deg);   opacity: 1; }
+        100% { transform: translateY(60vh) rotate(720deg); opacity: 0; }
+      }`;
+    document.head.appendChild(s);
+  }
+}
+
+// ============================================================
+// TOAST
+// ============================================================
+window.showToast = function(msg, cls = '') {
+  const el = document.getElementById('toast');
+  el.textContent  = msg;
+  el.className    = 'ic-toast show ' + cls;
+  clearTimeout(el._t);
+  el._t = setTimeout(() => el.classList.remove('show'), 3000);
+};
 
 // ============================================================
 // INIT
@@ -1218,5 +1987,6 @@ const _apiCache = {};
 init();
 </script>
 
+  <script>if(typeof lucide!=='undefined')lucide.createIcons();</script>
 </body>
 </html>

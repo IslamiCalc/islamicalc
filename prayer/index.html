@@ -9,8 +9,7 @@
   <link rel="stylesheet" href="/style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-  <script type="module" src="/core/firebase.js"></script>
-  <script type="module" src="/core/app.js"></script>
+  <script type="module" src="/firebase.js"></script>
 
   <style>
   /* ============================================================
@@ -574,6 +573,20 @@
     .pr-card__time { font-size: var(--text-xl); }
   }
   </style>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <style>
+    [data-lucide] {
+      stroke: currentColor;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      fill: none;
+      flex-shrink: 0;
+      vertical-align: middle;
+    }
+    .ic-nav__link-icon[data-lucide] { width:17px;height:17px;margin-left:4px;opacity:.85; }
+    .ic-nav__link:hover [data-lucide], .ic-nav__link.active [data-lucide] { opacity:1; }
+  </style>
 </head>
 <body>
 
@@ -591,13 +604,13 @@
       <a href="/khatma" class="ic-nav__link">📖 الختمة</a>
       <a href="/arena"  class="ic-nav__link">🏆 الميدان</a>
       <a href="/zakat"  class="ic-nav__link">💰 الزكاة</a>
-      <a href="/prayer" class="ic-nav__link active">🕌 الصلاة</a>
+      <a href="/prayer" class="ic-nav__link active"><i data-lucide="building" style="width:18px;height:18px;display:inline-block;vertical-align:middle;"></i> الصلاة</a>
       <a href="/athkar" class="ic-nav__link">📿 الأذكار</a>
     </nav>
     <div class="ic-nav__actions">
-      <button id="themeBtn" class="ic-nav__icon-btn">🌙</button>
+      <button id="themeBtn" class="ic-nav__icon-btn"><i data-lucide="moon" style="width:16px;height:16px;display:inline-block;vertical-align:middle;"></i></button>
       <button id="loginBtn" class="ic-nav__login-btn">دخول</button>
-      <button class="ic-nav__mobile-toggle" id="mobileToggle">☰</button>
+      <button class="ic-nav__mobile-toggle" id="mobileToggle"><i data-lucide="menu" style="width:20px;height:20px;display:inline-block;vertical-align:middle;"></i></button>
     </div>
   </div>
   <div class="ic-nav__mobile" id="mobileMenu">
@@ -605,7 +618,7 @@
     <a href="/khatma">📖 الختمة</a>
     <a href="/arena">🏆 الميدان</a>
     <a href="/zakat">💰 الزكاة</a>
-    <a href="/prayer">🕌 الصلاة</a>
+    <a href="/prayer"><i data-lucide="building" style="width:18px;height:18px;display:inline-block;vertical-align:middle;"></i> الصلاة</a>
     <a href="/athkar">📿 الأذكار</a>
   </div>
 </header>
@@ -619,11 +632,11 @@
 
       <!-- Left: Location + Search -->
       <div class="pr-header-left">
-        <div class="ic-section__eyebrow" style="margin-bottom:var(--s-3)">🕌 أوقات الصلاة</div>
-        <div class="pr-city-name" id="cityName">📍 جاري تحديد موقعك...</div>
+        <div class="ic-section__eyebrow" style="margin-bottom:var(--s-3)"><i data-lucide="building" style="width:18px;height:18px;display:inline-block;vertical-align:middle;"></i> أوقات الصلاة</div>
+        <div class="pr-city-name" id="cityName"><i data-lucide="map-pin" style="width:15px;height:15px;display:inline-block;vertical-align:middle;"></i> جاري تحديد موقعك...</div>
         <div class="pr-date-row">
           <span class="pr-date-badge" id="miladi">⬤ جاري...</span>
-          <span class="pr-date-badge" style="background:rgba(167,139,250,0.08);border-color:rgba(167,139,250,0.2);color:var(--pr-vi)" id="hijri">🌙 جاري...</span>
+          <span class="pr-date-badge" style="background:rgba(167,139,250,0.08);border-color:rgba(167,139,250,0.2);color:var(--pr-vi)" id="hijri"><i data-lucide="moon" style="width:16px;height:16px;display:inline-block;vertical-align:middle;"></i> جاري...</span>
         </div>
 
         <div class="pr-search">
@@ -633,12 +646,12 @@
               onkeypress="if(event.key==='Enter') searchCity()">
             <button class="pr-search-btn" onclick="searchCity()">بحث</button>
           </div>
-          <button class="pr-loc-btn" onclick="getLocation()">📍 موقعي</button>
+          <button class="pr-loc-btn" onclick="getLocation()"><i data-lucide="map-pin" style="width:15px;height:15px;display:inline-block;vertical-align:middle;"></i> موقعي</button>
         </div>
 
         <div class="pr-cities">
           <button class="pr-city" onclick="quickCity('Riyadh')">🇸🇦 الرياض</button>
-          <button class="pr-city" onclick="quickCity('Mecca')">🕋 مكة</button>
+          <button class="pr-city" onclick="quickCity('Mecca')"><i data-lucide="home" style="width:16px;height:16px;display:inline-block;vertical-align:middle;"></i> مكة</button>
           <button class="pr-city" onclick="quickCity('Medina')">🌹 المدينة</button>
           <button class="pr-city" onclick="quickCity('Jeddah')">🌊 جدة</button>
           <button class="pr-city" onclick="quickCity('Cairo')">🏺 القاهرة</button>
@@ -689,7 +702,7 @@
     <!-- ── Prayer Cards Column ── -->
     <div>
       <div id="pr-loading" class="pr-loading">
-        <div class="pr-loading__spin">🕌</div>
+        <div class="pr-loading__spin"><i data-lucide="building" style="width:18px;height:18px;display:inline-block;vertical-align:middle;"></i></div>
         <div class="pr-loading__txt">جاري تحميل أوقات الصلاة...</div>
       </div>
       <div id="pr-cards" class="pr-cards" style="display:none">
@@ -703,7 +716,7 @@
       <!-- Qibla Card -->
       <div class="pr-qibla-card">
         <div class="pr-qibla-head">
-          <div class="pr-qibla-icon-wrap">🧭</div>
+          <div class="pr-qibla-icon-wrap"><i data-lucide="compass" style="width:16px;height:16px;display:inline-block;vertical-align:middle;"></i></div>
           <div>
             <div class="pr-qibla-title">اتجاه القبلة</div>
             <div style="font-size:10px;color:var(--text-3)">Qibla Direction</div>
@@ -716,7 +729,7 @@
             <span class="pr-compass__dir s">S</span>
             <span class="pr-compass__dir e">E</span>
             <span class="pr-compass__dir w">W</span>
-            <div class="pr-compass__arrow" id="qibla-arrow">🕋</div>
+            <div class="pr-compass__arrow" id="qibla-arrow"><i data-lucide="home" style="width:16px;height:16px;display:inline-block;vertical-align:middle;"></i></div>
             <div class="pr-compass__dot"></div>
           </div>
           <div class="pr-qibla-angle" id="qibla-angle">--°</div>
@@ -751,7 +764,7 @@
       <!-- Weekly Preview -->
       <div class="pr-weekly-card">
         <div class="pr-weekly-head">
-          <div class="pr-weekly-title">📅 أوقات الأسبوع</div>
+          <div class="pr-weekly-title"><i data-lucide="calendar" style="width:15px;height:15px;display:inline-block;vertical-align:middle;"></i> أوقات الأسبوع</div>
           <div class="pr-week-nav">
             <button onclick="weekOffset--; renderWeek()" title="الأسبوع السابق">◂</button>
             <button onclick="weekOffset++; renderWeek()" title="الأسبوع التالي">▸</button>
@@ -780,7 +793,7 @@
 <div id="loginModal" class="ic-modal">
   <div class="ic-modal__backdrop" id="modalBackdrop"></div>
   <div class="ic-modal__box">
-    <div class="ic-modal__icon">🕌</div>
+    <div class="ic-modal__icon"><i data-lucide="building" style="width:18px;height:18px;display:inline-block;vertical-align:middle;"></i></div>
     <h3 class="ic-modal__title">سجّل دخولك لحفظ مدينتك المفضلة</h3>
     <p class="ic-modal__sub">مزامنة موقعك وإعداداتك عبر جميع أجهزتك</p>
     <div class="ic-modal__actions">
@@ -801,12 +814,12 @@
 // CONSTANTS
 // ============================================================
 const PRAYERS_DATA = [
-  { key:'Fajr',    ar:'الفجر',   en:'Fajr',    icon:'🌙', color:'#a78bfa', sub:'آذان الفجر' },
-  { key:'Sunrise', ar:'الشروق',  en:'Sunrise', icon:'🌅', color:'#fbbf24', sub:'نهاية وقت الفجر' },
-  { key:'Dhuhr',   ar:'الظهر',   en:'Dhuhr',   icon:'☀️', color:'#f59e0b', sub:'آذان الظهر' },
+  { key:'Fajr',    ar:'الفجر',   en:'Fajr',    icon:'<i data-lucide="moon" style="width:16px;height:16px;display:inline-block;vertical-align:middle;"></i>', color:'#a78bfa', sub:'آذان الفجر' },
+  { key:'Sunrise', ar:'الشروق',  en:'Sunrise', icon:'<i data-lucide="sunrise" style="width:16px;height:16px;display:inline-block;vertical-align:middle;"></i>', color:'#fbbf24', sub:'نهاية وقت الفجر' },
+  { key:'Dhuhr',   ar:'الظهر',   en:'Dhuhr',   icon:'<i data-lucide="sun" style="width:16px;height:16px;display:inline-block;vertical-align:middle;"></i>', color:'#f59e0b', sub:'آذان الظهر' },
   { key:'Asr',     ar:'العصر',   en:'Asr',     icon:'🌤️', color:'#fb923c', sub:'آذان العصر' },
   { key:'Maghrib', ar:'المغرب',  en:'Maghrib', icon:'🌆', color:'#f87171', sub:'آذان المغرب' },
-  { key:'Isha',    ar:'العشاء',  en:'Isha',    icon:'🌃', color:'#818cf8', sub:'آذان العشاء' },
+  { key:'Isha',    ar:'العشاء',  en:'Isha',    icon:'<i data-lucide="moon" style="width:16px;height:16px;display:inline-block;vertical-align:middle;"></i>', color:'#818cf8', sub:'آذان العشاء' },
 ];
 
 const QUICK_CITIES = {
@@ -831,33 +844,75 @@ let currentLng = 46.6753;
 let currentCity = 'الرياض';
 let weekOffset  = 0;
 
+// ============================================================
+// THEME + NAV
+// ============================================================
+(function () {
+  const s = localStorage.getItem('theme');
+  const h = new Date().getHours();
+  document.documentElement.setAttribute('data-theme',
+    s || (h >= 19 || h < 6 ? 'dark' : 'light'));
+})();
 
+document.getElementById('themeBtn')?.addEventListener('click', () => {
+  const n = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', n);
+  localStorage.setItem('theme', n);
+  document.getElementById('themeBtn').textContent = n === 'dark' ? '<i data-lucide="moon" style="width:16px;height:16px;display:inline-block;vertical-align:middle;"></i>' : '<i data-lucide="sun" style="width:16px;height:16px;display:inline-block;vertical-align:middle;"></i>';
+});
 
+window.addEventListener('scroll', () => {
+  document.getElementById('icNav')?.classList.toggle('ic-nav--scrolled', scrollY > 20);
+}, { passive: true });
 
+document.getElementById('mobileToggle')?.addEventListener('click', () => {
+  document.getElementById('mobileMenu')?.classList.toggle('ic-nav__mobile--open');
+});
 
+document.getElementById('loginBtn')?.addEventListener('click', () => {
+  window.islamiCalc?.getCurrentUser?.()
+    ? window.islamiCalc.showUserMenu?.()
+    : document.getElementById('loginModal')?.classList.add('ic-modal--open');
+});
 
+document.getElementById('modalBackdrop')?.addEventListener('click', () => {
+  document.getElementById('loginModal')?.classList.remove('ic-modal--open');
+});
+
+document.getElementById('guestBrowseBtn')?.addEventListener('click', () => {
+  document.getElementById('loginModal')?.classList.remove('ic-modal--open');
+});
+
+document.getElementById('googleLoginBtn')?.addEventListener('click', () => {
+  window.islamiCalc?.loginWithGoogle?.();
+});
 
 // ============================================================
 // HELPERS
 // ============================================================
+window.showToast = function(msg, cls = '') {
+  const el = document.getElementById('toast');
+  if (!el) return;
+  el.textContent = msg;
+  el.className   = 'ic-toast show ' + cls;
+  clearTimeout(el._t);
+  el._t = setTimeout(() => el.classList.remove('show'), 3500);
+};
 
 function safeAddXP(amount, reason) {
-  if (window.islamiCalc?.addXP) {
-    window.islamiCalc.addXP(amount, reason);
-  } else {
-    window.addEventListener('islamiCalcReady',
-      () => window.islamiCalc?.addXP?.(amount, reason), { once: true });
-  }
+  if (window.islamiCalc) window.islamiCalc.addXP?.(amount, reason);
+  else window.addEventListener('islamiCalcReady',
+    () => window.islamiCalc?.addXP?.(amount, reason), { once: true });
 }
 
 function updateDates() {
   const now = new Date();
   const mi = document.getElementById('miladi');
   const hi = document.getElementById('hijri');
-  if (mi) mi.textContent = '📅 ' + now.toLocaleDateString('ar-SA', {
+  if (mi) mi.textContent = '<i data-lucide="calendar" style="width:15px;height:15px;display:inline-block;vertical-align:middle;"></i> ' + now.toLocaleDateString('ar-SA', {
     weekday:'long', day:'numeric', month:'long', year:'numeric'
   });
-  if (hi) hi.textContent = '🌙 ' + now.toLocaleDateString('ar-SA-u-ca-islamic', {
+  if (hi) hi.textContent = '<i data-lucide="moon" style="width:16px;height:16px;display:inline-block;vertical-align:middle;"></i> ' + now.toLocaleDateString('ar-SA-u-ca-islamic', {
     day:'numeric', month:'long', year:'numeric'
   });
 }
@@ -877,7 +932,7 @@ function fmt12(ts) {
 // GEOLOCATION
 // ============================================================
 function getLocation() {
-  document.getElementById('cityName').textContent = '📍 جاري تحديد موقعك...';
+  document.getElementById('cityName').textContent = '<i data-lucide="map-pin" style="width:15px;height:15px;display:inline-block;vertical-align:middle;"></i> جاري تحديد موقعك...';
   if (!navigator.geolocation) {
     loadPrayers(currentLat, currentLng, currentCity);
     return;
@@ -945,7 +1000,7 @@ function reloadPrayers() {
 async function loadPrayers(lat, lng, city) {
   document.getElementById('pr-loading').style.display = 'block';
   document.getElementById('pr-cards').style.display   = 'none';
-  document.getElementById('cityName').textContent = '📍 ' + city;
+  document.getElementById('cityName').textContent = '<i data-lucide="map-pin" style="width:15px;height:15px;display:inline-block;vertical-align:middle;"></i> ' + city;
 
   const method = document.getElementById('methodSelect').value;
   const now    = new Date();
@@ -973,7 +1028,7 @@ async function loadPrayers(lat, lng, city) {
 
     showToast('✅ أوقات الصلاة في ' + city, 'toast-success');
     safeAddXP(10, 'prayer_view');
-    window.islamiCalc?.logActivity?.('عرض أوقات الصلاة في ' + city, 'prayer_view', '🕌', '', 10);
+    window.islamiCalc?.logActivity?.('عرض أوقات الصلاة في ' + city, 'prayer_view', '<i data-lucide="building" style="width:18px;height:18px;display:inline-block;vertical-align:middle;"></i>', '', 10);
 
     // Cache city
     localStorage.setItem('pr_city',  city);
@@ -1210,7 +1265,7 @@ function sharePrayers() {
     return `${p.icon} ${p.ar}: ${fmt12(ts)}`;
   }).join('\n');
 
-  const text = `🕌 أوقات الصلاة في ${currentCity}\n${now.toLocaleDateString('ar-SA',{weekday:'long',day:'numeric',month:'long'})}\n\n${lines}\n\n📍 islamicalc.com/prayer`;
+  const text = `<i data-lucide="building" style="width:18px;height:18px;display:inline-block;vertical-align:middle;"></i> أوقات الصلاة في ${currentCity}\n${now.toLocaleDateString('ar-SA',{weekday:'long',day:'numeric',month:'long'})}\n\n${lines}\n\n<i data-lucide="map-pin" style="width:15px;height:15px;display:inline-block;vertical-align:middle;"></i> islamicalc.com/prayer`;
 
   if (navigator.share) {
     navigator.share({ title: 'أوقات الصلاة — IslamiCalc', text });
@@ -1241,5 +1296,6 @@ if (cachedCity && !isNaN(cachedLat) && !isNaN(cachedLng)) {
 }
 </script>
 
+  <script>if(typeof lucide!=='undefined')lucide.createIcons();</script>
 </body>
 </html>
