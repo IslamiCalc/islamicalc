@@ -224,24 +224,38 @@ const Store = (() => {
 
   function autoPersist(key, value) {
     const storageKey = PERSIST_KEYS[key];
-    if (storageKey) {
-      try { localStorage.setItem(storageKey, JSON.stringify(value)); }
-      catch (e) { console.warn('[Store] persist failed:', key); }
+    if (!storageKey) return;
+    try {
+      if (value == null) {
+        localStorage.removeItem(storageKey);
+      } else {
+        localStorage.setItem(storageKey, JSON.stringify(value));
+      }
+    } catch (e) {
+      // localStorage might be full or blocked (private mode)
+      console.warn('[Store] persist failed for key:', key, e);
     }
   }
 
   function loadFromStorage() {
     const updates = {};
-
     Object.entries(PERSIST_KEYS).forEach(([stateKey, storageKey]) => {
       try {
         const raw = localStorage.getItem(storageKey);
-        if (raw != null) updates[stateKey] = JSON.parse(raw);
-      } catch {}
+        if (raw != null) {
+          const parsed = JSON.parse(raw);
+          if (parsed !== null && parsed !== undefined) {
+            updates[stateKey] = parsed;
+          }
+        }
+      } catch (e) {
+        // Corrupted data — clear it
+        try { localStorage.removeItem(storageKey); } catch {}
+        console.warn('[Store] load failed for key:', stateKey);
+      }
     });
 
     if (Object.keys(updates).length) {
-      // Silent patch (no notifications yet — listeners not attached)
       Object.entries(updates).forEach(([key, value]) => {
         _state = setNestedValue(_state, key, value);
       });
@@ -262,7 +276,11 @@ const Store = (() => {
   ];
 
   function computeLevel(xp) {
-    return LEVELS.findLast(l => xp >= l.min) || LEVELS[0];
+    // findLast not supported in older browsers — use reverse find
+    for (let i = LEVELS.length - 1; i >= 0; i--) {
+      if (xp >= LEVELS[i].min) return LEVELS[i];
+    }
+    return LEVELS[0];
   }
 
   function computeNextLevel(xp) {

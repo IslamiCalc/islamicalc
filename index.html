@@ -671,9 +671,14 @@
        ============================================================ -->
   <footer class="ic-footer" role="contentinfo">
     <div class="ic-container">
-      <div class="ic-footer__inner">
+      <div class="ic-footer__inner ic-footer__inner--simple">
         <div class="ic-footer__brand">
-          <div class="ic-nav__logo-mark" style="width:28px;height:28px;font-size:14px">☪️</div>
+          <div class="ic-nav__logo-mark ic-nav__logo-mark--sm">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M12 2L14.09 8.26L21 9L15.54 14.74L17.18 22L12 18.77L6.82 22L8.46 14.74L3 9L9.91 8.26L12 2Z"
+                    fill="rgba(255,255,255,0.95)"/>
+            </svg>
+          </div>
           <span class="ic-nav__logo-text" style="font-size:16px">IslamiCalc</span>
         </div>
         <nav class="ic-footer__links" aria-label="روابط ثانوية">
@@ -727,7 +732,17 @@
        Dropdown JS (inline — بسيط ومباشر)
        ============================================================ -->
   <script>
-    // Tools Dropdown
+    // ── Navbar scroll detection ──
+    const nav = document.getElementById('icNav');
+    if (nav) {
+      const onScroll = () => {
+        nav.classList.toggle('ic-nav--scrolled', window.scrollY > 10);
+      };
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+    }
+
+    // ── Tools Dropdown
     const toolsBtn   = document.getElementById('toolsBtn');
     const toolsPanel = document.getElementById('toolsPanel');
     if (toolsBtn && toolsPanel) {

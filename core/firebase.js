@@ -245,32 +245,14 @@ function _checkLevelUp(addedAmount) {
 }
 
 function _floatXP(amount) {
+  // Uses .xp-float class defined in style.css
   const el = document.createElement('div');
-  el.textContent = '+' + amount + ' ✨';
-  el.style.cssText = `
-    position:fixed; bottom:80px; left:50%;
-    transform:translateX(-50%);
-    background:linear-gradient(135deg,#059669,#fbbf24);
-    color:#fff; padding:6px 18px; border-radius:999px;
-    font-weight:900; font-size:14px; font-family:inherit;
-    pointer-events:none; z-index:9999;
-    animation:xpFloat 1.8s ease forwards;
-  `;
+  el.className   = 'xp-float';
+  el.textContent = `+${amount} ✨`;
+  el.style.left  = '50%';
+  el.style.bottom = '80px';
   document.body.appendChild(el);
-  setTimeout(() => el.remove(), 1900);
-
-  if (!document.getElementById('xpFloatStyle')) {
-    const s = document.createElement('style');
-    s.id = 'xpFloatStyle';
-    s.textContent = `
-      @keyframes xpFloat {
-        0%   { opacity:0; transform:translateX(-50%) translateY(0); }
-        20%  { opacity:1; transform:translateX(-50%) translateY(-8px); }
-        80%  { opacity:1; transform:translateX(-50%) translateY(-30px); }
-        100% { opacity:0; transform:translateX(-50%) translateY(-50px); }
-      }`;
-    document.head.appendChild(s);
-  }
+  setTimeout(() => el.remove(), 1400);
 }
 
 // ============================================================
@@ -423,6 +405,8 @@ window.islamiCalc = {
   getLeaderboard,
   checkBadges,
   XP_CONFIG,
+  getCurrentUser:  () => _currentUser,
+  getUserProfile:  () => _userProfile,
   get user()    { return _currentUser;  },
   get profile() { return _userProfile; },
   get db()      { return db; },

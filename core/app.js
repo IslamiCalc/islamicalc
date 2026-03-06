@@ -52,8 +52,20 @@ const App = (() => {
 
   function applyTheme(theme) {
     document.documentElement.setAttribute('data-theme', theme);
+    // Update main theme button SVG (sun = light, moon = dark)
     const btn = document.getElementById('themeBtn');
-    if (btn) btn.textContent = theme === 'dark' ? '🌙' : '☀️';
+    if (btn) {
+      const sunSVG  = `<svg class="ic-nav__icon-btn-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>`;
+      const moonSVG = `<svg class="ic-nav__icon-btn-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79z"/></svg>`;
+      btn.innerHTML = theme === 'dark' ? moonSVG : sunSVG;
+      btn.setAttribute('aria-label', theme === 'dark' ? 'تفعيل الوضع النهاري' : 'تفعيل الوضع الليلي');
+    }
+    // Keep drawer theme button in sync
+    const drawerBtn = document.getElementById('drawerThemeBtn');
+    if (drawerBtn) {
+      const spanEl = drawerBtn.querySelector('span');
+      if (spanEl) spanEl.textContent = theme === 'dark' ? 'نهاري' : 'ليلي';
+    }
   }
 
   // ============================================================
@@ -64,9 +76,9 @@ const App = (() => {
     if (!nav) return;
 
     // Scroll effect
-    window.addEventListener('scroll', () => {
-      nav.classList.toggle('ic-nav--scrolled', scrollY > 20);
-    }, { passive: true });
+    const onScroll = () => nav.classList.toggle('ic-nav--scrolled', scrollY > 20);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll(); // run immediately
 
     // Mark active link
     const current = '/' + getCurrentPage();
@@ -82,65 +94,151 @@ const App = (() => {
     // Update nav UI when auth changes
     Store.subscribe('profile', updateNavAuth);
     Store.subscribe('user',    updateNavAuth);
-    
+
     // Inject XP bar when profile loads
-Events.on(EVENTS.AUTH_PROFILE_LOADED, () => {
-  injectXPBar();
-  document.body.classList.add('has-xp-bar');
-});
+    Events.on(EVENTS.AUTH_PROFILE_LOADED, () => {
+      injectXPBar();
+      document.body.classList.add('has-xp-bar');
+    });
 
-// Remove XP bar on logout
-Events.on(EVENTS.AUTH_LOGOUT, () => {
-  document.getElementById('ic-xp-bar')?.remove();
-  document.body.classList.remove('has-xp-bar');
-});
-
+    // Remove XP bar on logout
+    Events.on(EVENTS.AUTH_LOGOUT, () => {
+      document.getElementById('ic-xp-bar')?.remove();
+      document.body.classList.remove('has-xp-bar');
+    });
   }
 
   function updateNavAuth() {
     const user    = Store.get('user');
     const profile = Store.get('profile');
     const btn     = document.getElementById('loginBtn');
+    const lbl     = document.getElementById('loginBtnLabel');
     if (!btn) return;
 
     if (user && profile) {
-      const lvl = Store.computeLevel(profile.xp || 0);
+      const lvl  = Store.computeLevel(profile.xp || 0);
       const name = profile.displayName?.split(' ')[0] || 'أنت';
-      btn.textContent = `${lvl.icon} ${name}`;
+      if (lbl) lbl.textContent = `${lvl.icon} ${name}`;
+      else btn.innerHTML = `<span style="flex-shrink:0">${lvl.icon}</span><span>${name}</span>`;
       btn.classList.add('ic-nav__login-btn--logged');
+      btn.setAttribute('aria-label', `الملف الشخصي - ${name}`);
+
+      // Update drawer profile section
+      const drawerName = document.getElementById('drawerName');
+      const drawerSub  = document.getElementById('drawerSub');
+      const drawerAvatar = document.getElementById('drawerAvatar');
+      const drawerLogin  = document.getElementById('drawerLoginBtn');
+      const drawerXP     = document.getElementById('drawerXP');
+      const drawerXPFill = document.getElementById('drawerXPFill');
+      const drawerXPLbl  = document.getElementById('drawerXPLbl');
+
+      if (drawerName)   drawerName.textContent = profile.displayName || name;
+      if (drawerSub)    drawerSub.textContent  = `${lvl.icon} ${lvl.name} · ${(profile.xp || 0).toLocaleString('ar')} XP`;
+      if (drawerAvatar) {
+        drawerAvatar.innerHTML = profile.photoURL
+          ? `<img src="${profile.photoURL}" alt="${name}" style="width:100%;height:100%;border-radius:50%;object-fit:cover">`
+          : `<span style="font-size:18px;font-weight:900">${name.charAt(0)}</span>`;
+      }
+      if (drawerLogin)  drawerLogin.textContent = 'ملفي';
+      if (drawerXP)    drawerXP.style.display = '';
+      if (drawerXPFill) {
+        const pct = Store.computeLevelProgress(profile.xp || 0);
+        drawerXPFill.style.width = pct + '%';
+      }
+      if (drawerXPLbl)  drawerXPLbl.textContent = (profile.xp || 0).toLocaleString('ar') + ' XP';
     } else {
-      btn.textContent = 'دخول';
+      if (lbl) lbl.textContent = 'تسجيل الدخول';
+      else btn.innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.58-7 8-7s8 3 8 7"/></svg><span>تسجيل الدخول</span>`;
       btn.classList.remove('ic-nav__login-btn--logged');
+      btn.setAttribute('aria-label', 'تسجيل الدخول');
     }
   }
 
   // ============================================================
-  // MOBILE MENU
+  // MOBILE MENU / SIDE DRAWER
   // ============================================================
   function initMobileMenu() {
-    const toggle = document.getElementById('mobileToggle');
-    const menu   = document.getElementById('mobileMenu');
-    if (!toggle || !menu) return;
+    const toggle  = document.getElementById('menuToggle');
+    const drawer  = document.getElementById('sideDrawer');
+    const overlay = document.getElementById('drawerOverlay');
+    const closeBtn = document.getElementById('drawerClose');
 
-    toggle.addEventListener('click', () => {
-      menu.classList.toggle('ic-nav__mobile--open');
-      toggle.textContent = menu.classList.contains('ic-nav__mobile--open') ? '✕' : '☰';
-    });
+    // Fallback: old mobile menu style
+    const oldToggle = document.getElementById('mobileToggle');
+    const oldMenu   = document.getElementById('mobileMenu');
 
-    // Close on link click
-    menu.querySelectorAll('a').forEach(a => {
-      a.addEventListener('click', () => {
-        menu.classList.remove('ic-nav__mobile--open');
-        toggle.textContent = '☰';
+    if (oldToggle && oldMenu) {
+      oldToggle.addEventListener('click', () => {
+        const open = oldMenu.classList.toggle('ic-nav__mobile--open');
+        oldToggle.textContent = open ? '✕' : '☰';
       });
+      oldMenu.querySelectorAll('a').forEach(a => {
+        a.addEventListener('click', () => {
+          oldMenu.classList.remove('ic-nav__mobile--open');
+          oldToggle.textContent = '☰';
+        });
+      });
+      document.addEventListener('click', e => {
+        if (!oldMenu.contains(e.target) && !oldToggle.contains(e.target)) {
+          oldMenu.classList.remove('ic-nav__mobile--open');
+          oldToggle.textContent = '☰';
+        }
+      });
+      return;
+    }
+
+    if (!toggle || !drawer) return;
+
+    function openDrawer() {
+      drawer.classList.add('ic-drawer--open');
+      overlay?.classList.add('ic-drawer-overlay--visible');
+      document.body.style.overflow = 'hidden';
+      toggle.setAttribute('aria-expanded', 'true');
+      drawer.querySelector('.ic-drawer__link')?.focus();
+    }
+
+    function closeDrawer() {
+      drawer.classList.remove('ic-drawer--open');
+      overlay?.classList.remove('ic-drawer-overlay--visible');
+      document.body.style.overflow = '';
+      toggle.setAttribute('aria-expanded', 'false');
+      toggle.focus();
+    }
+
+    toggle.addEventListener('click', () =>
+      drawer.classList.contains('ic-drawer--open') ? closeDrawer() : openDrawer()
+    );
+
+    closeBtn?.addEventListener('click', closeDrawer);
+    overlay?.addEventListener('click', closeDrawer);
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && drawer.classList.contains('ic-drawer--open')) closeDrawer();
     });
 
-    // Close on outside click
-    document.addEventListener('click', e => {
-      if (!menu.contains(e.target) && !toggle.contains(e.target)) {
-        menu.classList.remove('ic-nav__mobile--open');
-        toggle.textContent = '☰';
+    drawer.querySelectorAll('.ic-drawer__link').forEach(a => {
+      a.addEventListener('click', closeDrawer);
+    });
+
+    // Mark active link in drawer
+    const page = location.pathname.replace(/^\//, '').split('/')[0] || 'home';
+    drawer.querySelectorAll('.ic-drawer__link').forEach(a => {
+      if (a.dataset.page === page) {
+        a.classList.add('active');
+        a.setAttribute('aria-current', 'page');
       }
+    });
+
+    // Sync drawer theme button with main theme button
+    document.getElementById('drawerThemeBtn')?.addEventListener('click', () => {
+      document.getElementById('themeBtn')?.click();
+    });
+
+    // Drawer login button
+    document.getElementById('drawerLoginBtn')?.addEventListener('click', () => {
+      closeDrawer();
+      const user = Store.get('user');
+      user ? window.islamiCalc?.showUserMenu?.() : openModal();
     });
   }
 
@@ -241,12 +339,11 @@ Events.on(EVENTS.AUTH_LOGOUT, () => {
   // ============================================================
   async function initFirebase() {
     try {
-      // Wait for firebase.js to expose islamiCalc
       await Events.waitFor(EVENTS.AUTH_READY, 8000);
     } catch {
-      // Auth took too long — continue without it
       console.warn('[App] Auth ready timeout — continuing as guest');
       Store.set('authReady', true);
+      Store.set('user', null);
     }
   }
 
@@ -257,12 +354,6 @@ Events.on(EVENTS.AUTH_LOGOUT, () => {
     const page = getCurrentPage();
     Store.set('currentPage', page);
     document.title = document.title || 'IslamiCalc';
-  }
-
-  function getCurrentPage() {
-    const path  = window.location.pathname;
-    const parts = path.split('/').filter(Boolean);
-    return parts[0] || 'home';
   }
 
   // ============================================================
@@ -335,8 +426,8 @@ Events.on(EVENTS.AUTH_LOGOUT, () => {
     const ic = window.islamiCalc;
     if (!ic) return;
 
-    const user    = ic.getCurrentUser?.();
-    const profile = ic.getUserProfile?.();
+    const user    = ic.user;
+    const profile = ic.profile;
 
     if (user)    Store.set('user',    user);
     if (profile) {
@@ -347,7 +438,6 @@ Events.on(EVENTS.AUTH_LOGOUT, () => {
 
     Store.set('authReady', true);
     Events.emit(EVENTS.AUTH_READY, { user, profile });
-
     if (user) Events.emit(EVENTS.AUTH_LOGIN, { user, profile });
   });
 

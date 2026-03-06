@@ -1,64 +1,437 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl" data-theme="dark">
+<html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="canonical" href="https://islamicalc.com/about/">
+  <title>من نحن — IslamiCalc</title>
+  <meta name="description" content="IslamiCalc — منصة إسلامية رقمية تيسّر الوصول للمعلومات الإسلامية الصحيحة بأدوات تفاعلية عصرية.">
+  <meta name="theme-color" content="#10b981">
+  <link rel="canonical" href="https://islamicalc.web.app/about">
   <link rel="manifest" href="/manifest.json">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>ℹ️</text></svg>">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
   <link rel="stylesheet" href="/style.css">
-  <title>من نحن | IslamiCalc</title>
-</head>
-<body>
-<!-- ═══════════════════════════════════════════════════
-     IslamiCalc  ·  Redesigned Navigation Bar
-     Drop this <header> block into every page, replacing
-     the existing <header class="ic-nav" …> … </header>
-═══════════════════════════════════════════════════ -->
+  <script type="module" src="/core/firebase.js"></script>
+  <script type="module" src="/core/app.js"></script>
 
+  <style>
+    /* ── About page styles ── */
+
+    /* Hero */
+    .abt-hero {
+      padding: calc(64px + var(--s-16)) var(--s-6) var(--s-12);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .abt-hero__badge {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--s-2);
+      padding: 5px 16px;
+      background: rgba(16,185,129,0.08);
+      border: 1px solid rgba(16,185,129,0.2);
+      border-radius: var(--r-full);
+      font-size: var(--text-xs);
+      font-weight: 800;
+      color: var(--em-400);
+      margin-bottom: var(--s-5);
+    }
+
+    .abt-hero__title {
+      font-size: clamp(36px, 6vw, 60px);
+      font-weight: 900;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      margin-bottom: var(--s-4);
+    }
+
+    .abt-hero__title span {
+      background: linear-gradient(135deg, var(--em-300), var(--gd-300));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .abt-hero__sub {
+      font-size: var(--text-lg);
+      color: var(--text-2);
+      max-width: 540px;
+      margin: 0 auto;
+      line-height: 1.9;
+    }
+
+    /* Stats strip */
+    .abt-stats {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--s-10);
+      flex-wrap: wrap;
+      padding: var(--s-10) var(--s-6);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+      margin: var(--s-12) 0;
+    }
+
+    .abt-stat {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .abt-stat__num {
+      font-size: var(--text-3xl);
+      font-weight: 900;
+      font-family: var(--font-en);
+      color: var(--text-em);
+      line-height: 1;
+    }
+
+    .abt-stat__lbl {
+      font-size: var(--text-sm);
+      color: var(--text-3);
+    }
+
+    .abt-stats__divider {
+      width: 1px;
+      height: 44px;
+      background: var(--border-2);
+    }
+
+    @media (max-width: 600px) {
+      .abt-stats { gap: var(--s-6); }
+      .abt-stats__divider { display: none; }
+    }
+
+    /* Content sections */
+    .abt-section {
+      padding: var(--s-16) 0;
+    }
+
+    .abt-section + .abt-section {
+      border-top: 1px solid var(--border);
+    }
+
+    .abt-section__label {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--s-2);
+      font-size: var(--text-xs);
+      font-weight: 800;
+      color: var(--em-400);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: var(--s-3);
+    }
+
+    .abt-section__title {
+      font-size: clamp(24px, 4vw, 36px);
+      font-weight: 900;
+      line-height: 1.3;
+      margin-bottom: var(--s-4);
+    }
+
+    .abt-section__body {
+      font-size: var(--text-lg);
+      color: var(--text-2);
+      line-height: 2;
+      max-width: 640px;
+    }
+
+    /* Mission layout */
+    .abt-mission {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--s-16);
+      align-items: center;
+    }
+
+    @media (max-width: 768px) {
+      .abt-mission { grid-template-columns: 1fr; gap: var(--s-8); }
+    }
+
+    .abt-mission__visual {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: var(--s-3);
+    }
+
+    /* Mini feature cards inside mission visual */
+    .abt-mini-card {
+      background: var(--grad-card-3d), var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r-xl);
+      padding: var(--s-4) var(--s-5);
+      display: flex;
+      align-items: center;
+      gap: var(--s-4);
+      box-shadow: var(--shadow-md);
+      transition: transform var(--t-base) var(--ease-out),
+                  border-color var(--t-base);
+    }
+
+    .abt-mini-card:hover {
+      transform: translateX(-4px);
+      border-color: var(--border-em);
+    }
+
+    .abt-mini-card:nth-child(2) { margin-right: var(--s-6); }
+    .abt-mini-card:nth-child(3) { margin-right: var(--s-3); }
+
+    .abt-mini-card__icon {
+      font-size: 28px;
+      width: 48px; height: 48px;
+      background: rgba(16,185,129,0.08);
+      border: 1px solid rgba(16,185,129,0.15);
+      border-radius: var(--r-lg);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .abt-mini-card__title {
+      font-size: var(--text-base);
+      font-weight: 800;
+      color: var(--text-1);
+    }
+
+    .abt-mini-card__sub {
+      font-size: var(--text-xs);
+      color: var(--text-3);
+      margin-top: 2px;
+    }
+
+    /* Tools grid */
+    .abt-tools {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--s-4);
+    }
+
+    @media (max-width: 768px) { .abt-tools { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 480px) { .abt-tools { grid-template-columns: 1fr 1fr; } }
+
+    .abt-tool {
+      background: var(--grad-card-3d), var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r-xl);
+      padding: var(--s-5);
+      text-align: center;
+      text-decoration: none;
+      color: var(--text-1);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--s-2);
+      transition: all var(--t-base) var(--ease-out);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .abt-tool:hover {
+      transform: translateY(-4px);
+      border-color: var(--border-em);
+      box-shadow: var(--shadow-lg), var(--shadow-em);
+    }
+
+    .abt-tool__icon { font-size: 32px; }
+    .abt-tool__name {
+      font-size: var(--text-sm);
+      font-weight: 800;
+      color: var(--text-1);
+    }
+    .abt-tool__desc {
+      font-size: var(--text-xs);
+      color: var(--text-3);
+      line-height: 1.6;
+    }
+
+    /* Values list */
+    .abt-values {
+      display: flex;
+      flex-direction: column;
+      gap: var(--s-4);
+    }
+
+    .abt-value {
+      display: flex;
+      gap: var(--s-5);
+      align-items: flex-start;
+      padding: var(--s-5);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r-xl);
+      transition: all var(--t-base) var(--ease);
+    }
+
+    .abt-value:hover {
+      border-color: var(--border-em);
+      background: rgba(16,185,129,0.03);
+      transform: translateX(-4px);
+    }
+
+    .abt-value__icon {
+      font-size: 26px;
+      width: 52px; height: 52px;
+      background: rgba(16,185,129,0.08);
+      border: 1px solid rgba(16,185,129,0.15);
+      border-radius: var(--r-lg);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .abt-value__title {
+      font-size: var(--text-base);
+      font-weight: 800;
+      margin-bottom: var(--s-1);
+    }
+
+    .abt-value__desc {
+      font-size: var(--text-sm);
+      color: var(--text-2);
+      line-height: 1.7;
+    }
+
+    /* Sources */
+    .abt-sources {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--s-3);
+    }
+
+    .abt-source {
+      display: flex;
+      align-items: center;
+      gap: var(--s-2);
+      padding: 7px 16px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r-full);
+      font-size: var(--text-sm);
+      font-weight: 600;
+      color: var(--text-2);
+      text-decoration: none;
+      transition: all var(--t-fast);
+    }
+
+    .abt-source:hover {
+      border-color: var(--border-em);
+      color: var(--em-400);
+      background: rgba(16,185,129,0.06);
+    }
+
+    /* CTA Banner */
+    .abt-cta {
+      position: relative;
+      text-align: center;
+      padding: var(--s-16) var(--s-6);
+      background: linear-gradient(135deg,
+        rgba(4,120,87,0.15) 0%,
+        rgba(245,158,11,0.08) 50%,
+        rgba(4,120,87,0.1) 100%);
+      border: 1px solid rgba(16,185,129,0.2);
+      border-radius: var(--r-2xl);
+      overflow: hidden;
+      margin-top: var(--s-16);
+      margin-bottom: var(--s-16);
+      box-shadow: var(--shadow-xl), var(--shadow-glow-em);
+    }
+
+    .abt-cta__bg {
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 60% 60% at 50% 100%, rgba(16,185,129,0.12), transparent);
+      pointer-events: none;
+    }
+
+    .abt-cta__icon { font-size: 56px; display: block; margin-bottom: var(--s-4); }
+
+    .abt-cta__title {
+      font-size: clamp(24px, 4vw, 36px);
+      font-weight: 900;
+      margin-bottom: var(--s-3);
+      position: relative;
+    }
+
+    .abt-cta__sub {
+      font-size: var(--text-lg);
+      color: var(--text-2);
+      max-width: 440px;
+      margin: 0 auto var(--s-8);
+      line-height: 1.8;
+      position: relative;
+    }
+
+    .abt-cta__actions {
+      display: flex;
+      gap: var(--s-3);
+      justify-content: center;
+      flex-wrap: wrap;
+      position: relative;
+    }
+
+    /* Modal divider */
+    .ic-modal__divider {
+      display: flex;
+      align-items: center;
+      gap: var(--s-3);
+      color: var(--text-3);
+      font-size: var(--text-xs);
+    }
+    .ic-modal__divider::before,
+    .ic-modal__divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* Light mode fixes */
+    [data-theme="light"] .abt-mini-card,
+    [data-theme="light"] .abt-tool,
+    [data-theme="light"] .abt-value {
+      background: var(--surface);
+      border-color: var(--border);
+    }
+
+    [data-theme="light"] .abt-stats {
+      background: var(--surface);
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- ═══════════════════════════════════════════════════
+     NAVBAR
+═══════════════════════════════════════════════════ -->
 <header class="ic-nav" id="icNav">
   <div class="ic-nav__inner">
-
-    <!-- ── Logo ────────────────────────────── -->
     <a href="/" class="ic-nav__logo">
       <div class="ic-nav__logo-mark">
-        <!-- Geometric Islamic star SVG -->
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
-             xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <path d="M12 2L14.09 8.26L21 9L15.54 14.74L17.18 22L12 18.77
-                   L6.82 22L8.46 14.74L3 9L9.91 8.26L12 2Z"
-                fill="rgba(255,255,255,0.95)" stroke="none"/>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M12 2L14.09 8.26L21 9L15.54 14.74L17.18 22L12 18.77L6.82 22L8.46 14.74L3 9L9.91 8.26L12 2Z"
+                fill="rgba(255,255,255,0.95)"/>
         </svg>
       </div>
       <span class="ic-nav__logo-text">IslamiCalc</span>
     </a>
-
-    <!-- ── Spacer pushes actions to the right ── -->
     <div class="ic-nav__spacer"></div>
-
-    <!-- ── Right Actions ────────────────────── -->
     <div class="ic-nav__actions">
-
-      <!-- Theme Toggle -->
       <button id="themeBtn" class="ic-nav__icon-btn" aria-label="تبديل السمة">
         <svg class="ic-nav__icon-btn-svg" width="18" height="18" viewBox="0 0 24 24"
              fill="none" stroke="currentColor" stroke-width="2"
              stroke-linecap="round" stroke-linejoin="round">
           <circle cx="12" cy="12" r="5"/>
-          <line x1="12" y1="1" x2="12" y2="3"/>
-          <line x1="12" y1="21" x2="12" y2="23"/>
+          <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
           <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
           <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
-          <line x1="1" y1="12" x2="3" y2="12"/>
-          <line x1="21" y1="12" x2="23" y2="12"/>
+          <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
           <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
           <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
         </svg>
       </button>
-
-      <!-- Login / Profile button -->
       <button id="loginBtn" class="ic-nav__login-btn">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
              stroke="currentColor" stroke-width="2.5"
@@ -69,35 +442,25 @@
         </svg>
         <span id="loginBtnLabel">تسجيل الدخول</span>
       </button>
-
-      <!-- Hamburger — always visible -->
-      <button id="menuToggle" class="ic-nav__hamburger" aria-label="فتح القائمة"
-              aria-expanded="false" aria-controls="sideDrawer">
+      <button id="menuToggle" class="ic-nav__hamburger"
+              aria-label="فتح القائمة" aria-expanded="false" aria-controls="sideDrawer">
         <span class="ic-nav__hamburger-bar"></span>
         <span class="ic-nav__hamburger-bar"></span>
         <span class="ic-nav__hamburger-bar"></span>
       </button>
-
-    </div><!-- /actions -->
-  </div><!-- /inner -->
+    </div>
+  </div>
 </header>
 
-<!-- ═══════════════════════════════════════════════════
-     Side Drawer (opens on hamburger click)
-═══════════════════════════════════════════════════ -->
+<!-- DRAWER -->
 <div id="drawerOverlay" class="ic-drawer-overlay" aria-hidden="true"></div>
-
 <aside id="sideDrawer" class="ic-drawer" role="dialog"
        aria-modal="true" aria-label="القائمة الرئيسية">
-
-  <!-- Drawer Header -->
   <div class="ic-drawer__header">
     <a href="/" class="ic-drawer__logo">
       <div class="ic-nav__logo-mark ic-nav__logo-mark--sm">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
-             xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <path d="M12 2L14.09 8.26L21 9L15.54 14.74L17.18 22L12 18.77
-                   L6.82 22L8.46 14.74L3 9L9.91 8.26L12 2Z"
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M12 2L14.09 8.26L21 9L15.54 14.74L17.18 22L12 18.77L6.82 22L8.46 14.74L3 9L9.91 8.26L12 2Z"
                 fill="rgba(255,255,255,0.95)"/>
         </svg>
       </div>
@@ -113,10 +476,8 @@
     </button>
   </div>
 
-  <!-- User Profile Section -->
-  <div class="ic-drawer__profile" id="drawerProfile">
+  <div class="ic-drawer__profile">
     <div class="ic-drawer__avatar" id="drawerAvatar">
-      <!-- Initials / avatar injected by JS -->
       <svg width="26" height="26" viewBox="0 0 24 24" fill="none"
            stroke="rgba(255,255,255,0.8)" stroke-width="2"
            stroke-linecap="round" stroke-linejoin="round">
@@ -126,12 +487,11 @@
     </div>
     <div class="ic-drawer__profile-info">
       <span class="ic-drawer__profile-name" id="drawerName">مرحباً بك</span>
-      <span class="ic-drawer__profile-sub" id="drawerSub">سجّل دخولك للمتابعة</span>
+      <span class="ic-drawer__profile-sub"  id="drawerSub">سجّل دخولك للمتابعة</span>
     </div>
     <button id="drawerLoginBtn" class="ic-drawer__profile-cta">دخول</button>
   </div>
 
-  <!-- Quick XP Bar (shown when logged in) -->
   <div class="ic-drawer__xp" id="drawerXP" style="display:none">
     <div class="ic-drawer__xp-track">
       <div class="ic-drawer__xp-fill" id="drawerXPFill" style="width:0%"></div>
@@ -139,21 +499,15 @@
     <span class="ic-drawer__xp-lbl" id="drawerXPLbl">0 XP</span>
   </div>
 
-  <!-- Divider -->
   <div class="ic-drawer__divider"></div>
 
-  <!-- Main Navigation -->
   <nav class="ic-drawer__nav" aria-label="التنقل الرئيسي">
     <p class="ic-drawer__section-label">التنقل</p>
     <ul class="ic-drawer__list">
       <li>
         <a href="/" class="ic-drawer__link" data-page="home">
           <span class="ic-drawer__link-icon">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
-                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-              <polyline points="9 22 9 12 15 12 15 22"/>
-            </svg>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
           </span>
           <span>الرئيسية</span>
         </a>
@@ -161,11 +515,7 @@
       <li>
         <a href="/khatma" class="ic-drawer__link" data-page="khatma">
           <span class="ic-drawer__link-icon">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
-                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
-              <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
-            </svg>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
           </span>
           <span>ختمة القرآن</span>
         </a>
@@ -173,10 +523,7 @@
       <li>
         <a href="/arena" class="ic-drawer__link" data-page="arena">
           <span class="ic-drawer__link-icon">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
-                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
-            </svg>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
           </span>
           <span>الميدان</span>
           <span class="ic-drawer__badge ic-drawer__badge--gold">XP</span>
@@ -185,11 +532,7 @@
       <li>
         <a href="/athkar" class="ic-drawer__link" data-page="athkar">
           <span class="ic-drawer__link-icon">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
-                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="12" r="3"/>
-              <path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/>
-            </svg>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
           </span>
           <span>الأذكار</span>
         </a>
@@ -201,11 +544,7 @@
       <li>
         <a href="/prayer" class="ic-drawer__link" data-page="prayer">
           <span class="ic-drawer__link-icon">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
-                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="12" r="10"/>
-              <polyline points="12 6 12 12 16 14"/>
-            </svg>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
           </span>
           <span>مواقيت الصلاة</span>
         </a>
@@ -213,27 +552,17 @@
       <li>
         <a href="/zakat" class="ic-drawer__link" data-page="zakat">
           <span class="ic-drawer__link-icon">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
-                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <line x1="12" y1="1" x2="12" y2="23"/>
-              <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
-            </svg>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
           </span>
           <span>حساب الزكاة</span>
         </a>
       </li>
       <li>
-        <a href="/hijri" class="ic-drawer__link" data-page="hijri">
+        <a href="/articles" class="ic-drawer__link" data-page="articles">
           <span class="ic-drawer__link-icon">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
-                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-              <line x1="16" y1="2" x2="16" y2="6"/>
-              <line x1="8" y1="2" x2="8" y2="6"/>
-              <line x1="3" y1="10" x2="21" y2="10"/>
-            </svg>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
           </span>
-          <span>التقويم الهجري</span>
+          <span>المقالات</span>
         </a>
       </li>
     </ul>
@@ -241,14 +570,9 @@
     <p class="ic-drawer__section-label" style="margin-top:var(--s-3)">المزيد</p>
     <ul class="ic-drawer__list">
       <li>
-        <a href="/about" class="ic-drawer__link" data-page="about">
+        <a href="/about" class="ic-drawer__link active" data-page="about" aria-current="page">
           <span class="ic-drawer__link-icon">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
-                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="12" r="10"/>
-              <line x1="12" y1="8" x2="12" y2="12"/>
-              <line x1="12" y1="16" x2="12.01" y2="16"/>
-            </svg>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
           </span>
           <span>من نحن</span>
         </a>
@@ -256,10 +580,7 @@
       <li>
         <a href="/contact" class="ic-drawer__link" data-page="contact">
           <span class="ic-drawer__link-icon">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
-                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-            </svg>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
           </span>
           <span>تواصل معنا</span>
         </a>
@@ -267,11 +588,7 @@
       <li>
         <a href="/profile" class="ic-drawer__link" data-page="profile">
           <span class="ic-drawer__link-icon">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
-                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-              <circle cx="12" cy="7" r="4"/>
-            </svg>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
           </span>
           <span>الملف الشخصي</span>
         </a>
@@ -279,7 +596,6 @@
     </ul>
   </nav>
 
-  <!-- Footer of drawer -->
   <div class="ic-drawer__footer">
     <span class="ic-drawer__footer-copy">© 2026 IslamiCalc</span>
     <button id="drawerThemeBtn" class="ic-drawer__theme-toggle" aria-label="تبديل السمة">
@@ -290,152 +606,292 @@
       <span>السمة</span>
     </button>
   </div>
-
 </aside>
 
-<!-- Drawer JS — inline, zero dependencies -->
-<script>
-(function () {
-  const toggle   = document.getElementById('menuToggle');
-  const drawer   = document.getElementById('sideDrawer');
-  const overlay  = document.getElementById('drawerOverlay');
-  const closeBtn = document.getElementById('drawerClose');
-  const body     = document.body;
-
-  function openDrawer() {
-    drawer.classList.add('ic-drawer--open');
-    overlay.classList.add('ic-drawer-overlay--visible');
-    body.style.overflow = 'hidden';
-    toggle.setAttribute('aria-expanded', 'true');
-    // focus first link
-    drawer.querySelector('.ic-drawer__link')?.focus();
-  }
-  function closeDrawer() {
-    drawer.classList.remove('ic-drawer--open');
-    overlay.classList.remove('ic-drawer-overlay--visible');
-    body.style.overflow = '';
-    toggle.setAttribute('aria-expanded', 'false');
-    toggle.focus();
-  }
-
-  toggle?.addEventListener('click', () =>
-    drawer.classList.contains('ic-drawer--open') ? closeDrawer() : openDrawer()
-  );
-  closeBtn?.addEventListener('click', closeDrawer);
-  overlay?.addEventListener('click', closeDrawer);
-
-  // Close on ESC
-  document.addEventListener('keydown', e => {
-    if (e.key === 'Escape' && drawer.classList.contains('ic-drawer--open')) closeDrawer();
-  });
-
-  // Close on nav link click (mobile)
-  drawer?.querySelectorAll('.ic-drawer__link').forEach(a => {
-    a.addEventListener('click', closeDrawer);
-  });
-
-  // Mark active link
-  const page = location.pathname.replace(/^\//, '').split('/')[0] || 'home';
-  drawer?.querySelectorAll('.ic-drawer__link').forEach(a => {
-    if (a.dataset.page === page) {
-      a.classList.add('active');
-      a.setAttribute('aria-current', 'page');
-    }
-  });
-
-  // Drawer theme toggle mirrors main themeBtn
-  document.getElementById('drawerThemeBtn')?.addEventListener('click', () => {
-    document.getElementById('themeBtn')?.click();
-  });
-})();
-</script>
-
+<!-- ═══════════════════════════════════════════════════
+     MAIN
+═══════════════════════════════════════════════════ -->
 <main>
-<div style="max-width:720px;margin:0 auto;padding:24px 16px 80px;">
 
-  <div style="text-align:center;padding:32px 0 24px;">
-    <div style="font-size:64px;margin-bottom:12px;">☪️</div>
-    <h1 style="font-size:28px;font-weight:900;margin-bottom:8px;">من نحن</h1>
-    <p style="color:var(--text-muted);font-size:15px;">IslamiCalc — مرجعك الإسلامي الرقمي</p>
-  </div>
-  <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px;">
-    <h2 style="font-size:18px;font-weight:900;margin-bottom:12px;">🎯 رسالتنا</h2>
-    <p style="color:var(--text-secondary);line-height:1.9;font-size:15px;">
-      IslamiCalc منصة إسلامية رقمية تهدف إلى تيسير الوصول للمعلومات الإسلامية الصحيحة الموثقة
-      من المصادر الشرعية المعتمدة، بأدوات تفاعلية عصرية تخدم المسلم في حياته اليومية.
+  <!-- Hero -->
+  <div class="abt-hero">
+    <div class="ic-hero__bg" aria-hidden="true">
+      <div class="ic-hero__orb ic-hero__orb--1"></div>
+      <div class="ic-hero__orb ic-hero__orb--2"></div>
+      <div class="ic-hero__grid"></div>
+    </div>
+    <div class="abt-hero__badge">☪️ من نحن</div>
+    <h1 class="abt-hero__title">
+      منصتك الإسلامية<br>
+      <span>الموثوقة</span>
+    </h1>
+    <p class="abt-hero__sub">
+      IslamiCalc منصة رقمية تيسّر الوصول للمعلومات الإسلامية الصحيحة
+      بأدوات تفاعلية عصرية تخدم المسلم في حياته اليومية
     </p>
   </div>
-  <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px;">
-    <h2 style="font-size:18px;font-weight:900;margin-bottom:16px;">✨ ما نقدمه</h2>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-      <div style="background:var(--bg-main);border-radius:12px;padding:16px;text-align:center;">
-        <div style="font-size:32px;margin-bottom:8px;">🧮</div>
-        <p style="font-weight:700;font-size:14px;">حاسبات الزكاة</p>
-        <p style="font-size:12px;color:var(--text-muted);">ذهب وفضة ومال وعروض</p>
-      </div>
-      <div style="background:var(--bg-main);border-radius:12px;padding:16px;text-align:center;">
-        <div style="font-size:32px;margin-bottom:8px;">🕌</div>
-        <p style="font-weight:700;font-size:14px;">أوقات الصلاة</p>
-        <p style="font-size:12px;color:var(--text-muted);">لأي مدينة في العالم</p>
-      </div>
-      <div style="background:var(--bg-main);border-radius:12px;padding:16px;text-align:center;">
-        <div style="font-size:32px;margin-bottom:8px;">📿</div>
-        <p style="font-weight:700;font-size:14px;">الأذكار</p>
-        <p style="font-size:12px;color:var(--text-muted);">موثقة من السنة النبوية</p>
-      </div>
-      <div style="background:var(--bg-main);border-radius:12px;padding:16px;text-align:center;">
-        <div style="font-size:32px;margin-bottom:8px;">🏆</div>
-        <p style="font-weight:700;font-size:14px;">الأرينا</p>
-        <p style="font-size:12px;color:var(--text-muted);">مسابقات إسلامية تفاعلية</p>
-      </div>
-      <div style="background:var(--bg-main);border-radius:12px;padding:16px;text-align:center;">
-        <div style="font-size:32px;margin-bottom:8px;">📖</div>
-        <p style="font-weight:700;font-size:14px;">ختمة القرآن</p>
-        <p style="font-size:12px;color:var(--text-muted);">تتبع قراءتك يومياً</p>
-      </div>
-      <div style="background:var(--bg-main);border-radius:12px;padding:16px;text-align:center;">
-        <div style="font-size:32px;margin-bottom:8px;">⚖️</div>
-        <p style="font-weight:700;font-size:14px;">حاسبة الميراث</p>
-        <p style="font-size:12px;color:var(--text-muted);">وفق الفقه الإسلامي</p>
-      </div>
+
+  <!-- Stats -->
+  <div class="abt-stats" aria-label="إحصائيات المنصة">
+    <div class="abt-stat">
+      <span class="abt-stat__num">+12K</span>
+      <span class="abt-stat__lbl">مستخدم نشط</span>
     </div>
-  </div>
-  <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px;">
-    <h2 style="font-size:18px;font-weight:900;margin-bottom:16px;">💎 قيمنا</h2>
-    <div style="display:flex;flex-direction:column;gap:12px;">
-      <div style="display:flex;gap:12px;align-items:flex-start;">
-        <span style="font-size:24px;">📚</span>
-        <div><p style="font-weight:700;margin-bottom:4px;">الصحة الشرعية</p>
-        <p style="color:var(--text-muted);font-size:13px;">كل المعلومات موثقة من مصادر معتمدة: البخاري، مسلم، islamqa.info، binbaz.org.sa</p></div>
-      </div>
-      <div style="display:flex;gap:12px;align-items:flex-start;">
-        <span style="font-size:24px;">🔓</span>
-        <div><p style="font-weight:700;margin-bottom:4px;">مجاني للجميع</p>
-        <p style="color:var(--text-muted);font-size:13px;">الموقع مجاني بالكامل — لا اشتراكات ولا إعلانات مزعجة</p></div>
-      </div>
-      <div style="display:flex;gap:12px;align-items:flex-start;">
-        <span style="font-size:24px;">🔐</span>
-        <div><p style="font-weight:700;margin-bottom:4px;">خصوصيتك محفوظة</p>
-        <p style="color:var(--text-muted);font-size:13px;">بياناتك تُحفظ على جهازك فقط — لا نبيع بيانات ولا نشاركها</p></div>
-      </div>
+    <div class="abt-stats__divider" aria-hidden="true"></div>
+    <div class="abt-stat">
+      <span class="abt-stat__num">+3.2M</span>
+      <span class="abt-stat__lbl">صفحة قرآن مُقروءة</span>
     </div>
-  </div>
-  <div style="background:linear-gradient(135deg,var(--primary) 0%,#7c3aed 100%);border-radius:16px;padding:24px;text-align:center;">
-    <p style="color:white;font-size:16px;font-weight:700;margin-bottom:16px;">هل لديك اقتراح أو ملاحظة؟</p>
-    <a href="/contact" style="background:white;color:var(--primary);padding:12px 28px;
-       border-radius:30px;font-weight:800;font-size:15px;text-decoration:none;">📧 تواصل معنا</a>
+    <div class="abt-stats__divider" aria-hidden="true"></div>
+    <div class="abt-stat">
+      <span class="abt-stat__num">+180K</span>
+      <span class="abt-stat__lbl">ختمة مكتملة</span>
+    </div>
+    <div class="abt-stats__divider" aria-hidden="true"></div>
+    <div class="abt-stat">
+      <span class="abt-stat__num">+5M</span>
+      <span class="abt-stat__lbl">تسبيحة يومياً</span>
+    </div>
   </div>
 
-</div>
+  <div class="ic-container">
+
+    <!-- Mission -->
+    <section class="abt-section" aria-labelledby="mission-title">
+      <div class="abt-mission">
+        <div>
+          <p class="abt-section__label">🎯 رسالتنا</p>
+          <h2 class="abt-section__title" id="mission-title">
+            نُيسّر العلم الشرعي<br>للجميع
+          </h2>
+          <p class="abt-section__body">
+            نؤمن بأن كل مسلم يستحق الوصول السهل للمعلومات الإسلامية الصحيحة
+            الموثّقة من مصادرها المعتمدة. لذلك بنينا IslamiCalc —
+            أدوات دقيقة وواجهة عصرية تجعل التعلم والعبادة أيسر وأمتع.
+          </p>
+        </div>
+        <div class="abt-mission__visual" aria-hidden="true">
+          <div class="abt-mini-card">
+            <div class="abt-mini-card__icon">📖</div>
+            <div>
+              <div class="abt-mini-card__title">ختمة القرآن</div>
+              <div class="abt-mini-card__sub">تتبع قراءتك يومياً بسهولة</div>
+            </div>
+          </div>
+          <div class="abt-mini-card">
+            <div class="abt-mini-card__icon">🕌</div>
+            <div>
+              <div class="abt-mini-card__title">أوقات الصلاة</div>
+              <div class="abt-mini-card__sub">دقيقة لأي مدينة في العالم</div>
+            </div>
+          </div>
+          <div class="abt-mini-card">
+            <div class="abt-mini-card__icon">⚡</div>
+            <div>
+              <div class="abt-mini-card__title">نظام XP والشارات</div>
+              <div class="abt-mini-card__sub">تحفّزك على الاستمرار</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tools -->
+    <section class="abt-section" aria-labelledby="tools-title">
+      <p class="abt-section__label">🧮 أدواتنا</p>
+      <h2 class="abt-section__title" id="tools-title">كل ما تحتاجه في مكان واحد</h2>
+      <p class="abt-section__body" style="margin-bottom:var(--s-8)">
+        ست أدوات إسلامية متكاملة مبنية بعناية ودقة، تتطور باستمرار
+      </p>
+      <div class="abt-tools">
+        <a href="/khatma" class="abt-tool">
+          <span class="abt-tool__icon">📖</span>
+          <span class="abt-tool__name">ختمة القرآن</span>
+          <span class="abt-tool__desc">تتبع الصفحات والأجزاء مع مؤشر تقدم</span>
+        </a>
+        <a href="/prayer" class="abt-tool">
+          <span class="abt-tool__icon">🕌</span>
+          <span class="abt-tool__name">أوقات الصلاة</span>
+          <span class="abt-tool__desc">حسب موقعك مع عداد تنازلي</span>
+        </a>
+        <a href="/athkar" class="abt-tool">
+          <span class="abt-tool__icon">📿</span>
+          <span class="abt-tool__name">الأذكار</span>
+          <span class="abt-tool__desc">أذكار الصباح والمساء والتسبيح</span>
+        </a>
+        <a href="/zakat" class="abt-tool">
+          <span class="abt-tool__icon">💰</span>
+          <span class="abt-tool__name">حاسبة الزكاة</span>
+          <span class="abt-tool__desc">مال وذهب وفضة وعروض تجارة</span>
+        </a>
+        <a href="/inheritance" class="abt-tool">
+          <span class="abt-tool__icon">⚖️</span>
+          <span class="abt-tool__name">حاسبة الميراث</span>
+          <span class="abt-tool__desc">توزيع شرعي دقيق وفق الفرائض</span>
+        </a>
+        <a href="/arena" class="abt-tool">
+          <span class="abt-tool__icon">⚔️</span>
+          <span class="abt-tool__name">الميدان الديني</span>
+          <span class="abt-tool__desc">أسئلة يومية واكسب نقاط XP</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- Values -->
+    <section class="abt-section" aria-labelledby="values-title">
+      <p class="abt-section__label">💎 قيمنا</p>
+      <h2 class="abt-section__title" id="values-title">مبادئ لا نتنازل عنها</h2>
+      <div class="abt-values">
+        <div class="abt-value">
+          <div class="abt-value__icon">📚</div>
+          <div>
+            <p class="abt-value__title">الصحة الشرعية أولاً</p>
+            <p class="abt-value__desc">
+              كل المعلومات موثّقة من مصادر معتمدة: صحيح البخاري ومسلم،
+              islamqa.info، binbaz.org.sa — لا نذكر شيئاً إلا بدليل.
+            </p>
+          </div>
+        </div>
+        <div class="abt-value">
+          <div class="abt-value__icon">🔓</div>
+          <div>
+            <p class="abt-value__title">مجاني للجميع دائماً</p>
+            <p class="abt-value__desc">
+              الموقع مجاني بالكامل ولا إعلانات ولا اشتراكات مدفوعة.
+              خدمة المسلمين غاية لا وسيلة.
+            </p>
+          </div>
+        </div>
+        <div class="abt-value">
+          <div class="abt-value__icon">🔐</div>
+          <div>
+            <p class="abt-value__title">خصوصيتك محفوظة</p>
+            <p class="abt-value__desc">
+              بياناتك الشخصية لا تُباع ولا تُشارك مع طرف ثالث.
+              بياناتك لك وحدك.
+            </p>
+          </div>
+        </div>
+        <div class="abt-value">
+          <div class="abt-value__icon">🌍</div>
+          <div>
+            <p class="abt-value__title">للمسلمين في كل مكان</p>
+            <p class="abt-value__desc">
+              نبني تجربة تناسب المسلم أينما كان — بواجهة عربية RTL أصيلة
+              وأوقات صلاة لأي مدينة في العالم.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sources -->
+    <section class="abt-section" aria-labelledby="sources-title">
+      <p class="abt-section__label">🔗 المصادر الشرعية</p>
+      <h2 class="abt-section__title" id="sources-title">نستند على الموثوق</h2>
+      <p class="abt-section__body" style="margin-bottom:var(--s-6)">
+        جميع المحتوى الشرعي مأخوذ من هذه المصادر المعتمدة
+      </p>
+      <div class="abt-sources">
+        <a href="https://islamqa.info/ar" target="_blank" rel="noopener" class="abt-source">
+          🌐 islamqa.info
+        </a>
+        <a href="https://binbaz.org.sa" target="_blank" rel="noopener" class="abt-source">
+          📖 binbaz.org.sa
+        </a>
+        <a href="https://dorar.net" target="_blank" rel="noopener" class="abt-source">
+          📚 dorar.net
+        </a>
+        <a href="https://sunnah.com" target="_blank" rel="noopener" class="abt-source">
+          📜 sunnah.com
+        </a>
+        <a href="https://quran.com" target="_blank" rel="noopener" class="abt-source">
+          📗 quran.com
+        </a>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <div class="abt-cta">
+      <div class="abt-cta__bg" aria-hidden="true"></div>
+      <span class="abt-cta__icon">💬</span>
+      <h2 class="abt-cta__title">هل لديك اقتراح أو ملاحظة؟</h2>
+      <p class="abt-cta__sub">
+        نسعد بسماع رأيك وتحسين المنصة باستمرار.
+        تواصل معنا في أي وقت.
+      </p>
+      <div class="abt-cta__actions">
+        <a href="/contact" class="ic-btn ic-btn--primary ic-btn--lg">
+          📧 تواصل معنا
+        </a>
+        <a href="/" class="ic-btn ic-btn--secondary ic-btn--lg">
+          ← الرئيسية
+        </a>
+      </div>
+    </div>
+
+  </div><!-- /container -->
 </main>
-<div class="toast" id="toast"></div>
+
+<!-- FOOTER -->
+<footer class="ic-footer" role="contentinfo">
+  <div class="ic-container">
+    <div class="ic-footer__inner ic-footer__inner--simple">
+      <div class="ic-footer__brand">
+        <div class="ic-nav__logo-mark ic-nav__logo-mark--sm">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M12 2L14.09 8.26L21 9L15.54 14.74L17.18 22L12 18.77L6.82 22L8.46 14.74L3 9L9.91 8.26L12 2Z"
+                  fill="rgba(255,255,255,0.95)"/>
+          </svg>
+        </div>
+        <span class="ic-nav__logo-text" style="font-size:16px">IslamiCalc</span>
+      </div>
+      <nav class="ic-footer__links" aria-label="روابط ثانوية">
+        <a href="/about">من نحن</a>
+        <a href="/privacy">الخصوصية</a>
+        <a href="/terms">الشروط</a>
+        <a href="/contact">تواصل</a>
+        <a href="/faq">الأسئلة الشائعة</a>
+      </nav>
+      <p class="ic-footer__copy">© 2026 IslamiCalc — صُنع بـ ❤️ لخدمة المسلمين</p>
+    </div>
+  </div>
+</footer>
+
+<!-- LOGIN MODAL -->
+<div class="ic-modal" id="loginModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="ic-modal__backdrop" id="modalBackdrop"></div>
+  <div class="ic-modal__box">
+    <button class="ic-modal__close" id="modalCloseBtn" aria-label="إغلاق">✕</button>
+    <div class="ic-modal__icon">☪️</div>
+    <h2 class="ic-modal__title" id="modalTitle">أهلاً بك في IslamiCalc</h2>
+    <p class="ic-modal__sub">سجّل دخولك لحفظ تقدمك وكسب نقاط XP وشارات</p>
+    <div class="ic-modal__actions">
+      <button class="ic-btn ic-btn--google ic-btn--full" id="googleLoginBtn">
+        <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+          <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+          <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+          <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/>
+          <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+        </svg>
+        متابعة بـ Google
+      </button>
+      <div class="ic-modal__divider"><span>أو</span></div>
+      <button class="ic-btn ic-btn--ghost ic-btn--full" id="guestBrowseBtn">
+        تصفح بدون تسجيل
+      </button>
+    </div>
+    <p class="ic-modal__note">
+      بالدخول توافق على <a href="/terms">الشروط</a> و<a href="/privacy">الخصوصية</a>
+    </p>
+  </div>
+</div>
+
 <script>
-const themeBtn=document.getElementById("themeBtn");
-const htmlEl=document.documentElement;
-(function(){const s=localStorage.getItem("theme")||"dark";htmlEl.setAttribute("data-theme",s);themeBtn.textContent=s==="dark"?"☀️":"🌙";})();
-themeBtn.addEventListener("click",()=>{const n=htmlEl.getAttribute("data-theme")==="dark"?"light":"dark";htmlEl.setAttribute("data-theme",n);localStorage.setItem("theme",n);themeBtn.textContent=n==="dark"?"☀️":"🌙";});
-document.getElementById("menuToggle").addEventListener("click",()=>{const m=document.getElementById("navMenu");m.classList.toggle("open");document.getElementById("menuToggle").textContent=m.classList.contains("open")?"✕":"☰";});
-function showToast(msg,type=""){const t=document.getElementById("toast");t.textContent=msg;t.className="toast show "+type;setTimeout(()=>t.classList.remove("show"),3000);}
+  document.getElementById('modalCloseBtn')?.addEventListener('click', () => {
+    document.getElementById('loginModal')?.classList.remove('ic-modal--open');
+  });
 </script>
+
 </body>
 </html>

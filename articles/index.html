@@ -1,44 +1,885 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl" data-theme="dark">
+<html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>المقالات الإسلامية — IslamiCalc</title>
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>المقالات الإسلامية — IslamiCalc</title>
+  <meta name="description" content="مقالات إسلامية متنوعة في العقيدة والفقه والسيرة والتزكية — IslamiCalc">
+  <meta name="theme-color" content="#10b981">
+
+  <!-- Open Graph -->
+  <meta property="og:title"       content="المقالات الإسلامية — IslamiCalc">
+  <meta property="og:description" content="مقالات إسلامية متنوعة في العقيدة والفقه والسيرة والتزكية">
+  <meta property="og:type"        content="website">
+  <meta property="og:url"         content="https://islamicalc.web.app/articles">
+
+  <link rel="manifest" href="/manifest.json">
+  <link rel="icon"     href="/favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="/style.css">
+
   <script type="module" src="/core/firebase.js"></script>
   <script type="module" src="/core/app.js"></script>
+
+  <style>
+    /* ── Page-specific styles ── */
+
+    /* Hero */
+    .art-hero {
+      padding: calc(64px + var(--s-16)) var(--s-6) var(--s-16);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .art-hero__eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--s-2);
+      padding: 5px 16px;
+      background: rgba(16,185,129,0.08);
+      border: 1px solid rgba(16,185,129,0.2);
+      border-radius: var(--r-full);
+      font-size: var(--text-xs);
+      font-weight: 800;
+      color: var(--em-400);
+      margin-bottom: var(--s-5);
+    }
+
+    .art-hero__title {
+      font-size: clamp(32px, 6vw, 56px);
+      font-weight: 900;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      margin-bottom: var(--s-4);
+    }
+
+    .art-hero__title span {
+      background: linear-gradient(135deg, var(--em-300), var(--gd-300));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .art-hero__sub {
+      font-size: var(--text-lg);
+      color: var(--text-2);
+      max-width: 520px;
+      margin: 0 auto var(--s-8);
+      line-height: 1.8;
+    }
+
+    /* Search */
+    .art-search {
+      max-width: 560px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .art-search__input {
+      width: 100%;
+      padding: 14px 52px 14px 20px;
+      background: var(--surface);
+      border: 1.5px solid var(--border-2);
+      border-radius: var(--r-full);
+      font-family: var(--font);
+      font-size: var(--text-base);
+      color: var(--text-1);
+      outline: none;
+      transition: border-color var(--t-fast), box-shadow var(--t-fast);
+      box-shadow: var(--shadow-md);
+    }
+
+    .art-search__input:focus {
+      border-color: var(--border-em);
+      box-shadow: var(--shadow-md), var(--focus-ring);
+    }
+
+    .art-search__icon {
+      position: absolute;
+      left: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-3);
+      pointer-events: none;
+    }
+
+    /* Filter Tabs */
+    .art-filters {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--s-2);
+      flex-wrap: wrap;
+      margin: var(--s-8) 0 var(--s-12);
+      padding: 0 var(--s-4);
+    }
+
+    .art-filter-btn {
+      padding: 7px 18px;
+      border-radius: var(--r-full);
+      font-family: var(--font);
+      font-size: var(--text-sm);
+      font-weight: 700;
+      cursor: pointer;
+      border: 1.5px solid var(--border-2);
+      background: var(--surface);
+      color: var(--text-2);
+      transition: all var(--t-fast);
+      white-space: nowrap;
+    }
+
+    .art-filter-btn:hover {
+      border-color: var(--border-em);
+      color: var(--em-400);
+      background: rgba(16,185,129,0.06);
+    }
+
+    .art-filter-btn.active {
+      background: var(--grad-primary);
+      border-color: transparent;
+      color: #fff;
+      box-shadow: 0 4px 14px rgba(16,185,129,0.3);
+    }
+
+    /* Grid */
+    .art-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--s-6);
+    }
+
+    @media (max-width: 1024px) { .art-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 600px)  { .art-grid { grid-template-columns: 1fr; } }
+
+    /* Article Card */
+    .art-card {
+      background: var(--grad-card-3d), var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r-xl);
+      overflow: hidden;
+      text-decoration: none;
+      color: var(--text-1);
+      display: flex;
+      flex-direction: column;
+      transition: transform var(--t-base) var(--ease-out),
+                  box-shadow var(--t-base) var(--ease-out),
+                  border-color var(--t-base);
+      box-shadow: var(--shadow-md);
+      position: relative;
+    }
+
+    .art-card:hover {
+      transform: translateY(-6px);
+      border-color: var(--border-em);
+      box-shadow: var(--shadow-xl), var(--shadow-glow-em);
+    }
+
+    .art-card__thumb {
+      height: 180px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 56px;
+      position: relative;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .art-card__thumb--aqida    { background: linear-gradient(145deg, #0a0014, #2d0060, #6d28d9); }
+    .art-card__thumb--fiqh     { background: linear-gradient(145deg, #001a12, #004d30, #10b981); }
+    .art-card__thumb--seerah   { background: linear-gradient(145deg, #1a0a00, #7c3000, #f59e0b); }
+    .art-card__thumb--tazkiya  { background: linear-gradient(145deg, #000d1a, #003060, #3b82f6); }
+    .art-card__thumb--quran    { background: linear-gradient(145deg, #0d1a00, #2d5000, #84cc16); }
+    .art-card__thumb--hadith   { background: linear-gradient(145deg, #1a0010, #600040, #ec4899); }
+
+    .art-card__thumb::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.4) 100%);
+    }
+
+    .art-card__thumb-icon {
+      position: relative;
+      z-index: 1;
+      filter: drop-shadow(0 4px 12px rgba(0,0,0,0.4));
+    }
+
+    .art-card__cat {
+      position: absolute;
+      top: var(--s-3);
+      right: var(--s-3);
+      z-index: 2;
+      padding: 3px 10px;
+      border-radius: var(--r-full);
+      font-size: 10px;
+      font-weight: 800;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+
+    .art-card__cat--aqida   { background: rgba(109,40,217,0.6); color: #c4b5fd; border: 1px solid rgba(109,40,217,0.4); }
+    .art-card__cat--fiqh    { background: rgba(16,185,129,0.6); color: #6ee7b7; border: 1px solid rgba(16,185,129,0.4); }
+    .art-card__cat--seerah  { background: rgba(245,158,11,0.6); color: #fcd34d; border: 1px solid rgba(245,158,11,0.4); }
+    .art-card__cat--tazkiya { background: rgba(59,130,246,0.6); color: #93c5fd; border: 1px solid rgba(59,130,246,0.4); }
+    .art-card__cat--quran   { background: rgba(132,204,22,0.6); color: #bef264; border: 1px solid rgba(132,204,22,0.4); }
+    .art-card__cat--hadith  { background: rgba(236,72,153,0.6); color: #f9a8d4; border: 1px solid rgba(236,72,153,0.4); }
+
+    .art-card__body {
+      padding: var(--s-5);
+      display: flex;
+      flex-direction: column;
+      gap: var(--s-2);
+      flex: 1;
+    }
+
+    .art-card__title {
+      font-size: var(--text-base);
+      font-weight: 800;
+      line-height: 1.5;
+      color: var(--text-1);
+    }
+
+    .art-card__excerpt {
+      font-size: var(--text-sm);
+      color: var(--text-2);
+      line-height: 1.7;
+      flex: 1;
+    }
+
+    .art-card__meta {
+      display: flex;
+      align-items: center;
+      gap: var(--s-3);
+      margin-top: var(--s-3);
+      padding-top: var(--s-3);
+      border-top: 1px solid var(--border);
+      font-size: var(--text-xs);
+      color: var(--text-3);
+    }
+
+    .art-card__read-time {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .art-card__cta {
+      margin-right: auto;
+      font-size: var(--text-xs);
+      font-weight: 800;
+      color: var(--em-400);
+      transition: color var(--t-fast);
+    }
+
+    .art-card:hover .art-card__cta { color: var(--gd-400); }
+
+    /* Coming Soon Banner */
+    .art-coming-soon {
+      position: relative;
+      text-align: center;
+      padding: var(--s-20) var(--s-6);
+      margin-top: var(--s-16);
+      background: linear-gradient(135deg,
+        rgba(16,185,129,0.06) 0%,
+        rgba(245,158,11,0.06) 50%,
+        rgba(16,185,129,0.04) 100%);
+      border: 1px solid rgba(245,158,11,0.2);
+      border-radius: var(--r-2xl);
+      overflow: hidden;
+    }
+
+    .art-coming-soon__bg {
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 60% 60% at 50% 100%, rgba(16,185,129,0.1), transparent);
+      pointer-events: none;
+    }
+
+    .art-coming-soon__icon { font-size: 64px; margin-bottom: var(--s-5); display: block; }
+    .art-coming-soon__title {
+      font-size: clamp(24px, 4vw, 36px);
+      font-weight: 900;
+      margin-bottom: var(--s-3);
+    }
+    .art-coming-soon__sub {
+      font-size: var(--text-lg);
+      color: var(--text-2);
+      max-width: 480px;
+      margin: 0 auto var(--s-8);
+      line-height: 1.8;
+    }
+
+    /* Stats row */
+    .art-stats {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--s-8);
+      flex-wrap: wrap;
+      margin: var(--s-6) 0;
+    }
+
+    .art-stat {
+      text-align: center;
+    }
+
+    .art-stat__num {
+      display: block;
+      font-size: var(--text-3xl);
+      font-weight: 900;
+      color: var(--text-em);
+      font-family: var(--font-en);
+      line-height: 1;
+    }
+
+    .art-stat__lbl {
+      font-size: var(--text-sm);
+      color: var(--text-3);
+      margin-top: 4px;
+    }
+
+    /* Light mode */
+    [data-theme="light"] .art-card {
+      background: var(--surface);
+      border-color: var(--border);
+    }
+
+    [data-theme="light"] .art-search__input {
+      background: var(--surface);
+      border-color: var(--border-2);
+      color: var(--text-1);
+    }
+
+    [data-theme="light"] .art-filter-btn {
+      background: var(--surface);
+      border-color: var(--border-2);
+      color: var(--text-2);
+    }
+  </style>
 </head>
+
 <body>
-<nav class="navbar">
-  <a href="/" class="navbar-brand">
-    <div class="navbar-logo"></div>
-    <span class="navbar-title">IslamiCalc</span>
-  </a>
-  <ul class="navbar-menu" id="navMenu">
-    <li><a href="/">الرئيسية</a></li>
-    <li><a href="/zakat/">الزكاة</a></li>
-    <li><a href="/khatma/">الختمة</a></li>
-    <li><a href="/prayer/">الصلاة</a></li>
-    <li><a href="/athkar/">الأذكار</a></li>
-    <li><a href="/arena/">الأرينا</a></li>
-  </ul>
-  <div class="navbar-actions">
-    <button class="theme-btn" id="themeBtn">🌙</button>
-    <button class="menu-toggle" id="menuToggle">☰</button>
-  </div>
-</nav>
-<main style="min-height:80vh;display:flex;align-items:center;justify-content:center;padding:40px 20px;">
-  <div style="text-align:center;max-width:480px;">
-    <div style="font-size:80px;margin-bottom:24px;">📚</div>
-    <h1 style="font-size:28px;font-weight:900;margin-bottom:12px;color:var(--gold);">المقالات الإسلامية</h1>
-    <p style="font-size:16px;color:var(--text-secondary);line-height:1.8;margin-bottom:32px;">
-      هذه الصفحة قيد التطوير وستكون متاحة قريباً بإذن الله ✨
-    </p>
-    <a href="/" style="display:inline-block;background:linear-gradient(135deg,var(--gold),#fbbf24);color:#0a0f1e;border-radius:14px;padding:14px 32px;font-family:Cairo,sans-serif;font-size:16px;font-weight:900;text-decoration:none;">
-      ← العودة للرئيسية
+
+<!-- ═══════════════════════════════════════════════════
+     NAVBAR — unified with IslamiCalc design system
+═══════════════════════════════════════════════════ -->
+<header class="ic-nav" id="icNav">
+  <div class="ic-nav__inner">
+    <a href="/" class="ic-nav__logo">
+      <div class="ic-nav__logo-mark">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M12 2L14.09 8.26L21 9L15.54 14.74L17.18 22L12 18.77L6.82 22L8.46 14.74L3 9L9.91 8.26L12 2Z"
+                fill="rgba(255,255,255,0.95)"/>
+        </svg>
+      </div>
+      <span class="ic-nav__logo-text">IslamiCalc</span>
     </a>
+
+    <div class="ic-nav__spacer"></div>
+
+    <div class="ic-nav__actions">
+      <button id="themeBtn" class="ic-nav__icon-btn" aria-label="تبديل السمة">
+        <svg class="ic-nav__icon-btn-svg" width="18" height="18" viewBox="0 0 24 24"
+             fill="none" stroke="currentColor" stroke-width="2"
+             stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="5"/>
+          <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+          <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+        </svg>
+      </button>
+
+      <button id="loginBtn" class="ic-nav__login-btn">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2.5"
+             stroke-linecap="round" stroke-linejoin="round"
+             style="flex-shrink:0" aria-hidden="true">
+          <circle cx="12" cy="8" r="4"/>
+          <path d="M4 20c0-4 3.58-7 8-7s8 3 8 7"/>
+        </svg>
+        <span id="loginBtnLabel">تسجيل الدخول</span>
+      </button>
+
+      <button id="menuToggle" class="ic-nav__hamburger"
+              aria-label="فتح القائمة" aria-expanded="false" aria-controls="sideDrawer">
+        <span class="ic-nav__hamburger-bar"></span>
+        <span class="ic-nav__hamburger-bar"></span>
+        <span class="ic-nav__hamburger-bar"></span>
+      </button>
+    </div>
   </div>
+</header>
+
+<!-- DRAWER OVERLAY -->
+<div id="drawerOverlay" class="ic-drawer-overlay" aria-hidden="true"></div>
+
+<!-- SIDE DRAWER -->
+<aside id="sideDrawer" class="ic-drawer" role="dialog"
+       aria-modal="true" aria-label="القائمة الرئيسية">
+
+  <div class="ic-drawer__header">
+    <a href="/" class="ic-drawer__logo">
+      <div class="ic-nav__logo-mark ic-nav__logo-mark--sm">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M12 2L14.09 8.26L21 9L15.54 14.74L17.18 22L12 18.77L6.82 22L8.46 14.74L3 9L9.91 8.26L12 2Z"
+                fill="rgba(255,255,255,0.95)"/>
+        </svg>
+      </div>
+      <span class="ic-nav__logo-text">IslamiCalc</span>
+    </a>
+    <button id="drawerClose" class="ic-drawer__close" aria-label="إغلاق القائمة">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+           stroke="currentColor" stroke-width="2.5"
+           stroke-linecap="round" stroke-linejoin="round">
+        <line x1="18" y1="6" x2="6" y2="18"/>
+        <line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+    </button>
+  </div>
+
+  <div class="ic-drawer__profile">
+    <div class="ic-drawer__avatar" id="drawerAvatar">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none"
+           stroke="rgba(255,255,255,0.8)" stroke-width="2"
+           stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="8" r="4"/>
+        <path d="M4 20c0-4 3.58-7 8-7s8 3 8 7"/>
+      </svg>
+    </div>
+    <div class="ic-drawer__profile-info">
+      <span class="ic-drawer__profile-name" id="drawerName">مرحباً بك</span>
+      <span class="ic-drawer__profile-sub"  id="drawerSub">سجّل دخولك للمتابعة</span>
+    </div>
+    <button id="drawerLoginBtn" class="ic-drawer__profile-cta">دخول</button>
+  </div>
+
+  <div class="ic-drawer__xp" id="drawerXP" style="display:none">
+    <div class="ic-drawer__xp-track">
+      <div class="ic-drawer__xp-fill" id="drawerXPFill" style="width:0%"></div>
+    </div>
+    <span class="ic-drawer__xp-lbl" id="drawerXPLbl">0 XP</span>
+  </div>
+
+  <div class="ic-drawer__divider"></div>
+
+  <nav class="ic-drawer__nav" aria-label="التنقل الرئيسي">
+    <p class="ic-drawer__section-label">التنقل</p>
+    <ul class="ic-drawer__list">
+      <li>
+        <a href="/" class="ic-drawer__link" data-page="home">
+          <span class="ic-drawer__link-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          </span>
+          <span>الرئيسية</span>
+        </a>
+      </li>
+      <li>
+        <a href="/khatma" class="ic-drawer__link" data-page="khatma">
+          <span class="ic-drawer__link-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+          </span>
+          <span>ختمة القرآن</span>
+        </a>
+      </li>
+      <li>
+        <a href="/arena" class="ic-drawer__link" data-page="arena">
+          <span class="ic-drawer__link-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          </span>
+          <span>الميدان</span>
+          <span class="ic-drawer__badge ic-drawer__badge--gold">XP</span>
+        </a>
+      </li>
+      <li>
+        <a href="/athkar" class="ic-drawer__link" data-page="athkar">
+          <span class="ic-drawer__link-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+          </span>
+          <span>الأذكار</span>
+        </a>
+      </li>
+    </ul>
+
+    <p class="ic-drawer__section-label" style="margin-top:var(--s-3)">الأدوات</p>
+    <ul class="ic-drawer__list">
+      <li>
+        <a href="/prayer" class="ic-drawer__link" data-page="prayer">
+          <span class="ic-drawer__link-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </span>
+          <span>مواقيت الصلاة</span>
+        </a>
+      </li>
+      <li>
+        <a href="/zakat" class="ic-drawer__link" data-page="zakat">
+          <span class="ic-drawer__link-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          </span>
+          <span>حساب الزكاة</span>
+        </a>
+      </li>
+      <li>
+        <a href="/articles" class="ic-drawer__link active" data-page="articles" aria-current="page">
+          <span class="ic-drawer__link-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          </span>
+          <span>المقالات</span>
+          <span class="ic-drawer__badge ic-drawer__badge--new">جديد</span>
+        </a>
+      </li>
+    </ul>
+
+    <p class="ic-drawer__section-label" style="margin-top:var(--s-3)">المزيد</p>
+    <ul class="ic-drawer__list">
+      <li>
+        <a href="/about" class="ic-drawer__link" data-page="about">
+          <span class="ic-drawer__link-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          </span>
+          <span>من نحن</span>
+        </a>
+      </li>
+      <li>
+        <a href="/contact" class="ic-drawer__link" data-page="contact">
+          <span class="ic-drawer__link-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          </span>
+          <span>تواصل معنا</span>
+        </a>
+      </li>
+      <li>
+        <a href="/profile" class="ic-drawer__link" data-page="profile">
+          <span class="ic-drawer__link-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          </span>
+          <span>الملف الشخصي</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="ic-drawer__footer">
+    <span class="ic-drawer__footer-copy">© 2026 IslamiCalc</span>
+    <button id="drawerThemeBtn" class="ic-drawer__theme-toggle" aria-label="تبديل السمة">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
+           stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79z"/>
+      </svg>
+      <span>السمة</span>
+    </button>
+  </div>
+</aside>
+
+<!-- ═══════════════════════════════════════════════════
+     MAIN CONTENT
+═══════════════════════════════════════════════════ -->
+<main>
+
+  <!-- Hero -->
+  <div class="art-hero">
+    <!-- Background orbs (reuse global) -->
+    <div class="ic-hero__bg" aria-hidden="true">
+      <div class="ic-hero__orb ic-hero__orb--1"></div>
+      <div class="ic-hero__orb ic-hero__orb--2"></div>
+      <div class="ic-hero__grid"></div>
+    </div>
+
+    <div class="art-hero__eyebrow">📚 المقالات الإسلامية</div>
+    <h1 class="art-hero__title">
+      اقرأ، تعلّم،<br>
+      <span>ازدد علماً</span>
+    </h1>
+    <p class="art-hero__sub">
+      مقالات إسلامية منتقاة في العقيدة والفقه والسيرة والتزكية —
+      مكتوبة بأسلوب واضح وموثوق
+    </p>
+
+    <div class="art-search" role="search">
+      <input type="search" class="art-search__input"
+             placeholder="ابحث في المقالات..."
+             aria-label="البحث في المقالات"
+             id="artSearchInput">
+      <svg class="art-search__icon" width="18" height="18" viewBox="0 0 24 24"
+           fill="none" stroke="currentColor" stroke-width="2"
+           stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="11" cy="11" r="8"/>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+    </div>
+  </div>
+
+  <!-- Filter Tabs -->
+  <div class="art-filters" role="tablist" aria-label="تصفية المقالات">
+    <button class="art-filter-btn active" data-cat="all" role="tab">الكل</button>
+    <button class="art-filter-btn" data-cat="aqida"   role="tab">العقيدة</button>
+    <button class="art-filter-btn" data-cat="fiqh"    role="tab">الفقه</button>
+    <button class="art-filter-btn" data-cat="seerah"  role="tab">السيرة</button>
+    <button class="art-filter-btn" data-cat="tazkiya" role="tab">التزكية</button>
+    <button class="art-filter-btn" data-cat="quran"   role="tab">القرآن</button>
+    <button class="art-filter-btn" data-cat="hadith"  role="tab">الحديث</button>
+  </div>
+
+  <!-- Articles Grid -->
+  <div class="ic-container">
+
+    <div class="art-grid" id="artGrid">
+
+      <!-- Article cards — placeholder content until CMS ready -->
+      <a href="#" class="art-card" data-cat="aqida">
+        <div class="art-card__thumb art-card__thumb--aqida">
+          <span class="art-card__cat art-card__cat--aqida">العقيدة</span>
+          <span class="art-card__thumb-icon">🕌</span>
+        </div>
+        <div class="art-card__body">
+          <h2 class="art-card__title">أركان الإيمان الستة — شرح موجز ومبسّط</h2>
+          <p class="art-card__excerpt">تعرّف على أركان الإيمان التي يجب على كل مسلم معرفتها وفهمها لتكتمل عقيدته وتستقيم حياته.</p>
+          <div class="art-card__meta">
+            <span class="art-card__read-time">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              5 دقائق
+            </span>
+            <span>قريباً</span>
+            <span class="art-card__cta">اقرأ ←</span>
+          </div>
+        </div>
+      </a>
+
+      <a href="#" class="art-card" data-cat="fiqh">
+        <div class="art-card__thumb art-card__thumb--fiqh">
+          <span class="art-card__cat art-card__cat--fiqh">الفقه</span>
+          <span class="art-card__thumb-icon">⚖️</span>
+        </div>
+        <div class="art-card__body">
+          <h2 class="art-card__title">أحكام الزكاة — من يجب عليه ومن يستحقها</h2>
+          <p class="art-card__excerpt">دليل شامل لأحكام الزكاة: النصاب والحول وأصناف المستحقين وكيفية حساب زكاة المال والذهب.</p>
+          <div class="art-card__meta">
+            <span class="art-card__read-time">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              8 دقائق
+            </span>
+            <span>قريباً</span>
+            <span class="art-card__cta">اقرأ ←</span>
+          </div>
+        </div>
+      </a>
+
+      <a href="#" class="art-card" data-cat="seerah">
+        <div class="art-card__thumb art-card__thumb--seerah">
+          <span class="art-card__cat art-card__cat--seerah">السيرة</span>
+          <span class="art-card__thumb-icon">🌙</span>
+        </div>
+        <div class="art-card__body">
+          <h2 class="art-card__title">الهجرة النبوية — رحلة التحوّل في تاريخ الإسلام</h2>
+          <p class="art-card__excerpt">قصة الهجرة من مكة إلى المدينة بتفاصيلها المثيرة ودروسها العظيمة في الصبر والتوكل.</p>
+          <div class="art-card__meta">
+            <span class="art-card__read-time">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              10 دقائق
+            </span>
+            <span>قريباً</span>
+            <span class="art-card__cta">اقرأ ←</span>
+          </div>
+        </div>
+      </a>
+
+      <a href="#" class="art-card" data-cat="tazkiya">
+        <div class="art-card__thumb art-card__thumb--tazkiya">
+          <span class="art-card__cat art-card__cat--tazkiya">التزكية</span>
+          <span class="art-card__thumb-icon">💎</span>
+        </div>
+        <div class="art-card__body">
+          <h2 class="art-card__title">تزكية النفس — الطريق إلى القلب السليم</h2>
+          <p class="art-card__excerpt">كيف تُطهّر قلبك من الأمراض الباطنة كالحسد والكبر والرياء؟ خطوات عملية مبنية على القرآن والسنة.</p>
+          <div class="art-card__meta">
+            <span class="art-card__read-time">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              7 دقائق
+            </span>
+            <span>قريباً</span>
+            <span class="art-card__cta">اقرأ ←</span>
+          </div>
+        </div>
+      </a>
+
+      <a href="#" class="art-card" data-cat="quran">
+        <div class="art-card__thumb art-card__thumb--quran">
+          <span class="art-card__cat art-card__cat--quran">القرآن</span>
+          <span class="art-card__thumb-icon">📖</span>
+        </div>
+        <div class="art-card__body">
+          <h2 class="art-card__title">كيف تحفظ القرآن؟ منهج عملي مُجرَّب</h2>
+          <p class="art-card__excerpt">خطة تفصيلية لحفظ القرآن الكريم بأساليب علمية تُعين على الثبات والإتقان والمراجعة المستمرة.</p>
+          <div class="art-card__meta">
+            <span class="art-card__read-time">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              6 دقائق
+            </span>
+            <span>قريباً</span>
+            <span class="art-card__cta">اقرأ ←</span>
+          </div>
+        </div>
+      </a>
+
+      <a href="#" class="art-card" data-cat="hadith">
+        <div class="art-card__thumb art-card__thumb--hadith">
+          <span class="art-card__cat art-card__cat--hadith">الحديث</span>
+          <span class="art-card__thumb-icon">📿</span>
+        </div>
+        <div class="art-card__body">
+          <h2 class="art-card__title">الأربعون النووية — جوامع الكَلِم النبوي</h2>
+          <p class="art-card__excerpt">شرح مختصر وموضّح لأهم أربعين حديثاً نبوياً تمثّل منطلقات أساسية في الإسلام.</p>
+          <div class="art-card__meta">
+            <span class="art-card__read-time">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              12 دقيقة
+            </span>
+            <span>قريباً</span>
+            <span class="art-card__cta">اقرأ ←</span>
+          </div>
+        </div>
+      </a>
+
+    </div><!-- /art-grid -->
+
+    <!-- Coming Soon Banner -->
+    <div class="art-coming-soon">
+      <div class="art-coming-soon__bg" aria-hidden="true"></div>
+      <span class="art-coming-soon__icon">✍️</span>
+      <h2 class="art-coming-soon__title">
+        المقالات <span class="ic-text--gradient">قادمة قريباً</span>
+      </h2>
+      <p class="art-coming-soon__sub">
+        نعمل على إعداد مكتبة مقالات إسلامية متكاملة يكتبها علماء ومتخصصون.
+        اشترك لتصلك الإشعارات فور النشر.
+      </p>
+
+      <div class="art-stats">
+        <div class="art-stat">
+          <span class="art-stat__num">+50</span>
+          <span class="art-stat__lbl">مقالة قيد الإعداد</span>
+        </div>
+        <div class="art-stat">
+          <span class="art-stat__num">6</span>
+          <span class="art-stat__lbl">تصنيف متخصص</span>
+        </div>
+        <div class="art-stat">
+          <span class="art-stat__num">2026</span>
+          <span class="art-stat__lbl">موعد الإطلاق</span>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;position:relative">
+        <a href="/" class="ic-btn ic-btn--primary ic-btn--lg">
+          ← العودة للرئيسية
+        </a>
+        <a href="/athkar" class="ic-btn ic-btn--secondary ic-btn--lg">
+          📿 تصفّح الأذكار
+        </a>
+      </div>
+    </div>
+
+  </div><!-- /container -->
 </main>
+
+<!-- ═══════════════════════════════════════════════════
+     FOOTER
+═══════════════════════════════════════════════════ -->
+<footer class="ic-footer" role="contentinfo">
+  <div class="ic-container">
+    <div class="ic-footer__inner ic-footer__inner--simple">
+      <div class="ic-footer__brand">
+        <div class="ic-nav__logo-mark ic-nav__logo-mark--sm">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M12 2L14.09 8.26L21 9L15.54 14.74L17.18 22L12 18.77L6.82 22L8.46 14.74L3 9L9.91 8.26L12 2Z"
+                  fill="rgba(255,255,255,0.95)"/>
+          </svg>
+        </div>
+        <span class="ic-nav__logo-text" style="font-size:16px">IslamiCalc</span>
+      </div>
+      <nav class="ic-footer__links" aria-label="روابط ثانوية">
+        <a href="/about">من نحن</a>
+        <a href="/privacy">الخصوصية</a>
+        <a href="/terms">الشروط</a>
+        <a href="/contact">تواصل</a>
+        <a href="/faq">الأسئلة الشائعة</a>
+      </nav>
+      <p class="ic-footer__copy">© 2026 IslamiCalc — صُنع بـ ❤️ لخدمة المسلمين</p>
+    </div>
+  </div>
+</footer>
+
+<!-- LOGIN MODAL -->
+<div class="ic-modal" id="loginModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="ic-modal__backdrop" id="modalBackdrop"></div>
+  <div class="ic-modal__box">
+    <button class="ic-modal__close" id="modalCloseBtn" aria-label="إغلاق">✕</button>
+    <div class="ic-modal__icon">☪️</div>
+    <h2 class="ic-modal__title" id="modalTitle">أهلاً بك في IslamiCalc</h2>
+    <p class="ic-modal__sub">سجّل دخولك لحفظ تقدمك وكسب نقاط XP وشارات</p>
+    <div class="ic-modal__actions">
+      <button class="ic-btn ic-btn--google ic-btn--full" id="googleLoginBtn">
+        <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+          <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+          <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+          <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/>
+          <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+        </svg>
+        متابعة بـ Google
+      </button>
+      <div class="ic-modal__divider"><span>أو</span></div>
+      <button class="ic-btn ic-btn--ghost ic-btn--full" id="guestBrowseBtn">
+        تصفح بدون تسجيل
+      </button>
+    </div>
+    <p class="ic-modal__note">
+      بالدخول توافق على <a href="/terms">الشروط</a> و<a href="/privacy">الخصوصية</a>
+    </p>
+  </div>
+</div>
+
+<!-- PAGE SCRIPTS -->
+<script>
+  // Modal close
+  document.getElementById('modalCloseBtn')?.addEventListener('click', () => {
+    document.getElementById('loginModal')?.classList.remove('ic-modal--open');
+  });
+
+  // Filter tabs
+  const filterBtns = document.querySelectorAll('.art-filter-btn');
+  const artCards   = document.querySelectorAll('.art-card');
+
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterBtns.forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+      btn.classList.add('active');
+      btn.setAttribute('aria-selected', 'true');
+
+      const cat = btn.dataset.cat;
+      artCards.forEach(card => {
+        const show = cat === 'all' || card.dataset.cat === cat;
+        card.style.display    = show ? '' : 'none';
+        card.style.opacity    = show ? '1' : '0';
+        card.style.transform  = show ? '' : 'scale(0.95)';
+      });
+    });
+  });
+
+  // Search
+  document.getElementById('artSearchInput')?.addEventListener('input', e => {
+    const q = e.target.value.trim().toLowerCase();
+    artCards.forEach(card => {
+      const text = card.querySelector('.art-card__title')?.textContent.toLowerCase() +
+                   card.querySelector('.art-card__excerpt')?.textContent.toLowerCase();
+      card.style.display = (!q || text.includes(q)) ? '' : 'none';
+    });
+  });
+</script>
+
 </body>
 </html>
