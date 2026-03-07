@@ -78,22 +78,5 @@
       "description": "اختبر معلوماتك الشرعية",
       "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192" }]
     }
-  ],
-
-  "screenshots": [
-    {
-      "src": "/screenshots/home.png",
-      "sizes": "1280x720",
-      "type": "image/png",
-      "form_factor": "wide",
-      "label": "الصفحة الرئيسية"
-    },
-    {
-      "src": "/screenshots/prayer.png",
-      "sizes": "390x844",
-      "type": "image/png",
-      "form_factor": "narrow",
-      "label": "أوقات الصلاة"
-    }
   ]
 }
