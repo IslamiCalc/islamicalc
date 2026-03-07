@@ -6,148 +6,538 @@
   <title>عمرك الإسلامي (الهجري) | IslamiCalc</title>
   <meta name="description" content="احسب عمرك بالتاريخ الهجري بالسنوات والأشهر والأيام، واعرف كم مضى من حياتك منذ ميلادك بالتاريخ الميلادي أو الهجري.">
   <meta property="og:title" content="عمرك الإسلامي (الهجري) — IslamiCalc">
-  <meta property="og:description" content="حاسبة عمرك بالتاريخ الهجري: سنوات، أشهر، أيام، مع فرق بين الميلادي والهجري.">
+  <meta property="og:description" content="حاسبة عمرك بالتاريخ الهجري: سنوات، أشهر، أيام، مع الفرق بين الميلادي والهجري.">
   <meta property="og:url" content="https://islamicalc.com/age/">
   <meta property="og:type" content="website">
   <link rel="canonical" href="https://islamicalc.com/age/">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/style.css">
-  <script type="module" src="/firebase.js"></script>
+  <script type="module" src="/core/firebase.js"></script>
+  <script type="module" src="/core/app.js"></script>
 
   <style>
-    .age-hero{background:linear-gradient(135deg,#0d1117 0%,#0a1628 45%,#0d1a12 100%);padding:88px 24px 44px;position:relative;overflow:hidden;text-align:center}
-    .age-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at 20% 0%,rgba(45,106,79,.18) 0%,transparent 60%),radial-gradient(ellipse 60% 40% at 80% 100%,rgba(201,168,76,.15) 0%,transparent 60%);pointer-events:none}
-    .age-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(64,145,108,.14);border:1px solid rgba(64,145,108,.35);color:#a6ffcb;padding:6px 16px;border-radius:999px;font-size:13px;font-weight:700;margin-bottom:16px;position:relative}
-    .age-hero h1{font-size:clamp(26px,5vw,42px);font-weight:900;margin-bottom:10px;position:relative}
-    .age-hero h1 span{background:linear-gradient(135deg,#c9a84c,#f0c96e);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-    .age-hero p{font-size:14px;color:var(--text-sub);max-width:520px;margin:0 auto 20px;position:relative}
-    .age-stats-row{display:flex;justify-content:center;gap:24px;flex-wrap:wrap;position:relative;margin-top:10px}
-    .age-stat{font-size:12px;color:var(--text-muted)}
-    .age-stat span{display:block;font-size:20px;font-weight:900;color:var(--gold)}
-    .age-wrap{max-width:860px;margin:32px auto 80px;padding:0 20px;display:grid;grid-template-columns:minmax(0,1.2fr)minmax(0,1fr);gap:24px}
-    .age-card{background:var(--bg-card);border:1px solid var(--border);border-radius:18px;padding:20px;position:relative;overflow:hidden}
-    .age-card::before{content:'';position:absolute;top:0;right:0;left:0;height:2px;background:linear-gradient(90deg,transparent,rgba(201,168,76,.35),transparent)}
-    .age-card h2{font-size:15px;font-weight:800;margin-bottom:14px}
-    .age-field{margin-bottom:14px}
-    .age-label{display:block;font-size:12px;font-weight:700;color:var(--text-sub);margin-bottom:5px}
-    .age-input-row{display:flex;gap:8px;flex-wrap:wrap}
-    .age-input{flex:1;min-width:120px;padding:10px 12px;border-radius:10px;border:1px solid var(--border);background:var(--bg-main);color:var(--text);font-family:var(--font);font-size:13px;outline:none;transition:var(--transition)}
-    .age-input:focus{border-color:var(--primary);box-shadow:0 0 0 2px var(--primary-glow)}
-    .age-toggle{display:flex;gap:8px;margin-bottom:10px}
-    .age-toggle-btn{flex:1;padding:10px 12px;border-radius:999px;border:1px solid var(--border);background:var(--bg-main);color:var(--text-sub);font-size:12px;font-weight:700;font-family:var(--font);cursor:pointer;transition:var(--transition)}
-    .age-toggle-btn.active{background:rgba(45,106,79,.18);border-color:var(--primary);color:var(--primary-light)}
-    .age-btn-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
-    .age-btn-primary{flex:1;min-width:140px;padding:11px 16px;border-radius:999px;border:none;background:linear-gradient(135deg,#40916c,#c9a84c);color:#fff;font-family:var(--font);font-size:14px;font-weight:800;cursor:pointer;transition:var(--transition);box-shadow:0 8px 24px rgba(0,0,0,.35)}
-    .age-btn-primary:hover{transform:translateY(-2px);box-shadow:0 10px 32px rgba(0,0,0,.45);opacity:.95}
-    .age-btn-secondary{padding:10px 16px;border-radius:999px;border:1px solid var(--border);background:var(--bg-main);color:var(--text-muted);font-family:var(--font);font-size:12px;font-weight:700;cursor:pointer;transition:var(--transition)}
-    .age-btn-secondary:hover{border-color:#f85149;color:#f85149}
-    .age-note{font-size:11px;color:var(--text-muted);margin-top:6px}
-    .age-result-main{font-size:26px;font-weight:900;margin-bottom:6px;color:var(--gold)}
-    .age-result-sub{font-size:13px;color:var(--text-sub);margin-bottom:12px}
-    .age-result-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-bottom:14px}
-    .age-pill{background:var(--bg-main);border-radius:12px;padding:10px 12px;font-size:12px;color:var(--text-sub);display:flex;justify-content:space-between;align-items:center}
-    .age-pill span{font-weight:800;color:var(--gold);font-size:14px}
-    .age-line{height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.12),transparent);margin:8px 0}
-    .age-meta{font-size:11px;color:var(--text-muted);line-height:1.8}
-    .age-meta strong{color:var(--gold);font-weight:800}
-    .age-hint{font-size:11px;color:var(--text-muted);margin-top:6px}
-    .age-hijri-date{font-size:13px;font-weight:700;margin-top:6px}
-    .age-hijri-date span{color:var(--gold)}
-    .age-empty{font-size:13px;color:var(--text-muted);text-align:center;margin-top:40px}
-    @media(max-width:768px){.age-wrap{grid-template-columns:minmax(0,1fr);}.age-hero{padding-top:80px}}
+    /* ─── Hero ─────────────────────────────────────────── */
+    .ag-hero {
+      position: relative;
+      padding: 96px 24px 52px;
+      text-align: center;
+      overflow: hidden;
+      background: linear-gradient(160deg, #060d0a 0%, #091510 40%, #080d06 100%);
+    }
+    .ag-hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 65% 55% at 15% -5%,  rgba(40,112,68,.22) 0%, transparent 65%),
+        radial-gradient(ellipse 55% 45% at 85% 105%, rgba(201,168,76,.16) 0%, transparent 65%),
+        radial-gradient(ellipse 40% 35% at 50%  50%, rgba(40,112,68,.06) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    /* subtle grid overlay */
+    .ag-hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+      background-size: 48px 48px;
+      pointer-events: none;
+      opacity: .5;
+    }
+
+    .ag-hero-inner { position: relative; z-index: 1; }
+
+    .ag-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 5px 15px;
+      border-radius: 999px;
+      background: rgba(40,112,68,.14);
+      border: 1px solid rgba(40,112,68,.38);
+      color: #7ee8a2;
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 18px;
+      letter-spacing: .3px;
+    }
+    .ag-badge-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: #4ade80;
+      box-shadow: 0 0 6px #4ade80;
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+    @keyframes pulse-dot {
+      0%,100% { opacity: 1; transform: scale(1); }
+      50%      { opacity: .5; transform: scale(.7); }
+    }
+
+    .ag-hero h1 {
+      font-size: clamp(26px, 5.5vw, 46px);
+      font-weight: 900;
+      line-height: 1.2;
+      margin-bottom: 12px;
+      color: var(--text-1);
+    }
+    .ag-hero h1 em {
+      font-style: normal;
+      background: linear-gradient(130deg, #c9a84c 0%, #f0d080 55%, #c9a84c 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .ag-hero p {
+      font-size: 14px;
+      color: var(--text-2);
+      max-width: 500px;
+      margin: 0 auto 28px;
+      line-height: 1.8;
+    }
+
+    .ag-hero-stats {
+      display: inline-flex;
+      gap: 2px;
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.03);
+    }
+    .ag-hero-stat {
+      padding: 12px 22px;
+      text-align: center;
+    }
+    .ag-hero-stat + .ag-hero-stat {
+      border-right: 1px solid var(--border);
+    }
+    .ag-hero-stat-val {
+      display: block;
+      font-size: 22px;
+      font-weight: 900;
+      color: var(--em-400, #c9a84c);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .ag-hero-stat-lbl { font-size: 11px; color: var(--text-3); }
+
+    /* ─── Layout ────────────────────────────────────────── */
+    .ag-wrap {
+      max-width: 900px;
+      margin: 36px auto 100px;
+      padding: 0 20px;
+      display: grid;
+      grid-template-columns: minmax(0,1.15fr) minmax(0,1fr);
+      gap: 20px;
+      align-items: start;
+    }
+    @media (max-width: 720px) {
+      .ag-wrap { grid-template-columns: 1fr; }
+      .ag-hero { padding-top: 82px; }
+    }
+
+    /* ─── Cards ─────────────────────────────────────────── */
+    .ag-card {
+      background: var(--surface, #111);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .ag-card::before {
+      content: '';
+      position: absolute;
+      inset: 0 0 auto 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent 0%, rgba(201,168,76,.5) 50%, transparent 100%);
+    }
+
+    .ag-card-title {
+      font-size: 14px;
+      font-weight: 800;
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-1);
+    }
+    .ag-card-title-icon {
+      width: 30px; height: 30px;
+      border-radius: 9px;
+      background: rgba(40,112,68,.15);
+      border: 1px solid rgba(40,112,68,.3);
+      display: grid;
+      place-items: center;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+
+    /* ─── Type Toggle ───────────────────────────────────── */
+    .ag-type-toggle {
+      display: flex;
+      gap: 6px;
+      padding: 4px;
+      background: rgba(255,255,255,.04);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      margin-bottom: 20px;
+    }
+    .ag-type-btn {
+      flex: 1;
+      padding: 9px 10px;
+      border-radius: 9px;
+      border: none;
+      background: transparent;
+      color: var(--text-3);
+      font-family: var(--font, 'Cairo', sans-serif);
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all .2s;
+    }
+    .ag-type-btn.active {
+      background: rgba(40,112,68,.2);
+      border: 1px solid rgba(40,112,68,.4);
+      color: #7ee8a2;
+    }
+
+    /* ─── Fields ────────────────────────────────────────── */
+    .ag-field { margin-bottom: 16px; }
+    .ag-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-3);
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      margin-bottom: 6px;
+    }
+    .ag-input {
+      width: 100%;
+      padding: 11px 14px;
+      border-radius: 11px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.04);
+      color: var(--text-1);
+      font-family: var(--font, 'Cairo', sans-serif);
+      font-size: 14px;
+      outline: none;
+      transition: border-color .2s, box-shadow .2s;
+      box-sizing: border-box;
+    }
+    .ag-input:focus {
+      border-color: rgba(40,112,68,.6);
+      box-shadow: 0 0 0 3px rgba(40,112,68,.12);
+    }
+    .ag-input-note {
+      font-size: 11px;
+      color: var(--text-3);
+      margin-top: 5px;
+      line-height: 1.6;
+    }
+
+    /* ─── Hijri manual inputs ─────────────────────────── */
+    .ag-hijri-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1.4fr;
+      gap: 8px;
+    }
+
+    /* ─── Buttons ───────────────────────────────────────── */
+    .ag-btn-row {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    .ag-btn-primary {
+      flex: 1;
+      padding: 13px 18px;
+      border-radius: 999px;
+      border: none;
+      background: linear-gradient(135deg, #287044, #3a9659, #c9a84c);
+      background-size: 200% 100%;
+      background-position: 0% 0%;
+      color: #fff;
+      font-family: var(--font, 'Cairo', sans-serif);
+      font-size: 14px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: transform .2s, box-shadow .2s, background-position .4s;
+      box-shadow: 0 6px 20px rgba(40,112,68,.35);
+    }
+    .ag-btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 28px rgba(40,112,68,.45);
+      background-position: 100% 0%;
+    }
+    .ag-btn-primary:active { transform: translateY(0); }
+    .ag-btn-reset {
+      padding: 12px 16px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text-3);
+      font-family: var(--font, 'Cairo', sans-serif);
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all .2s;
+    }
+    .ag-btn-reset:hover { border-color: #f85149; color: #f85149; }
+
+    .ag-disclaimer {
+      margin-top: 14px;
+      padding: 10px 14px;
+      border-radius: 10px;
+      background: rgba(201,168,76,.07);
+      border: 1px solid rgba(201,168,76,.18);
+      font-size: 11px;
+      color: var(--text-3);
+      line-height: 1.7;
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+    }
+    .ag-disclaimer-icon { font-size: 13px; flex-shrink: 0; margin-top: 1px; }
+
+    /* ─── Result Card ───────────────────────────────────── */
+    .ag-result-empty {
+      padding: 40px 20px;
+      text-align: center;
+    }
+    .ag-result-empty-icon {
+      font-size: 44px;
+      margin-bottom: 12px;
+      opacity: .4;
+    }
+    .ag-result-empty p {
+      font-size: 13px;
+      color: var(--text-3);
+      line-height: 1.7;
+    }
+
+    /* main years display */
+    .ag-result-years {
+      text-align: center;
+      padding: 20px 0 16px;
+      margin-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+    }
+    .ag-result-years-num {
+      font-size: 52px;
+      font-weight: 900;
+      line-height: 1;
+      background: linear-gradient(130deg, #c9a84c, #f0d080);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: countUp .5s ease-out;
+    }
+    @keyframes countUp {
+      from { opacity: 0; transform: translateY(8px) scale(.95); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .ag-result-years-lbl {
+      font-size: 12px;
+      color: var(--text-3);
+      margin-top: 4px;
+    }
+    .ag-result-sub {
+      font-size: 13px;
+      color: var(--text-2);
+      text-align: center;
+      margin-top: 6px;
+    }
+
+    /* pills grid */
+    .ag-pills {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    .ag-pill {
+      padding: 11px 13px;
+      border-radius: 12px;
+      background: rgba(255,255,255,.04);
+      border: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .ag-pill-val {
+      font-size: 17px;
+      font-weight: 900;
+      color: var(--em-400, #c9a84c);
+      line-height: 1;
+    }
+    .ag-pill-lbl {
+      font-size: 10px;
+      color: var(--text-3);
+      letter-spacing: .2px;
+    }
+
+    .ag-divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border), transparent);
+      margin: 14px 0;
+    }
+
+    /* hijri dates */
+    .ag-hijri-line {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 0;
+      font-size: 12px;
+      color: var(--text-3);
+    }
+    .ag-hijri-line + .ag-hijri-line { border-top: 1px solid rgba(255,255,255,.05); }
+    .ag-hijri-line-val {
+      font-weight: 800;
+      color: var(--em-400, #c9a84c);
+      font-size: 13px;
+      direction: ltr;
+      text-align: left;
+    }
+
+    /* diff callout */
+    .ag-diff-box {
+      margin-top: 14px;
+      padding: 12px 14px;
+      border-radius: 12px;
+      background: rgba(40,112,68,.08);
+      border: 1px solid rgba(40,112,68,.2);
+      font-size: 12px;
+      color: var(--text-2);
+      line-height: 1.7;
+    }
+    .ag-diff-box strong { color: #7ee8a2; }
+
+    /* share button */
+    .ag-share-btn {
+      width: 100%;
+      margin-top: 14px;
+      padding: 11px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.04);
+      color: var(--text-2);
+      font-family: var(--font, 'Cairo', sans-serif);
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all .2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+    }
+    .ag-share-btn:hover {
+      border-color: rgba(201,168,76,.4);
+      color: #c9a84c;
+    }
+
+    /* ─── Info section ─────────────────────────────────── */
+    .ag-info {
+      max-width: 900px;
+      margin: 0 auto 80px;
+      padding: 0 20px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+    @media (max-width: 640px) {
+      .ag-info { grid-template-columns: 1fr; }
+    }
+    .ag-info-card {
+      padding: 18px;
+      border-radius: 16px;
+      background: var(--surface, #111);
+      border: 1px solid var(--border);
+    }
+    .ag-info-card-icon {
+      font-size: 22px;
+      margin-bottom: 10px;
+    }
+    .ag-info-card-title {
+      font-size: 13px;
+      font-weight: 800;
+      margin-bottom: 6px;
+      color: var(--text-1);
+    }
+    .ag-info-card-body {
+      font-size: 11px;
+      color: var(--text-3);
+      line-height: 1.8;
+    }
+    .ag-info-card-body strong { color: var(--em-400, #c9a84c); }
   </style>
 </head>
 
 <body>
-<!-- ═══════════════════════════════════════════════════
-     IslamiCalc  ·  Redesigned Navigation Bar
-     Drop this <header> block into every page, replacing
-     the existing <header class="ic-nav" …> … </header>
-═══════════════════════════════════════════════════ -->
 
+<!-- ══════════════════════════════════════════════════════
+     NAVBAR
+══════════════════════════════════════════════════════ -->
 <header class="ic-nav" id="icNav">
   <div class="ic-nav__inner">
-
-    <!-- ── Logo ────────────────────────────── -->
     <a href="/" class="ic-nav__logo">
       <div class="ic-nav__logo-mark">
-        <!-- Geometric Islamic star SVG -->
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
-             xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <path d="M12 2L14.09 8.26L21 9L15.54 14.74L17.18 22L12 18.77
-                   L6.82 22L8.46 14.74L3 9L9.91 8.26L12 2Z"
-                fill="rgba(255,255,255,0.95)" stroke="none"/>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M12 2L14.09 8.26L21 9L15.54 14.74L17.18 22L12 18.77L6.82 22L8.46 14.74L3 9L9.91 8.26L12 2Z"
+                fill="rgba(255,255,255,0.95)"/>
         </svg>
       </div>
       <span class="ic-nav__logo-text">IslamiCalc</span>
     </a>
-
-    <!-- ── Spacer pushes actions to the right ── -->
     <div class="ic-nav__spacer"></div>
-
-    <!-- ── Right Actions ────────────────────── -->
     <div class="ic-nav__actions">
-
-      <!-- Theme Toggle -->
       <button id="themeBtn" class="ic-nav__icon-btn" aria-label="تبديل السمة">
         <svg class="ic-nav__icon-btn-svg" width="18" height="18" viewBox="0 0 24 24"
-             fill="none" stroke="currentColor" stroke-width="2"
-             stroke-linecap="round" stroke-linejoin="round">
+             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <circle cx="12" cy="12" r="5"/>
-          <line x1="12" y1="1" x2="12" y2="3"/>
-          <line x1="12" y1="21" x2="12" y2="23"/>
-          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
-          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
-          <line x1="1" y1="12" x2="3" y2="12"/>
-          <line x1="21" y1="12" x2="23" y2="12"/>
-          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
-          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+          <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+          <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
         </svg>
       </button>
-
-      <!-- Login / Profile button -->
       <button id="loginBtn" class="ic-nav__login-btn">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
-             stroke="currentColor" stroke-width="2.5"
-             stroke-linecap="round" stroke-linejoin="round"
-             style="flex-shrink:0" aria-hidden="true">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0" aria-hidden="true">
           <circle cx="12" cy="8" r="4"/>
           <path d="M4 20c0-4 3.58-7 8-7s8 3 8 7"/>
         </svg>
         <span id="loginBtnLabel">تسجيل الدخول</span>
       </button>
-
-      <!-- Hamburger — always visible -->
       <button id="menuToggle" class="ic-nav__hamburger" aria-label="فتح القائمة"
               aria-expanded="false" aria-controls="sideDrawer">
         <span class="ic-nav__hamburger-bar"></span>
         <span class="ic-nav__hamburger-bar"></span>
         <span class="ic-nav__hamburger-bar"></span>
       </button>
-
-    </div><!-- /actions -->
-  </div><!-- /inner -->
+    </div>
+  </div>
 </header>
 
-<!-- ═══════════════════════════════════════════════════
-     Side Drawer (opens on hamburger click)
-═══════════════════════════════════════════════════ -->
+<!-- ══════════════════════════════════════════════════════
+     SIDE DRAWER
+══════════════════════════════════════════════════════ -->
 <div id="drawerOverlay" class="ic-drawer-overlay" aria-hidden="true"></div>
-
 <aside id="sideDrawer" class="ic-drawer" role="dialog"
        aria-modal="true" aria-label="القائمة الرئيسية">
 
-  <!-- Drawer Header -->
   <div class="ic-drawer__header">
     <a href="/" class="ic-drawer__logo">
       <div class="ic-nav__logo-mark ic-nav__logo-mark--sm">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
-             xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <path d="M12 2L14.09 8.26L21 9L15.54 14.74L17.18 22L12 18.77
-                   L6.82 22L8.46 14.74L3 9L9.91 8.26L12 2Z"
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M12 2L14.09 8.26L21 9L15.54 14.74L17.18 22L12 18.77L6.82 22L8.46 14.74L3 9L9.91 8.26L12 2Z"
                 fill="rgba(255,255,255,0.95)"/>
         </svg>
       </div>
@@ -155,33 +545,27 @@
     </a>
     <button id="drawerClose" class="ic-drawer__close" aria-label="إغلاق القائمة">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
-           stroke="currentColor" stroke-width="2.5"
-           stroke-linecap="round" stroke-linejoin="round">
-        <line x1="18" y1="6" x2="6" y2="18"/>
-        <line x1="6" y1="6" x2="18" y2="18"/>
+           stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
       </svg>
     </button>
   </div>
 
-  <!-- User Profile Section -->
-  <div class="ic-drawer__profile" id="drawerProfile">
+  <div class="ic-drawer__profile">
     <div class="ic-drawer__avatar" id="drawerAvatar">
-      <!-- Initials / avatar injected by JS -->
       <svg width="26" height="26" viewBox="0 0 24 24" fill="none"
-           stroke="rgba(255,255,255,0.8)" stroke-width="2"
-           stroke-linecap="round" stroke-linejoin="round">
+           stroke="rgba(255,255,255,0.8)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <circle cx="12" cy="8" r="4"/>
         <path d="M4 20c0-4 3.58-7 8-7s8 3 8 7"/>
       </svg>
     </div>
     <div class="ic-drawer__profile-info">
       <span class="ic-drawer__profile-name" id="drawerName">مرحباً بك</span>
-      <span class="ic-drawer__profile-sub" id="drawerSub">سجّل دخولك للمتابعة</span>
+      <span class="ic-drawer__profile-sub"  id="drawerSub">سجّل دخولك للمتابعة</span>
     </div>
     <button id="drawerLoginBtn" class="ic-drawer__profile-cta">دخول</button>
   </div>
 
-  <!-- Quick XP Bar (shown when logged in) -->
   <div class="ic-drawer__xp" id="drawerXP" style="display:none">
     <div class="ic-drawer__xp-track">
       <div class="ic-drawer__xp-fill" id="drawerXPFill" style="width:0%"></div>
@@ -189,147 +573,102 @@
     <span class="ic-drawer__xp-lbl" id="drawerXPLbl">0 XP</span>
   </div>
 
-  <!-- Divider -->
   <div class="ic-drawer__divider"></div>
 
-  <!-- Main Navigation -->
   <nav class="ic-drawer__nav" aria-label="التنقل الرئيسي">
     <p class="ic-drawer__section-label">التنقل</p>
     <ul class="ic-drawer__list">
-      <li>
-        <a href="/" class="ic-drawer__link" data-page="home">
-          <span class="ic-drawer__link-icon">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
-                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-              <polyline points="9 22 9 12 15 12 15 22"/>
-            </svg>
-          </span>
-          <span>الرئيسية</span>
-        </a>
-      </li>
-      <li>
-        <a href="/khatma" class="ic-drawer__link" data-page="khatma">
-          <span class="ic-drawer__link-icon">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
-                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
-              <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
-            </svg>
-          </span>
-          <span>ختمة القرآن</span>
-        </a>
-      </li>
-      <li>
-        <a href="/arena" class="ic-drawer__link" data-page="arena">
-          <span class="ic-drawer__link-icon">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
-                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
-            </svg>
-          </span>
-          <span>الميدان</span>
-          <span class="ic-drawer__badge ic-drawer__badge--gold">XP</span>
-        </a>
-      </li>
-      <li>
-        <a href="/athkar" class="ic-drawer__link" data-page="athkar">
-          <span class="ic-drawer__link-icon">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
-                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="12" r="3"/>
-              <path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/>
-            </svg>
-          </span>
-          <span>الأذكار</span>
-        </a>
-      </li>
+      <li><a href="/" class="ic-drawer__link" data-page="home">
+        <span class="ic-drawer__link-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+            <polyline points="9 22 9 12 15 12 15 22"/>
+          </svg>
+        </span><span>الرئيسية</span>
+      </a></li>
+      <li><a href="/khatma" class="ic-drawer__link" data-page="khatma">
+        <span class="ic-drawer__link-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+            <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+          </svg>
+        </span><span>ختمة القرآن</span>
+      </a></li>
+      <li><a href="/arena" class="ic-drawer__link" data-page="arena">
+        <span class="ic-drawer__link-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+          </svg>
+        </span><span>الميدان</span>
+        <span class="ic-drawer__badge ic-drawer__badge--gold">XP</span>
+      </a></li>
+      <li><a href="/athkar" class="ic-drawer__link" data-page="athkar">
+        <span class="ic-drawer__link-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="3"/>
+            <path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/>
+          </svg>
+        </span><span>الأذكار</span>
+      </a></li>
     </ul>
 
     <p class="ic-drawer__section-label" style="margin-top:var(--s-3)">الأدوات</p>
     <ul class="ic-drawer__list">
-      <li>
-        <a href="/prayer" class="ic-drawer__link" data-page="prayer">
-          <span class="ic-drawer__link-icon">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
-                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="12" r="10"/>
-              <polyline points="12 6 12 12 16 14"/>
-            </svg>
-          </span>
-          <span>مواقيت الصلاة</span>
-        </a>
-      </li>
-      <li>
-        <a href="/zakat" class="ic-drawer__link" data-page="zakat">
-          <span class="ic-drawer__link-icon">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
-                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <line x1="12" y1="1" x2="12" y2="23"/>
-              <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
-            </svg>
-          </span>
-          <span>حساب الزكاة</span>
-        </a>
-      </li>
-      <li>
-        <a href="/hijri" class="ic-drawer__link" data-page="hijri">
-          <span class="ic-drawer__link-icon">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
-                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-              <line x1="16" y1="2" x2="16" y2="6"/>
-              <line x1="8" y1="2" x2="8" y2="6"/>
-              <line x1="3" y1="10" x2="21" y2="10"/>
-            </svg>
-          </span>
-          <span>التقويم الهجري</span>
-        </a>
-      </li>
+      <li><a href="/prayer" class="ic-drawer__link" data-page="prayer">
+        <span class="ic-drawer__link-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+          </svg>
+        </span><span>مواقيت الصلاة</span>
+      </a></li>
+      <li><a href="/zakat" class="ic-drawer__link" data-page="zakat">
+        <span class="ic-drawer__link-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="1" x2="12" y2="23"/>
+            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+          </svg>
+        </span><span>حساب الزكاة</span>
+      </a></li>
+      <li><a href="/age" class="ic-drawer__link active" data-page="age" aria-current="page">
+        <span class="ic-drawer__link-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <polyline points="12 6 12 12 16 14"/>
+          </svg>
+        </span><span>العمر الهجري</span>
+      </a></li>
+      <li><a href="/hijri" class="ic-drawer__link" data-page="hijri">
+        <span class="ic-drawer__link-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+            <line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/>
+            <line x1="3" y1="10" x2="21" y2="10"/>
+          </svg>
+        </span><span>التقويم الهجري</span>
+      </a></li>
     </ul>
 
     <p class="ic-drawer__section-label" style="margin-top:var(--s-3)">المزيد</p>
     <ul class="ic-drawer__list">
-      <li>
-        <a href="/about" class="ic-drawer__link" data-page="about">
-          <span class="ic-drawer__link-icon">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
-                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="12" r="10"/>
-              <line x1="12" y1="8" x2="12" y2="12"/>
-              <line x1="12" y1="16" x2="12.01" y2="16"/>
-            </svg>
-          </span>
-          <span>من نحن</span>
-        </a>
-      </li>
-      <li>
-        <a href="/contact" class="ic-drawer__link" data-page="contact">
-          <span class="ic-drawer__link-icon">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
-                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-            </svg>
-          </span>
-          <span>تواصل معنا</span>
-        </a>
-      </li>
-      <li>
-        <a href="/profile" class="ic-drawer__link" data-page="profile">
-          <span class="ic-drawer__link-icon">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
-                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-              <circle cx="12" cy="7" r="4"/>
-            </svg>
-          </span>
-          <span>الملف الشخصي</span>
-        </a>
-      </li>
+      <li><a href="/about" class="ic-drawer__link" data-page="about">
+        <span class="ic-drawer__link-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+          </svg>
+        </span><span>من نحن</span>
+      </a></li>
+      <li><a href="/profile" class="ic-drawer__link" data-page="profile">
+        <span class="ic-drawer__link-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+          </svg>
+        </span><span>الملف الشخصي</span>
+      </a></li>
     </ul>
   </nav>
 
-  <!-- Footer of drawer -->
   <div class="ic-drawer__footer">
     <span class="ic-drawer__footer-copy">© 2026 IslamiCalc</span>
     <button id="drawerThemeBtn" class="ic-drawer__theme-toggle" aria-label="تبديل السمة">
@@ -337,147 +676,27 @@
            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79z"/>
       </svg>
-      <span>السمة</span>
+      <span>ليلي</span>
     </button>
   </div>
-
 </aside>
 
-<!-- Drawer JS — inline, zero dependencies -->
-<script>
-(function () {
-  const toggle   = document.getElementById('menuToggle');
-  const drawer   = document.getElementById('sideDrawer');
-  const overlay  = document.getElementById('drawerOverlay');
-  const closeBtn = document.getElementById('drawerClose');
-  const body     = document.body;
-
-  function openDrawer() {
-    drawer.classList.add('ic-drawer--open');
-    overlay.classList.add('ic-drawer-overlay--visible');
-    body.style.overflow = 'hidden';
-    toggle.setAttribute('aria-expanded', 'true');
-    // focus first link
-    drawer.querySelector('.ic-drawer__link')?.focus();
-  }
-  function closeDrawer() {
-    drawer.classList.remove('ic-drawer--open');
-    overlay.classList.remove('ic-drawer-overlay--visible');
-    body.style.overflow = '';
-    toggle.setAttribute('aria-expanded', 'false');
-    toggle.focus();
-  }
-
-  toggle?.addEventListener('click', () =>
-    drawer.classList.contains('ic-drawer--open') ? closeDrawer() : openDrawer()
-  );
-  closeBtn?.addEventListener('click', closeDrawer);
-  overlay?.addEventListener('click', closeDrawer);
-
-  // Close on ESC
-  document.addEventListener('keydown', e => {
-    if (e.key === 'Escape' && drawer.classList.contains('ic-drawer--open')) closeDrawer();
-  });
-
-  // Close on nav link click (mobile)
-  drawer?.querySelectorAll('.ic-drawer__link').forEach(a => {
-    a.addEventListener('click', closeDrawer);
-  });
-
-  // Mark active link
-  const page = location.pathname.replace(/^\//, '').split('/')[0] || 'home';
-  drawer?.querySelectorAll('.ic-drawer__link').forEach(a => {
-    if (a.dataset.page === page) {
-      a.classList.add('active');
-      a.setAttribute('aria-current', 'page');
-    }
-  });
-
-  // Drawer theme toggle mirrors main themeBtn
-  document.getElementById('drawerThemeBtn')?.addEventListener('click', () => {
-    document.getElementById('themeBtn')?.click();
-  });
-})();
-</script>
-
-
-<div class="toast" id="toast"></div>
-
-<div class="age-hero">
-  <div class="age-badge">⏳ اكتشف <strong>عمرك الإسلامي</strong></div>
-  <h1>كم عمرك في <span>التاريخ الهجري؟</span></h1>
-  <p>أدخل تاريخ ميلادك، وسنحسب لك عمرك بالسنوات والأشهر والأيام في التقويم الهجري، مع الفرق بين الميلادي والهجري.</p>
-  <div class="age-stats-row">
-    <div class="age-stat"><span>365</span>يوماً تقريباً في السنة الميلادية</div>
-    <div class="age-stat"><span>354</span>يوماً تقريباً في السنة الهجرية</div>
-  </div>
-</div>
-
-<div class="age-wrap">
-  <!-- Form -->
-  <div class="age-card">
-    <h2>🎯 أدخل تاريخ ميلادك</h2>
-    <div class="age-toggle">
-      <button class="age-toggle-btn active" id="btnTypeGregorian" onclick="setBirthType('gregorian')">ميلادي (Gregorian)</button>
-      <button class="age-toggle-btn" id="btnTypeHijri" onclick="setBirthType('hijri')">هجري (Hijri)</button>
+<!-- ══════════════════════════════════════════════════════
+     LOGIN MODAL (standard)
+══════════════════════════════════════════════════════ -->
+<div class="ic-modal" id="loginModal">
+  <div class="ic-modal__backdrop" id="modalBackdrop"></div>
+  <div class="ic-modal__box">
+    <div class="ic-modal__logo">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M12 2L14.09 8.26L21 9L15.54 14.74L17.18 22L12 18.77L6.82 22L8.46 14.74L3 9L9.91 8.26L12 2Z"
+              fill="rgba(255,255,255,0.9)"/>
+      </svg>
     </div>
-
-    <div class="age-field">
-      <span class="age-label" id="lblDate">تاريخ الميلاد (ميلادي)</span>
-      <div class="age-input-row">
-        <input type="date" class="age-input" id="birthDate">
-      </div>
-      <div class="age-note">اختر اليوم من التقويم. إن كنت لا تعرف التاريخ الهجري، اختر الميلادي وسنحوّله تلقائياً.</div>
-    </div>
-
-    <div class="age-field">
-      <span class="age-label">أحسب حتى تاريخ</span>
-      <div class="age-input-row">
-        <input type="date" class="age-input" id="toDate">
-      </div>
-      <div class="age-note">إن تركته فارغاً، سنستخدم تاريخ اليوم.</div>
-    </div>
-
-    <div class="age-btn-row">
-      <button class="age-btn-primary" onclick="calcAge()">احسب عمري الإسلامي</button>
-      <button class="age-btn-secondary" onclick="resetAge()">إعادة تعيين</button>
-    </div>
-    <div class="age-hint">هذه الحاسبة لأغراض تقريبية، وقد يختلف اليوم الهجري يوماً بالزيادة أو النقصان حسب بداية الشهر.</div>
-  </div>
-
-  <!-- Result -->
-  <div class="age-card" id="ageResultCard">
-    <h2>📊 نتيجة حساب عمرك</h2>
-    <div id="ageResultEmpty" class="age-empty">أدخل تاريخ ميلادك واضغط "احسب عمري الإسلامي" لعرض النتيجة.</div>
-
-    <div id="ageResultContent" style="display:none">
-      <div class="age-result-main" id="ageYearsLine"></div>
-      <div class="age-result-sub" id="ageDiffLine"></div>
-
-      <div class="age-result-grid">
-        <div class="age-pill">عمرك بالأيام <span id="ageDays"></span></div>
-        <div class="age-pill">عمرك بالأشهر التقريبية <span id="ageMonths"></span></div>
-        <div class="age-pill">سنواتك الهجرية التقريبية <span id="ageHijriYears"></span></div>
-        <div class="age-pill">سنواتك الميلادية التقريبية <span id="ageGregYears"></span></div>
-      </div>
-
-      <div class="age-line"></div>
-      <div class="age-hijri-date" id="birthHijriLine"></div>
-      <div class="age-hijri-date" id="todayHijriLine"></div>
-
-      <div class="age-line"></div>
-      <div class="age-meta" id="ageMeta"></div>
-    </div>
-  </div>
-</div>
-
-<!-- Login Modal -->
-<div class="modal" id="loginModal">
-  <div class="modal-box">
-    <h2>👤 سجّل دخولك إلى IslamiCalc</h2>
-    <p>بحساب واحد تستطيع حفظ تقدمك في الزكاة، الختمة، الأذكار، والميدان عبر كل أجهزتك.</p>
-    <button class="google-btn" onclick="window.islamiCalc?.loginWithGoogle()">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="margin-left:8px;vertical-align:middle">
+    <h2 class="ic-modal__title">سجّل دخولك إلى IslamiCalc</h2>
+    <p class="ic-modal__sub">بحساب واحد تستطيع حفظ تقدمك في الزكاة، الختمة، الأذكار، والميدان.</p>
+    <button id="googleLoginBtn" class="ic-modal__google-btn">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="flex-shrink:0">
         <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
         <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
         <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/>
@@ -485,158 +704,364 @@
       </svg>
       الدخول بحساب Google
     </button>
-    <button class="skip-btn" onclick="document.getElementById('loginModal').classList.remove('open')">تصفح بدون حساب</button>
-    <p class="modal-terms">بالدخول توافق على <a href="/privacy">سياسة الخصوصية</a></p>
+    <button id="guestBrowseBtn" class="ic-modal__skip-btn">تصفح بدون حساب</button>
+    <p class="ic-modal__terms">بالدخول توافق على <a href="/privacy">سياسة الخصوصية</a></p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     HERO
+══════════════════════════════════════════════════════ -->
+<section class="ag-hero">
+  <div class="ag-hero-inner">
+    <div class="ag-badge">
+      <span class="ag-badge-dot"></span>
+      حاسبة العمر الإسلامي
+    </div>
+    <h1>كم عمرك في <em>التقويم الهجري؟</em></h1>
+    <p>أدخل تاريخ ميلادك وسنحسب لك عمرك الحقيقي بالسنين الهجرية، مع الأشهر والأيام والفرق بين التقويمين.</p>
+    <div class="ag-hero-stats">
+      <div class="ag-hero-stat">
+        <span class="ag-hero-stat-val">365</span>
+        <span class="ag-hero-stat-lbl">أيام السنة الميلادية</span>
+      </div>
+      <div class="ag-hero-stat">
+        <span class="ag-hero-stat-val">354</span>
+        <span class="ag-hero-stat-lbl">أيام السنة الهجرية</span>
+      </div>
+      <div class="ag-hero-stat">
+        <span class="ag-hero-stat-val">~3%</span>
+        <span class="ag-hero-stat-lbl">فرق كل عام بين التقويمين</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     MAIN CALCULATOR
+══════════════════════════════════════════════════════ -->
+<div class="ag-wrap">
+
+  <!-- Form Card -->
+  <div class="ag-card">
+    <div class="ag-card-title">
+      <span class="ag-card-title-icon">🎯</span>
+      أدخل تاريخ ميلادك
+    </div>
+
+    <!-- Type Toggle -->
+    <div class="ag-type-toggle" role="group" aria-label="نوع التاريخ">
+      <button class="ag-type-btn active" id="btnGreg" onclick="setType('gregorian')">
+        ميلادي (Gregorian)
+      </button>
+      <button class="ag-type-btn" id="btnHijr" onclick="setType('hijri')">
+        هجري (Hijri)
+      </button>
+    </div>
+
+    <!-- Gregorian input -->
+    <div id="gregInputs">
+      <div class="ag-field">
+        <label class="ag-label" for="birthDate">تاريخ الميلاد</label>
+        <input type="date" class="ag-input" id="birthDate" max="">
+        <div class="ag-input-note">اختر يوم ميلادك من التقويم الميلادي.</div>
+      </div>
+    </div>
+
+    <!-- Hijri manual input -->
+    <div id="hijriInputs" style="display:none">
+      <div class="ag-field">
+        <label class="ag-label">تاريخ الميلاد الهجري</label>
+        <div class="ag-hijri-row">
+          <input type="number" class="ag-input" id="hDay"   placeholder="اليوم"  min="1" max="30">
+          <input type="number" class="ag-input" id="hMonth" placeholder="الشهر"  min="1" max="12">
+          <input type="number" class="ag-input" id="hYear"  placeholder="السنة (مثل 1410)" min="1200" max="1500">
+        </div>
+        <div class="ag-input-note">أدخل التاريخ الهجري وسنحوّله تلقائياً للميلادي.</div>
+      </div>
+    </div>
+
+    <!-- To date -->
+    <div class="ag-field">
+      <label class="ag-label" for="toDate">احسب حتى تاريخ</label>
+      <input type="date" class="ag-input" id="toDate">
+      <div class="ag-input-note">اتركه فارغاً لاستخدام تاريخ اليوم.</div>
+    </div>
+
+    <div class="ag-btn-row">
+      <button class="ag-btn-primary" onclick="calcAge()">احسب عمري الإسلامي</button>
+      <button class="ag-btn-reset"   onclick="resetAge()">↺ إعادة</button>
+    </div>
+
+    <div class="ag-disclaimer">
+      <span class="ag-disclaimer-icon">ℹ️</span>
+      <span>الحسابات تقريبية لأن تحديد الشهر الهجري يعتمد على رؤية الهلال. قد يختلف اليوم الهجري بيوم واحد.</span>
+    </div>
+  </div>
+
+  <!-- Result Card -->
+  <div class="ag-card" id="resultCard">
+    <div class="ag-card-title">
+      <span class="ag-card-title-icon">📊</span>
+      نتيجة عمرك الإسلامي
+    </div>
+
+    <!-- Empty state -->
+    <div id="resultEmpty" class="ag-result-empty">
+      <div class="ag-result-empty-icon">🌙</div>
+      <p>أدخل تاريخ ميلادك واضغط<br>"احسب عمري الإسلامي"</p>
+    </div>
+
+    <!-- Result content -->
+    <div id="resultContent" style="display:none">
+      <div class="ag-result-years">
+        <div class="ag-result-years-num" id="rHijriYears">–</div>
+        <div class="ag-result-years-lbl">سنة هجرية</div>
+        <div class="ag-result-sub" id="rDetailLine"></div>
+      </div>
+
+      <div class="ag-pills">
+        <div class="ag-pill">
+          <span class="ag-pill-val" id="rDays">–</span>
+          <span class="ag-pill-lbl">إجمالي الأيام</span>
+        </div>
+        <div class="ag-pill">
+          <span class="ag-pill-val" id="rMonths">–</span>
+          <span class="ag-pill-lbl">إجمالي الأشهر الهجرية</span>
+        </div>
+        <div class="ag-pill">
+          <span class="ag-pill-val" id="rHijriExact">–</span>
+          <span class="ag-pill-lbl">السنوات الهجرية الكسرية</span>
+        </div>
+        <div class="ag-pill">
+          <span class="ag-pill-val" id="rGregExact">–</span>
+          <span class="ag-pill-lbl">السنوات الميلادية الكسرية</span>
+        </div>
+      </div>
+
+      <div class="ag-divider"></div>
+
+      <div class="ag-hijri-line">
+        <span>تاريخ ميلادك الهجري</span>
+        <span class="ag-hijri-line-val" id="rBirthHijri">–</span>
+      </div>
+      <div class="ag-hijri-line">
+        <span>التاريخ الهجري اليوم</span>
+        <span class="ag-hijri-line-val" id="rTodayHijri">–</span>
+      </div>
+
+      <div class="ag-diff-box" id="rDiffBox"></div>
+
+      <button class="ag-share-btn" onclick="shareResult()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
+          <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+        </svg>
+        مشاركة النتيجة
+      </button>
+    </div>
+  </div>
+
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     INFO CARDS
+══════════════════════════════════════════════════════ -->
+<div class="ag-info">
+  <div class="ag-info-card">
+    <div class="ag-info-card-icon">🌙</div>
+    <div class="ag-info-card-title">لماذا التقويم الهجري؟</div>
+    <div class="ag-info-card-body">
+      التقويم الهجري قمري يعتمد على دورة القمر. السنة الهجرية
+      <strong>354 يوماً</strong> تقريباً، مما يجعلها أقصر بـ11 يوماً من الميلادية.
+    </div>
+  </div>
+  <div class="ag-info-card">
+    <div class="ag-info-card-icon">📅</div>
+    <div class="ag-info-card-title">معنى الفرق في العمر</div>
+    <div class="ag-info-card-body">
+      بسبب قِصَر السنة الهجرية، عمرك الهجري دائماً
+      <strong>أكبر من الميلادي</strong> بنحو <strong>3%</strong> — أي ما يعادل سنة إضافية كل 33 سنة.
+    </div>
+  </div>
+  <div class="ag-info-card">
+    <div class="ag-info-card-icon">✨</div>
+    <div class="ag-info-card-title">دقة الحساب</div>
+    <div class="ag-info-card-body">
+      الحساب يعتمد خوارزمية التحويل الفلكية القياسية.
+      قد يختلف اليوم الهجري بيوم واحد حسب
+      <strong>رؤية الهلال</strong> في بلدك.
+    </div>
   </div>
 </div>
 
 <script>
-// ===== Theme =====
+// ══════════════════════════════════════════════════════
+// Age Calculator Logic
+// ══════════════════════════════════════════════════════
+let birthType = 'gregorian';
+
+// Set max date for gregorian input to today
 (function(){
-  const saved=localStorage.getItem('theme')||'dark';
-  document.documentElement.setAttribute('data-theme',saved);
-  const sun=document.getElementById('iconSun');
-  const moon=document.getElementById('iconMoon');
-  if(sun) sun.style.display = saved==='dark'?'none':'block';
-  if(moon) moon.style.display=saved==='dark'?'block':'none';
+  const today = new Date().toISOString().split('T')[0];
+  document.getElementById('birthDate').max = today;
+  document.getElementById('toDate').max   = today;
+  document.getElementById('toDate').value = today;
 })();
-document.getElementById('themeBtn')?.addEventListener('click',()=>{
-  const cur=document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark';
-  document.documentElement.setAttribute('data-theme',cur);
-  localStorage.setItem('theme',cur);
-  document.getElementById('iconSun').style.display = cur==='dark'?'none':'block';
-  document.getElementById('iconMoon').style.display= cur==='dark'?'block':'none';
-});
 
-// ===== Mobile Menu =====
-document.getElementById('menuToggle')?.addEventListener('click',()=>{
-  const open=document.getElementById('navMenu').classList.toggle('open');
-  document.getElementById('menuToggle').setAttribute('aria-expanded',open);
-  document.getElementById('iconMenu').style.display  = open?'none':'block';
-  document.getElementById('iconClose').style.display = open?'block':'none';
-});
-document.addEventListener('click',e=>{
-  const t=document.getElementById('menuToggle');
-  const m=document.getElementById('navMenu');
-  if(!t?.contains(e.target)&&!m?.contains(e.target)){
-    m?.classList.remove('open');
-    document.getElementById('iconMenu').style.display  ='block';
-    document.getElementById('iconClose').style.display='none';
-  }
-});
-
-// ===== Toast =====
-let toastTimer;
-function showToast(msg,type=''){
-  const t=document.getElementById('toast');
-  if(!t) return;
-  t.textContent=msg;
-  t.className='toast show '+(type||'');
-  clearTimeout(toastTimer);
-  toastTimer=setTimeout(()=>t.classList.remove('show'),3000);
+function setType(t) {
+  birthType = t;
+  document.getElementById('btnGreg').classList.toggle('active', t === 'gregorian');
+  document.getElementById('btnHijr').classList.toggle('active', t === 'hijri');
+  document.getElementById('gregInputs').style.display  = t === 'gregorian' ? '' : 'none';
+  document.getElementById('hijriInputs').style.display = t === 'hijri'     ? '' : 'none';
 }
 
-// ===== Login Modal =====
-function openLoginModal(){
-  if(window.islamiCalc?.openLoginModal){ window.islamiCalc.openLoginModal(); return;}
-  document.getElementById('loginModal')?.classList.add('open');
-}
-document.getElementById('loginModal')?.addEventListener('click',function(e){
-  if(e.target===this) this.classList.remove('open');
-});
-window.addEventListener('islamiCalcReady',(e)=>{
-  const user=e.detail?.user;
-  const btn=document.getElementById('loginBtn');
-  if(!btn) return;
-  if(user){ btn.onclick=()=>window.islamiCalc?.showUserMenu?.(); }
-  else     { btn.onclick=()=>openLoginModal(); }
-},{once:true});
-
-// ===== Age Logic =====
-let birthType='gregorian';
-function setBirthType(t){
-  birthType=t;
-  document.getElementById('btnTypeGregorian').classList.toggle('active',t==='gregorian');
-  document.getElementById('btnTypeHijri').classList.toggle('active',t==='hijri');
-  document.getElementById('lblDate').textContent = t==='gregorian'?'تاريخ الميلاد (ميلادي)':'تاريخ الميلاد (هجري تقريبي)';
+// ── Gregorian ↔ Hijri conversion (Julian Day algorithm) ──────────────────
+function gregorianToJD(y, m, d) {
+  return Math.floor((1461*(y+4800+Math.floor((m-14)/12)))/4)
+       + Math.floor((367*(m-2-12*Math.floor((m-14)/12)))/12)
+       - Math.floor((3*Math.floor((y+4900+Math.floor((m-14)/12))/100))/4)
+       + d - 32075;
 }
 
-function resetAge(){
-  document.getElementById('birthDate').value='';
-  document.getElementById('toDate').value='';
-  document.getElementById('ageResultContent').style.display='none';
-  document.getElementById('ageResultEmpty').style.display='block';
-}
-
-// تحويل ميلادي → هجري (خوارزمية تقريبية بسيطة)
-function gregorianToHijri(gDate){
-  // مستندة على خوارزمية شائعة لحساب التاريخ الهجري تقريبياً [web:12][web:14]
-  const day   = gDate.getDate();
-  const month = gDate.getMonth()+1;
-  const year  = gDate.getFullYear();
-  let jd = Math.floor((1461*(year+4800+Math.floor((month-14)/12)))/4)
-         + Math.floor((367*(month-2-12*Math.floor((month-14)/12)))/12)
-         - Math.floor((3*Math.floor((year+4900+Math.floor((month-14)/12))/100))/4)
-         + day - 32075;
-  const l = jd - 1948440 + 10632;
-  const n = Math.floor((l-1)/10631);
-  const r = l-10631*n+354;
-  const j = (Math.floor((10985-r)/5316))*Math.floor((50*r)/17719)
-          + (Math.floor(r/5670))*Math.floor((43*r)/15238);
+function jdToHijri(jd) {
+  const l  = jd - 1948440 + 10632;
+  const n  = Math.floor((l-1)/10631);
+  const r  = l - 10631*n + 354;
+  const j  = (Math.floor((10985-r)/5316))*Math.floor((50*r)/17719)
+           + (Math.floor(r/5670))*Math.floor((43*r)/15238);
   const r2 = r - (Math.floor((30-j)/15))*Math.floor((17719*j)/50)
-               - (Math.floor(j/16))*Math.floor((15238*j)/43)+29;
-  const m  = Math.floor((24*r2)/709);
-  const d  = r2 - Math.floor((709*m)/24);
-  const y  = 30*n + j - 30;
-  return {hYear:y,hMonth:m,hDay:d};
+               - (Math.floor(j/16))*Math.floor((15238*j)/43) + 29;
+  const hm = Math.floor((24*r2)/709);
+  const hd = r2 - Math.floor((709*hm)/24);
+  const hy = 30*n + j - 30;
+  return { hYear: hy, hMonth: hm, hDay: hd };
 }
 
-function calcAge(){
-  const birthStr=document.getElementById('birthDate').value;
-  const toStr   =document.getElementById('toDate').value;
-  if(!birthStr){ showToast('يرجى إدخال تاريخ الميلاد','toast-error'); return; }
+// Hijri → approx Gregorian (for manual hijri input)
+function hijriToGregorian(hy, hm, hd) {
+  // Inverse via JD
+  const N = Math.floor((11*hy + 3)/30) + 354*hy + 30*hm
+          - Math.floor((hm-1)/2) + hd + 1948440 - 385;
+  // JD to Gregorian
+  let p = N + 68569;
+  const q = Math.floor((4*p)/146097);
+  p = p - Math.floor((146097*q+3)/4);
+  const yi = Math.floor((4000*(p+1))/1461001);
+  p = p - Math.floor((1461*yi)/4) + 31;
+  const mi = Math.floor((80*p)/2447);
+  const d  = p - Math.floor((2447*mi)/80);
+  p = Math.floor(mi/11);
+  const mo = mi + 2 - 12*p;
+  const yr = 100*(q-49) + yi + p;
+  return { year: yr, month: mo, day: d };
+}
 
-  const birth = new Date(birthStr);
-  const to    = toStr?new Date(toStr):new Date();
-  if(to<birth){ showToast('تاريخ النهاية يجب أن يكون بعد الميلاد','toast-error'); return; }
+const HIJRI_MONTHS = ['محرم','صفر','ربيع الأول','ربيع الآخر','جمادى الأولى','جمادى الآخرة','رجب','شعبان','رمضان','شوال','ذو القعدة','ذو الحجة'];
+
+function fmtHijri(h) {
+  return `${h.hDay} ${HIJRI_MONTHS[h.hMonth-1]} ${h.hYear}هـ`;
+}
+
+// ── Main Calc ──────────────────────────────────────────────────────────────
+function calcAge() {
+  let birth;
+
+  if (birthType === 'gregorian') {
+    const v = document.getElementById('birthDate').value;
+    if (!v) { window.showToast?.('يرجى إدخال تاريخ الميلاد', 'error'); return; }
+    birth = new Date(v + 'T00:00:00');
+  } else {
+    const hd = parseInt(document.getElementById('hDay').value);
+    const hm = parseInt(document.getElementById('hMonth').value);
+    const hy = parseInt(document.getElementById('hYear').value);
+    if (!hd || !hm || !hy || hd<1||hd>30||hm<1||hm>12||hy<1200||hy>1500) {
+      window.showToast?.('يرجى إدخال التاريخ الهجري بشكل صحيح', 'error'); return;
+    }
+    const g = hijriToGregorian(hy, hm, hd);
+    birth = new Date(g.year, g.month-1, g.day);
+  }
+
+  const toVal = document.getElementById('toDate').value;
+  const to    = toVal ? new Date(toVal + 'T00:00:00') : new Date();
+  to.setHours(0,0,0,0);
+  birth.setHours(0,0,0,0);
+
+  if (to < birth) { window.showToast?.('تاريخ النهاية يجب أن يكون بعد الميلاد', 'error'); return; }
 
   const diffMs   = to - birth;
-  const diffDays = Math.floor(diffMs/86400000);
-  const yearsGregorian = diffMs/(365.2425*86400000);
-  const yearsHijri     = diffMs/(354.3667*86400000); // متوسط السنة الهجرية [web:14]
+  const diffDays = Math.floor(diffMs / 86400000);
 
-  const wholeHijriYears = Math.floor(yearsHijri);
-  const remHijriDays    = Math.floor((yearsHijri-wholeHijriYears)*354.3667);
-  const hijriMonths     = Math.floor(remHijriDays/29.53);
-  const hijriDays       = Math.max(0, remHijriDays - Math.round(hijriMonths*29.53));
+  // Gregorian years (precise)
+  const gregYears = diffMs / (365.2425 * 86400000);
 
-  document.getElementById('ageResultEmpty').style.display='none';
-  document.getElementById('ageResultContent').style.display='block';
+  // Hijri years — average Hijri year = 354.36707 days
+  const HIJRI_YEAR = 354.36707;
+  const hijriYears = diffMs / (HIJRI_YEAR * 86400000);
 
-  document.getElementById('ageYearsLine').textContent =
-    `${wholeHijriYears} سنة و ${hijriMonths} شهر و ${hijriDays} يوم (هجري تقريباً)`;
-  const diffYears = (yearsHijri - yearsGregorian).toFixed(2);
-  document.getElementById('ageDiffLine').textContent =
-    `عمرك بالهجري أكبر تقريباً بـ ${diffYears} سنة عن الميلادي.`;
+  const wholeH   = Math.floor(hijriYears);
+  const remDaysH = Math.floor((hijriYears - wholeH) * HIJRI_YEAR);
+  const hijriMo  = Math.floor(remDaysH / 29.53);
+  const hijriDy  = Math.max(0, remDaysH - Math.round(hijriMo * 29.53));
 
-  document.getElementById('ageDays').textContent       = diffDays.toLocaleString('ar-SA');
-  document.getElementById('ageMonths').textContent     = Math.floor(yearsGregorian*12).toLocaleString('ar-SA');
-  document.getElementById('ageHijriYears').textContent = yearsHijri.toFixed(2);
-  document.getElementById('ageGregYears').textContent  = yearsGregorian.toFixed(2);
+  // Compute hijri dates via JD
+  const birthJD  = gregorianToJD(birth.getFullYear(), birth.getMonth()+1, birth.getDate());
+  const toJD     = gregorianToJD(to.getFullYear(), to.getMonth()+1, to.getDate());
+  const birthH   = jdToHijri(birthJD);
+  const todayH   = jdToHijri(toJD);
 
-  const birthHijri = gregorianToHijri(birth);
-  const todayHijri = gregorianToHijri(to);
-  document.getElementById('birthHijriLine').innerHTML =
-    `تاريخ ميلادك الهجري التقريبي: <span>${birthHijri.hDay} / ${birthHijri.hMonth} / ${birthHijri.hYear}</span>`;
-  document.getElementById('todayHijriLine').innerHTML =
-    `التاريخ الهجري اليوم تقريباً: <span>${todayHijri.hDay} / ${todayHijri.hMonth} / ${todayHijri.hYear}</span>`;
+  const diffYrStr = (hijriYears - gregYears).toFixed(2);
 
-  document.getElementById('ageMeta').innerHTML =
-    `منذ ولادتك مرَّ تقريباً <strong>${diffDays.toLocaleString('ar-SA')}</strong> يوماً، `+
-    `أي حوالي <strong>${Math.floor(yearsHijri*12).toLocaleString('ar-SA')}</strong> شهر هجري.`;
+  // Render
+  document.getElementById('resultEmpty').style.display   = 'none';
+  document.getElementById('resultContent').style.display = '';
 
-  window.islamiCalc?.addXP?.(5,'age_calc');
+  document.getElementById('rHijriYears').textContent = wholeH.toLocaleString('ar');
+  document.getElementById('rDetailLine').textContent =
+    `${wholeH} سنة و ${hijriMo} شهر و ${hijriDy} يوم (هجري)`;
+
+  document.getElementById('rDays').textContent      = diffDays.toLocaleString('ar');
+  document.getElementById('rMonths').textContent    = Math.floor(hijriYears * 12).toLocaleString('ar');
+  document.getElementById('rHijriExact').textContent = hijriYears.toFixed(2);
+  document.getElementById('rGregExact').textContent  = gregYears.toFixed(2);
+
+  document.getElementById('rBirthHijri').textContent = fmtHijri(birthH);
+  document.getElementById('rTodayHijri').textContent  = fmtHijri(todayH);
+
+  document.getElementById('rDiffBox').innerHTML =
+    `منذ ولادتك مرَّ تقريباً <strong>${diffDays.toLocaleString('ar')}</strong> يوماً،`
+    + ` أي <strong>${Math.floor(hijriYears*12).toLocaleString('ar')}</strong> شهراً هجرياً.`
+    + ` عمرك بالهجري أكبر من الميلادي بـ <strong>${diffYrStr}</strong> سنة.`;
+
+  // XP
+  window.islamiCalc?.addXP?.(5, 'age_calc');
+  window.IC?.App?.showToast?.('✅ تم الحساب!', 'success');
+}
+
+function resetAge() {
+  document.getElementById('birthDate').value = '';
+  document.getElementById('hDay').value = '';
+  document.getElementById('hMonth').value = '';
+  document.getElementById('hYear').value = '';
+  const today = new Date().toISOString().split('T')[0];
+  document.getElementById('toDate').value = today;
+  document.getElementById('resultEmpty').style.display   = '';
+  document.getElementById('resultContent').style.display = 'none';
+}
+
+function shareResult() {
+  const hijri = document.getElementById('rHijriYears').textContent;
+  const detail = document.getElementById('rDetailLine').textContent;
+  if (!hijri || hijri === '–') { window.showToast?.('احسب عمرك أولاً', 'error'); return; }
+  const text = `عمري بالتقويم الهجري: ${detail}\nاحسب عمرك الإسلامي على IslamiCalc 🌙\nhttps://islamicalc.com/age/`;
+  if (navigator.share) {
+    navigator.share({ title: 'عمري الإسلامي', text }).catch(()=>{});
+  } else if (navigator.clipboard) {
+    navigator.clipboard.writeText(text).then(()=> window.showToast?.('✅ تم نسخ النتيجة', 'success'));
+  }
 }
 </script>
+
 </body>
 </html>
