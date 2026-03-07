@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>404 — الصفحة غير موجودة | IslamiCalc</title>
+  <meta name="robots" content="noindex">
+  <link rel="icon" href="/assets/favicon-32.png" type="image/png">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="stylesheet" href="/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <script type="module" src="/core/firebase.js"></script>
+  <script type="module" src="/core/app.js"></script>
+  <style>
+    .err-wrap {
+      min-height: 80vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 48px 24px;
+      gap: 16px;
+    }
+    .err-code {
+      font-size: 96px;
+      font-weight: 900;
+      font-family: var(--font-en, 'Inter', sans-serif);
+      background: linear-gradient(135deg, var(--em-400, #10b981), var(--gd-400, #fbbf24));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+    .err-icon { font-size: 56px; margin-bottom: 8px; }
+    .err-title {
+      font-size: clamp(22px, 5vw, 36px);
+      font-weight: 900;
+      color: var(--text-1, #f0f0f0);
+    }
+    .err-sub {
+      color: var(--text-2, #aaa);
+      font-size: var(--text-base, 16px);
+      max-width: 420px;
+      line-height: 1.8;
+    }
+    .err-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 8px;
+    }
+  </style>
+</head>
+<body>
+
+<header class="ic-nav" id="icNav">
+  <div class="ic-nav__inner">
+    <a href="/" class="ic-nav__logo">
+      <div class="ic-nav__logo-mark">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M12 2L14.09 8.26L21 9L15.54 14.74L17.18 22L12 18.77 L6.82 22L8.46 14.74L3 9L9.91 8.26L12 2Z" fill="rgba(255,255,255,0.95)" stroke="none"/>
+        </svg>
+      </div>
+      <span class="ic-nav__logo-text">IslamiCalc</span>
+    </a>
+    <div class="ic-nav__spacer"></div>
+    <div class="ic-nav__actions">
+      <button id="themeBtn" class="ic-nav__icon-btn" aria-label="تبديل السمة">
+        <svg class="ic-nav__icon-btn-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+          <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+        </svg>
+      </button>
+      <button id="menuToggle" class="ic-nav__hamburger" aria-label="فتح القائمة" aria-expanded="false" aria-controls="sideDrawer">
+        <span class="ic-nav__hamburger-bar"></span>
+        <span class="ic-nav__hamburger-bar"></span>
+        <span class="ic-nav__hamburger-bar"></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div id="drawerOverlay" class="ic-drawer-overlay" aria-hidden="true"></div>
+<aside id="sideDrawer" class="ic-drawer" role="dialog" aria-modal="true" aria-label="القائمة الرئيسية">
+  <div class="ic-drawer__header">
+    <a href="/" class="ic-drawer__logo">
+      <div class="ic-nav__logo-mark ic-nav__logo-mark--sm">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M12 2L14.09 8.26L21 9L15.54 14.74L17.18 22L12 18.77 L6.82 22L8.46 14.74L3 9L9.91 8.26L12 2Z" fill="rgba(255,255,255,0.95)"/>
+        </svg>
+      </div>
+      <span class="ic-nav__logo-text">IslamiCalc</span>
+    </a>
+    <button id="drawerClose" class="ic-drawer__close" aria-label="إغلاق القائمة">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+    </button>
+  </div>
+  <nav class="ic-drawer__nav" aria-label="التنقل الرئيسي">
+    <ul class="ic-drawer__list">
+      <li><a href="/" class="ic-drawer__link"><span>الرئيسية</span></a></li>
+      <li><a href="/khatma" class="ic-drawer__link"><span>ختمة القرآن</span></a></li>
+      <li><a href="/arena" class="ic-drawer__link"><span>الميدان</span></a></li>
+      <li><a href="/prayer" class="ic-drawer__link"><span>مواقيت الصلاة</span></a></li>
+      <li><a href="/athkar" class="ic-drawer__link"><span>الأذكار</span></a></li>
+      <li><a href="/zakat" class="ic-drawer__link"><span>حساب الزكاة</span></a></li>
+    </ul>
+  </nav>
+  <div class="ic-drawer__footer">
+    <span class="ic-drawer__footer-copy">© 2026 IslamiCalc</span>
+    <button id="drawerThemeBtn" class="ic-drawer__theme-toggle" aria-label="تبديل السمة">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79z"/>
+      </svg>
+      <span>السمة</span>
+    </button>
+  </div>
+</aside>
+
+<script>
+(function () {
+  const s = localStorage.getItem('theme');
+  const h = new Date().getHours();
+  document.documentElement.setAttribute('data-theme', s || (h >= 19 || h < 6 ? 'dark' : 'light'));
+
+  const toggle  = document.getElementById('menuToggle');
+  const drawer  = document.getElementById('sideDrawer');
+  const overlay = document.getElementById('drawerOverlay');
+  const closeBtn= document.getElementById('drawerClose');
+
+  function openDrawer()  { drawer.classList.add('ic-drawer--open'); overlay.classList.add('ic-drawer-overlay--visible'); document.body.style.overflow='hidden'; toggle.setAttribute('aria-expanded','true'); }
+  function closeDrawer() { drawer.classList.remove('ic-drawer--open'); overlay.classList.remove('ic-drawer-overlay--visible'); document.body.style.overflow=''; toggle.setAttribute('aria-expanded','false'); }
+
+  toggle?.addEventListener('click', () => drawer.classList.contains('ic-drawer--open') ? closeDrawer() : openDrawer());
+  closeBtn?.addEventListener('click', closeDrawer);
+  overlay?.addEventListener('click', closeDrawer);
+  document.addEventListener('keydown', e => { if (e.key==='Escape') closeDrawer(); });
+
+  document.getElementById('themeBtn')?.addEventListener('click', () => {
+    const n = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', n);
+    localStorage.setItem('theme', n);
+  });
+  document.getElementById('drawerThemeBtn')?.addEventListener('click', () => document.getElementById('themeBtn')?.click());
+
+  window.addEventListener('scroll', () => {
+    document.getElementById('icNav')?.classList.toggle('ic-nav--scrolled', scrollY > 20);
+  }, { passive: true });
+})();
+</script>
+
+<main class="err-wrap">
+  <div class="err-icon">🔍</div>
+  <div class="err-code">404</div>
+  <h1 class="err-title">الصفحة غير موجودة</h1>
+  <p class="err-sub">
+    عذراً، لم نتمكن من إيجاد هذه الصفحة.
+    ربما تم نقلها أو حذفها.
+  </p>
+  <div class="err-actions">
+    <a href="/" class="ic-btn ic-btn--primary">← الرجوع للرئيسية</a>
+    <a href="/khatma" class="ic-btn ic-btn--ghost">📖 ختمة القرآن</a>
+    <a href="/prayer" class="ic-btn ic-btn--ghost">🕒 مواقيت الصلاة</a>
+  </div>
+</main>
+
+</body>
+</html>
