@@ -7,16 +7,26 @@
   <meta name="description" content="منصة إسلامية متكاملة: ختمة القرآن، أوقات الصلاة، الأذكار، الزكاة، الميدان الديني وأكثر.">
   <meta name="theme-color" content="#10b981">
 
+  <!-- Canonical -->
+  <link rel="canonical" href="https://islamicalc.com/">
+
   <!-- Open Graph -->
   <meta property="og:title"       content="IslamiCalc — منصة إسلامية ذكية">
   <meta property="og:description" content="ختمة القرآن · أوقات الصلاة · الأذكار · الزكاة · الميدان الديني">
   <meta property="og:type"        content="website">
-  <meta property="og:url"         content="https://islamicalc.web.app">
-  <meta property="og:image"       content="/assets/og-image.png">
+  <meta property="og:url"         content="https://islamicalc.com/">
+  <meta property="og:image"       content="https://islamicalc.com/assets/og-image.png">
 
-  <!-- Manifest -->
+  <!-- Twitter Card -->
+  <meta name="twitter:card"        content="summary_large_image">
+  <meta name="twitter:title"       content="IslamiCalc — منصة إسلامية ذكية">
+  <meta name="twitter:description" content="ختمة القرآن · أوقات الصلاة · الأذكار · الزكاة · الميدان الديني">
+  <meta name="twitter:image"       content="https://islamicalc.com/assets/og-image.png">
+
+  <!-- Manifest & Favicon -->
   <link rel="manifest" href="/manifest.json">
-  <link rel="icon"     href="/favicon.ico" type="image/x-icon">
+  <link rel="icon"     href="/assets/favicon-32.png" type="image/png">
+  <link rel="apple-touch-icon" href="/assets/favicon-32.png">
 
   <!-- Style -->
   <link rel="stylesheet" href="/style.css">
@@ -31,19 +41,11 @@
   <!-- ============================================================
        NAVBAR
        ============================================================ -->
-  <!-- ═══════════════════════════════════════════════════
-     IslamiCalc  ·  Redesigned Navigation Bar
-     Drop this <header> block into every page, replacing
-     the existing <header class="ic-nav" …> … </header>
-═══════════════════════════════════════════════════ -->
-
 <header class="ic-nav" id="icNav">
   <div class="ic-nav__inner">
 
-    <!-- ── Logo ────────────────────────────── -->
     <a href="/" class="ic-nav__logo">
       <div class="ic-nav__logo-mark">
-        <!-- Geometric Islamic star SVG -->
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
              xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <path d="M12 2L14.09 8.26L21 9L15.54 14.74L17.18 22L12 18.77
@@ -54,13 +56,10 @@
       <span class="ic-nav__logo-text">IslamiCalc</span>
     </a>
 
-    <!-- ── Spacer pushes actions to the right ── -->
     <div class="ic-nav__spacer"></div>
 
-    <!-- ── Right Actions ────────────────────── -->
     <div class="ic-nav__actions">
 
-      <!-- Theme Toggle -->
       <button id="themeBtn" class="ic-nav__icon-btn" aria-label="تبديل السمة">
         <svg class="ic-nav__icon-btn-svg" width="18" height="18" viewBox="0 0 24 24"
              fill="none" stroke="currentColor" stroke-width="2"
@@ -77,7 +76,6 @@
         </svg>
       </button>
 
-      <!-- Login / Profile button -->
       <button id="loginBtn" class="ic-nav__login-btn">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
              stroke="currentColor" stroke-width="2.5"
@@ -89,7 +87,6 @@
         <span id="loginBtnLabel">تسجيل الدخول</span>
       </button>
 
-      <!-- Hamburger — always visible -->
       <button id="menuToggle" class="ic-nav__hamburger" aria-label="فتح القائمة"
               aria-expanded="false" aria-controls="sideDrawer">
         <span class="ic-nav__hamburger-bar"></span>
@@ -97,19 +94,15 @@
         <span class="ic-nav__hamburger-bar"></span>
       </button>
 
-    </div><!-- /actions -->
-  </div><!-- /inner -->
+    </div>
+  </div>
 </header>
 
-<!-- ═══════════════════════════════════════════════════
-     Side Drawer (opens on hamburger click)
-═══════════════════════════════════════════════════ -->
 <div id="drawerOverlay" class="ic-drawer-overlay" aria-hidden="true"></div>
 
 <aside id="sideDrawer" class="ic-drawer" role="dialog"
        aria-modal="true" aria-label="القائمة الرئيسية">
 
-  <!-- Drawer Header -->
   <div class="ic-drawer__header">
     <a href="/" class="ic-drawer__logo">
       <div class="ic-nav__logo-mark ic-nav__logo-mark--sm">
@@ -132,10 +125,8 @@
     </button>
   </div>
 
-  <!-- User Profile Section -->
   <div class="ic-drawer__profile" id="drawerProfile">
     <div class="ic-drawer__avatar" id="drawerAvatar">
-      <!-- Initials / avatar injected by JS -->
       <svg width="26" height="26" viewBox="0 0 24 24" fill="none"
            stroke="rgba(255,255,255,0.8)" stroke-width="2"
            stroke-linecap="round" stroke-linejoin="round">
@@ -150,7 +141,6 @@
     <button id="drawerLoginBtn" class="ic-drawer__profile-cta">دخول</button>
   </div>
 
-  <!-- Quick XP Bar (shown when logged in) -->
   <div class="ic-drawer__xp" id="drawerXP" style="display:none">
     <div class="ic-drawer__xp-track">
       <div class="ic-drawer__xp-fill" id="drawerXPFill" style="width:0%"></div>
@@ -158,10 +148,8 @@
     <span class="ic-drawer__xp-lbl" id="drawerXPLbl">0 XP</span>
   </div>
 
-  <!-- Divider -->
   <div class="ic-drawer__divider"></div>
 
-  <!-- Main Navigation -->
   <nav class="ic-drawer__nav" aria-label="التنقل الرئيسي">
     <p class="ic-drawer__section-label">التنقل</p>
     <ul class="ic-drawer__list">
@@ -298,7 +286,6 @@
     </ul>
   </nav>
 
-  <!-- Footer of drawer -->
   <div class="ic-drawer__footer">
     <span class="ic-drawer__footer-copy">© 2026 IslamiCalc</span>
     <button id="drawerThemeBtn" class="ic-drawer__theme-toggle" aria-label="تبديل السمة">
@@ -312,7 +299,6 @@
 
 </aside>
 
-<!-- Drawer JS — inline, zero dependencies -->
 <script>
 (function () {
   const toggle   = document.getElementById('menuToggle');
@@ -326,7 +312,6 @@
     overlay.classList.add('ic-drawer-overlay--visible');
     body.style.overflow = 'hidden';
     toggle.setAttribute('aria-expanded', 'true');
-    // focus first link
     drawer.querySelector('.ic-drawer__link')?.focus();
   }
   function closeDrawer() {
@@ -343,17 +328,14 @@
   closeBtn?.addEventListener('click', closeDrawer);
   overlay?.addEventListener('click', closeDrawer);
 
-  // Close on ESC
   document.addEventListener('keydown', e => {
     if (e.key === 'Escape' && drawer.classList.contains('ic-drawer--open')) closeDrawer();
   });
 
-  // Close on nav link click (mobile)
   drawer?.querySelectorAll('.ic-drawer__link').forEach(a => {
     a.addEventListener('click', closeDrawer);
   });
 
-  // Mark active link
   const page = location.pathname.replace(/^\//, '').split('/')[0] || 'home';
   drawer?.querySelectorAll('.ic-drawer__link').forEach(a => {
     if (a.dataset.page === page) {
@@ -362,7 +344,6 @@
     }
   });
 
-  // Drawer theme toggle mirrors main themeBtn
   document.getElementById('drawerThemeBtn')?.addEventListener('click', () => {
     document.getElementById('themeBtn')?.click();
   });
@@ -373,7 +354,6 @@
   <!-- ============================================================
        HERO
        ============================================================ -->
-  <!-- Background Orbs -->
   <div class="ic-hero__bg" aria-hidden="true">
     <div class="ic-hero__orb ic-hero__orb--1"></div>
     <div class="ic-hero__orb ic-hero__orb--2"></div>
@@ -383,7 +363,6 @@
 
   <section class="ic-hero" aria-label="القسم الرئيسي">
 
-    <!-- Content -->
     <div class="ic-hero__content">
       <div class="ic-hero__badge">
         <span class="ic-badge ic-badge--ramadan">🌙 رمضان كريم</span>
@@ -408,7 +387,6 @@
         </a>
       </div>
 
-      <!-- Social Proof -->
       <div class="ic-hero__proof">
         <div class="ic-hero__proof-avatars">
           <div class="ic-avatar ic-avatar--xs">🧑</div>
@@ -420,10 +398,8 @@
       </div>
     </div>
 
-    <!-- Visual Cards -->
     <div class="ic-hero__visual">
 
-      <!-- Khatma Mini Card -->
       <div class="ic-card ic-card--3d ic-card--khatma">
         <div class="ic-card__header">
           <span>📖 ختمتي</span>
@@ -453,7 +429,6 @@
         </a>
       </div>
 
-      <!-- Prayer Mini Card -->
       <div class="ic-card ic-card--3d ic-card--prayer">
         <div class="ic-card__header">
           <span>🕌 الصلاة القادمة</span>
@@ -466,7 +441,6 @@
         </div>
       </div>
 
-      <!-- XP Mini Card -->
       <div class="ic-card ic-card--3d ic-card--xp">
         <div class="ic-card__header">
           <span>⚡ نقاط XP</span>
@@ -520,7 +494,7 @@
   <section class="ic-section ic-section--tools" aria-label="الأدوات">
     <div class="ic-container">
       <div class="ic-section__header">
-        <span class="ic-section__eyebrow">🧮 الأدوات</span>
+        <span class="ic-section__eyebrow">🧠 الأدوات</span>
         <h2 class="ic-section__title">كل ما تحتاجه في مكان واحد</h2>
         <p class="ic-section__sub">أدوات إسلامية دقيقة وسهلة الاستخدام مع نظام نقاط لتحفيزك</p>
       </div>
@@ -542,7 +516,7 @@
         </a>
         <a href="/athkar" class="ic-tool-card">
           <div class="ic-tool-card__glow"></div>
-          <div class="ic-tool-card__icon">📿</div>
+          <div class="ic-tool-card__icon">🐿</div>
           <h3>الأذكار والتسبيح</h3>
           <p>أذكار الصباح والمساء وتسبيح رقمي احترافي مع تتبع الإنجاز</p>
           <span class="ic-tool-card__cta">ابدأ الأذكار ←</span>
@@ -584,7 +558,6 @@
       </div>
 
       <div class="ic-arena-showcase">
-        <!-- Daily Question Preview -->
         <div class="ic-card ic-card--3d ic-card--daily" aria-label="السؤال اليومي">
           <div class="ic-daily-q__xp">+20 XP</div>
           <div class="ic-daily-q__text">
@@ -601,7 +574,6 @@
           </div>
         </div>
 
-        <!-- Leaderboard Preview -->
         <div class="ic-card ic-card--3d ic-card--leaderboard" aria-label="لوحة المتصدرين">
           <div class="ic-card__header">
             <span>🏆 المتصدرون</span>
@@ -644,10 +616,10 @@
     <div class="ic-container">
       <div class="ic-ramadan">
         <div class="ic-ramadan__bg" aria-hidden="true">
-          <span class="ic-ramadan__star ic-ramadan__star--1">✦</span>
-          <span class="ic-ramadan__star ic-ramadan__star--2">✦</span>
-          <span class="ic-ramadan__star ic-ramadan__star--3">✦</span>
-          <span class="ic-ramadan__star ic-ramadan__star--4">✦</span>
+          <span class="ic-ramadan__star ic-ramadan__star--1">✶</span>
+          <span class="ic-ramadan__star ic-ramadan__star--2">✶</span>
+          <span class="ic-ramadan__star ic-ramadan__star--3">✶</span>
+          <span class="ic-ramadan__star ic-ramadan__star--4">✶</span>
         </div>
         <div class="ic-ramadan__content">
           <div class="ic-ramadan__label">🌙 رمضان المبارك</div>
@@ -658,7 +630,7 @@
               ابدأ ختمة رمضان ←
             </a>
             <a href="/athkar" class="ic-btn ic-btn--secondary ic-btn--lg">
-              📿 أذكار رمضان
+              🐿 أذكار رمضان
             </a>
           </div>
         </div>
@@ -728,43 +700,19 @@
     </div>
   </div>
 
-  <!-- ============================================================
-       Dropdown JS (inline — بسيط ومباشر)
-       ============================================================ -->
   <script>
-    // ── Navbar scroll detection ──
     const nav = document.getElementById('icNav');
     if (nav) {
-      const onScroll = () => {
-        nav.classList.toggle('ic-nav--scrolled', window.scrollY > 10);
-      };
+      const onScroll = () => nav.classList.toggle('ic-nav--scrolled', window.scrollY > 10);
       window.addEventListener('scroll', onScroll, { passive: true });
       onScroll();
     }
 
-    // ── Tools Dropdown
-    const toolsBtn   = document.getElementById('toolsBtn');
-    const toolsPanel = document.getElementById('toolsPanel');
-    if (toolsBtn && toolsPanel) {
-      toolsBtn.addEventListener('click', e => {
-        e.stopPropagation();
-        const open = toolsPanel.classList.toggle('open');
-        toolsBtn.setAttribute('aria-expanded', open);
-      });
-      document.addEventListener('click', () => {
-        toolsPanel.classList.remove('open');
-        toolsBtn.setAttribute('aria-expanded', 'false');
-      });
-    }
-
-    // Modal close btn
     document.getElementById('modalCloseBtn')?.addEventListener('click', () => {
       document.getElementById('loginModal')?.classList.remove('ic-modal--open');
     });
 
-    // Hero XP update from Store
     document.addEventListener('DOMContentLoaded', () => {
-      // Load real leaderboard after auth ready
       document.addEventListener('islamiCalcReady', async () => {
         const lb = await window.islamiCalc?.getLeaderboard?.(4);
         if (!lb?.length) return;
