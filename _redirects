@@ -28,12 +28,12 @@ https://www.islamicalc.com/* https://islamicalc.com/:splat  301!
 /privacy/*      /privacy/index.html      200
 /terms/*        /terms/index.html        200
 /names/*        /names/index.html        200
+/hijri/*        /hijri/index.html        200
+/inheritance/*  /inheritance/index.html  200
 
 # ================================================
 # 5. صفحات قيد التطوير (فعّلها عند الجاهزية)
 # ================================================
-# /inheritance/*  /inheritance/index.html  200
-# /hijri/*        /hijri/index.html        200
 # /prophets/*     /prophets/index.html     200
 # /age/*          /age/index.html          200
 # /seerah/*       /seerah/index.html       200
@@ -56,4 +56,4 @@ https://www.islamicalc.com/* https://islamicalc.com/:splat  301!
 # ================================================
 # 7. صفحة 404 مخصصة (ضعها في آخر الملف دائماً)
 # ================================================
-/*  /index.html  404
+/*  /404.html  404
