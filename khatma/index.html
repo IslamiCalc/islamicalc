@@ -1530,8 +1530,6 @@ document.getElementById('themeBtn').addEventListener('click', () => {
   const n = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
   document.documentElement.setAttribute('data-theme', n);
   localStorage.setItem('theme', n);
-  document.getElementById('themeBtn').textContent = n === 'dark' ? '🌙' : '☀️';
-});
 
 // ============================================================
 // NAVBAR
@@ -1539,10 +1537,6 @@ document.getElementById('themeBtn').addEventListener('click', () => {
 window.addEventListener('scroll', () => {
   document.getElementById('icNav')?.classList.toggle('ic-nav--scrolled', scrollY > 20);
 }, { passive: true });
-
-document.getElementById('mobileToggle')?.addEventListener('click', () => {
-  document.getElementById('mobileMenu')?.classList.toggle('ic-nav__mobile--open');
-});
 
 document.getElementById('loginBtn')?.addEventListener('click', () => {
   if (window.islamiCalc?.getCurrentUser?.()) {
