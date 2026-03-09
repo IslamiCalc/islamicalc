@@ -1824,7 +1824,15 @@ function showResult() {
   }
 
   showView('ar-result');
-  window.islamiCalc?.saveProgress?.({arenaXP:state.xp,arenaCorrect:state.correct});
+  window.islamiCalc?.saveProgress?.({
+  arenaXP:      state.xp,
+  arenaCorrect: state.correct,
+  arenaWrong:   state.wrong,
+  arenaPlayed:  state.played,
+  arenaStreak:  state.bestStreak || 0,
+  arenaPerfect: state.perfectGames || 0,
+});
+
   window.islamiCalc?.logActivity?.(`أكمل جولة ميدان بدقة ${acc}%`,'arena_round','⚔️','',xpEarned);
 }
 
