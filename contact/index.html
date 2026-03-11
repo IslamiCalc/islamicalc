@@ -10,6 +10,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/style.css">
   <title>تواصل معنا | IslamiCalc</title>
+<meta name="description" content="تواصل مع فريق IslamiCalc للاقتراحات والملاحظات الشرعية وتقارير الأعطال والشراكات.">
 </head>
 <body>
 <!-- ═══════════════════════════════════════════════════
@@ -366,7 +367,7 @@
         <p style="font-size:13px;color:var(--primary-light);">info@islamicalc.com</p>
       </div>
     </a>
-    <a href="https://twitter.com/islamicalc" target="_blank" style="text-decoration:none;">
+    <a href="https://twitter.com/islamicalc" target="_blank" rel="noopener noreferrer" style="text-decoration:none;">
       <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:20px;text-align:center;">
         <div style="font-size:36px;margin-bottom:8px;">🐦</div>
         <p style="font-weight:700;color:var(--text-primary);">تويتر / X</p>
@@ -379,11 +380,11 @@
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
       <div>
         <label style="display:block;font-size:13px;font-weight:700;margin-bottom:6px;color:var(--text-secondary);">الاسم</label>
-        <input type="text" id="contactName" class="form-input" placeholder="اسمك الكريم">
+        <input type="text" id="contactName" class="form-input" placeholder="اسمك الكريم" maxlength="80" autocomplete="name">
       </div>
       <div>
         <label style="display:block;font-size:13px;font-weight:700;margin-bottom:6px;color:var(--text-secondary);">البريد الإلكتروني</label>
-        <input type="email" id="contactEmail" class="form-input" placeholder="email@example.com" dir="ltr">
+        <input type="email" id="contactEmail" class="form-input" placeholder="email@example.com" dir="ltr" maxlength="160" autocomplete="email" inputmode="email">
       </div>
     </div>
     <div style="margin-bottom:12px;">
@@ -400,26 +401,54 @@
     <div style="margin-bottom:20px;">
       <label style="display:block;font-size:13px;font-weight:700;margin-bottom:6px;color:var(--text-secondary);">الرسالة</label>
       <textarea id="contactMsg" class="form-input" rows="5"
-        style="resize:vertical;min-height:120px;" placeholder="اكتب رسالتك هنا..."></textarea>
+        style="resize:vertical;min-height:120px;" placeholder="اكتب رسالتك هنا..." maxlength="2000"></textarea>
     </div>
     <button onclick="sendContact()" class="btn btn-primary" style="width:100%;font-size:16px;">📤 إرسال الرسالة</button>
     <p style="font-size:12px;color:var(--text-muted);text-align:center;margin-top:12px;">نرد خلال 24-48 ساعة إن شاء الله</p>
   </div>
   <script>
-  function sendContact(){
-    const name=document.getElementById("contactName").value.trim();
-    const email=document.getElementById("contactEmail").value.trim();
-    const msg=document.getElementById("contactMsg").value.trim();
-    if(!name||!email||!msg){showToast("❌ الرجاء ملء جميع الحقول");return;}
-    if(!email.includes("@")){showToast("❌ البريد غير صحيح");return;}
-    const subj=document.getElementById("contactSubject").value||"رسالة من IslamiCalc";
-    window.location.href="mailto:info@islamicalc.com?subject="+encodeURIComponent(subj)+"&body="+encodeURIComponent("الاسم: "+name+"
-البريد: "+email+"
+  function normalizeContactField(value, maxLength) {
+    return String(value || '')
+      .replace(/[\u0000-\u001F\u007F]/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim()
+      .slice(0, maxLength);
+  }
 
-"+msg);
+  function sendContact(){
+    const name = normalizeContactField(document.getElementById("contactName").value, 80);
+    const email = String(document.getElementById("contactEmail").value || "").trim().slice(0, 160);
+    const msg = normalizeContactField(document.getElementById("contactMsg").value, 2000);
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if(!name || !email || !msg){
+      showToast("❌ الرجاء ملء جميع الحقول");
+      return;
+    }
+    if(!emailPattern.test(email)){
+      showToast("❌ البريد الإلكتروني غير صالح");
+      return;
+    }
+
+    const subjectValue = document.getElementById("contactSubject").value;
+    const subjectMap = {
+      bug: "إبلاغ عن خطأ",
+      suggest: "اقتراح ميزة",
+      shariah: "ملاحظة شرعية",
+      partner: "شراكة",
+      other: "رسالة من IslamiCalc",
+    };
+    const subject = subjectMap[subjectValue] || "رسالة من IslamiCalc";
+    const body = `الاسم: ${name}\nالبريد: ${email}\n\n${msg}`;
+
+    document.getElementById("contactName").value = name;
+    document.getElementById("contactEmail").value = email;
+    document.getElementById("contactMsg").value = msg;
+
+    window.location.href = "mailto:info@islamicalc.com?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
     showToast("✅ سيتم فتح برنامج البريد");
   }
-  </script>
+</script>
 
 </div>
 </main>

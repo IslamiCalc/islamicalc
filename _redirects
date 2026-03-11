@@ -12,8 +12,14 @@ https://www.islamicalc.com/* https://islamicalc.com/:splat  301!
 # 3. /home → الرئيسية
 /home   /   301
 
+# 3b. Block deploy-only config files
+/firebase.json      /404.html  404
+/firestore.rules    /404.html  404
+/firestore.indexes.json /404.html  404
+/.firebaserc        /404.html  404
+/firebaserc         /404.html  404
 # ================================================
-# 4. SPA Fallback — الصفحات الجاهزة والمنشورة
+# 4. Published Pages
 # ================================================
 /arena/*        /arena/index.html        200
 /zakat/*        /zakat/index.html        200
@@ -27,25 +33,24 @@ https://www.islamicalc.com/* https://islamicalc.com/:splat  301!
 /faq/*          /faq/index.html          200
 /privacy/*      /privacy/index.html      200
 /terms/*        /terms/index.html        200
+/age/*          /age/index.html          200
+/articles/*     /articles/index.html     200
+/fasting/*      /fasting/index.html      200
+/ramadan/*      /ramadan/index.html      200
+/fiqh/*         /fiqh/index.html         200
+/hijri/*        /hijri/index.html        200
+/kafara/*       /kafara/index.html       200
 /names/*        /names/index.html        200
+/inheritance/*  /inheritance/index.html  200
+/prophets/*     /prophets/index.html     200
+/sadaqa/*       /sadaqa/index.html       200
+/seerah/*       /seerah/index.html       200
 
 # ================================================
-# 5. صفحات قيد التطوير (فعّلها عند الجاهزية)
+# 5. Aliases — توجيه الأسماء القديمة
 # ================================================
-# /inheritance/*  /inheritance/index.html  200
-# /hijri/*        /hijri/index.html        200
-# /prophets/*     /prophets/index.html     200
-# /age/*          /age/index.html          200
-# /seerah/*       /seerah/index.html       200
-# /fiqh/*         /fiqh/index.html         200
-# /articles/*     /articles/index.html     200
-# /fasting/*      /fasting/index.html      200
-# /kafara/*       /kafara/index.html       200
-# /sadaqa/*       /sadaqa/index.html       200
-
-# ================================================
-# 6. Aliases — توجيه الأسماء القديمة
-# ================================================
+/hijiri/    /hijri/     301
+/hijiri     /hijri/     301
 /tasbih/    /athkar/    301
 /tasbih     /athkar/    301
 /qibla/     /prayer/    301
@@ -54,6 +59,6 @@ https://www.islamicalc.com/* https://islamicalc.com/:splat  301!
 /nisab      /zakat/     301
 
 # ================================================
-# 7. صفحة 404 مخصصة (ضعها في آخر الملف دائماً)
+# 6. Custom 404 (keep last)
 # ================================================
-/*  /index.html  404
+/*  /404.html  404

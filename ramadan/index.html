@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>دليل رمضان — IslamiCalc</title>
+  <meta name="description" content="صفحة تجمع أهم أدوات رمضان في IslamiCalc: الصيام، أوقات الصلاة، الختمة، الأذكار، الصدقة والزكاة.">
+  <link rel="canonical" href="https://islamicalc.com/ramadan/">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="icon" href="/assets/favicon-32.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+  <script type="module" src="/core/firebase.js"></script>
+  <script type="module" src="/core/app.js"></script>
+  <style>
+    .rd-shell{max-width:1120px;margin:0 auto;padding:24px 16px 88px;}
+    .rd-hero{position:relative;overflow:hidden;background:radial-gradient(circle at top right,rgba(245,158,11,.2),transparent 34%),linear-gradient(135deg,#0f172a 0%,#163327 100%);border:1px solid rgba(255,255,255,.08);border-radius:28px;padding:32px 24px;margin-bottom:24px;box-shadow:0 24px 80px rgba(0,0,0,.18)}
+    .rd-hero__eyebrow{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;background:rgba(245,158,11,.12);color:#fbbf24;font-size:12px;font-weight:800;margin-bottom:14px}
+    .rd-hero h1{font-size:clamp(30px,5vw,52px);line-height:1.15;margin:0 0 12px;color:#fff}
+    .rd-hero p{max-width:760px;font-size:15px;line-height:1.9;color:rgba(255,255,255,.82);margin:0 0 18px}
+    .rd-actions{display:flex;flex-wrap:wrap;gap:12px}
+    .rd-actions a{text-decoration:none}
+    .rd-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+    .rd-card,.rd-plan,.rd-note{background:var(--bg-card);border:1px solid var(--border);border-radius:22px;padding:20px}
+    .rd-card{display:flex;flex-direction:column;gap:10px;min-height:220px}
+    .rd-card__icon{font-size:34px}
+    .rd-card__title{font-size:20px;font-weight:900;color:var(--text-primary)}
+    .rd-card__meta{font-size:13px;color:var(--text-muted);line-height:1.8;flex:1}
+    .rd-card__link{display:inline-flex;align-items:center;justify-content:center;padding:12px 16px;border-radius:14px;background:rgba(245,158,11,.1);color:var(--gold);font-weight:800;text-decoration:none}
+    .rd-section{margin-top:24px}
+    .rd-section h2{font-size:24px;margin:0 0 14px;color:var(--text-primary)}
+    .rd-plan{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px}
+    .rd-step{background:var(--bg-main);border:1px solid var(--border);border-radius:18px;padding:16px}
+    .rd-step strong{display:block;font-size:15px;margin-bottom:8px;color:var(--text-primary)}
+    .rd-step p{font-size:13px;line-height:1.8;color:var(--text-muted);margin:0}
+    .rd-note{margin-top:24px;background:linear-gradient(135deg,rgba(34,197,94,.08),rgba(245,158,11,.08));}
+    .rd-note ul{margin:10px 0 0;padding:0 18px 0 0;color:var(--text-secondary);line-height:1.9}
+    .rd-nav{max-width:1120px;margin:0 auto;padding:18px 16px 0;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+    .rd-nav__brand{text-decoration:none;font-weight:900;color:var(--text-primary);display:inline-flex;align-items:center;gap:10px}
+    .rd-nav__links{display:flex;flex-wrap:wrap;gap:10px}
+    .rd-nav__links a{text-decoration:none;padding:10px 14px;border-radius:999px;background:var(--bg-card);border:1px solid var(--border);color:var(--text-secondary);font-size:13px;font-weight:700}
+    @media (max-width:640px){.rd-hero{padding:24px 18px}.rd-nav{justify-content:center}.rd-nav__links{justify-content:center}}
+  </style>
+</head>
+<body>
+  <nav class="rd-nav" aria-label="روابط رمضان">
+    <a class="rd-nav__brand" href="/">
+      <span style="font-size:22px">🌙</span>
+      <span>IslamiCalc Ramadan</span>
+    </a>
+    <div class="rd-nav__links">
+      <a href="/fasting/">الصيام</a>
+      <a href="/prayer/">الصلاة</a>
+      <a href="/khatma/">الختمة</a>
+      <a href="/athkar/">الأذكار</a>
+      <a href="/zakat/">الزكاة</a>
+    </div>
+  </nav>
+
+  <main class="rd-shell">
+    <section class="rd-hero">
+      <div class="rd-hero__eyebrow">🌙 موسم عبادة منظم</div>
+      <h1>دليل رمضان في IslamiCalc</h1>
+      <p>صفحة تجمع الأدوات الأهم لشهر رمضان في مكان واحد: متابعة الصيام، أوقات الصلاة، خطة الختمة، الأذكار اليومية، الصدقة، وزكاة الفطر. الهدف أن يبدأ المستخدم يومه بخطة واضحة، لا أن يتنقل بين الصفحات بلا سياق.</p>
+      <div class="rd-actions">
+        <a class="btn btn-primary" href="/fasting/">ابدأ بخطة الصيام</a>
+        <a class="btn btn-secondary" href="/khatma/">نظّم ختمتك</a>
+      </div>
+    </section>
+
+    <section class="rd-section">
+      <h2>الأدوات الأساسية في رمضان</h2>
+      <div class="rd-grid">
+        <article class="rd-card">
+          <div class="rd-card__icon">🌅</div>
+          <div class="rd-card__title">أوقات الصلاة</div>
+          <div class="rd-card__meta">اعرف الفجر والمغرب بدقة حسب موقعك، وتابع العدّ التنازلي للصلاة التالية واتجاه القبلة.</div>
+          <a class="rd-card__link" href="/prayer/">فتح صفحة الصلاة</a>
+        </article>
+        <article class="rd-card">
+          <div class="rd-card__icon">📿</div>
+          <div class="rd-card__title">الأذكار</div>
+          <div class="rd-card__meta">أذكار الصباح والمساء وأذكار النوم والاستيقاظ مع حفظ التقدم والعداد التفاعلي.</div>
+          <a class="rd-card__link" href="/athkar/">فتح الأذكار</a>
+        </article>
+        <article class="rd-card">
+          <div class="rd-card__icon">📖</div>
+          <div class="rd-card__title">خطة الختمة</div>
+          <div class="rd-card__meta">قسّم القراءة على أيام الشهر، واحفظ التقدم اليومي، وراجع السور أو الصفحات التي أنجزتها.</div>
+          <a class="rd-card__link" href="/khatma/">فتح الختمة</a>
+        </article>
+        <article class="rd-card">
+          <div class="rd-card__icon">🗓️</div>
+          <div class="rd-card__title">حاسبة الصيام</div>
+          <div class="rd-card__meta">للصيام الواجب والقضاء والنذر والتتبع، مع ملاحظات فقهية مختصرة تسهّل التخطيط للشهر.</div>
+          <a class="rd-card__link" href="/fasting/">فتح الصيام</a>
+        </article>
+        <article class="rd-card">
+          <div class="rd-card__icon">🤲</div>
+          <div class="rd-card__title">الصدقة وزكاة الفطر</div>
+          <div class="rd-card__meta">خطّط للصدقة اليومية، وراجع أفكار الصدقة الجارية، واحسب زكاة الفطر والمال عند الحاجة.</div>
+          <a class="rd-card__link" href="/sadaqa/">فتح الصدقة</a>
+        </article>
+        <article class="rd-card">
+          <div class="rd-card__icon">💰</div>
+          <div class="rd-card__title">الزكاة</div>
+          <div class="rd-card__meta">حاسبة مفصلة للذهب والفضة والتجارة والأسهم مع بطاقات توعوية وروابط للمصادر الشرعية.</div>
+          <a class="rd-card__link" href="/zakat/">فتح الزكاة</a>
+        </article>
+      </div>
+    </section>
+
+    <section class="rd-section">
+      <h2>خطة يومية مقترحة</h2>
+      <div class="rd-plan">
+        <div class="rd-step">
+          <strong>بعد الفجر</strong>
+          <p>أذكار الصباح، ورد القرآن الأول، ومراجعة أوقات اليوم حتى لا يضيع وقت ما بعد الفجر.</p>
+        </div>
+        <div class="rd-step">
+          <strong>قبل الظهر</strong>
+          <p>ورد خفيف ثابت من القرآن أو التفسير، مع ترتيب صدقة يومية أو عمل نافع واحد على الأقل.</p>
+        </div>
+        <div class="rd-step">
+          <strong>قبل المغرب</strong>
+          <p>الاستعداد للدعاء، مراجعة ما أُنجز من ورد الختمة، والتأكد من وقت الأذان بدقة.</p>
+        </div>
+        <div class="rd-step">
+          <strong>بعد التراويح</strong>
+          <p>مراجعة سريعة لليوم، تدوين التقصير، وتجهيز هدف عملي واضح لليوم التالي.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="rd-note">
+      <h2 style="margin:0">ما الذي ينقص المنصة بعد؟</h2>
+      <ul>
+        <li>عداد خاص بالعشر الأواخر مع خطة اعتكاف وورد ليلة القدر.</li>
+        <li>مفكرة رمضان قصيرة لتسجيل الأهداف اليومية ومحاسبة النفس.</li>
+        <li>بطاقات مرجعية لأحكام المفطرات وزكاة الفطر والسحور والإفطار.</li>
+      </ul>
+    </section>
+  </main>
+</body>
+</html>

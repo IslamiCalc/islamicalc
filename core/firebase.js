@@ -1,6 +1,8 @@
 /* ============================================================
-   firebase.js — IslamiCalc Firebase Module v3.1
-   متكامل مع Store + Events
+   firebase.js — IslamiCalc Firebase Module v4.0
+   ✅ XP/Leaderboard مخصص للميدان (Arena) فقط
+   ✅ الصفحات الروحانية (قرآن، أذكار، صلاة) بدون XP
+   ✅ دوال مكتملة: logActivity, saveProgress, updateStreak, unlockBadge
    ============================================================ */
 
 import { initializeApp }       from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
@@ -23,6 +25,7 @@ import {
   serverTimestamp,
   collection,
   query,
+  where,
   orderBy,
   limit,
   getDocs,
@@ -31,6 +34,18 @@ import {
 import Store  from '/core/store.js';
 import Events from '/core/events.js';
 import { EVENTS } from '/core/events.js';
+import {
+  buildActivityEntry,
+  buildArenaLeaderboardEntry,
+  buildArenaXPUpdatePayload,
+  canAwardArenaXP,
+  getLeaderboardScopeMeta,
+  getUnlockedBadges,
+  isArenaPath,
+  isSpiritualPath,
+  mergeArenaStats,
+  rankLeaderboardEntries,
+} from '/core/firebase-logic.js';
 
 // ============================================================
 // CONFIG
@@ -49,46 +64,98 @@ const firebaseConfig = {
 // INIT
 // ============================================================
 const app       = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+let analytics   = null;
+try {
+  analytics = getAnalytics(app);
+} catch (err) {
+  console.warn('[Firebase] Analytics unavailable:', err);
+}
 const auth      = getAuth(app);
 const db        = getFirestore(app);
 const provider  = new GoogleAuthProvider();
+const LEADERBOARD_COLLECTION = 'leaderboard';
 provider.setCustomParameters({ prompt: 'select_account' });
 
 // ============================================================
-// XP CONFIG
+// ARENA XP CONFIG — مخصص للميدان/المسابقات فقط
+// الصفحات الروحانية (قرآن، أذكار، صلاة، زكاة) لا تعطي XP
 // ============================================================
-const XP_CONFIG = {
-  khatma_page:        2,
-  khatma_juz:        20,
-  khatma_complete:  500,
-  khatma_streak_7:  100,
-  khatma_streak_30: 500,
-  prayer_view:       10,
-  zakat_calc:        15,
-  dhikr_done:         5,
-  tasbih_round:      10,
-  cat_done:          50,
-  arena_answer:       5,
-  arena_correct:     20,
-  arena_streak_5:    50,
-  arena_win:        100,
-  login_bonus:       25,
-  daily_visit:       10,
+const ARENA_XP_CONFIG = {
+  arena_answer:       5,   // arena answer reward
+  arena_correct:     20,   // correct arena answer reward
+  arena_streak_5:    50,   // 5-answer streak reward
+  arena_streak_10:  100,   // 10-answer streak reward
+  arena_win:        100,   // arena win reward
+  arena_perfect:    200,   // perfect arena round reward
+  age_calc:           5,   // age calculator reward
+  login_bonus:       25,   // first login bonus
+  daily_visit:       10,   // daily visit bonus
 };
 
+// الصفحات التي لا تعطي XP (روحانية)
+const SPIRITUAL_PAGES = ['khatma', 'prayer', 'athkar', 'zakat', 'hijri', 'fasting', 'kafara', 'sadaqa', 'asma', 'fiqh', 'names', 'prophets', 'seerah', 'articles'];
+
 const BADGE_RULES = [
-  { id:'first_login',  label:'أول خطوة',     icon:'🌱', condition: p => p.xp >= 25                       },
-  { id:'xp_100',       label:'مئة نقطة',     icon:'💯', condition: p => p.xp >= 100                      },
-  { id:'xp_500',       label:'خمسمئة نقطة',  icon:'⭐', condition: p => p.xp >= 500                      },
-  { id:'xp_1000',      label:'ألف نقطة',     icon:'🌟', condition: p => p.xp >= 1000                     },
-  { id:'khatma_1',     label:'ختمة أولى',    icon:'📖', condition: p => p.khatmaStats?.completed >= 1    },
-  { id:'khatma_3',     label:'ثلاث ختمات',   icon:'📚', condition: p => p.khatmaStats?.completed >= 3    },
-  { id:'streak_7',     label:'أسبوع متواصل', icon:'🔥', condition: p => p.khatmaStats?.streak >= 7       },
-  { id:'streak_30',    label:'شهر متواصل',   icon:'🏆', condition: p => p.khatmaStats?.streak >= 30      },
-  { id:'tasbih_1000',  label:'ألف تسبيحة',   icon:'📿', condition: p => p.athkarStats?.totalTasbih >= 1000 },
-  { id:'arena_win_10', label:'عشر انتصارات', icon:'🥇', condition: p => p.arenaStats?.wins >= 10         },
+  { id:'first_login',   label:'أول خطوة',        icon:'🌱', condition: p => (p.arenaXP || 0) >= 25         },
+  { id:'arena_xp_100',  label:'مئة نقطة',         icon:'💯', condition: p => (p.arenaXP || 0) >= 100        },
+  { id:'arena_xp_500',  label:'خمسمئة نقطة',      icon:'⭐', condition: p => (p.arenaXP || 0) >= 500        },
+  { id:'arena_xp_1000', label:'ألف نقطة',         icon:'🌟', condition: p => (p.arenaXP || 0) >= 1000       },
+  { id:'arena_win_1',   label:'أول انتصار',       icon:'🏅', condition: p => (p.arenaStats?.wins || 0) >= 1  },
+  { id:'arena_win_10',  label:'عشر انتصارات',     icon:'🥇', condition: p => (p.arenaStats?.wins || 0) >= 10 },
+  { id:'arena_win_50',  label:'خمسون انتصاراً',   icon:'🏆', condition: p => (p.arenaStats?.wins || 0) >= 50 },
+  { id:'arena_streak_5',  label:'سلسلة 5 صحيحة',  icon:'🔥', condition: p => (p.arenaStats?.bestStreak || 0) >= 5  },
+  { id:'arena_streak_10', label:'سلسلة 10 صحيحة', icon:'⚡', condition: p => (p.arenaStats?.bestStreak || 0) >= 10 },
+  { id:'arena_perfect',   label:'جولة مثالية',    icon:'💎', condition: p => (p.arenaStats?.perfectGames || 0) >= 1 },
 ];
+
+const USER_PROFILE_FIELDS = Object.freeze([
+  'uid',
+  'displayName',
+  'email',
+  'photoURL',
+  'arenaXP',
+  'streak',
+  'lastVisit',
+  'createdAt',
+  'updatedAt',
+  'khatmaStats',
+  'khatmaPages',
+  'athkarStats',
+  'arenaStats',
+  'zakatCalcs',
+  'badges',
+  'activity',
+  'arenaXPLog',
+]);
+
+const REQUIRED_USER_PROFILE_FIELDS = Object.freeze(
+  USER_PROFILE_FIELDS.filter(field => field !== 'updatedAt')
+);
+
+const ARENA_STAT_KEYS = Object.freeze([
+  'wins',
+  'totalGames',
+  'correctAnswers',
+  'wrongAnswers',
+  'bestStreak',
+  'perfectGames',
+]);
+
+const LEGACY_ARENA_STAT_FIELDS = Object.freeze({
+  arenaWins: 'wins',
+  arenaPlayed: 'totalGames',
+  arenaCorrect: 'correctAnswers',
+  arenaWrong: 'wrongAnswers',
+  arenaStreak: 'bestStreak',
+  arenaPerfect: 'perfectGames',
+});
+
+const ALLOWED_ARENA_XP_LOG_REASONS = Object.freeze(Object.keys(ARENA_XP_CONFIG));
+const ALLOWED_BADGE_IDS = Object.freeze([
+  ...BADGE_RULES.map(rule => rule.id),
+  'khatma_complete',
+  'zakat_calc',
+]);
 
 // ============================================================
 // STATE
@@ -98,8 +165,296 @@ let _userProfile  = null;
 let _xpQueue      = [];
 let _xpFlushTimer = null;
 
+function dispatchReadyEvent(user = null, profile = null) {
+  if (typeof window === 'undefined' || typeof CustomEvent === 'undefined') return;
+  const detail = { user, profile, doc: profile };
+  window.dispatchEvent(new CustomEvent('islamiCalcReady', { detail }));
+  document.dispatchEvent(new CustomEvent('islamiCalcReady', { detail }));
+}
+
+function openLoginModal() {
+  Events.emit(EVENTS.UI_MODAL_OPEN, {});
+  const modal = document.getElementById('loginModal');
+  if (!modal) return;
+  if (modal.classList.contains('ic-modal') || modal.classList.contains('ic-modal--open')) {
+    modal.classList.add('ic-modal--open');
+  } else {
+    modal.classList.add('open');
+  }
+}
+
 function todayStr() {
   return new Date().toISOString().split('T')[0];
+}
+
+function isPlainObject(value) {
+  return !!value && typeof value === 'object' && !Array.isArray(value);
+}
+
+function toNonNegativeNumber(value, fallback = 0) {
+  const num = Number(value);
+  return Number.isFinite(num) && num >= 0 ? num : fallback;
+}
+
+function toPositiveNumber(value, fallback = 1) {
+  const num = Number(value);
+  return Number.isFinite(num) && num >= 1 ? num : fallback;
+}
+
+function sanitizeString(value, fallback = '') {
+  return typeof value === 'string' ? value : fallback;
+}
+
+function sanitizeNonEmptyString(value, fallback = '') {
+  return typeof value === 'string' && value.trim() ? value.trim() : fallback;
+}
+
+function sanitizeDateKey(value, fallback = todayStr()) {
+  return typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value) ? value : fallback;
+}
+
+function sanitizeKhatmaStats(value = {}) {
+  const source = isPlainObject(value) ? value : {};
+  return {
+    completed: toNonNegativeNumber(source.completed, 0),
+    currentPage: toPositiveNumber(source.currentPage, 1),
+    currentJuz: toPositiveNumber(source.currentJuz, 1),
+    streak: toNonNegativeNumber(source.streak, 0),
+    lastRead: sanitizeString(source.lastRead, ''),
+  };
+}
+
+function sanitizeAthkarStats(value = {}) {
+  const source = isPlainObject(value) ? value : {};
+  return {
+    totalDone: toNonNegativeNumber(source.totalDone, 0),
+    totalTasbih: toNonNegativeNumber(source.totalTasbih, 0),
+  };
+}
+
+function sanitizeKhatmaPages(value = {}) {
+  const source = isPlainObject(value) ? value : {};
+  const pages = {};
+
+  Object.entries(source).forEach(([key, val]) => {
+    const page = Number(key);
+    const stamp = Number(val);
+    if (Number.isInteger(page) && page >= 1 && page <= 604 && Number.isFinite(stamp) && stamp >= 0) {
+      pages[String(page)] = stamp;
+    }
+  });
+
+  return pages;
+}
+
+function sanitizeArenaStats(value = {}, legacy = {}) {
+  const source = isPlainObject(value) ? value : {};
+  return {
+    wins: toNonNegativeNumber(source.wins, toNonNegativeNumber(legacy.arenaWins, 0)),
+    totalGames: toNonNegativeNumber(source.totalGames, toNonNegativeNumber(legacy.arenaPlayed, 0)),
+    correctAnswers: toNonNegativeNumber(source.correctAnswers, toNonNegativeNumber(legacy.arenaCorrect, 0)),
+    wrongAnswers: toNonNegativeNumber(source.wrongAnswers, toNonNegativeNumber(legacy.arenaWrong, 0)),
+    bestStreak: toNonNegativeNumber(source.bestStreak, toNonNegativeNumber(legacy.arenaStreak, 0)),
+    perfectGames: toNonNegativeNumber(source.perfectGames, toNonNegativeNumber(legacy.arenaPerfect, 0)),
+  };
+}
+
+function sanitizeArenaXpLog(value = {}) {
+  const source = isPlainObject(value) ? value : {};
+  const log = {};
+
+  ALLOWED_ARENA_XP_LOG_REASONS.forEach(reason => {
+    if (Object.prototype.hasOwnProperty.call(source, reason)) {
+      log[reason] = toNonNegativeNumber(source[reason], 0);
+    }
+  });
+
+  return log;
+}
+
+function sanitizeBadgeList(value) {
+  if (!Array.isArray(value)) return [];
+
+  const badges = [];
+  value.forEach(badgeId => {
+    if (typeof badgeId === 'string' && ALLOWED_BADGE_IDS.includes(badgeId) && !badges.includes(badgeId)) {
+      badges.push(badgeId);
+    }
+  });
+
+  return badges;
+}
+
+function sanitizeActivityEntry(value) {
+  if (!isPlainObject(value)) return null;
+
+  const text = sanitizeNonEmptyString(value.text, '');
+  const type = sanitizeNonEmptyString(value.type, '');
+  if (!text || !type) return null;
+
+  return {
+    text,
+    type,
+    icon: sanitizeString(value.icon, ''),
+    extra: sanitizeString(value.extra, ''),
+    xp: toNonNegativeNumber(value.xp, 0),
+    date: sanitizeDateKey(value.date, todayStr()),
+    ts: toNonNegativeNumber(value.ts, Date.now()),
+  };
+}
+
+function sanitizeActivityList(value) {
+  if (!Array.isArray(value)) return [];
+  return value.map(entry => sanitizeActivityEntry(entry)).filter(Boolean).slice(-50);
+}
+
+function buildDefaultUserProfile(uid) {
+  return {
+    uid,
+    displayName: sanitizeNonEmptyString(_currentUser?.displayName, 'مسلم كريم'),
+    email: typeof _currentUser?.email === 'string' ? _currentUser.email : null,
+    photoURL: sanitizeString(_currentUser?.photoURL, ''),
+    arenaXP: 0,
+    streak: 0,
+    lastVisit: todayStr(),
+    createdAt: serverTimestamp(),
+    khatmaStats: sanitizeKhatmaStats(),
+    khatmaPages: {},
+    athkarStats: sanitizeAthkarStats(),
+    arenaStats: sanitizeArenaStats(),
+    zakatCalcs: 0,
+    badges: [],
+    activity: [],
+    arenaXPLog: {},
+  };
+}
+
+function normalizeUserProfileData(rawProfile = {}) {
+  const profile = isPlainObject(rawProfile) ? rawProfile : {};
+
+  return {
+    uid: sanitizeNonEmptyString(profile.uid, _currentUser?.uid || ''),
+    displayName: sanitizeNonEmptyString(
+      profile.displayName,
+      sanitizeNonEmptyString(profile.name, sanitizeNonEmptyString(_currentUser?.displayName, 'مسلم كريم'))
+    ),
+    email: typeof profile.email === 'string' || profile.email == null ? profile.email : (_currentUser?.email || null),
+    photoURL: sanitizeString(profile.photoURL, sanitizeString(_currentUser?.photoURL, '')),
+    arenaXP: toNonNegativeNumber(profile.arenaXP, 0),
+    streak: toNonNegativeNumber(profile.streak, 0),
+    lastVisit: sanitizeDateKey(profile.lastVisit, todayStr()),
+    createdAt: profile.createdAt || null,
+    updatedAt: profile.updatedAt || null,
+    khatmaStats: sanitizeKhatmaStats(profile.khatmaStats),
+    khatmaPages: sanitizeKhatmaPages(profile.khatmaPages),
+    athkarStats: sanitizeAthkarStats(profile.athkarStats),
+    arenaStats: sanitizeArenaStats(profile.arenaStats, profile),
+    zakatCalcs: toNonNegativeNumber(profile.zakatCalcs, 0),
+    badges: sanitizeBadgeList(profile.badges),
+    activity: sanitizeActivityList(profile.activity),
+    arenaXPLog: sanitizeArenaXpLog(profile.arenaXPLog),
+  };
+}
+
+function comparableUserProfileData(profile = {}) {
+  const normalized = normalizeUserProfileData(profile);
+  return JSON.stringify({
+    ...normalized,
+    createdAt: Boolean(normalized.createdAt),
+    updatedAt: Boolean(normalized.updatedAt),
+  });
+}
+
+function needsUserProfileMigration(rawProfile = {}, normalizedProfile = normalizeUserProfileData(rawProfile)) {
+  const rawKeys = isPlainObject(rawProfile) ? Object.keys(rawProfile) : [];
+  const hasUnexpectedFields = rawKeys.some(key => !USER_PROFILE_FIELDS.includes(key));
+  const missingRequiredFields = REQUIRED_USER_PROFILE_FIELDS.some(key => !rawKeys.includes(key));
+
+  return hasUnexpectedFields
+    || missingRequiredFields
+    || comparableUserProfileData(rawProfile) !== comparableUserProfileData(normalizedProfile);
+}
+
+function sanitizeArenaXpReason(reason) {
+  return ALLOWED_ARENA_XP_LOG_REASONS.includes(reason) ? reason : '';
+}
+
+function buildProgressUpdatePayload(data = {}) {
+  if (!isPlainObject(data)) {
+    return { updates: null, profilePatch: null, syncArenaLeaderboard: false };
+  }
+
+  const updates = {};
+  const profilePatch = {};
+  const arenaStatsPatch = {};
+  const setArenaStat = (field, value) => {
+    const currentValue = toNonNegativeNumber(_userProfile?.arenaStats?.[field], 0);
+    arenaStatsPatch[field] = Math.max(currentValue, toNonNegativeNumber(value, currentValue));
+  };
+
+  if (isPlainObject(data.arenaStats)) {
+    ARENA_STAT_KEYS.forEach(field => {
+      if (Object.prototype.hasOwnProperty.call(data.arenaStats, field)) {
+        setArenaStat(field, data.arenaStats[field]);
+      }
+    });
+  }
+
+  Object.entries(LEGACY_ARENA_STAT_FIELDS).forEach(([legacyKey, field]) => {
+    if (Object.prototype.hasOwnProperty.call(data, legacyKey)) {
+      setArenaStat(field, data[legacyKey]);
+    }
+  });
+
+  if (Object.keys(arenaStatsPatch).length) {
+    Object.entries(arenaStatsPatch).forEach(([field, value]) => {
+      updates[`arenaStats.${field}`] = value;
+    });
+    profilePatch.arenaStats = { ...sanitizeArenaStats(_userProfile?.arenaStats), ...arenaStatsPatch };
+  }
+
+  if (Object.prototype.hasOwnProperty.call(data, 'khatmaPages')) {
+    const currentPages = sanitizeKhatmaPages(_userProfile?.khatmaPages);
+    const nextPages = { ...currentPages };
+    Object.entries(sanitizeKhatmaPages(data.khatmaPages)).forEach(([page, stamp]) => {
+      nextPages[page] = Math.max(toNonNegativeNumber(nextPages[page], 0), stamp);
+    });
+    updates.khatmaPages = nextPages;
+    profilePatch.khatmaPages = nextPages;
+  }
+
+  if (!Object.keys(updates).length) {
+    return { updates: null, profilePatch: null, syncArenaLeaderboard: false };
+  }
+
+  return {
+    updates,
+    profilePatch,
+    syncArenaLeaderboard: Object.prototype.hasOwnProperty.call(profilePatch, 'arenaStats'),
+  };
+}
+
+function sanitizeArenaStatsDelta(statsUpdate = {}) {
+  if (!isPlainObject(statsUpdate)) return {};
+
+  const safeStats = {};
+  ARENA_STAT_KEYS.forEach(field => {
+    if (!Object.prototype.hasOwnProperty.call(statsUpdate, field)) return;
+    const value = Number(statsUpdate[field]);
+    if (Number.isFinite(value) && value >= 0) {
+      safeStats[field] = value;
+    }
+  });
+
+  return safeStats;
+}
+
+function isArenaPage() {
+  return isArenaPath(window.location.pathname);
+}
+
+function isSpiritualPage() {
+  return isSpiritualPath(window.location.pathname);
 }
 
 // ============================================================
@@ -111,45 +466,43 @@ async function loadUserProfile(uid) {
     const snap = await getDoc(ref);
 
     if (snap.exists()) {
-      _userProfile = snap.data();
+      const rawProfile = snap.data();
+      const normalizedProfile = normalizeUserProfileData(rawProfile);
+
+      if (needsUserProfileMigration(rawProfile, normalizedProfile)) {
+        await setDoc(ref, {
+          ...normalizedProfile,
+          createdAt: rawProfile.createdAt || serverTimestamp(),
+          updatedAt: serverTimestamp(),
+        });
+      }
+
+      _userProfile = normalizedProfile;
     } else {
-      _userProfile = {
-        uid,
-        displayName:  _currentUser.displayName || 'مسلم كريم',
-        email:        _currentUser.email,
-        photoURL:     _currentUser.photoURL,
-        xp:           0,
-        streak:       0,
-        lastVisit:    todayStr(),
-        createdAt:    serverTimestamp(),
-        khatmaStats:  { completed:0, currentPage:1, currentJuz:1, streak:0 },
-        athkarStats:  { totalDone:0, totalTasbih:0 },
-        arenaStats:   { wins:0, totalGames:0, correctAnswers:0 },
-        zakatCalcs:   0,
-        badges:       [],
-        activity:     [],
-      };
+      _userProfile = buildDefaultUserProfile(uid);
       await setDoc(ref, _userProfile);
-      Events.emit(EVENTS.UI_TOAST, { message:'🎉 مرحباً بك في IslamiCalc! +25 نقطة', type:'gold' });
-      await _addXPImmediate(25, 'login_bonus');
+      Events.emit(EVENTS.UI_TOAST, { message:'🎉 مرحباً بك في IslamiCalc!', type:'success' });
+      await _addArenaXPImmediate(25, 'login_bonus');
     }
 
-    // Daily visit bonus
     if (_userProfile.lastVisit !== todayStr()) {
-      await updateDoc(ref, { lastVisit: todayStr() });
+      await updateDoc(ref, {
+        lastVisit: todayStr(),
+        updatedAt: serverTimestamp(),
+      });
       _userProfile.lastVisit = todayStr();
-      await _addXPImmediate(10, 'daily_visit');
-      Events.emit(EVENTS.UI_TOAST, { message:'🌅 مرحباً بعودتك! +10 نقطة', type:'success' });
+      await _addArenaXPImmediate(10, 'daily_visit');
+      Events.emit(EVENTS.UI_TOAST, { message:'🌤 مرحباً بعودتك!', type:'success' });
     }
 
-    // Sync to Store
     Store.patch({
       user:    _currentUser,
       profile: _userProfile,
-      xp:      _userProfile.xp || 0,
+      arenaXP: _userProfile.arenaXP || 0,
     });
 
     await checkBadges();
+    await _updateArenaLeaderboard({ xpDelta: 0 });
 
     Events.emit(EVENTS.AUTH_PROFILE_LOADED, {
       user:    _currentUser,
@@ -162,66 +515,79 @@ async function loadUserProfile(uid) {
 }
 
 // ============================================================
-// XP SYSTEM
+// ARENA XP SYSTEM — للميدان فقط
 // ============================================================
-async function _addXPImmediate(amount, reason) {
-  if (!_currentUser || !amount) return;
+async function _addArenaXPImmediate(amount, reason) {
+  const safeAmount = toNonNegativeNumber(amount, 0);
+  const safeReason = sanitizeArenaXpReason(reason);
+  if (!_currentUser || !safeAmount || !safeReason) return;
+
   try {
     await updateDoc(doc(db, 'users', _currentUser.uid), {
-      xp: increment(amount),
-      [`xpLog.${reason}`]: increment(amount),
+      arenaXP: increment(safeAmount),
+      [`arenaXPLog.${safeReason}`]: increment(safeAmount),
     });
 
-    if (_userProfile) _userProfile.xp = (_userProfile.xp || 0) + amount;
-    Store.set('xp', _userProfile?.xp || 0);
+    if (_userProfile) _userProfile.arenaXP = (_userProfile.arenaXP || 0) + safeAmount;
+    Store.set('arenaXP', _userProfile?.arenaXP || 0);
     if (_userProfile) Store.set('profile', { ..._userProfile });
 
-    _floatXP(amount);
-    _checkLevelUp(amount);
+    _floatXP(safeAmount);
+    _checkLevelUp(safeAmount);
+    await _updateArenaLeaderboard({ xpDelta: safeAmount });
 
   } catch (err) {
-    console.error('[Firebase] addXPImmediate error:', err);
+    console.error('[Firebase] addArenaXPImmediate error:', err);
   }
 }
 
+/**
+ * addXP — يُستدعى من صفحة الميدان فقط
+ * إذا استُدعي من صفحة روحانية يُتجاهل تلقائياً
+ */
 function addXP(amount, reason) {
-  if (!_currentUser || !amount) return;
+  const safeAmount = toNonNegativeNumber(amount, 0);
+  const safeReason = sanitizeArenaXpReason(reason);
+  if (!_currentUser || !safeAmount || !safeReason) return;
 
-  _xpQueue.push({ amount, reason });
+  if (!canAwardArenaXP(window.location.pathname, safeReason)) {
+    return;
+  }
 
-  // Optimistic UI
+  _xpQueue.push({ amount: safeAmount, reason: safeReason });
+
   if (_userProfile) {
-    _userProfile.xp = (_userProfile.xp || 0) + amount;
-    Store.set('xp', _userProfile.xp);
+    _userProfile.arenaXP = (_userProfile.arenaXP || 0) + safeAmount;
+    Store.set('arenaXP', _userProfile.arenaXP);
     Store.set('profile', { ..._userProfile });
   }
 
-  _floatXP(amount);
-  _checkLevelUp(amount);
+  _floatXP(safeAmount);
+  _checkLevelUp(safeAmount);
 
   clearTimeout(_xpFlushTimer);
   _xpFlushTimer = setTimeout(_flushXP, 3000);
 
-  Events.emit(EVENTS.XP_ADDED, { amount, reason, total: _userProfile?.xp });
+  Events.emit(EVENTS.XP_ADDED, { amount: safeAmount, reason: safeReason, total: _userProfile?.arenaXP });
 }
 
 async function _flushXP() {
   if (!_xpQueue.length || !_currentUser) return;
 
-  const batch = [..._xpQueue];
-  _xpQueue    = [];
+  const batch = _xpQueue.map(entry => ({
+    amount: toNonNegativeNumber(entry?.amount, 0),
+    reason: sanitizeArenaXpReason(entry?.reason),
+  })).filter(entry => entry.amount && entry.reason);
+  _xpQueue = [];
 
-  const total   = batch.reduce((s, e) => s + e.amount, 0);
-  const updates = { xp: increment(total) };
+  if (!batch.length) return;
 
-  batch.forEach(({ amount, reason }) => {
-    updates[`xpLog.${reason}`] = increment(amount);
-  });
+  const { total, updates } = buildArenaXPUpdatePayload(batch, increment);
 
   try {
     await updateDoc(doc(db, 'users', _currentUser.uid), updates);
     await checkBadges();
-    await _updateLeaderboard();
+    await _updateArenaLeaderboard({ xpDelta: total });
   } catch (err) {
     console.error('[Firebase] flushXP error:', err);
     _xpQueue = [...batch, ..._xpQueue];
@@ -230,7 +596,7 @@ async function _flushXP() {
 
 function _checkLevelUp(addedAmount) {
   if (!_userProfile) return;
-  const xp     = _userProfile.xp || 0;
+  const xp     = _userProfile.arenaXP || 0;
   const before = xp - addedAmount;
   const lvlNow  = Store.computeLevel(xp);
   const lvlPrev = Store.computeLevel(before);
@@ -238,40 +604,89 @@ function _checkLevelUp(addedAmount) {
   if (lvlNow.name !== lvlPrev.name) {
     Events.emit(EVENTS.XP_LEVEL_UP, { level: lvlNow });
     Events.emit(EVENTS.UI_TOAST, {
-      message: `🎉 ترقيت إلى ${lvlNow.icon} ${lvlNow.name}!`,
+      message: `🎉 ترقيت إلى ${lvlNow.icon} ${lvlNow.name}! في الميدان`,
       type: 'gold'
     });
   }
 }
 
 function _floatXP(amount) {
-  // Uses .xp-float class defined in style.css
+  if (!isArenaPage()) return; // XP float يظهر في الميدان فقط
   const el = document.createElement('div');
   el.className   = 'xp-float';
   el.textContent = `+${amount} ✨`;
-  el.style.left  = '50%';
+  el.style.left   = '50%';
   el.style.bottom = '80px';
   document.body.appendChild(el);
   setTimeout(() => el.remove(), 1400);
 }
 
 // ============================================================
-// LEADERBOARD UPDATE
+// ARENA LEADERBOARD — مخصص للميدان فقط
 // ============================================================
-async function _updateLeaderboard() {
-  if (!_currentUser || !_userProfile) return;
+async function _updateArenaLeaderboard({ xpDelta = 0 } = {}) {
+  if (!_currentUser || !_userProfile) return null;
+
+  const ref = doc(db, LEADERBOARD_COLLECTION, _currentUser.uid);
+  let currentEntry = null;
+
   try {
-    await setDoc(doc(db, 'leaderboard', _currentUser.uid), {
-      uid:         _currentUser.uid,
-      displayName: _userProfile.displayName || 'مسلم كريم',
-      photoURL:    _userProfile.photoURL    || '',
-      xp:          _userProfile.xp         || 0,
-      level:       Store.computeLevel(_userProfile.xp || 0).name,
-      updatedAt:   serverTimestamp(),
-    }, { merge: true });
+    const snap = await getDoc(ref);
+    if (snap.exists()) currentEntry = snap.data();
+  } catch {}
+
+  try {
+    const level = Store.computeLevel(_userProfile.arenaXP || 0);
+    const nextEntry = buildArenaLeaderboardEntry({
+      currentEntry,
+      user: _currentUser,
+      profile: _userProfile,
+      xpDelta,
+      now: Date.now(),
+    });
+
+    await setDoc(ref, {
+      ...nextEntry,
+      level: level.name,
+      levelIcon: level.icon,
+      updatedAt: serverTimestamp(),
+    });
+
+    return nextEntry;
   } catch (err) {
-    console.error('[Firebase] updateLeaderboard error:', err);
+    console.error('[Firebase] updateArenaLeaderboard error:', err);
+    return null;
   }
+}
+
+async function getArenaLeaderboard(limitCount = 20, scope = 'alltime') {
+  const meta = getLeaderboardScopeMeta(scope);
+  const safeLimit = Math.max(1, Math.min(Number(limitCount) || 20, 50));
+
+  try {
+    const constraints = [];
+    if (meta.bucketField && meta.bucketValue) {
+      constraints.push(where(meta.bucketField, '==', meta.bucketValue));
+    }
+    constraints.push(orderBy(meta.scoreField, 'desc'));
+    constraints.push(orderBy('updatedAtMs', 'asc'));
+    constraints.push(limit(safeLimit));
+
+    const snap = await getDocs(query(collection(db, LEADERBOARD_COLLECTION), ...constraints));
+    return rankLeaderboardEntries(
+      snap.docs.map(entryDoc => ({ uid: entryDoc.id, ...entryDoc.data() })),
+      meta.key,
+      _currentUser?.uid || ''
+    );
+  } catch (err) {
+    console.error('[Firebase] getArenaLeaderboard error:', err);
+    return [];
+  }
+}
+
+// للتوافق مع الكود القديم
+async function getLeaderboard(limitCount = 20, scope = 'alltime') {
+  return getArenaLeaderboard(limitCount, scope);
 }
 
 // ============================================================
@@ -280,9 +695,7 @@ async function _updateLeaderboard() {
 async function checkBadges() {
   if (!_currentUser || !_userProfile) return;
   const earned    = _userProfile.badges || [];
-  const newBadges = BADGE_RULES.filter(
-    b => !earned.includes(b.id) && b.condition(_userProfile)
-  );
+  const newBadges = getUnlockedBadges(_userProfile, BADGE_RULES);
   if (!newBadges.length) return;
 
   const ids = newBadges.map(b => b.id);
@@ -290,7 +703,7 @@ async function checkBadges() {
     await updateDoc(doc(db, 'users', _currentUser.uid), {
       badges: arrayUnion(...ids),
     });
-    _userProfile.badges = [...earned, ...ids];
+    _userProfile.badges = sanitizeBadgeList([...earned, ...ids]);
     Store.set('profile', { ..._userProfile });
 
     newBadges.forEach((b, i) => {
@@ -308,20 +721,138 @@ async function checkBadges() {
 }
 
 // ============================================================
-// LEADERBOARD READ
+// LOG ACTIVITY — سجل نشاط المستخدم (بدون XP للصفحات الروحانية)
 // ============================================================
-async function getLeaderboard(limitCount = 10) {
+async function logActivity(text, type, icon, extra = '', xp = 0) {
+  if (!_currentUser) return;
   try {
-    const q    = query(
-      collection(db, 'leaderboard'),
-      orderBy('xp', 'desc'),
-      limit(limitCount)
-    );
-    const snap = await getDocs(q);
-    return snap.docs.map((d, i) => ({ rank: i + 1, ...d.data() }));
+    const entry = buildActivityEntry({
+      text,
+      type,
+      icon,
+      extra,
+      xp,
+      pathname: window.location.pathname,
+      date: todayStr(),
+      now: Date.now(),
+    });
+    const nextActivity = sanitizeActivityList([...(Array.isArray(_userProfile?.activity) ? _userProfile.activity : []), entry]);
+    await updateDoc(doc(db, 'users', _currentUser.uid), {
+      activity: nextActivity,
+      updatedAt: serverTimestamp(),
+    });
+    if (_userProfile) {
+      _userProfile.activity = nextActivity;
+      Store.set('profile', { ..._userProfile });
+    }
   } catch (err) {
-    console.error('[Firebase] getLeaderboard error:', err);
-    return [];
+    console.error('[Firebase] logActivity error:', err);
+  }
+}
+
+// ============================================================
+// SAVE PROGRESS — حفظ تقدم المستخدم (ختمة، أذكار، إلخ)
+// ============================================================
+async function saveProgress(data) {
+  if (!_currentUser) return;
+
+  const { updates, profilePatch, syncArenaLeaderboard } = buildProgressUpdatePayload(data);
+  if (!updates) return;
+
+  try {
+    await updateDoc(doc(db, 'users', _currentUser.uid), {
+      ...updates,
+      updatedAt: serverTimestamp(),
+    });
+
+    if (_userProfile && profilePatch) {
+      _userProfile = {
+        ..._userProfile,
+        ...profilePatch,
+        arenaStats: profilePatch.arenaStats || _userProfile.arenaStats,
+        khatmaPages: profilePatch.khatmaPages || _userProfile.khatmaPages,
+      };
+      Store.set('profile', { ..._userProfile });
+    }
+
+    if (syncArenaLeaderboard) {
+      await _updateArenaLeaderboard({ xpDelta: 0 });
+    }
+  } catch (err) {
+    console.error('[Firebase] saveProgress error:', err);
+  }
+}
+
+// ============================================================
+// UPDATE STREAK — streak الختمة (بدون XP)
+// ============================================================
+async function updateStreak(newStreak) {
+  if (!_currentUser) return;
+
+  const safeStreak = toNonNegativeNumber(newStreak, 0);
+  try {
+    await updateDoc(doc(db, 'users', _currentUser.uid), {
+      'khatmaStats.streak': safeStreak,
+      streak: safeStreak,
+      updatedAt: serverTimestamp(),
+    });
+    if (_userProfile) {
+      _userProfile.streak = safeStreak;
+      if (_userProfile.khatmaStats) _userProfile.khatmaStats.streak = safeStreak;
+      Store.set('profile', { ..._userProfile });
+    }
+    await checkBadges();
+  } catch (err) {
+    console.error('[Firebase] updateStreak error:', err);
+  }
+}
+
+// ============================================================
+// UNLOCK BADGE — فتح شارة
+// ============================================================
+async function unlockBadge(id, label) {
+  if (!_currentUser || !ALLOWED_BADGE_IDS.includes(id)) return;
+  try {
+    const earned = _userProfile?.badges || [];
+    if (earned.includes(id)) return;
+    await updateDoc(doc(db, 'users', _currentUser.uid), {
+      badges: arrayUnion(id),
+      updatedAt: serverTimestamp(),
+    });
+    if (_userProfile) {
+      _userProfile.badges = sanitizeBadgeList([...earned, id]);
+      Store.set('profile', { ..._userProfile });
+    }
+    Events.emit(EVENTS.BADGE_UNLOCKED, { id, label });
+    Events.emit(EVENTS.UI_TOAST, { message: `🏅 شارة جديدة: ${label}`, type: 'gold' });
+  } catch (err) {
+    console.error('[Firebase] unlockBadge error:', err);
+  }
+}
+
+// ============================================================
+// UPDATE ARENA STATS — تحديث إحصائيات الميدان
+// ============================================================
+async function updateArenaStats(statsUpdate) {
+  if (!_currentUser) return;
+
+  const safeStats = sanitizeArenaStatsDelta(statsUpdate);
+  if (!Object.keys(safeStats).length) return;
+
+  try {
+    const updates = {};
+    for (const [key, val] of Object.entries(safeStats)) {
+      updates[`arenaStats.${key}`] = increment(val);
+    }
+    await updateDoc(doc(db, 'users', _currentUser.uid), updates);
+    if (_userProfile) {
+      _userProfile.arenaStats = mergeArenaStats(_userProfile.arenaStats, safeStats);
+      Store.set('profile', { ..._userProfile });
+    }
+    await _updateArenaLeaderboard();
+    await checkBadges();
+  } catch (err) {
+    console.error('[Firebase] updateArenaStats error:', err);
   }
 }
 
@@ -350,7 +881,7 @@ async function logout() {
     await signOut(auth);
     _currentUser = null;
     _userProfile = null;
-    Store.patch({ user: null, profile: null, xp: 0 });
+    Store.patch({ user: null, profile: null, arenaXP: 0 });
     Events.emit(EVENTS.AUTH_LOGOUT, {});
     Events.emit(EVENTS.UI_TOAST, { message:'👋 تم تسجيل الخروج', type:'' });
   } catch (err) {
@@ -364,10 +895,10 @@ async function logout() {
 function showUserMenu() {
   const profile = Store.get('profile');
   if (!profile) return;
-  const lvl  = Store.computeLevel(profile.xp || 0);
+  const lvl  = Store.computeLevel(profile.arenaXP || 0);
   const name = profile.displayName || 'مسلم كريم';
   Events.emit(EVENTS.UI_TOAST, {
-    message: `${lvl.icon} ${name} — ${profile.xp || 0} XP`,
+    message: `${lvl.icon} ${name} — ${(profile.arenaXP || 0).toLocaleString('ar')} نقطة ميدان`,
     type: 'gold'
   });
 }
@@ -386,11 +917,13 @@ onAuthStateChanged(auth, async user => {
       photoURL:    user.photoURL,
     });
     await loadUserProfile(user.uid);
+    dispatchReadyEvent(Store.get('user'), _userProfile);
   } else {
-    Store.patch({ user: null, profile: null, xp: 0, authReady: true });
+    Store.patch({ user: null, profile: null, arenaXP: 0, authReady: true });
+    dispatchReadyEvent(null, null);
   }
 
-  Events.emit(EVENTS.AUTH_READY, { user });
+  Events.emit(EVENTS.AUTH_READY, { user, profile: _userProfile });
   Store.set('authReady', true);
 });
 
@@ -398,18 +931,45 @@ onAuthStateChanged(auth, async user => {
 // EXPOSE GLOBAL API — window.islamiCalc
 // ============================================================
 window.islamiCalc = {
+  // Auth
   loginWithGoogle,
   logout,
   showUserMenu,
-  addXP,
-  getLeaderboard,
-  checkBadges,
-  XP_CONFIG,
   getCurrentUser:  () => _currentUser,
   getUserProfile:  () => _userProfile,
   get user()    { return _currentUser;  },
   get profile() { return _userProfile; },
   get db()      { return db; },
+
+  // Arena XP — للميدان فقط
+  addXP,
+  ARENA_XP_CONFIG,
+
+  // Leaderboard الميدان
+  getLeaderboard,
+  getArenaLeaderboard,
+  updateArenaStats,
+
+  // Badges
+  checkBadges,
+  unlockBadge,
+  addBadge: (id, label = 'New badge') => unlockBadge(id, label),
+
+  // Progress (ختمة، أذكار، إلخ — بدون XP)
+  saveProgress,
+  logActivity,
+  updateStreak,
+  openLoginModal,
+  openModal: openLoginModal,
+
+  // Helpers
+  isArenaPage,
+  isSpiritualPage,
+  SPIRITUAL_PAGES,
 };
 
-export { addXP, loginWithGoogle, logout, getLeaderboard, XP_CONFIG };
+export { addXP, loginWithGoogle, logout, getLeaderboard, getArenaLeaderboard, ARENA_XP_CONFIG };
+
+
+
+

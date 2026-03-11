@@ -1,50 +1,31 @@
 # ============================================================
 # IslamiCalc — robots.txt
-# https://islamicalc.com
+# Generated for production on 2026-03-10
 # ============================================================
 
-# ============================================================
-# All crawlers — Default rules
-# ============================================================
 User-agent: *
 Allow: /
 
-# --- Private / Auth-required pages ---
+# Private / user-specific pages
 Disallow: /profile/
 Disallow: /profile
 
-# --- Admin & API ---
+# Admin / internal endpoints
 Disallow: /admin/
 Disallow: /admin
 Disallow: /api/
 Disallow: /api
 
-# --- Sensitive config files ---
+# Sensitive / non-public project files
 Disallow: /.env
 Disallow: /.env*
+Disallow: /.git/
+Disallow: /node_modules/
 Disallow: /firebase.json
 Disallow: /firestore.rules
 Disallow: /firestore.indexes.json
-Disallow: /package.json
-Disallow: /package-lock.json
-Disallow: /.git/
-Disallow: /node_modules/
 
-# --- Pages under development (remove when ready) ---
-Disallow: /inheritance/
-Disallow: /kafara/
-Disallow: /fasting/
-Disallow: /sadaqa/
-Disallow: /seerah/
-Disallow: /fiqh/
-Disallow: /articles/
-Disallow: /hijri/
-Disallow: /prophets/
-Disallow: /age/
-
-# ============================================================
-# Heavy SEO bots — rate limit to protect Netlify bandwidth
-# ============================================================
+# Optional crawl controls for heavy SEO bots
 User-agent: AhrefsBot
 Crawl-delay: 10
 
@@ -60,7 +41,4 @@ Disallow: /
 User-agent: MegaIndex
 Disallow: /
 
-# ============================================================
-# Sitemap
-# ============================================================
 Sitemap: https://islamicalc.com/sitemap.xml

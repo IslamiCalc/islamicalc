@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="/style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-  <script type="module" src="/firebase.js"></script>
+  <script type="module" src="/core/firebase.js"></script>
 
   <style>
   /* ============================================================
@@ -1123,18 +1123,32 @@ let catCounters = {}; // { idx: current_count }
 // ============================================================
 // THEME + NAV
 // ============================================================
+function refreshIcons() {
+  if (typeof lucide !== 'undefined') lucide.createIcons();
+}
+
+function setThemeButtonIcon(theme) {
+  const button = document.getElementById('themeBtn');
+  if (!button) return;
+  button.innerHTML = theme === 'dark'
+    ? '<i data-lucide="moon" style="width:16px;height:16px;display:inline-block;vertical-align:middle;"></i>'
+    : '<i data-lucide="sun" style="width:16px;height:16px;display:inline-block;vertical-align:middle;"></i>';
+  refreshIcons();
+}
+
 (function () {
   const s = localStorage.getItem('theme');
   const h = new Date().getHours();
-  document.documentElement.setAttribute('data-theme',
-    s || (h >= 19 || h < 6 ? 'dark' : 'light'));
+  const theme = s || (h >= 19 || h < 6 ? 'dark' : 'light');
+  document.documentElement.setAttribute('data-theme', theme);
+  setThemeButtonIcon(theme);
 })();
 
 document.getElementById('themeBtn')?.addEventListener('click', () => {
   const n = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
   document.documentElement.setAttribute('data-theme', n);
   localStorage.setItem('theme', n);
-  document.getElementById('themeBtn').textContent = n === 'dark' ? '<i data-lucide="moon" style="width:16px;height:16px;display:inline-block;vertical-align:middle;"></i>' : '<i data-lucide="sun" style="width:16px;height:16px;display:inline-block;vertical-align:middle;"></i>';
+  setThemeButtonIcon(n);
 });
 
 window.addEventListener('scroll', () => {
@@ -1169,8 +1183,9 @@ document.getElementById('googleLoginBtn')?.addEventListener('click', () => {
 window.showToast = function(msg, cls = '') {
   const el = document.getElementById('toast');
   if (!el) return;
-  el.textContent = msg;
+  el.innerHTML = msg;
   el.className   = 'ic-toast show ' + cls;
+  refreshIcons();
   clearTimeout(el._t);
   el._t = setTimeout(() => el.classList.remove('show'), 3500);
 };
@@ -1236,6 +1251,7 @@ function renderCatGrid() {
         <div class="at-cat__pct">${isDone ? '<i data-lucide="check-circle" style="width:16px;height:16px;display:inline-block;vertical-align:middle;"></i> مكتمل' : pct + '% مكتمل'}</div>
       </div>`;
   }).join('');
+  refreshIcons();
 }
 
 // ============================================================
@@ -1252,7 +1268,8 @@ function openCat(id) {
     catCounters[i] = appState.done[id + '_' + i] ?? 0;
   });
 
-  document.getElementById('viewer-title').textContent = cat.icon + ' ' + cat.name;
+  document.getElementById('viewer-title').innerHTML = cat.icon + ' ' + cat.name;
+  refreshIcons();
   renderDhikrList(id, dhikrs);
   updateViewerProgress(id, dhikrs);
 
@@ -1328,6 +1345,7 @@ function renderDhikrList(catId, dhikrs) {
         </div>
       </div>`;
   }).join('');
+  refreshIcons();
 }
 
 // ============================================================
@@ -1357,7 +1375,7 @@ function tapCounter(idx) {
   if (fillEl)  fillEl.style.width    = pct + '%';
 
   if (done) {
-    if (btnEl)   { btnEl.disabled = true; btnEl.classList.add('done'); btnEl.textContent = '<i data-lucide="check-circle" style="width:16px;height:16px;display:inline-block;vertical-align:middle;"></i>'; }
+    if (btnEl)   { btnEl.disabled = true; btnEl.classList.add('done'); btnEl.innerHTML = '<i data-lucide="check-circle" style="width:16px;height:16px;display:inline-block;vertical-align:middle;"></i>'; refreshIcons(); }
     if (badgeEl) badgeEl.classList.add('show');
     if (cardEl)  cardEl.classList.add('done');
 
@@ -1531,6 +1549,6 @@ renderCatGrid();
 updateHeroStats();
 </script>
 
-  <script>if(typeof lucide!=='undefined')lucide.createIcons();</script>
+  <script>refreshIcons();</script>
 </body>
 </html>

@@ -1,0 +1,13 @@
+{
+  "name": "islamicalc",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test --test-isolation=none",
+    "dev": "node dev-server.cjs",
+    "start": "node dev-server.cjs"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

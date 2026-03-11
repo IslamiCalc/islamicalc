@@ -1,0 +1,31 @@
+{
+  "indexes": [
+    {
+      "collectionGroup": "leaderboard",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "rankScore", "order": "DESCENDING" },
+        { "fieldPath": "updatedAtMs", "order": "ASCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "leaderboard",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "dailyKey", "order": "ASCENDING" },
+        { "fieldPath": "dailyScore", "order": "DESCENDING" },
+        { "fieldPath": "updatedAtMs", "order": "ASCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "leaderboard",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "weeklyKey", "order": "ASCENDING" },
+        { "fieldPath": "weeklyScore", "order": "DESCENDING" },
+        { "fieldPath": "updatedAtMs", "order": "ASCENDING" }
+      ]
+    }
+  ],
+  "fieldOverrides": []
+}
