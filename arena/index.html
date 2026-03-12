@@ -3,16 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" href="/assets/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="icon" href="/assets/favicon-16.png" type="image/png" sizes="16x16">
+  <link rel="shortcut icon" href="/favicon.ico">
+  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+  <link rel="manifest" href="/manifest.json">
   <title>الميدان — ميدان المعرفة الإسلامية | IslamiCalc</title>
   <meta name="description" content="تحدَّ نفسك في ميدان المعرفة الإسلامية — أسئلة القرآن والسيرة والفقه والعقيدة. اكسب XP وارتقِ في المستويات.">
   <meta name="theme-color" content="#7c3aed">
   <meta property="og:title" content="الميدان — ميدان المعرفة الإسلامية">
   <meta property="og:description" content="تحدَّ نفسك في أسئلة إسلامية متنوعة واكسب XP">
-  <link rel="canonical" href="https://islamicalc.com/arena/">
-  <link rel="manifest" href="/manifest.json">
-  <link rel="icon" href="/assets/favicon-32.png" type="image/png">
-  <link rel="preload" href="/arena/questions.json" as="fetch" crossorigin="anonymous">
-  <link rel="stylesheet" href="/style.css">
+  <link rel="canonical" href="https://islamicalc.com/arena/">  <link rel="stylesheet" href="/style.css">
   <script type="module" src="/core/firebase.js"></script>
   <script type="module" src="/core/app.js"></script>
 
@@ -622,7 +624,7 @@ function hasQuestionBank() {
 
 function ensureQuestionBank() {
   if (hasQuestionBank()) return true;
-  showToast('??? ????? ??? ???????...', '');
+  showToast('\u062c\u0627\u0631\u064a \u062a\u062d\u0645\u064a\u0644 \u0628\u0646\u0643 \u0627\u0644\u0623\u0633\u0626\u0644\u0629...', '');
   return false;
 }
 
@@ -1046,7 +1048,7 @@ function startQuiz() {
   if (!ensureQuestionBank()) return;
   const cats=selCat==='all'?'all':[selCat];
   const questions=getPoolForMode(cats, selDiff, selCount);
-  if(!questions.length){showToast('?? ???? ????? ?????','error');return;}
+  if(!questions.length){showToast('\u0644\u0645 \u0646\u0639\u062b\u0631 \u0639\u0644\u0649 \u0623\u0633\u0626\u0644\u0629 \u0645\u0637\u0627\u0628\u0642\u0629','error');return;}
   beginSession({mode:quizMode, questions, timePerQ:quizMode==='speed'?15:30, hasPowers:true});
 }
 
@@ -1484,7 +1486,7 @@ async function bootArena() {
   try {
     await loadQuestionBank();
   } catch (error) {
-    showToast('???? ????? ??? ??????? ??????. ???? ????? ??????.', 'error');
+    showToast('\u062a\u0639\u0630\u0631 \u062a\u062d\u0645\u064a\u0644 \u0628\u0646\u0643 \u0627\u0644\u0623\u0633\u0626\u0644\u0629 \u062d\u0627\u0644\u064a\u0627\u064b. \u062d\u0627\u0648\u0644 \u0645\u0631\u0629 \u0623\u062e\u0631\u0649.', 'error');
   }
 
   initDash();

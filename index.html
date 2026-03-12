@@ -1,8 +1,14 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" href="/assets/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="icon" href="/assets/favicon-16.png" type="image/png" sizes="16x16">
+  <link rel="shortcut icon" href="/favicon.ico">
+  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+  <link rel="manifest" href="/manifest.json">
   <title>IslamiCalc — منصة إسلامية ذكية</title>
   <meta name="description" content="منصة إسلامية متكاملة: ختمة القرآن، أوقات الصلاة، الأذكار، الزكاة، الميدان الديني وأكثر.">
   <meta name="theme-color" content="#10b981">
@@ -24,10 +30,7 @@
   <meta name="twitter:image"       content="https://islamicalc.com/assets/og-image.png">
 
   <!-- Manifest & Favicon -->
-  <link rel="manifest" href="/manifest.json">
-  <link rel="icon"     href="/assets/favicon-32.png" type="image/png">
-  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
-
+  <link rel="manifest" href="/manifest.json">
   <!-- Style -->
   <link rel="stylesheet" href="/style.css">
 
@@ -435,9 +438,11 @@
           <span class="ic-badge ic-badge--em ic-badge--live">● مباشر</span>
         </div>
         <div class="ic-prayer-mini">
-          <div class="ic-prayer-mini__name">العصر</div>
-          <div class="ic-prayer-mini__countdown" id="heroPrayerCountdown">02:34:18</div>
-          <div class="ic-prayer-mini__note">الرياض · التوقيت المحلي</div>
+          <div class="ic-prayer-mini__label">📍 الوضع الافتراضي: مكة المكرمة</div>
+          <div class="ic-prayer-mini__name" id="heroPrayerName">الظهر</div>
+          <div class="ic-prayer-mini__countdown" id="heroPrayerCountdown">--:--:--</div>
+          <div class="ic-prayer-mini__note" id="heroPrayerNote">مكة المكرمة · أم القرى</div>
+          <div class="ic-prayer-mini__time" id="heroPrayerTime">جاري تحميل المواقيت…</div>
         </div>
       </div>
 
@@ -546,7 +551,100 @@
     </div>
   </section>
 
-  <!-- ============================================================
+    <!-- ============================================================
+       SECTION: استكشف المنصة
+       ============================================================ -->
+  <section class="ic-section" aria-label="استكشف المنصة">
+    <div class="ic-container">
+      <div class="ic-section__header">
+        <span class="ic-section__eyebrow">🧭 اكتشف المنصة</span>
+        <h2 class="ic-section__title">رحلة إيمانية كاملة من الشاشة الأولى</h2>
+        <p class="ic-section__sub">روابط واضحة، أدوات مترابطة، وتجربة احترافية تناسب التعلم اليومي على الجوال والشاشات الكبيرة.</p>
+      </div>
+
+      <div class="ic-home-discover">
+        <div class="ic-home-discover__grid">
+          <a href="/hijri" class="ic-feature-card">
+            <span class="ic-feature-card__icon">🗓️</span>
+            <h3>محول هجري وميلادي</h3>
+            <p>تحويل فوري بين التاريخين مع واجهة واضحة للمناسبات والمتابعة اليومية.</p>
+            <div class="ic-feature-card__meta"><span>التقويم</span><span>سريع</span></div>
+          </a>
+          <a href="/prophets" class="ic-feature-card">
+            <span class="ic-feature-card__icon">📚</span>
+            <h3>قصص الأنبياء</h3>
+            <p>عرض زمني بسيط يربط بين القصص والعبر الإيمانية في صفحة واحدة.</p>
+            <div class="ic-feature-card__meta"><span>تعليمي</span><span>قصصي</span></div>
+          </a>
+          <a href="/seerah" class="ic-feature-card">
+            <span class="ic-feature-card__icon">🕋</span>
+            <h3>السيرة النبوية</h3>
+            <p>مراحل السيرة في تصميم مرتب يسهّل القراءة والمتابعة على كل الأجهزة.</p>
+            <div class="ic-feature-card__meta"><span>سيرة</span><span>دروس</span></div>
+          </a>
+          <a href="/fiqh" class="ic-feature-card">
+            <span class="ic-feature-card__icon">⚖️</span>
+            <h3>الفقه والأسئلة</h3>
+            <p>وصول سريع للمسائل الأساسية مع ربط تدريجي بصفحات المقالات والمراجع.</p>
+            <div class="ic-feature-card__meta"><span>أساسيات</span><span>سهل الوصول</span></div>
+          </a>
+          <a href="/asma" class="ic-feature-card">
+            <span class="ic-feature-card__icon">✨</span>
+            <h3>أسماء الله الحسنى</h3>
+            <p>شرح مبسّط لمعاني الأسماء وآثارها الإيمانية مع تجربة بحث مريحة.</p>
+            <div class="ic-feature-card__meta"><span>تدبر</span><span>بحث</span></div>
+          </a>
+          <a href="/articles" class="ic-feature-card">
+            <span class="ic-feature-card__icon">📰</span>
+            <h3>مقالات إسلامية</h3>
+            <p>محتوى معرفي منظم للقراءة السريعة مع انتقال واضح بين الموضوعات.</p>
+            <div class="ic-feature-card__meta"><span>قراءة</span><span>معرفة</span></div>
+          </a>
+          <a href="/khatma" class="ic-feature-card">
+            <span class="ic-feature-card__icon">📖</span>
+            <h3>متتبع الختمة</h3>
+            <p>قارئ مصحف، تتبع صفحات، ومؤشرات تقدّم تساعدك على الاستمرار.</p>
+            <div class="ic-feature-card__meta"><span>تقدّم</span><span>مصحف</span></div>
+          </a>
+          <a href="/athkar" class="ic-feature-card">
+            <span class="ic-feature-card__icon">🤲</span>
+            <h3>الأذكار والدعاء</h3>
+            <p>أذكار يومية وتسبيح رقمي بألوان هادئة مناسبة للوضعين الليلي والنهاري.</p>
+            <div class="ic-feature-card__meta"><span>أذكار</span><span>تسبيح</span></div>
+          </a>
+          <a href="/zakat" class="ic-feature-card">
+            <span class="ic-feature-card__icon">🧮</span>
+            <h3>حاسبات إسلامية</h3>
+            <p>زكاة، ميراث، عمر، وكفارة داخل مسار واضح يسهّل الوصول للأداة المناسبة.</p>
+            <div class="ic-feature-card__meta"><span>حسابات</span><span>منظم</span></div>
+          </a>
+        </div>
+
+        <aside class="ic-home-panel" aria-label="ملخص المنصة">
+          <h3>واجهة واحدة لكل ما يحتاجه الزائر</h3>
+          <div class="ic-home-panel__list">
+            <div class="ic-home-panel__item">
+              <span>🖥️</span>
+              <div><strong>تجربة أوسع على الشاشات الكبيرة</strong><span>مساحات أفضل، بطاقات أوضح، وتنقّل أسهل على سطح المكتب والتلفاز الذكي.</span></div>
+            </div>
+            <div class="ic-home-panel__item">
+              <span>🔐</span>
+              <div><strong>حساب واحد ومتابعة موحّدة</strong><span>الدخول يحفظ ملفك، تقدّمك، ولوحة الميدان دون تشتيت بين الصفحات.</span></div>
+            </div>
+            <div class="ic-home-panel__item">
+              <span>⚡</span>
+              <div><strong>وصول مباشر للمهم</strong><span>ابدأ من الصلاة، الختمة، الأذكار، أو المقالات من الصفحة الرئيسية مباشرة.</span></div>
+            </div>
+          </div>
+          <div class="ic-home-panel__actions">
+            <a href="/prayer" class="ic-btn ic-btn--primary ic-btn--sm">أوقات الصلاة ←</a>
+            <a href="/contact" class="ic-btn ic-btn--secondary ic-btn--sm">اقترح تحسيناً</a>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+<!-- ============================================================
        SECTION: الميدان (Arena Preview)
        ============================================================ -->
   <section class="ic-section ic-section--arena" aria-label="الميدان الديني">
@@ -700,7 +798,251 @@
     </div>
   </div>
 
-  <script>
+    <script>
+    const MAKKAH_PRAYER_META = {
+      city: 'Makkah',
+      country: 'Saudi Arabia',
+      label: 'مكة المكرمة',
+      method: 4,
+      timezone: 'Asia/Riyadh',
+      prayerOrder: ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'],
+      labels: {
+        Fajr: 'الفجر',
+        Dhuhr: 'الظهر',
+        Asr: 'العصر',
+        Maghrib: 'المغرب',
+        Isha: 'العشاء',
+      },
+    };
+
+    const heroPrayerState = {
+      dateKey: '',
+      timings: null,
+      timer: null,
+    };
+
+    const heroLevels = [
+      { min: 0, name: 'مبتدئ', icon: '🌱' },
+      { min: 100, name: 'متعلم', icon: '📖' },
+      { min: 300, name: 'ملتزم', icon: '⭐' },
+      { min: 700, name: 'متقن', icon: '🌟' },
+      { min: 1500, name: 'حافظ', icon: '💎' },
+      { min: 3000, name: 'عالم', icon: '🏆' },
+      { min: 6000, name: 'إمام', icon: '👑' },
+    ];
+
+    function escapeHTML(value) {
+      return String(value ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function getMakkahNowParts() {
+      const parts = new Intl.DateTimeFormat('en-GB', {
+        timeZone: MAKKAH_PRAYER_META.timezone,
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false,
+      }).formatToParts(new Date()).reduce((acc, part) => {
+        if (part.type !== 'literal') acc[part.type] = part.value;
+        return acc;
+      }, {});
+
+      return {
+        year: Number(parts.year),
+        month: Number(parts.month),
+        day: Number(parts.day),
+        hour: Number(parts.hour),
+        minute: Number(parts.minute),
+        second: Number(parts.second),
+        key: `${parts.year}-${parts.month}-${parts.day}`,
+      };
+    }
+
+    function secondsFromTiming(raw) {
+      const match = String(raw || '').match(/(\d{1,2}):(\d{2})/);
+      if (!match) return null;
+      return Number(match[1]) * 3600 + Number(match[2]) * 60;
+    }
+
+    function formatCountdown(totalSeconds) {
+      const safe = Math.max(0, totalSeconds);
+      const hours = Math.floor(safe / 3600);
+      const minutes = Math.floor((safe % 3600) / 60);
+      const seconds = safe % 60;
+      return [hours, minutes, seconds].map(value => String(value).padStart(2, '0')).join(':');
+    }
+
+    function formatPrayerTime(raw) {
+      const match = String(raw || '').match(/(\d{1,2}):(\d{2})/);
+      if (!match) return '--';
+      const hour24 = Number(match[1]);
+      const minute = Number(match[2]);
+      const period = hour24 < 12 ? 'ص' : 'م';
+      const hour12 = ((hour24 + 11) % 12) + 1;
+      return `${hour12}:${String(minute).padStart(2, '0')} ${period}`;
+    }
+
+    function getHeroLevel(xp) {
+      for (let index = heroLevels.length - 1; index >= 0; index -= 1) {
+        if (xp >= heroLevels[index].min) return heroLevels[index];
+      }
+      return heroLevels[0];
+    }
+
+    function getNextHeroLevel(xp) {
+      return heroLevels.find(level => xp < level.min) || heroLevels[heroLevels.length - 1];
+    }
+
+    function updateHeroXP() {
+      const profile = window.islamiCalc?.getUserProfile?.();
+      const xp = Number(profile?.arenaXP || 0);
+      const display = document.getElementById('heroXPDisplay');
+      const current = document.getElementById('heroXPCurrent');
+      const next = document.getElementById('heroXPNext');
+      const bar = document.getElementById('heroXPBar');
+      const levelName = document.getElementById('heroLevelName');
+
+      if (!profile) {
+        if (display) display.textContent = '— نقطة';
+        if (current) current.textContent = '0';
+        if (next) next.textContent = '100';
+        if (bar) bar.style.width = '0%';
+        if (levelName) levelName.textContent = 'سجّل دخولك لعرض مستواك';
+        return;
+      }
+
+      const level = getHeroLevel(xp);
+      const nextLevel = getNextHeroLevel(xp);
+      const progress = level.min === nextLevel.min ? 100 : Math.min(Math.round(((xp - level.min) / (nextLevel.min - level.min)) * 100), 100);
+
+      if (display) display.textContent = `${xp.toLocaleString('ar')} نقطة`;
+      if (current) current.textContent = xp.toLocaleString('ar');
+      if (next) next.textContent = nextLevel.min.toLocaleString('ar');
+      if (bar) bar.style.width = `${progress}%`;
+      if (levelName) levelName.textContent = `${level.icon} ${level.name}`;
+    }
+
+    function getNextHeroPrayer() {
+      if (!heroPrayerState.timings) return null;
+      const now = getMakkahNowParts();
+      const nowSeconds = (now.hour * 3600) + (now.minute * 60) + now.second;
+
+      for (const key of MAKKAH_PRAYER_META.prayerOrder) {
+        const seconds = secondsFromTiming(heroPrayerState.timings[key]);
+        if (seconds == null) continue;
+        if (seconds > nowSeconds) {
+          return { key, countdown: seconds - nowSeconds, time: heroPrayerState.timings[key], tomorrow: false };
+        }
+      }
+
+      const fajrSeconds = secondsFromTiming(heroPrayerState.timings.Fajr);
+      if (fajrSeconds == null) return null;
+      return { key: 'Fajr', countdown: (24 * 3600) - nowSeconds + fajrSeconds, time: heroPrayerState.timings.Fajr, tomorrow: true };
+    }
+
+    function renderHeroPrayer() {
+      const name = document.getElementById('heroPrayerName');
+      const countdown = document.getElementById('heroPrayerCountdown');
+      const note = document.getElementById('heroPrayerNote');
+      const time = document.getElementById('heroPrayerTime');
+      const nextPrayer = getNextHeroPrayer();
+
+      if (!nextPrayer) {
+        if (name) name.textContent = 'مواقيت الصلاة';
+        if (countdown) countdown.textContent = '--:--:--';
+        if (note) note.textContent = 'مكة المكرمة · أم القرى';
+        if (time) time.textContent = 'تعذّر تحميل المواقيت الآن';
+        return;
+      }
+
+      if (name) name.textContent = MAKKAH_PRAYER_META.labels[nextPrayer.key] || nextPrayer.key;
+      if (countdown) countdown.textContent = formatCountdown(nextPrayer.countdown);
+      if (note) note.textContent = nextPrayer.tomorrow ? 'مكة المكرمة · الفجر القادم غداً' : 'مكة المكرمة · أم القرى';
+      if (time) time.textContent = `الوقت: ${formatPrayerTime(nextPrayer.time)}`;
+    }
+
+    async function loadHeroPrayer(force = false) {
+      const today = getMakkahNowParts();
+      if (!force && heroPrayerState.timings && heroPrayerState.dateKey === today.key) {
+        renderHeroPrayer();
+        return;
+      }
+
+      const countdown = document.getElementById('heroPrayerCountdown');
+      const time = document.getElementById('heroPrayerTime');
+      if (countdown) countdown.textContent = '--:--:--';
+      if (time) time.textContent = 'جاري تحميل المواقيت…';
+
+      try {
+        const response = await fetch(`https://api.aladhan.com/v1/timingsByCity/${today.day}-${today.month}-${today.year}?city=${encodeURIComponent(MAKKAH_PRAYER_META.city)}&country=${encodeURIComponent(MAKKAH_PRAYER_META.country)}&method=${MAKKAH_PRAYER_META.method}`);
+        const payload = await response.json();
+        if (!response.ok || payload.code !== 200 || !payload.data?.timings) throw new Error('Prayer API unavailable');
+
+        heroPrayerState.dateKey = today.key;
+        heroPrayerState.timings = payload.data.timings;
+        localStorage.setItem('hero_prayer_cache', JSON.stringify({ dateKey: today.key, timings: heroPrayerState.timings }));
+        renderHeroPrayer();
+      } catch (error) {
+        try {
+          const cached = JSON.parse(localStorage.getItem('hero_prayer_cache') || 'null');
+          if (cached?.timings) {
+            heroPrayerState.dateKey = cached.dateKey || today.key;
+            heroPrayerState.timings = cached.timings;
+            renderHeroPrayer();
+            const note = document.getElementById('heroPrayerNote');
+            if (note) note.textContent = 'مكة المكرمة · آخر مواقيت محفوظة';
+            return;
+          }
+        } catch {}
+
+        const note = document.getElementById('heroPrayerNote');
+        const timeLabel = document.getElementById('heroPrayerTime');
+        if (note) note.textContent = 'مكة المكرمة · تعذّر التحديث حالياً';
+        if (timeLabel) timeLabel.textContent = 'تحقّق من الاتصال ثم أعد المحاولة';
+      }
+    }
+
+    async function loadHeroLeaderboard() {
+      const lb = await window.islamiCalc?.getLeaderboard?.(4, 'alltime');
+      if (!lb?.length) return;
+      const list = document.getElementById('heroLeaderboard');
+      if (!list) return;
+      const medals = ['🥇', '🥈', '🥉', '4'];
+      list.innerHTML = lb.map((player, index) => `
+        <div class="ic-lb-item ${player.isMe ? 'ic-lb-item--me' : ''}">
+          <span class="ic-lb-item__rank ${index < 3 ? 'ic-lb-item__rank--' + (index + 1) : ''}">${medals[index] || index + 1}</span>
+          <div class="ic-lb-item__info">
+            <strong>${escapeHTML(player.displayName)}</strong>
+            <small>المستوى ${escapeHTML(player.level)}</small>
+          </div>
+          <span class="ic-lb-item__xp">${Number(player.arenaXP || 0).toLocaleString('ar')} XP</span>
+        </div>
+      `).join('');
+    }
+
+    function bootHeroWidgets() {
+      updateHeroXP();
+      loadHeroPrayer();
+      renderHeroPrayer();
+      clearInterval(heroPrayerState.timer);
+      heroPrayerState.timer = setInterval(() => {
+        if (heroPrayerState.dateKey && heroPrayerState.dateKey !== getMakkahNowParts().key) {
+          loadHeroPrayer(true);
+          return;
+        }
+        renderHeroPrayer();
+      }, 1000);
+      loadHeroLeaderboard();
+    }
+
     const nav = document.getElementById('icNav');
     if (nav) {
       const onScroll = () => nav.classList.toggle('ic-nav--scrolled', window.scrollY > 10);
@@ -712,36 +1054,13 @@
       document.getElementById('loginModal')?.classList.remove('ic-modal--open');
     });
 
-    document.addEventListener('DOMContentLoaded', () => {
-      const escapeHTML = value => String(value ?? '')
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#39;');
-
-      async function loadHeroLeaderboard() {
-        const lb = await window.islamiCalc?.getLeaderboard?.(4, 'alltime');
-        if (!lb?.length) return;
-        const list = document.getElementById('heroLeaderboard');
-        if (!list) return;
-        const medals = ['🥇','🥈','🥉','4'];
-        list.innerHTML = lb.map((p,i) => `
-          <div class="ic-lb-item ${p.isMe ? 'ic-lb-item--me' : ''}">
-            <span class="ic-lb-item__rank ${i<3?'ic-lb-item__rank--'+(i+1):''}">${medals[i]}</span>
-            <div class="ic-lb-item__info">
-              <strong>${escapeHTML(p.displayName)}</strong>
-              <small>المستوى ${escapeHTML(p.level)}</small>
-            </div>
-            <span class="ic-lb-item__xp">${Number(p.arenaXP || 0).toLocaleString('ar')} XP</span>
-          </div>
-        `).join('');
-      }
-
+    document.addEventListener('DOMContentLoaded', bootHeroWidgets);
+    document.addEventListener('islamiCalcReady', () => {
+      updateHeroXP();
       loadHeroLeaderboard();
-      document.addEventListener('islamiCalcReady', loadHeroLeaderboard);
     });
   </script>
 
 </body>
 </html>
+

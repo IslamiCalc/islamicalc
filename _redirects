@@ -46,9 +46,7 @@ https://www.islamicalc.com/* https://islamicalc.com/:splat  301!
 /sadaqa/*       /sadaqa/index.html       200
 /seerah/*       /seerah/index.html       200
 
-# ================================================
-# 5. Aliases — توجيه الأسماء القديمة
-# ================================================
+# # ================================================
 /hijiri/    /hijri/     301
 /hijiri     /hijri/     301
 /tasbih/    /athkar/    301

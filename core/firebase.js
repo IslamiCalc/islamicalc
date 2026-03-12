@@ -859,15 +859,251 @@ async function updateArenaStats(statsUpdate) {
 // ============================================================
 // AUTH — تسجيل الدخول بـ Google
 // ============================================================
+// ============================================================
+// KHATMA ROOMS — ختمة جماعية مع العائلة والأصدقاء
+// ============================================================
+function sanitizeRoomCode(value) {
+  const raw = sanitizeNonEmptyString(value, '');
+  if (!raw) return '';
+
+  try {
+    const parsed = new URL(raw, typeof window !== 'undefined' ? window.location.origin : 'https://islamicalc.com');
+    const roomParam = parsed.searchParams.get('room');
+    if (roomParam) return sanitizeRoomCode(roomParam);
+  } catch {
+    // Continue with plain room ids.
+  }
+
+  return /^[A-Za-z0-9_-]{10,128}$/.test(raw) ? raw : '';
+}
+
+function getKhatmaRoomDisplayName() {
+  return sanitizeNonEmptyString(
+    _userProfile?.displayName,
+    sanitizeNonEmptyString(_currentUser?.displayName, 'قارئ جديد')
+  ).slice(0, 80);
+}
+
+function getKhatmaRoomPhotoURL() {
+  return sanitizeString(_userProfile?.photoURL || _currentUser?.photoURL || '', '').slice(0, 500);
+}
+
+function getKhatmaRoomProgress(progress = {}) {
+  const currentPage = Math.min(
+    604,
+    toPositiveNumber(progress.currentPage, _userProfile?.khatmaStats?.currentPage || 1)
+  );
+  const completedPages = Math.min(
+    604,
+    toNonNegativeNumber(progress.completedPages, Object.keys(_userProfile?.khatmaPages || {}).length)
+  );
+  const completedSurahs = Math.min(114, toNonNegativeNumber(progress.completedSurahs, 0));
+  const streak = Math.min(3650, toNonNegativeNumber(progress.streak, _userProfile?.khatmaStats?.streak || 0));
+
+  return {
+    currentPage,
+    completedPages,
+    completedSurahs,
+    streak,
+  };
+}
+
+async function readKhatmaRoomMembers(roomId) {
+  const membersSnap = await getDocs(collection(db, 'khatmaRooms', roomId, 'members'));
+  return membersSnap.docs
+    .map(memberDoc => {
+      const data = memberDoc.data() || {};
+      return {
+        uid: sanitizeNonEmptyString(data.uid, memberDoc.id),
+        displayName: sanitizeNonEmptyString(data.displayName, 'قارئ'),
+        photoURL: sanitizeString(data.photoURL, ''),
+        currentPage: Math.min(604, toPositiveNumber(data.currentPage, 1)),
+        completedPages: Math.min(604, toNonNegativeNumber(data.completedPages, 0)),
+        completedSurahs: Math.min(114, toNonNegativeNumber(data.completedSurahs, 0)),
+        streak: Math.min(3650, toNonNegativeNumber(data.streak, 0)),
+        lastActivityAtMs: toNonNegativeNumber(data.lastActivityAtMs, 0),
+      };
+    })
+    .sort((left, right) => (
+      (right.completedPages - left.completedPages)
+      || (right.lastActivityAtMs - left.lastActivityAtMs)
+      || left.displayName.localeCompare(right.displayName, 'ar')
+    ));
+}
+
+async function upsertKhatmaRoomMember(roomId, progress = {}) {
+  if (!_currentUser) return null;
+
+  const memberRef = doc(db, 'khatmaRooms', roomId, 'members', _currentUser.uid);
+  const memberSnap = await getDoc(memberRef);
+  const snapshot = getKhatmaRoomProgress(progress);
+
+  const nextMember = {
+    uid: _currentUser.uid,
+    displayName: getKhatmaRoomDisplayName(),
+    photoURL: getKhatmaRoomPhotoURL(),
+    currentPage: snapshot.currentPage,
+    completedPages: snapshot.completedPages,
+    completedSurahs: snapshot.completedSurahs,
+    streak: snapshot.streak,
+    joinedAt: memberSnap.exists() ? memberSnap.data().joinedAt : serverTimestamp(),
+    updatedAt: serverTimestamp(),
+    lastActivityAtMs: Date.now(),
+  };
+
+  await setDoc(memberRef, nextMember);
+  return nextMember;
+}
+
+async function rebuildKhatmaRoom(roomId) {
+  const roomRef = doc(db, 'khatmaRooms', roomId);
+  const roomSnap = await getDoc(roomRef);
+  if (!roomSnap.exists()) return null;
+
+  const currentRoom = roomSnap.data() || {};
+  const members = await readKhatmaRoomMembers(roomId);
+  const memberCount = members.length;
+  const totalCompletedPages = members.reduce((sum, member) => sum + member.completedPages, 0);
+  const progressPercent = memberCount
+    ? Math.min(100, Math.round((totalCompletedPages / (memberCount * 604)) * 100))
+    : 0;
+
+  const nextRoom = {
+    name: sanitizeNonEmptyString(currentRoom.name, 'ختمة جماعية').slice(0, 80),
+    ownerUid: sanitizeNonEmptyString(currentRoom.ownerUid, _currentUser?.uid || ''),
+    ownerName: sanitizeNonEmptyString(currentRoom.ownerName, getKhatmaRoomDisplayName()).slice(0, 80),
+    inviteCode: roomId,
+    memberCount,
+    totalCompletedPages,
+    progressPercent,
+    createdAt: currentRoom.createdAt || serverTimestamp(),
+    updatedAt: serverTimestamp(),
+    lastActivityAtMs: Date.now(),
+  };
+
+  await setDoc(roomRef, nextRoom);
+
+  return {
+    roomId,
+    ...nextRoom,
+    members,
+    inviteUrl: typeof window !== 'undefined' ? `${window.location.origin}/khatma?room=${roomId}` : `/khatma?room=${roomId}`,
+  };
+}
+
+async function getKhatmaRoom(roomId) {
+  if (!_currentUser) return null;
+
+  const safeRoomId = sanitizeRoomCode(roomId);
+  if (!safeRoomId) return null;
+
+  const roomSnap = await getDoc(doc(db, 'khatmaRooms', safeRoomId));
+  if (!roomSnap.exists()) return null;
+
+  const room = roomSnap.data() || {};
+  const members = await readKhatmaRoomMembers(safeRoomId);
+
+  return {
+    roomId: safeRoomId,
+    name: sanitizeNonEmptyString(room.name, 'ختمة جماعية'),
+    ownerUid: sanitizeNonEmptyString(room.ownerUid, ''),
+    ownerName: sanitizeNonEmptyString(room.ownerName, 'منشئ الغرفة'),
+    inviteCode: safeRoomId,
+    memberCount: toNonNegativeNumber(room.memberCount, members.length),
+    totalCompletedPages: toNonNegativeNumber(room.totalCompletedPages, members.reduce((sum, member) => sum + member.completedPages, 0)),
+    progressPercent: toNonNegativeNumber(room.progressPercent, 0),
+    members,
+    inviteUrl: typeof window !== 'undefined' ? `${window.location.origin}/khatma?room=${safeRoomId}` : `/khatma?room=${safeRoomId}`,
+  };
+}
+
+async function createKhatmaRoom(name = 'ختمة جماعية') {
+  if (!_currentUser) return null;
+
+  const roomId = (typeof crypto !== 'undefined' && crypto.randomUUID)
+    ? crypto.randomUUID().replace(/-/g, '')
+    : `${Date.now().toString(36)}${Math.random().toString(36).slice(2, 12)}`;
+  const roomName = sanitizeNonEmptyString(name, 'ختمة جماعية').slice(0, 80);
+
+  await setDoc(doc(db, 'khatmaRooms', roomId), {
+    name: roomName,
+    ownerUid: _currentUser.uid,
+    ownerName: getKhatmaRoomDisplayName(),
+    inviteCode: roomId,
+    memberCount: 0,
+    totalCompletedPages: 0,
+    progressPercent: 0,
+    createdAt: serverTimestamp(),
+    updatedAt: serverTimestamp(),
+    lastActivityAtMs: Date.now(),
+  });
+
+  await upsertKhatmaRoomMember(roomId);
+  return rebuildKhatmaRoom(roomId);
+}
+
+async function joinKhatmaRoom(roomId, progress = {}) {
+  if (!_currentUser) return null;
+
+  const safeRoomId = sanitizeRoomCode(roomId);
+  if (!safeRoomId) return null;
+
+  const roomSnap = await getDoc(doc(db, 'khatmaRooms', safeRoomId));
+  if (!roomSnap.exists()) {
+    Events.emit(EVENTS.UI_TOAST, { message:'⚠️ رابط الختمة غير صالح أو أن الغرفة لم تعد متاحة.', type:'warning' });
+    return null;
+  }
+
+  await upsertKhatmaRoomMember(safeRoomId, progress);
+  return rebuildKhatmaRoom(safeRoomId);
+}
+
+async function syncKhatmaRoomProgress(roomId, progress = {}) {
+  if (!_currentUser) return null;
+
+  const safeRoomId = sanitizeRoomCode(roomId);
+  if (!safeRoomId) return null;
+
+  const roomSnap = await getDoc(doc(db, 'khatmaRooms', safeRoomId));
+  if (!roomSnap.exists()) return null;
+
+  await upsertKhatmaRoomMember(safeRoomId, progress);
+  return rebuildKhatmaRoom(safeRoomId);
+}
 async function loginWithGoogle() {
   try {
     const result = await signInWithPopup(auth, provider);
     return result.user;
   } catch (err) {
-    if (err.code !== 'auth/popup-closed-by-user') {
-      console.error('[Firebase] loginWithGoogle error:', err);
-      Events.emit(EVENTS.UI_TOAST, { message:'❌ فشل تسجيل الدخول، حاول مرة أخرى', type:'error' });
+    if (err.code === 'auth/popup-closed-by-user') {
+      return null;
     }
+
+    if (err.code === 'auth/popup-blocked' || err.code === 'auth/cancelled-popup-request') {
+      try {
+        await signInWithRedirect(auth, provider);
+        return null;
+      } catch (redirectErr) {
+        console.error('[Firebase] loginWithGoogle redirect fallback error:', redirectErr);
+        Events.emit(EVENTS.UI_TOAST, { message:'\u062a\u0639\u0630\u0631 \u0628\u062f\u0621 \u062a\u0633\u062c\u064a\u0644 \u0627\u0644\u062f\u062e\u0648\u0644 \u0627\u0644\u0622\u0646. \u062d\u0627\u0648\u0644 \u0645\u062c\u062f\u062f\u064b\u0627 \u0623\u0648 \u0623\u0639\u062f \u062a\u062d\u0645\u064a\u0644 \u0627\u0644\u0635\u0641\u062d\u0629.', type:'error' });
+        return null;
+      }
+    }
+
+    if (err.code === 'auth/unauthorized-domain') {
+      if (typeof window !== 'undefined' && window.location?.hostname === '127.0.0.1') {
+        const localhostUrl = `${window.location.protocol}//localhost:${window.location.port}${window.location.pathname}${window.location.search}${window.location.hash}`;
+        Events.emit(EVENTS.UI_TOAST, { message:'\u062a\u0633\u062c\u064a\u0644 Google \u064a\u0639\u0645\u0644 \u0647\u0646\u0627 \u0639\u0628\u0631 localhost \u0641\u0642\u0637. \u0633\u064a\u062a\u0645 \u062a\u062d\u0648\u064a\u0644\u0643 \u0627\u0644\u0622\u0646.', type:'warning' });
+        setTimeout(() => window.location.replace(localhostUrl), 1200);
+        return null;
+      }
+
+      Events.emit(EVENTS.UI_TOAST, { message:'\u064a\u062c\u0628 \u0625\u0636\u0627\u0641\u0629 \u0647\u0630\u0627 \u0627\u0644\u0646\u0637\u0627\u0642 \u0625\u0644\u0649 Authorized Domains \u0641\u064a Firebase Authentication.', type:'warning' });
+      return null;
+    }
+
+    console.error('[Firebase] loginWithGoogle error:', err);
+    Events.emit(EVENTS.UI_TOAST, { message:'\u0641\u0634\u0644 \u062a\u0633\u062c\u064a\u0644 \u0627\u0644\u062f\u062e\u0648\u0644. \u062d\u0627\u0648\u0644 \u0645\u0631\u0629 \u0623\u062e\u0631\u0649.', type:'error' });
     return null;
   }
 }
@@ -968,7 +1204,7 @@ window.islamiCalc = {
   SPIRITUAL_PAGES,
 };
 
-export { addXP, loginWithGoogle, logout, getLeaderboard, getArenaLeaderboard, ARENA_XP_CONFIG };
+export { addXP, loginWithGoogle, logout, getLeaderboard, getArenaLeaderboard, createKhatmaRoom, joinKhatmaRoom, getKhatmaRoom, syncKhatmaRoomProgress, ARENA_XP_CONFIG };
 
 
 
