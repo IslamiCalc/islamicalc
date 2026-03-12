@@ -252,6 +252,87 @@ service cloud.firestore {
         && data.updatedAt is timestamp;
     }
 
+    function validKhatmaRoomData(data, roomId) {
+      return data.keys().hasOnly([
+          'name',
+          'ownerUid',
+          'ownerName',
+          'inviteCode',
+          'memberCount',
+          'totalCompletedPages',
+          'progressPercent',
+          'createdAt',
+          'updatedAt',
+          'lastActivityAtMs'
+        ])
+        && data.keys().hasAll([
+          'name',
+          'ownerUid',
+          'ownerName',
+          'inviteCode',
+          'memberCount',
+          'totalCompletedPages',
+          'progressPercent',
+          'createdAt',
+          'updatedAt',
+          'lastActivityAtMs'
+        ])
+        && data.name is string
+        && data.name.size() > 0
+        && data.name.size() <= 80
+        && data.ownerUid is string
+        && data.ownerUid.size() > 0
+        && data.ownerUid.size() <= 128
+        && data.ownerName is string
+        && data.ownerName.size() > 0
+        && data.ownerName.size() <= 80
+        && data.inviteCode == roomId
+        && validNonNegativeNumber(data.memberCount, 200)
+        && validNonNegativeNumber(data.totalCompletedPages, 120800)
+        && validNonNegativeNumber(data.progressPercent, 100)
+        && data.createdAt is timestamp
+        && data.updatedAt is timestamp
+        && validNonNegativeNumber(data.lastActivityAtMs, 9999999999999);
+    }
+
+    function validKhatmaRoomMemberData(data, uid) {
+      return data.keys().hasOnly([
+          'uid',
+          'displayName',
+          'photoURL',
+          'currentPage',
+          'completedPages',
+          'completedSurahs',
+          'streak',
+          'joinedAt',
+          'updatedAt',
+          'lastActivityAtMs'
+        ])
+        && data.keys().hasAll([
+          'uid',
+          'displayName',
+          'photoURL',
+          'currentPage',
+          'completedPages',
+          'completedSurahs',
+          'streak',
+          'joinedAt',
+          'updatedAt',
+          'lastActivityAtMs'
+        ])
+        && data.uid == uid
+        && data.displayName is string
+        && data.displayName.size() > 0
+        && data.displayName.size() <= 80
+        && validOptionalString(data.photoURL, 500)
+        && validNonNegativeNumber(data.currentPage, 604)
+        && validNonNegativeNumber(data.completedPages, 604)
+        && validNonNegativeNumber(data.completedSurahs, 114)
+        && validNonNegativeNumber(data.streak, 3650)
+        && data.joinedAt is timestamp
+        && data.updatedAt is timestamp
+        && validNonNegativeNumber(data.lastActivityAtMs, 9999999999999);
+    }
     match /users/{uid} {
       allow read: if isOwner(uid);
 
@@ -284,6 +365,37 @@ service cloud.firestore {
       allow delete: if false;
     }
 
+    match /khatmaRooms/{roomId} {
+      allow read: if isSignedIn();
+
+      allow create: if isSignedIn()
+                    && request.resource.data.ownerUid == request.auth.uid
+                    && validKhatmaRoomData(request.resource.data, roomId);
+
+      allow update: if isSignedIn()
+                    && validKhatmaRoomData(request.resource.data, roomId)
+                    && (
+                      resource.data.ownerUid == request.auth.uid
+                      || exists(/databases/$(database)/documents/khatmaRooms/$(roomId)/members/$(request.auth.uid))
+                    );
+
+      allow delete: if false;
+
+      match /members/{uid} {
+        allow read: if isSignedIn();
+
+        allow create: if isOwner(uid)
+                      && validKhatmaRoomMemberData(request.resource.data, uid);
+
+        allow update: if validKhatmaRoomMemberData(request.resource.data, uid)
+                      && (
+                        isOwner(uid)
+                        || get(/databases/$(database)/documents/khatmaRooms/$(roomId)).data.ownerUid == request.auth.uid
+                      );
+
+        allow delete: if false;
+      }
+    }
     match /arenaQuestions/{docId} {
       allow read: if isSignedIn();
       allow write: if false;

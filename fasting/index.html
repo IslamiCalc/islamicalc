@@ -3,8 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="/icons/favicon.ico" sizes="any">
+  <link rel="icon" type="image/svg+xml" href="/icons/favicon.svg">
+  <link rel="icon" type="image/png" sizes="96x96" href="/icons/favicon-96x96.png">
+  <link rel="shortcut icon" href="/icons/favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png">
+  <link rel="manifest" href="/icons/site.webmanifest">
   <link rel="canonical" href="https://islamicalc.com/fasting/">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌙</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/style.css">
@@ -36,6 +41,7 @@
       border:1px solid rgba(245,158,11,0.3);border-radius:14px;padding:20px;text-align:center;}
     .niyyah-text{font-size:18px;font-weight:700;line-height:2;color:var(--text-primary);margin-bottom:12px;}
   </style>
+  <script type="module" src="/core/site-shell.js"></script>
 </head>
 <body>
 <!-- ═══════════════════════════════════════════════════
@@ -49,15 +55,7 @@
 
     <!-- ── Logo ────────────────────────────── -->
     <a href="/" class="ic-nav__logo">
-      <div class="ic-nav__logo-mark">
-        <!-- Geometric Islamic star SVG -->
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
-             xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <path d="M12 2L14.09 8.26L21 9L15.54 14.74L17.18 22L12 18.77
-                   L6.82 22L8.46 14.74L3 9L9.91 8.26L12 2Z"
-                fill="rgba(255,255,255,0.95)" stroke="none"/>
-        </svg>
-      </div>
+      <img src="/icons/logo.png" class="site-logo" alt="Site Logo">
       <span class="ic-nav__logo-text">IslamiCalc</span>
     </a>
 
@@ -119,14 +117,7 @@
   <!-- Drawer Header -->
   <div class="ic-drawer__header">
     <a href="/" class="ic-drawer__logo">
-      <div class="ic-nav__logo-mark ic-nav__logo-mark--sm">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
-             xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <path d="M12 2L14.09 8.26L21 9L15.54 14.74L17.18 22L12 18.77
-                   L6.82 22L8.46 14.74L3 9L9.91 8.26L12 2Z"
-                fill="rgba(255,255,255,0.95)"/>
-        </svg>
-      </div>
+      <img src="/icons/logo.png" class="site-logo site-logo--sm" alt="Site Logo">
       <span class="ic-nav__logo-text">IslamiCalc</span>
     </a>
     <button id="drawerClose" class="ic-drawer__close" aria-label="إغلاق القائمة">

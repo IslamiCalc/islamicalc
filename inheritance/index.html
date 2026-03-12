@@ -1,8 +1,17 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl" data-theme="dark">
 <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <link rel="icon" href="/icons/favicon.ico" sizes="any">
+  <link rel="icon" type="image/svg+xml" href="/icons/favicon.svg">
+  <link rel="icon" type="image/png" sizes="96x96" href="/icons/favicon-96x96.png">
+  <link rel="shortcut icon" href="/icons/favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png">
+  <link rel="manifest" href="/icons/site.webmanifest">
 <title>حاسبة الميراث | IslamiCalc</title>
 <meta name="description" content="حاسبة ميراث تعليمية لتقدير الأنصبة والفروض الأساسية مع تنبيه بوجوب الرجوع للقضاء الشرعي.">
+<link rel="canonical" href="https://islamicalc.com/inheritance/">
+<script type="module" src="/core/firebase.js"></script>
+  <script type="module" src="/core/site-shell.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../style.css">
@@ -14,26 +23,12 @@
 .share-bar{height:8px;border-radius:30px;background:linear-gradient(90deg,var(--gold),#f97316);margin-top:4px;}
 .hadith-box{background:rgba(245,158,11,0.06);border-right:3px solid var(--gold);padding:12px 14px;border-radius:0 10px 10px 0;margin:10px 0;}
 </style></head><body>
-<!-- ═══════════════════════════════════════════════════
-     IslamiCalc  ·  Redesigned Navigation Bar
-     Drop this <header> block into every page, replacing
-     the existing <header class="ic-nav" …> … </header>
-═══════════════════════════════════════════════════ -->
-
 <header class="ic-nav" id="icNav">
   <div class="ic-nav__inner">
 
     <!-- ── Logo ────────────────────────────── -->
     <a href="/" class="ic-nav__logo">
-      <div class="ic-nav__logo-mark">
-        <!-- Geometric Islamic star SVG -->
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
-             xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <path d="M12 2L14.09 8.26L21 9L15.54 14.74L17.18 22L12 18.77
-                   L6.82 22L8.46 14.74L3 9L9.91 8.26L12 2Z"
-                fill="rgba(255,255,255,0.95)" stroke="none"/>
-        </svg>
-      </div>
+      <img src="/icons/logo.png" class="site-logo" alt="Site Logo">
       <span class="ic-nav__logo-text">IslamiCalc</span>
     </a>
 
@@ -95,14 +90,7 @@
   <!-- Drawer Header -->
   <div class="ic-drawer__header">
     <a href="/" class="ic-drawer__logo">
-      <div class="ic-nav__logo-mark ic-nav__logo-mark--sm">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
-             xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <path d="M12 2L14.09 8.26L21 9L15.54 14.74L17.18 22L12 18.77
-                   L6.82 22L8.46 14.74L3 9L9.91 8.26L12 2Z"
-                fill="rgba(255,255,255,0.95)"/>
-        </svg>
-      </div>
+      <img src="/icons/logo.png" class="site-logo site-logo--sm" alt="Site Logo">
       <span class="ic-nav__logo-text">IslamiCalc</span>
     </a>
     <button id="drawerClose" class="ic-drawer__close" aria-label="إغلاق القائمة">
@@ -361,8 +349,8 @@
   <div class="hadith-box"><p style="font-size:13px;color:var(--gold);">«تعلموا الفرائض وعلّموها، فإنها نصف العلم» — رواه ابن ماجه</p></div>
 
   <div class="card" style="border:1px solid rgba(245,158,11,0.28);background:rgba(245,158,11,0.08);">
-    <h2 style="font-size:15px;font-weight:900;margin-bottom:8px;">?? ????? ???</h2>
-    <p style="font-size:13px;line-height:1.9;color:var(--text-muted);">??? ??????? ???? ??????? ??????? ???? ?????? ????????? ????? ???? ????? ??? ????? ???????. ?? ??????? ???????? ???? ????? ????? ?? ????? ?? ??????? ?? ???? ??? ?????? ??? ?????? ??? ???? ????? ?? ??????? ???????.</p>
+    <h2 style="font-size:15px;font-weight:900;margin-bottom:8px;">\u062a\u0646\u0628\u064a\u0647 \u0645\u0647\u0645 \u0642\u0628\u0644 \u0627\u0633\u062a\u062e\u062f\u0627\u0645 \u0627\u0644\u062d\u0627\u0633\u0628\u0629</h2>
+    <p style="font-size:13px;line-height:1.9;color:var(--text-muted);">\u0647\u0630\u0647 \u0627\u0644\u062d\u0627\u0633\u0628\u0629 \u0623\u062f\u0627\u0629 \u062a\u0639\u0644\u064a\u0645\u064a\u0629 \u062a\u0642\u0631\u064a\u0628\u064a\u0629 \u0644\u0641\u0647\u0645 \u0642\u0633\u0645\u0629 \u0627\u0644\u062a\u0631\u0643\u0629 \u0648\u0641\u0642 \u0645\u0633\u0627\u0626\u0644 \u0627\u0644\u0641\u0631\u0627\u0626\u0636. \u0641\u064a \u0627\u0644\u062d\u0627\u0644\u0627\u062a \u0627\u0644\u0648\u0627\u0642\u0639\u064a\u0629 \u0646\u0646\u0635\u062d \u0628\u0645\u0631\u0627\u062c\u0639\u0629 \u0639\u0627\u0644\u0645 \u0645\u0648\u062b\u0648\u0642 \u0623\u0648 \u0627\u0644\u0645\u062d\u0643\u0645\u0629 \u0627\u0644\u0645\u062e\u062a\u0635\u0629 \u0642\u0628\u0644 \u0627\u0639\u062a\u0645\u0627\u062f \u0623\u064a \u062a\u0648\u0632\u064a\u0639 \u0646\u0647\u0627\u0626\u064a.</p>
   </div>
 
   <!-- التركة -->
@@ -555,7 +543,7 @@ function calcInheritance(){
     <div style="background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.2);border-radius:10px;padding:10px;text-align:center;margin-top:8px;">
       <p style="font-size:13px;font-weight:800;color:#10b981;">✅ الموزَّع: ${fmtNum(totalDist)} ريال</p>
     </div>
-    <p style="font-size:11px;color:var(--text-muted);text-align:center;margin-top:8px;">?? ??? ??????? ??????? ??????? ????? ???? ?? ????? ??????? ? ???? ?????? ??????? ?? ??????? ??????? ??? ?????? ???????</p>`;
+    <p style="font-size:11px;color:var(--text-muted);text-align:center;margin-top:8px;">\u0647\u0630\u0647 \u0627\u0644\u0646\u062a\u0627\u0626\u062c \u0644\u0644\u062a\u062b\u0642\u064a\u0641 \u0648\u0627\u0644\u062a\u0642\u062f\u064a\u0631 \u0641\u0642\u0637\u060c \u0648\u0642\u062f \u062a\u062e\u062a\u0644\u0641 \u0628\u062d\u0633\u0628 \u062a\u0641\u0627\u0635\u064a\u0644 \u0627\u0644\u0645\u0633\u0623\u0644\u0629 \u0623\u0648 \u0648\u062c\u0648\u062f \u0648\u0631\u062b\u0629 \u0625\u0636\u0627\u0641\u064a\u064a\u0646 \u0623\u0648 \u0645\u0648\u0627\u0646\u0639 \u0634\u0631\u0639\u064a\u0629.</p>`;
 }
 
 function fmtNum(n){return n.toLocaleString("ar-SA",{minimumFractionDigits:0,maximumFractionDigits:0});}
@@ -574,4 +562,14 @@ document.getElementById("faradList").innerHTML=FARAD.map(f=>`
     <p style="font-size:22px;font-weight:900;color:var(--gold);">${f.f}</p>
     <p style="font-size:11px;color:var(--text-muted);margin-top:4px;line-height:1.6;">${f.h}</p>
   </div>`).join("");
+document.getElementById("loginBtn")?.addEventListener("click",()=>{
+  const api=window.islamiCalc;
+  if(!api) return;
+  api.getCurrentUser?.() ? api.showUserMenu?.() : api.loginWithGoogle?.();
+});
+document.getElementById("drawerLoginBtn")?.addEventListener("click",()=>{
+  const api=window.islamiCalc;
+  if(!api) return;
+  api.getCurrentUser?.() ? api.showUserMenu?.() : api.loginWithGoogle?.();
+});
 </script></body></html>

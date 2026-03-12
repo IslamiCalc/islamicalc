@@ -1,18 +1,23 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ar" dir="rtl" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>دليل رمضان — IslamiCalc</title>
-  <meta name="description" content="صفحة تجمع أهم أدوات رمضان في IslamiCalc: الصيام، أوقات الصلاة، الختمة، الأذكار، الصدقة والزكاة.">
+  <link rel="icon" href="/icons/favicon.ico" sizes="any">
+  <link rel="icon" type="image/svg+xml" href="/icons/favicon.svg">
+  <link rel="icon" type="image/png" sizes="96x96" href="/icons/favicon-96x96.png">
+  <link rel="shortcut icon" href="/icons/favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png">
+  <link rel="manifest" href="/icons/site.webmanifest">
+  <title>Ø¯Ù„ÙŠÙ„ Ø±Ù…Ø¶Ø§Ù† â€” IslamiCalc</title>
+  <meta name="description" content="ØµÙØ­Ø© ØªØ¬Ù…Ø¹ Ø£Ù‡Ù… Ø£Ø¯ÙˆØ§Øª Ø±Ù…Ø¶Ø§Ù† ÙÙŠ IslamiCalc: Ø§Ù„ØµÙŠØ§Ù…ØŒ Ø£ÙˆÙ‚Ø§Øª Ø§Ù„ØµÙ„Ø§Ø©ØŒ Ø§Ù„Ø®ØªÙ…Ø©ØŒ Ø§Ù„Ø£Ø°ÙƒØ§Ø±ØŒ Ø§Ù„ØµØ¯Ù‚Ø© ÙˆØ§Ù„Ø²ÙƒØ§Ø©.">
   <link rel="canonical" href="https://islamicalc.com/ramadan/">
-  <link rel="manifest" href="/manifest.json">
-  <link rel="icon" href="/assets/favicon-32.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/style.css">
   <script type="module" src="/core/firebase.js"></script>
   <script type="module" src="/core/app.js"></script>
+  <script type="module" src="/core/site-shell.js"></script>
   <style>
     .rd-shell{max-width:1120px;margin:0 auto;padding:24px 16px 88px;}
     .rd-hero{position:relative;overflow:hidden;background:radial-gradient(circle at top right,rgba(245,158,11,.2),transparent 34%),linear-gradient(135deg,#0f172a 0%,#163327 100%);border:1px solid rgba(255,255,255,.08);border-radius:28px;padding:32px 24px;margin-bottom:24px;box-shadow:0 24px 80px rgba(0,0,0,.18)}
@@ -44,103 +49,106 @@
   </style>
 </head>
 <body>
-  <nav class="rd-nav" aria-label="روابط رمضان">
+  <nav class="rd-nav" aria-label="Ø±ÙˆØ§Ø¨Ø· Ø±Ù…Ø¶Ø§Ù†">
     <a class="rd-nav__brand" href="/">
-      <span style="font-size:22px">🌙</span>
+      <img src="/icons/logo.png" class="site-logo" alt="Site Logo">
       <span>IslamiCalc Ramadan</span>
     </a>
     <div class="rd-nav__links">
-      <a href="/fasting/">الصيام</a>
-      <a href="/prayer/">الصلاة</a>
-      <a href="/khatma/">الختمة</a>
-      <a href="/athkar/">الأذكار</a>
-      <a href="/zakat/">الزكاة</a>
+      <a href="/fasting/">Ø§Ù„ØµÙŠØ§Ù…</a>
+      <a href="/prayer/">Ø§Ù„ØµÙ„Ø§Ø©</a>
+      <a href="/khatma/">Ø§Ù„Ø®ØªÙ…Ø©</a>
+      <a href="/athkar/">Ø§Ù„Ø£Ø°ÙƒØ§Ø±</a>
+      <a href="/zakat/">Ø§Ù„Ø²ÙƒØ§Ø©</a>
     </div>
   </nav>
 
   <main class="rd-shell">
     <section class="rd-hero">
-      <div class="rd-hero__eyebrow">🌙 موسم عبادة منظم</div>
-      <h1>دليل رمضان في IslamiCalc</h1>
-      <p>صفحة تجمع الأدوات الأهم لشهر رمضان في مكان واحد: متابعة الصيام، أوقات الصلاة، خطة الختمة، الأذكار اليومية، الصدقة، وزكاة الفطر. الهدف أن يبدأ المستخدم يومه بخطة واضحة، لا أن يتنقل بين الصفحات بلا سياق.</p>
+      <div class="rd-hero__eyebrow">ðŸŒ™ Ù…ÙˆØ³Ù… Ø¹Ø¨Ø§Ø¯Ø© Ù…Ù†Ø¸Ù…</div>
+      <h1>Ø¯Ù„ÙŠÙ„ Ø±Ù…Ø¶Ø§Ù† ÙÙŠ IslamiCalc</h1>
+      <p>ØµÙØ­Ø© ØªØ¬Ù…Ø¹ Ø§Ù„Ø£Ø¯ÙˆØ§Øª Ø§Ù„Ø£Ù‡Ù… Ù„Ø´Ù‡Ø± Ø±Ù…Ø¶Ø§Ù† ÙÙŠ Ù…ÙƒØ§Ù† ÙˆØ§Ø­Ø¯: Ù…ØªØ§Ø¨Ø¹Ø© Ø§Ù„ØµÙŠØ§Ù…ØŒ Ø£ÙˆÙ‚Ø§Øª Ø§Ù„ØµÙ„Ø§Ø©ØŒ Ø®Ø·Ø© Ø§Ù„Ø®ØªÙ…Ø©ØŒ Ø§Ù„Ø£Ø°ÙƒØ§Ø± Ø§Ù„ÙŠÙˆÙ…ÙŠØ©ØŒ Ø§Ù„ØµØ¯Ù‚Ø©ØŒ ÙˆØ²ÙƒØ§Ø© Ø§Ù„ÙØ·Ø±. Ø§Ù„Ù‡Ø¯Ù Ø£Ù† ÙŠØ¨Ø¯Ø£ Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù… ÙŠÙˆÙ…Ù‡ Ø¨Ø®Ø·Ø© ÙˆØ§Ø¶Ø­Ø©ØŒ Ù„Ø§ Ø£Ù† ÙŠØªÙ†Ù‚Ù„ Ø¨ÙŠÙ† Ø§Ù„ØµÙØ­Ø§Øª Ø¨Ù„Ø§ Ø³ÙŠØ§Ù‚.</p>
       <div class="rd-actions">
-        <a class="btn btn-primary" href="/fasting/">ابدأ بخطة الصيام</a>
-        <a class="btn btn-secondary" href="/khatma/">نظّم ختمتك</a>
+        <a class="btn btn-primary" href="/fasting/">Ø§Ø¨Ø¯Ø£ Ø¨Ø®Ø·Ø© Ø§Ù„ØµÙŠØ§Ù…</a>
+        <a class="btn btn-secondary" href="/khatma/">Ù†Ø¸Ù‘Ù… Ø®ØªÙ…ØªÙƒ</a>
       </div>
     </section>
 
     <section class="rd-section">
-      <h2>الأدوات الأساسية في رمضان</h2>
+      <h2>Ø§Ù„Ø£Ø¯ÙˆØ§Øª Ø§Ù„Ø£Ø³Ø§Ø³ÙŠØ© ÙÙŠ Ø±Ù…Ø¶Ø§Ù†</h2>
       <div class="rd-grid">
         <article class="rd-card">
-          <div class="rd-card__icon">🌅</div>
-          <div class="rd-card__title">أوقات الصلاة</div>
-          <div class="rd-card__meta">اعرف الفجر والمغرب بدقة حسب موقعك، وتابع العدّ التنازلي للصلاة التالية واتجاه القبلة.</div>
-          <a class="rd-card__link" href="/prayer/">فتح صفحة الصلاة</a>
+          <div class="rd-card__icon">ðŸŒ…</div>
+          <div class="rd-card__title">Ø£ÙˆÙ‚Ø§Øª Ø§Ù„ØµÙ„Ø§Ø©</div>
+          <div class="rd-card__meta">Ø§Ø¹Ø±Ù Ø§Ù„ÙØ¬Ø± ÙˆØ§Ù„Ù…ØºØ±Ø¨ Ø¨Ø¯Ù‚Ø© Ø­Ø³Ø¨ Ù…ÙˆÙ‚Ø¹ÙƒØŒ ÙˆØªØ§Ø¨Ø¹ Ø§Ù„Ø¹Ø¯Ù‘ Ø§Ù„ØªÙ†Ø§Ø²Ù„ÙŠ Ù„Ù„ØµÙ„Ø§Ø© Ø§Ù„ØªØ§Ù„ÙŠØ© ÙˆØ§ØªØ¬Ø§Ù‡ Ø§Ù„Ù‚Ø¨Ù„Ø©.</div>
+          <a class="rd-card__link" href="/prayer/">ÙØªØ­ ØµÙØ­Ø© Ø§Ù„ØµÙ„Ø§Ø©</a>
         </article>
         <article class="rd-card">
-          <div class="rd-card__icon">📿</div>
-          <div class="rd-card__title">الأذكار</div>
-          <div class="rd-card__meta">أذكار الصباح والمساء وأذكار النوم والاستيقاظ مع حفظ التقدم والعداد التفاعلي.</div>
-          <a class="rd-card__link" href="/athkar/">فتح الأذكار</a>
+          <div class="rd-card__icon">ðŸ“¿</div>
+          <div class="rd-card__title">Ø§Ù„Ø£Ø°ÙƒØ§Ø±</div>
+          <div class="rd-card__meta">Ø£Ø°ÙƒØ§Ø± Ø§Ù„ØµØ¨Ø§Ø­ ÙˆØ§Ù„Ù…Ø³Ø§Ø¡ ÙˆØ£Ø°ÙƒØ§Ø± Ø§Ù„Ù†ÙˆÙ… ÙˆØ§Ù„Ø§Ø³ØªÙŠÙ‚Ø§Ø¸ Ù…Ø¹ Ø­ÙØ¸ Ø§Ù„ØªÙ‚Ø¯Ù… ÙˆØ§Ù„Ø¹Ø¯Ø§Ø¯ Ø§Ù„ØªÙØ§Ø¹Ù„ÙŠ.</div>
+          <a class="rd-card__link" href="/athkar/">ÙØªØ­ Ø§Ù„Ø£Ø°ÙƒØ§Ø±</a>
         </article>
         <article class="rd-card">
-          <div class="rd-card__icon">📖</div>
-          <div class="rd-card__title">خطة الختمة</div>
-          <div class="rd-card__meta">قسّم القراءة على أيام الشهر، واحفظ التقدم اليومي، وراجع السور أو الصفحات التي أنجزتها.</div>
-          <a class="rd-card__link" href="/khatma/">فتح الختمة</a>
+          <div class="rd-card__icon">ðŸ“–</div>
+          <div class="rd-card__title">Ø®Ø·Ø© Ø§Ù„Ø®ØªÙ…Ø©</div>
+          <div class="rd-card__meta">Ù‚Ø³Ù‘Ù… Ø§Ù„Ù‚Ø±Ø§Ø¡Ø© Ø¹Ù„Ù‰ Ø£ÙŠØ§Ù… Ø§Ù„Ø´Ù‡Ø±ØŒ ÙˆØ§Ø­ÙØ¸ Ø§Ù„ØªÙ‚Ø¯Ù… Ø§Ù„ÙŠÙˆÙ…ÙŠØŒ ÙˆØ±Ø§Ø¬Ø¹ Ø§Ù„Ø³ÙˆØ± Ø£Ùˆ Ø§Ù„ØµÙØ­Ø§Øª Ø§Ù„ØªÙŠ Ø£Ù†Ø¬Ø²ØªÙ‡Ø§.</div>
+          <a class="rd-card__link" href="/khatma/">ÙØªØ­ Ø§Ù„Ø®ØªÙ…Ø©</a>
         </article>
         <article class="rd-card">
-          <div class="rd-card__icon">🗓️</div>
-          <div class="rd-card__title">حاسبة الصيام</div>
-          <div class="rd-card__meta">للصيام الواجب والقضاء والنذر والتتبع، مع ملاحظات فقهية مختصرة تسهّل التخطيط للشهر.</div>
-          <a class="rd-card__link" href="/fasting/">فتح الصيام</a>
+          <div class="rd-card__icon">ðŸ—“ï¸</div>
+          <div class="rd-card__title">Ø­Ø§Ø³Ø¨Ø© Ø§Ù„ØµÙŠØ§Ù…</div>
+          <div class="rd-card__meta">Ù„Ù„ØµÙŠØ§Ù… Ø§Ù„ÙˆØ§Ø¬Ø¨ ÙˆØ§Ù„Ù‚Ø¶Ø§Ø¡ ÙˆØ§Ù„Ù†Ø°Ø± ÙˆØ§Ù„ØªØªØ¨Ø¹ØŒ Ù…Ø¹ Ù…Ù„Ø§Ø­Ø¸Ø§Øª ÙÙ‚Ù‡ÙŠØ© Ù…Ø®ØªØµØ±Ø© ØªØ³Ù‡Ù‘Ù„ Ø§Ù„ØªØ®Ø·ÙŠØ· Ù„Ù„Ø´Ù‡Ø±.</div>
+          <a class="rd-card__link" href="/fasting/">ÙØªØ­ Ø§Ù„ØµÙŠØ§Ù…</a>
         </article>
         <article class="rd-card">
-          <div class="rd-card__icon">🤲</div>
-          <div class="rd-card__title">الصدقة وزكاة الفطر</div>
-          <div class="rd-card__meta">خطّط للصدقة اليومية، وراجع أفكار الصدقة الجارية، واحسب زكاة الفطر والمال عند الحاجة.</div>
-          <a class="rd-card__link" href="/sadaqa/">فتح الصدقة</a>
+          <div class="rd-card__icon">ðŸ¤²</div>
+          <div class="rd-card__title">Ø§Ù„ØµØ¯Ù‚Ø© ÙˆØ²ÙƒØ§Ø© Ø§Ù„ÙØ·Ø±</div>
+          <div class="rd-card__meta">Ø®Ø·Ù‘Ø· Ù„Ù„ØµØ¯Ù‚Ø© Ø§Ù„ÙŠÙˆÙ…ÙŠØ©ØŒ ÙˆØ±Ø§Ø¬Ø¹ Ø£ÙÙƒØ§Ø± Ø§Ù„ØµØ¯Ù‚Ø© Ø§Ù„Ø¬Ø§Ø±ÙŠØ©ØŒ ÙˆØ§Ø­Ø³Ø¨ Ø²ÙƒØ§Ø© Ø§Ù„ÙØ·Ø± ÙˆØ§Ù„Ù…Ø§Ù„ Ø¹Ù†Ø¯ Ø§Ù„Ø­Ø§Ø¬Ø©.</div>
+          <a class="rd-card__link" href="/sadaqa/">ÙØªØ­ Ø§Ù„ØµØ¯Ù‚Ø©</a>
         </article>
         <article class="rd-card">
-          <div class="rd-card__icon">💰</div>
-          <div class="rd-card__title">الزكاة</div>
-          <div class="rd-card__meta">حاسبة مفصلة للذهب والفضة والتجارة والأسهم مع بطاقات توعوية وروابط للمصادر الشرعية.</div>
-          <a class="rd-card__link" href="/zakat/">فتح الزكاة</a>
+          <div class="rd-card__icon">ðŸ’°</div>
+          <div class="rd-card__title">Ø§Ù„Ø²ÙƒØ§Ø©</div>
+          <div class="rd-card__meta">Ø­Ø§Ø³Ø¨Ø© Ù…ÙØµÙ„Ø© Ù„Ù„Ø°Ù‡Ø¨ ÙˆØ§Ù„ÙØ¶Ø© ÙˆØ§Ù„ØªØ¬Ø§Ø±Ø© ÙˆØ§Ù„Ø£Ø³Ù‡Ù… Ù…Ø¹ Ø¨Ø·Ø§Ù‚Ø§Øª ØªÙˆØ¹ÙˆÙŠØ© ÙˆØ±ÙˆØ§Ø¨Ø· Ù„Ù„Ù…ØµØ§Ø¯Ø± Ø§Ù„Ø´Ø±Ø¹ÙŠØ©.</div>
+          <a class="rd-card__link" href="/zakat/">ÙØªØ­ Ø§Ù„Ø²ÙƒØ§Ø©</a>
         </article>
       </div>
     </section>
 
     <section class="rd-section">
-      <h2>خطة يومية مقترحة</h2>
+      <h2>Ø®Ø·Ø© ÙŠÙˆÙ…ÙŠØ© Ù…Ù‚ØªØ±Ø­Ø©</h2>
       <div class="rd-plan">
         <div class="rd-step">
-          <strong>بعد الفجر</strong>
-          <p>أذكار الصباح، ورد القرآن الأول، ومراجعة أوقات اليوم حتى لا يضيع وقت ما بعد الفجر.</p>
+          <strong>Ø¨Ø¹Ø¯ Ø§Ù„ÙØ¬Ø±</strong>
+          <p>Ø£Ø°ÙƒØ§Ø± Ø§Ù„ØµØ¨Ø§Ø­ØŒ ÙˆØ±Ø¯ Ø§Ù„Ù‚Ø±Ø¢Ù† Ø§Ù„Ø£ÙˆÙ„ØŒ ÙˆÙ…Ø±Ø§Ø¬Ø¹Ø© Ø£ÙˆÙ‚Ø§Øª Ø§Ù„ÙŠÙˆÙ… Ø­ØªÙ‰ Ù„Ø§ ÙŠØ¶ÙŠØ¹ ÙˆÙ‚Øª Ù…Ø§ Ø¨Ø¹Ø¯ Ø§Ù„ÙØ¬Ø±.</p>
         </div>
         <div class="rd-step">
-          <strong>قبل الظهر</strong>
-          <p>ورد خفيف ثابت من القرآن أو التفسير، مع ترتيب صدقة يومية أو عمل نافع واحد على الأقل.</p>
+          <strong>Ù‚Ø¨Ù„ Ø§Ù„Ø¸Ù‡Ø±</strong>
+          <p>ÙˆØ±Ø¯ Ø®ÙÙŠÙ Ø«Ø§Ø¨Øª Ù…Ù† Ø§Ù„Ù‚Ø±Ø¢Ù† Ø£Ùˆ Ø§Ù„ØªÙØ³ÙŠØ±ØŒ Ù…Ø¹ ØªØ±ØªÙŠØ¨ ØµØ¯Ù‚Ø© ÙŠÙˆÙ…ÙŠØ© Ø£Ùˆ Ø¹Ù…Ù„ Ù†Ø§ÙØ¹ ÙˆØ§Ø­Ø¯ Ø¹Ù„Ù‰ Ø§Ù„Ø£Ù‚Ù„.</p>
         </div>
         <div class="rd-step">
-          <strong>قبل المغرب</strong>
-          <p>الاستعداد للدعاء، مراجعة ما أُنجز من ورد الختمة، والتأكد من وقت الأذان بدقة.</p>
+          <strong>Ù‚Ø¨Ù„ Ø§Ù„Ù…ØºØ±Ø¨</strong>
+          <p>Ø§Ù„Ø§Ø³ØªØ¹Ø¯Ø§Ø¯ Ù„Ù„Ø¯Ø¹Ø§Ø¡ØŒ Ù…Ø±Ø§Ø¬Ø¹Ø© Ù…Ø§ Ø£ÙÙ†Ø¬Ø² Ù…Ù† ÙˆØ±Ø¯ Ø§Ù„Ø®ØªÙ…Ø©ØŒ ÙˆØ§Ù„ØªØ£ÙƒØ¯ Ù…Ù† ÙˆÙ‚Øª Ø§Ù„Ø£Ø°Ø§Ù† Ø¨Ø¯Ù‚Ø©.</p>
         </div>
         <div class="rd-step">
-          <strong>بعد التراويح</strong>
-          <p>مراجعة سريعة لليوم، تدوين التقصير، وتجهيز هدف عملي واضح لليوم التالي.</p>
+          <strong>Ø¨Ø¹Ø¯ Ø§Ù„ØªØ±Ø§ÙˆÙŠØ­</strong>
+          <p>Ù…Ø±Ø§Ø¬Ø¹Ø© Ø³Ø±ÙŠØ¹Ø© Ù„Ù„ÙŠÙˆÙ…ØŒ ØªØ¯ÙˆÙŠÙ† Ø§Ù„ØªÙ‚ØµÙŠØ±ØŒ ÙˆØªØ¬Ù‡ÙŠØ² Ù‡Ø¯Ù Ø¹Ù…Ù„ÙŠ ÙˆØ§Ø¶Ø­ Ù„Ù„ÙŠÙˆÙ… Ø§Ù„ØªØ§Ù„ÙŠ.</p>
         </div>
       </div>
     </section>
 
     <section class="rd-note">
-      <h2 style="margin:0">ما الذي ينقص المنصة بعد؟</h2>
+      <h2 style="margin:0">Ù…Ø§ Ø§Ù„Ø°ÙŠ ÙŠÙ†Ù‚Øµ Ø§Ù„Ù…Ù†ØµØ© Ø¨Ø¹Ø¯ØŸ</h2>
       <ul>
-        <li>عداد خاص بالعشر الأواخر مع خطة اعتكاف وورد ليلة القدر.</li>
-        <li>مفكرة رمضان قصيرة لتسجيل الأهداف اليومية ومحاسبة النفس.</li>
-        <li>بطاقات مرجعية لأحكام المفطرات وزكاة الفطر والسحور والإفطار.</li>
+        <li>Ø¹Ø¯Ø§Ø¯ Ø®Ø§Øµ Ø¨Ø§Ù„Ø¹Ø´Ø± Ø§Ù„Ø£ÙˆØ§Ø®Ø± Ù…Ø¹ Ø®Ø·Ø© Ø§Ø¹ØªÙƒØ§Ù ÙˆÙˆØ±Ø¯ Ù„ÙŠÙ„Ø© Ø§Ù„Ù‚Ø¯Ø±.</li>
+        <li>Ù…ÙÙƒØ±Ø© Ø±Ù…Ø¶Ø§Ù† Ù‚ØµÙŠØ±Ø© Ù„ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø£Ù‡Ø¯Ø§Ù Ø§Ù„ÙŠÙˆÙ…ÙŠØ© ÙˆÙ…Ø­Ø§Ø³Ø¨Ø© Ø§Ù„Ù†ÙØ³.</li>
+        <li>Ø¨Ø·Ø§Ù‚Ø§Øª Ù…Ø±Ø¬Ø¹ÙŠØ© Ù„Ø£Ø­ÙƒØ§Ù… Ø§Ù„Ù…ÙØ·Ø±Ø§Øª ÙˆØ²ÙƒØ§Ø© Ø§Ù„ÙØ·Ø± ÙˆØ§Ù„Ø³Ø­ÙˆØ± ÙˆØ§Ù„Ø¥ÙØ·Ø§Ø±.</li>
       </ul>
     </section>
   </main>
 </body>
 </html>
+
+
+

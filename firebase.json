@@ -1,4 +1,4 @@
-{
+﻿{
     "firestore":  {
                       "rules":  "firestore.rules",
                       "indexes":  "firestore.indexes.json"
@@ -78,7 +78,7 @@
                                                     ]
                                     },
                                     {
-                                        "source":  "/manifest.json",
+                                        "source":  "/icons/site.webmanifest",
                                         "headers":  [
                                                         {
                                                             "key":  "Cache-Control",

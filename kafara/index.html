@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl" data-theme="dark">
 <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <link rel="icon" href="/icons/favicon.ico" sizes="any">
+  <link rel="icon" type="image/svg+xml" href="/icons/favicon.svg">
+  <link rel="icon" type="image/png" sizes="96x96" href="/icons/favicon-96x96.png">
+  <link rel="shortcut icon" href="/icons/favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png">
+  <link rel="manifest" href="/icons/site.webmanifest">
 <title>حاسبة الكفارات | IslamiCalc</title>
 <meta name="description" content="احسب الكفارات الشائعة مثل كفارة اليمين والظهار ومحظورات الإحرام مع شرح مبسط.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -13,7 +19,8 @@
 .step-num{background:var(--primary);color:white;border-radius:50%;width:26px;height:26px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;flex-shrink:0;}
 .hadith-box{background:rgba(245,158,11,0.06);border-right:3px solid var(--gold);padding:12px 14px;border-radius:0 10px 10px 0;margin:10px 0;}
 .calc-row{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--border);font-size:13px;}
-.calc-row:last-child{border-bottom:none;}</style></head><body>
+.calc-row:last-child{border-bottom:none;}</style>  <script type="module" src="/core/site-shell.js"></script>
+</head><body>
 <!-- ═══════════════════════════════════════════════════
      IslamiCalc  ·  Redesigned Navigation Bar
      Drop this <header> block into every page, replacing
@@ -25,15 +32,7 @@
 
     <!-- ── Logo ────────────────────────────── -->
     <a href="/" class="ic-nav__logo">
-      <div class="ic-nav__logo-mark">
-        <!-- Geometric Islamic star SVG -->
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
-             xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <path d="M12 2L14.09 8.26L21 9L15.54 14.74L17.18 22L12 18.77
-                   L6.82 22L8.46 14.74L3 9L9.91 8.26L12 2Z"
-                fill="rgba(255,255,255,0.95)" stroke="none"/>
-        </svg>
-      </div>
+      <img src="/icons/logo.png" class="site-logo" alt="Site Logo">
       <span class="ic-nav__logo-text">IslamiCalc</span>
     </a>
 
@@ -95,14 +94,7 @@
   <!-- Drawer Header -->
   <div class="ic-drawer__header">
     <a href="/" class="ic-drawer__logo">
-      <div class="ic-nav__logo-mark ic-nav__logo-mark--sm">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
-             xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <path d="M12 2L14.09 8.26L21 9L15.54 14.74L17.18 22L12 18.77
-                   L6.82 22L8.46 14.74L3 9L9.91 8.26L12 2Z"
-                fill="rgba(255,255,255,0.95)"/>
-        </svg>
-      </div>
+      <img src="/icons/logo.png" class="site-logo site-logo--sm" alt="Site Logo">
       <span class="ic-nav__logo-text">IslamiCalc</span>
     </a>
     <button id="drawerClose" class="ic-drawer__close" aria-label="إغلاق القائمة">

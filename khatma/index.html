@@ -1,24 +1,30 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ar" dir="rtl" data-theme="dark">
 <head>
   <meta charset="UTF-8">
-  <title>ختمة القرآن الكريم | IslamiCalc</title>
-  <meta name="description" content="تتبع ختمتك بالسور أو الصفحات مع خطة مخصصة، XP يومي، Streak متتالي، وإحصائيات مفصلة.">
+  <title>Ø®ØªÙ…Ø© Ø§Ù„Ù‚Ø±Ø¢Ù† Ø§Ù„ÙƒØ±ÙŠÙ… | IslamiCalc</title>
+  <meta name="description" content="ØªØªØ¨Ø¹ Ø®ØªÙ…ØªÙƒ Ø¨Ø§Ù„Ø³ÙˆØ± Ø£Ùˆ Ø§Ù„ØµÙØ­Ø§Øª Ù…Ø¹ Ø®Ø·Ø© Ù…Ø®ØµØµØ©ØŒ XP ÙŠÙˆÙ…ÙŠØŒ Streak Ù…ØªØªØ§Ù„ÙŠØŒ ÙˆØ¥Ø­ØµØ§Ø¦ÙŠØ§Øª Ù…ÙØµÙ„Ø©.">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="/icons/favicon.ico" sizes="any">
+  <link rel="icon" type="image/svg+xml" href="/icons/favicon.svg">
+  <link rel="icon" type="image/png" sizes="96x96" href="/icons/favicon-96x96.png">
+  <link rel="shortcut icon" href="/icons/favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png">
+  <link rel="manifest" href="/icons/site.webmanifest">
   <link rel="canonical"  href="https://islamicalc.com/khatma/">
-  <link rel="manifest"   href="/manifest.json">
   <link rel="stylesheet" href="/style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&family=Inter:wght@400;600;700;800;900&family=Scheherazade+New:wght@400;700&display=swap" rel="stylesheet">
   <script type="module" src="/core/firebase.js"></script>
+  <script type="module" src="/core/site-shell.js"></script>
 
   <style>
   /* ============================================================
-     Khatma — Page-Specific Styles
+     Khatma â€” Page-Specific Styles
      ============================================================ */
 
-  /* ── Hero ── */
+  /* â”€â”€ Hero â”€â”€ */
   .kh-hero {
     background: linear-gradient(160deg, #0a0e0b 0%, #0c1a10 50%, #0f1208 100%);
     padding: 96px var(--s-6) var(--s-10);
@@ -53,7 +59,7 @@
     margin-inline: auto;
   }
 
-  /* ── Stats Row ── */
+  /* â”€â”€ Stats Row â”€â”€ */
   .kh-stats {
     display: grid;
     grid-template-columns: repeat(4,1fr);
@@ -96,7 +102,7 @@
     margin-top: 3px;
   }
 
-  /* ── Progress Bar ── */
+  /* â”€â”€ Progress Bar â”€â”€ */
   .kh-progress { max-width: 680px; margin: 0 auto var(--s-3); }
 
   .kh-prog-track {
@@ -132,7 +138,7 @@
     font-family: var(--font-en);
   }
 
-  /* ── Mode Bar ── */
+  /* â”€â”€ Mode Bar â”€â”€ */
   .kh-mode-bar {
     display: flex;
     max-width: 360px;
@@ -164,14 +170,14 @@
     box-shadow: 0 2px 10px rgba(16,185,129,0.35);
   }
 
-  /* ── Body Layout ── */
+  /* â”€â”€ Body Layout â”€â”€ */
   .kh-body {
     max-width: 1000px;
     margin: 0 auto;
     padding: var(--s-8) var(--s-6) var(--s-16);
   }
 
-  /* ── Streak Banner ── */
+  /* â”€â”€ Streak Banner â”€â”€ */
   .kh-streak-banner {
     display: none;
     align-items: center;
@@ -194,7 +200,7 @@
   }
   .kh-streak-banner__lbl { font-size: var(--text-sm); color: var(--text-2); }
 
-  /* ── Bookmark Bar ── */
+  /* â”€â”€ Bookmark Bar â”€â”€ */
   .kh-bookmark-bar {
     display: none;
     align-items: center;
@@ -211,7 +217,240 @@
   .kh-bookmark-bar__text { flex: 1; font-size: var(--text-sm); font-weight: 700; color: var(--gd-400); }
   .kh-bookmark-bar__sub  { font-size: var(--text-xs); color: var(--text-3); display: block; margin-top: 2px; }
 
-  /* ── Plan Section ── */
+  /* â”€â”€ Khatma Circle â”€â”€ */
+  .kh-circle {
+    background: linear-gradient(145deg, rgba(139,92,246,0.08), rgba(16,185,129,0.06));
+    border: 1px solid rgba(139,92,246,0.16);
+    border-radius: var(--r-2xl);
+    padding: var(--s-5);
+    box-shadow: var(--shadow-md);
+  }
+
+  .kh-circle__hero {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--s-4);
+    flex-wrap: wrap;
+    margin-bottom: var(--s-5);
+  }
+
+  .kh-circle__hero h3 {
+    font-size: var(--text-xl);
+    font-weight: 900;
+    margin-bottom: var(--s-2);
+  }
+
+  .kh-circle__hero p,
+  .kh-circle__sub {
+    font-size: var(--text-sm);
+    color: var(--text-2);
+    line-height: 1.9;
+  }
+
+  .kh-circle__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px;
+    border-radius: var(--r-full);
+    background: rgba(139,92,246,0.14);
+    color: #ddd6fe;
+    font-size: var(--text-xs);
+    font-weight: 800;
+    white-space: nowrap;
+  }
+
+  .kh-circle__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    gap: var(--s-4);
+  }
+
+  .kh-circle-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border);
+    border-radius: var(--r-xl);
+    padding: var(--s-4);
+  }
+
+  .kh-circle-card h4 {
+    font-size: var(--text-base);
+    font-weight: 900;
+    margin-bottom: var(--s-2);
+  }
+
+  .kh-circle-card p {
+    color: var(--text-2);
+    font-size: var(--text-sm);
+    line-height: 1.8;
+    margin-bottom: var(--s-3);
+  }
+
+  .kh-circle-form {
+    display: grid;
+    gap: var(--s-3);
+  }
+
+  .kh-circle-form-row {
+    display: flex;
+    gap: var(--s-2);
+    flex-wrap: wrap;
+  }
+
+  .kh-circle-input {
+    width: 100%;
+    background: rgba(255,255,255,0.04);
+    border: 1.5px solid var(--border-2);
+    border-radius: var(--r-lg);
+    padding: 12px 14px;
+    color: var(--text-1);
+    font-family: var(--font);
+    font-size: var(--text-sm);
+  }
+
+  .kh-circle-input:focus {
+    outline: none;
+    border-color: rgba(139,92,246,0.45);
+    box-shadow: 0 0 0 3px rgba(139,92,246,0.14);
+  }
+
+  .kh-circle-actions {
+    display: flex;
+    gap: var(--s-2);
+    flex-wrap: wrap;
+  }
+
+  .kh-circle-link {
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    border-radius: var(--r-lg);
+    padding: 10px 12px;
+    font-family: var(--font-en);
+    font-size: 12px;
+    color: var(--text-2);
+    word-break: break-all;
+    margin-bottom: var(--s-3);
+  }
+
+  .kh-circle-metrics {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--s-2);
+    margin-bottom: var(--s-3);
+  }
+
+  .kh-circle-metric {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    border-radius: var(--r-lg);
+    padding: var(--s-3);
+    text-align: center;
+  }
+
+  .kh-circle-metric b {
+    display: block;
+    font-size: var(--text-lg);
+    font-weight: 900;
+    color: #ddd6fe;
+    margin-bottom: 2px;
+  }
+
+  .kh-circle-metric span {
+    font-size: 11px;
+    color: var(--text-3);
+  }
+
+  .kh-circle-progress {
+    height: 10px;
+    border-radius: var(--r-full);
+    overflow: hidden;
+    background: rgba(255,255,255,0.06);
+    margin-bottom: var(--s-2);
+  }
+
+  .kh-circle-progress > div {
+    height: 100%;
+    width: 0%;
+    border-radius: var(--r-full);
+    background: linear-gradient(90deg, #7c3aed, #10b981, #fbbf24);
+    transition: width 0.4s var(--ease-out);
+  }
+
+  .kh-circle-members {
+    display: grid;
+    gap: var(--s-2);
+    margin-top: var(--s-3);
+  }
+
+  .kh-circle-member {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: var(--s-3);
+    align-items: center;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.05);
+    border-radius: var(--r-lg);
+    padding: 10px 12px;
+  }
+
+  .kh-circle-member__avatar {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(139,92,246,0.24), rgba(16,185,129,0.18));
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    font-weight: 900;
+  }
+
+  .kh-circle-member__avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .kh-circle-member__meta strong {
+    display: block;
+    font-size: var(--text-sm);
+    margin-bottom: 2px;
+  }
+
+  .kh-circle-member__meta span {
+    font-size: 11px;
+    color: var(--text-3);
+  }
+
+  .kh-circle-member__score {
+    font-size: var(--text-sm);
+    font-weight: 900;
+    color: var(--em-300);
+    text-align: left;
+  }
+
+  .kh-circle-empty {
+    padding: var(--s-4);
+    border-radius: var(--r-lg);
+    border: 1px dashed var(--border-2);
+    color: var(--text-3);
+    text-align: center;
+    font-size: var(--text-sm);
+  }
+
+  @media (max-width: 900px) {
+    .kh-circle__grid {
+      grid-template-columns: 1fr;
+    }
+
+    .kh-circle-metrics {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  /* â”€â”€ Plan Section â”€â”€ */
   .kh-section { margin-bottom: var(--s-8); }
 
   .kh-section__title {
@@ -266,7 +505,7 @@
   .kh-pbtn.danger { color: var(--error); border-color: rgba(239,68,68,0.3); }
   .kh-pbtn.danger:hover { background: rgba(239,68,68,0.08); }
 
-  /* ── Plan Detail ── */
+  /* â”€â”€ Plan Detail â”€â”€ */
   .kh-plan-detail { display: none; }
   .kh-plan-detail.show { display: block; }
 
@@ -354,7 +593,7 @@
   .kh-stag:hover { background: rgba(245,158,11,0.12); transform: translateY(-2px); }
   .kh-stag.done  { background: rgba(16,185,129,0.08); border-color: rgba(16,185,129,0.25); color: var(--em-400); }
 
-  /* ── Featured Surahs ── */
+  /* â”€â”€ Featured Surahs â”€â”€ */
   .kh-feat-grid {
     display: grid;
     grid-template-columns: repeat(3,1fr);
@@ -412,7 +651,7 @@
 
   .kh-fcard__desc { font-size: var(--text-xs); color: var(--text-2); line-height: 1.7; }
 
-  /* ── Surah Grid ── */
+  /* â”€â”€ Surah Grid â”€â”€ */
   .kh-sgrid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(180px,1fr));
@@ -452,7 +691,7 @@
   .kh-sname { font-size: var(--text-sm); font-weight: 700; }
   .kh-smeta { font-size: 10px; color: var(--text-3); margin-top: 2px; }
 
-  /* ── Page Grid ── */
+  /* â”€â”€ Page Grid â”€â”€ */
   .kh-juz-header {
     display: flex;
     align-items: center;
@@ -509,7 +748,7 @@
   .kh-pcard.done .kh-pnum { color: var(--em-400); }
   .kh-pcard.bm   .kh-pnum { color: var(--gd-400); }
 
-  /* ── Reader ── */
+  /* â”€â”€ Reader â”€â”€ */
   #kh-dashboard { display: block; }
   #kh-reader    { display: none; }
 
@@ -913,37 +1152,29 @@
 <!-- ============================================================
      NAVBAR
      ============================================================ -->
-<!-- ═══════════════════════════════════════════════════
-     IslamiCalc  ·  Redesigned Navigation Bar
+<!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+     IslamiCalc  Â·  Redesigned Navigation Bar
      Drop this <header> block into every page, replacing
-     the existing <header class="ic-nav" …> … </header>
-═══════════════════════════════════════════════════ -->
+     the existing <header class="ic-nav" â€¦> â€¦ </header>
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
 
 <header class="ic-nav" id="icNav">
   <div class="ic-nav__inner">
 
-    <!-- ── Logo ────────────────────────────── -->
+    <!-- â”€â”€ Logo â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
     <a href="/" class="ic-nav__logo">
-      <div class="ic-nav__logo-mark">
-        <!-- Geometric Islamic star SVG -->
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
-             xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <path d="M12 2L14.09 8.26L21 9L15.54 14.74L17.18 22L12 18.77
-                   L6.82 22L8.46 14.74L3 9L9.91 8.26L12 2Z"
-                fill="rgba(255,255,255,0.95)" stroke="none"/>
-        </svg>
-      </div>
+      <img src="/icons/logo.png" class="site-logo" alt="Site Logo">
       <span class="ic-nav__logo-text">IslamiCalc</span>
     </a>
 
-    <!-- ── Spacer pushes actions to the right ── -->
+    <!-- â”€â”€ Spacer pushes actions to the right â”€â”€ -->
     <div class="ic-nav__spacer"></div>
 
-    <!-- ── Right Actions ────────────────────── -->
+    <!-- â”€â”€ Right Actions â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
     <div class="ic-nav__actions">
 
       <!-- Theme Toggle -->
-      <button id="themeBtn" class="ic-nav__icon-btn" aria-label="تبديل السمة">
+      <button id="themeBtn" class="ic-nav__icon-btn" aria-label="ØªØ¨Ø¯ÙŠÙ„ Ø§Ù„Ø³Ù…Ø©">
         <svg class="ic-nav__icon-btn-svg" width="18" height="18" viewBox="0 0 24 24"
              fill="none" stroke="currentColor" stroke-width="2"
              stroke-linecap="round" stroke-linejoin="round">
@@ -968,11 +1199,11 @@
           <circle cx="12" cy="8" r="4"/>
           <path d="M4 20c0-4 3.58-7 8-7s8 3 8 7"/>
         </svg>
-        <span id="loginBtnLabel">تسجيل الدخول</span>
+        <span id="loginBtnLabel">ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„</span>
       </button>
 
-      <!-- Hamburger — always visible -->
-      <button id="menuToggle" class="ic-nav__hamburger" aria-label="فتح القائمة"
+      <!-- Hamburger â€” always visible -->
+      <button id="menuToggle" class="ic-nav__hamburger" aria-label="ÙØªØ­ Ø§Ù„Ù‚Ø§Ø¦Ù…Ø©"
               aria-expanded="false" aria-controls="sideDrawer">
         <span class="ic-nav__hamburger-bar"></span>
         <span class="ic-nav__hamburger-bar"></span>
@@ -983,28 +1214,21 @@
   </div><!-- /inner -->
 </header>
 
-<!-- ═══════════════════════════════════════════════════
+<!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
      Side Drawer (opens on hamburger click)
-═══════════════════════════════════════════════════ -->
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
 <div id="drawerOverlay" class="ic-drawer-overlay" aria-hidden="true"></div>
 
 <aside id="sideDrawer" class="ic-drawer" role="dialog"
-       aria-modal="true" aria-label="القائمة الرئيسية">
+       aria-modal="true" aria-label="Ø§Ù„Ù‚Ø§Ø¦Ù…Ø© Ø§Ù„Ø±Ø¦ÙŠØ³ÙŠØ©">
 
   <!-- Drawer Header -->
   <div class="ic-drawer__header">
     <a href="/" class="ic-drawer__logo">
-      <div class="ic-nav__logo-mark ic-nav__logo-mark--sm">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
-             xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <path d="M12 2L14.09 8.26L21 9L15.54 14.74L17.18 22L12 18.77
-                   L6.82 22L8.46 14.74L3 9L9.91 8.26L12 2Z"
-                fill="rgba(255,255,255,0.95)"/>
-        </svg>
-      </div>
+      <img src="/icons/logo.png" class="site-logo site-logo--sm" alt="Site Logo">
       <span class="ic-nav__logo-text">IslamiCalc</span>
     </a>
-    <button id="drawerClose" class="ic-drawer__close" aria-label="إغلاق القائمة">
+    <button id="drawerClose" class="ic-drawer__close" aria-label="Ø¥ØºÙ„Ø§Ù‚ Ø§Ù„Ù‚Ø§Ø¦Ù…Ø©">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
            stroke="currentColor" stroke-width="2.5"
            stroke-linecap="round" stroke-linejoin="round">
@@ -1026,10 +1250,10 @@
       </svg>
     </div>
     <div class="ic-drawer__profile-info">
-      <span class="ic-drawer__profile-name" id="drawerName">مرحباً بك</span>
-      <span class="ic-drawer__profile-sub" id="drawerSub">سجّل دخولك للمتابعة</span>
+      <span class="ic-drawer__profile-name" id="drawerName">Ù…Ø±Ø­Ø¨Ø§Ù‹ Ø¨Ùƒ</span>
+      <span class="ic-drawer__profile-sub" id="drawerSub">Ø³Ø¬Ù‘Ù„ Ø¯Ø®ÙˆÙ„Ùƒ Ù„Ù„Ù…ØªØ§Ø¨Ø¹Ø©</span>
     </div>
-    <button id="drawerLoginBtn" class="ic-drawer__profile-cta">دخول</button>
+    <button id="drawerLoginBtn" class="ic-drawer__profile-cta">Ø¯Ø®ÙˆÙ„</button>
   </div>
 
   <!-- Quick XP Bar (shown when logged in) -->
@@ -1044,8 +1268,8 @@
   <div class="ic-drawer__divider"></div>
 
   <!-- Main Navigation -->
-  <nav class="ic-drawer__nav" aria-label="التنقل الرئيسي">
-    <p class="ic-drawer__section-label">التنقل</p>
+  <nav class="ic-drawer__nav" aria-label="Ø§Ù„ØªÙ†Ù‚Ù„ Ø§Ù„Ø±Ø¦ÙŠØ³ÙŠ">
+    <p class="ic-drawer__section-label">Ø§Ù„ØªÙ†Ù‚Ù„</p>
     <ul class="ic-drawer__list">
       <li>
         <a href="/" class="ic-drawer__link" data-page="home">
@@ -1056,7 +1280,7 @@
               <polyline points="9 22 9 12 15 12 15 22"/>
             </svg>
           </span>
-          <span>الرئيسية</span>
+          <span>Ø§Ù„Ø±Ø¦ÙŠØ³ÙŠØ©</span>
         </a>
       </li>
       <li>
@@ -1068,7 +1292,7 @@
               <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
             </svg>
           </span>
-          <span>ختمة القرآن</span>
+          <span>Ø®ØªÙ…Ø© Ø§Ù„Ù‚Ø±Ø¢Ù†</span>
         </a>
       </li>
       <li>
@@ -1079,7 +1303,7 @@
               <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
             </svg>
           </span>
-          <span>الميدان</span>
+          <span>Ø§Ù„Ù…ÙŠØ¯Ø§Ù†</span>
           <span class="ic-drawer__badge ic-drawer__badge--gold">XP</span>
         </a>
       </li>
@@ -1092,12 +1316,12 @@
               <path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/>
             </svg>
           </span>
-          <span>الأذكار</span>
+          <span>Ø§Ù„Ø£Ø°ÙƒØ§Ø±</span>
         </a>
       </li>
     </ul>
 
-    <p class="ic-drawer__section-label" style="margin-top:var(--s-3)">الأدوات</p>
+    <p class="ic-drawer__section-label" style="margin-top:var(--s-3)">Ø§Ù„Ø£Ø¯ÙˆØ§Øª</p>
     <ul class="ic-drawer__list">
       <li>
         <a href="/prayer" class="ic-drawer__link" data-page="prayer">
@@ -1108,7 +1332,7 @@
               <polyline points="12 6 12 12 16 14"/>
             </svg>
           </span>
-          <span>مواقيت الصلاة</span>
+          <span>Ù…ÙˆØ§Ù‚ÙŠØª Ø§Ù„ØµÙ„Ø§Ø©</span>
         </a>
       </li>
       <li>
@@ -1120,7 +1344,7 @@
               <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
             </svg>
           </span>
-          <span>حساب الزكاة</span>
+          <span>Ø­Ø³Ø§Ø¨ Ø§Ù„Ø²ÙƒØ§Ø©</span>
         </a>
       </li>
       <li>
@@ -1134,12 +1358,12 @@
               <line x1="3" y1="10" x2="21" y2="10"/>
             </svg>
           </span>
-          <span>التقويم الهجري</span>
+          <span>Ø§Ù„ØªÙ‚ÙˆÙŠÙ… Ø§Ù„Ù‡Ø¬Ø±ÙŠ</span>
         </a>
       </li>
     </ul>
 
-    <p class="ic-drawer__section-label" style="margin-top:var(--s-3)">المزيد</p>
+    <p class="ic-drawer__section-label" style="margin-top:var(--s-3)">Ø§Ù„Ù…Ø²ÙŠØ¯</p>
     <ul class="ic-drawer__list">
       <li>
         <a href="/about" class="ic-drawer__link" data-page="about">
@@ -1151,7 +1375,7 @@
               <line x1="12" y1="16" x2="12.01" y2="16"/>
             </svg>
           </span>
-          <span>من نحن</span>
+          <span>Ù…Ù† Ù†Ø­Ù†</span>
         </a>
       </li>
       <li>
@@ -1162,7 +1386,7 @@
               <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
             </svg>
           </span>
-          <span>تواصل معنا</span>
+          <span>ØªÙˆØ§ØµÙ„ Ù…Ø¹Ù†Ø§</span>
         </a>
       </li>
       <li>
@@ -1174,7 +1398,7 @@
               <circle cx="12" cy="7" r="4"/>
             </svg>
           </span>
-          <span>الملف الشخصي</span>
+          <span>Ø§Ù„Ù…Ù„Ù Ø§Ù„Ø´Ø®ØµÙŠ</span>
         </a>
       </li>
     </ul>
@@ -1182,19 +1406,19 @@
 
   <!-- Footer of drawer -->
   <div class="ic-drawer__footer">
-    <span class="ic-drawer__footer-copy">© 2026 IslamiCalc</span>
-    <button id="drawerThemeBtn" class="ic-drawer__theme-toggle" aria-label="تبديل السمة">
+    <span class="ic-drawer__footer-copy">Â© 2026 IslamiCalc</span>
+    <button id="drawerThemeBtn" class="ic-drawer__theme-toggle" aria-label="ØªØ¨Ø¯ÙŠÙ„ Ø§Ù„Ø³Ù…Ø©">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79z"/>
       </svg>
-      <span>السمة</span>
+      <span>Ø§Ù„Ø³Ù…Ø©</span>
     </button>
   </div>
 
 </aside>
 
-<!-- Drawer JS — inline, zero dependencies -->
+<!-- Drawer JS â€” inline, zero dependencies -->
 <script>
 (function () {
   const toggle   = document.getElementById('menuToggle');
@@ -1258,33 +1482,33 @@
 <div id="kh-dashboard">
   <div class="kh-hero">
     <div class="kh-hero__inner">
-      <div class="ic-section__eyebrow" style="margin-bottom:var(--s-4)">📖 المحور الأول</div>
+      <div class="ic-section__eyebrow" style="margin-bottom:var(--s-4)">ðŸ“– Ø§Ù„Ù…Ø­ÙˆØ± Ø§Ù„Ø£ÙˆÙ„</div>
       <h1 class="kh-hero__title">
-        ختمة القرآن الكريم<br>
-        <span class="ic-text--gradient">تتبّع، تقدّم، اكسب XP</span>
+        Ø®ØªÙ…Ø© Ø§Ù„Ù‚Ø±Ø¢Ù† Ø§Ù„ÙƒØ±ÙŠÙ…<br>
+        <span class="ic-text--gradient">ØªØªØ¨Ù‘Ø¹ØŒ ØªÙ‚Ø¯Ù‘Ù…ØŒ Ø§ÙƒØ³Ø¨ XP</span>
       </h1>
       <p class="kh-hero__sub">
-        اختر خطتك، تتبع قراءتك سورة بسورة أو صفحة بصفحة،
-        واكسب XP مع كل صفحة تُكملها مع Streak يومي يحفّزك.
+        Ø§Ø®ØªØ± Ø®Ø·ØªÙƒØŒ ØªØªØ¨Ø¹ Ù‚Ø±Ø§Ø¡ØªÙƒ Ø³ÙˆØ±Ø© Ø¨Ø³ÙˆØ±Ø© Ø£Ùˆ ØµÙØ­Ø© Ø¨ØµÙØ­Ø©ØŒ
+        ÙˆØ§ÙƒØ³Ø¨ XP Ù…Ø¹ ÙƒÙ„ ØµÙØ­Ø© ØªÙÙƒÙ…Ù„Ù‡Ø§ Ù…Ø¹ Streak ÙŠÙˆÙ…ÙŠ ÙŠØ­ÙÙ‘Ø²Ùƒ.
       </p>
 
       <!-- Stats -->
       <div class="kh-stats">
         <div class="kh-stat" style="--stat-color:var(--em-400)">
           <span class="kh-stat__num" id="sd">0</span>
-          <div class="kh-stat__lbl">سورة مكتملة</div>
+          <div class="kh-stat__lbl">Ø³ÙˆØ±Ø© Ù…ÙƒØªÙ…Ù„Ø©</div>
         </div>
         <div class="kh-stat" style="--stat-color:var(--text-3)">
           <span class="kh-stat__num" id="sr">114</span>
-          <div class="kh-stat__lbl">سورة متبقية</div>
+          <div class="kh-stat__lbl">Ø³ÙˆØ±Ø© Ù…ØªØ¨Ù‚ÙŠØ©</div>
         </div>
         <div class="kh-stat" style="--stat-color:var(--gd-400)">
           <span class="kh-stat__num" id="sp2">0</span>
-          <div class="kh-stat__lbl">صفحة مكتملة</div>
+          <div class="kh-stat__lbl">ØµÙØ­Ø© Ù…ÙƒØªÙ…Ù„Ø©</div>
         </div>
         <div class="kh-stat" style="--stat-color:#a78bfa">
           <span class="kh-stat__num" id="sa">0</span>
-          <div class="kh-stat__lbl">آية مقروءة</div>
+          <div class="kh-stat__lbl">Ø¢ÙŠØ© Ù…Ù‚Ø±ÙˆØ¡Ø©</div>
         </div>
       </div>
 
@@ -1294,15 +1518,15 @@
           <div class="kh-prog-fill" id="pfill" style="width:0%"></div>
         </div>
         <div class="kh-prog-labels">
-          <span id="plbl">0 / 114 سورة</span>
+          <span id="plbl">0 / 114 Ø³ÙˆØ±Ø©</span>
           <span id="pct-lbl">0%</span>
         </div>
       </div>
 
       <!-- Mode Toggle -->
       <div class="kh-mode-bar">
-        <button class="kh-mode-btn active" id="mb-surah" onclick="setMode('surah')">📖 قراءة بالسور</button>
-        <button class="kh-mode-btn" id="mb-page" onclick="setMode('page')">📄 قراءة بالصفحات</button>
+        <button class="kh-mode-btn active" id="mb-surah" onclick="setMode('surah')">ðŸ“– Ù‚Ø±Ø§Ø¡Ø© Ø¨Ø§Ù„Ø³ÙˆØ±</button>
+        <button class="kh-mode-btn" id="mb-page" onclick="setMode('page')">ðŸ“„ Ù‚Ø±Ø§Ø¡Ø© Ø¨Ø§Ù„ØµÙØ­Ø§Øª</button>
       </div>
     </div>
   </div>
@@ -1314,37 +1538,87 @@
 
     <!-- Streak Banner -->
     <div class="kh-streak-banner" id="streakBanner">
-      <div class="kh-streak-banner__fire">🔥</div>
+      <div class="kh-streak-banner__fire">ðŸ”¥</div>
       <div class="kh-streak-banner__info">
         <div class="kh-streak-banner__num" id="streakNum">0</div>
-        <div class="kh-streak-banner__lbl">يوم متتالٍ من القراءة — حافظ على streakك!</div>
+        <div class="kh-streak-banner__lbl">ÙŠÙˆÙ… Ù…ØªØªØ§Ù„Ù Ù…Ù† Ø§Ù„Ù‚Ø±Ø§Ø¡Ø© â€” Ø­Ø§ÙØ¸ Ø¹Ù„Ù‰ streakÙƒ!</div>
       </div>
     </div>
 
     <!-- Bookmark Bar -->
     <div class="kh-bookmark-bar" id="kh-bookmark-bar">
-      <div class="kh-bookmark-bar__icon">🔖</div>
+      <div class="kh-bookmark-bar__icon">ðŸ”–</div>
       <div class="kh-bookmark-bar__text">
-        وقفتك الأخيرة: صفحة <span id="bm-pg-lbl">--</span>
-        <small class="kh-bookmark-bar__sub">اضغط للمتابعة من حيث توقفت</small>
+        ÙˆÙ‚ÙØªÙƒ Ø§Ù„Ø£Ø®ÙŠØ±Ø©: ØµÙØ­Ø© <span id="bm-pg-lbl">--</span>
+        <small class="kh-bookmark-bar__sub">Ø§Ø¶ØºØ· Ù„Ù„Ù…ØªØ§Ø¨Ø¹Ø© Ù…Ù† Ø­ÙŠØ« ØªÙˆÙ‚ÙØª</small>
       </div>
       <button class="ic-btn ic-btn--sm ic-btn--primary" onclick="openPage(parseInt(document.getElementById('bm-pg-lbl').textContent))">
-        متابعة ←
+        Ù…ØªØ§Ø¨Ø¹Ø© â†
       </button>
-      <button class="ic-btn ic-btn--sm ic-btn--ghost" onclick="clearBookmark()">✕</button>
+      <button class="ic-btn ic-btn--sm ic-btn--ghost" onclick="clearBookmark()">âœ•</button>
     </div>
 
+    <div class="kh-section">
+      <div class="kh-section__title">ðŸ¤ Ø®ØªÙ…Ø© Ù…Ø¹ Ø§Ù„Ø¹Ø§Ø¦Ù„Ø© ÙˆØ§Ù„Ø£ØµØ¯Ù‚Ø§Ø¡</div>
+      <div class="kh-circle" id="khatmaCircle">
+        <div class="kh-circle__hero">
+          <div>
+            <h3>Ø£Ù†Ø´Ø¦ Ù…Ø¬Ù„Ø³ Ù‚Ø±Ø§Ø¡Ø© Ø®Ø§Øµ ÙˆØ´Ø§Ø±ÙÙƒ Ø§Ù„ØªÙ‚Ø¯Ù… Ù„Ø­Ø¸Ø© Ø¨Ù„Ø­Ø¸Ø©</h3>
+            <p>Ø£Ù†Ø´Ø¦ Ø±Ø§Ø¨Ø· Ø¯Ø¹ÙˆØ© ÙˆØ§Ø­Ø¯Ø§Ù‹ØŒ ÙˆØ§Ø³Ù…Ø­ Ù„Ø£Ù‡Ù„ Ø¨ÙŠØªÙƒ Ø£Ùˆ Ø£ØµØ¯Ù‚Ø§Ø¦Ùƒ Ø¨Ù…ØªØ§Ø¨Ø¹Ø© Ø¹Ø¯Ø¯ Ø§Ù„ØµÙØ­Ø§Øª Ø§Ù„Ù…Ù†Ø¬Ø²Ø©ØŒ ÙˆØ§Ù„Ø¬Ø²Ø¡ Ø§Ù„Ø­Ø§Ù„ÙŠØŒ ÙˆÙ†Ø³Ø¨Ø© Ø¥Ù†Ø¬Ø§Ø² Ø§Ù„Ø®ØªÙ…Ø© Ø§Ù„Ø¬Ù…Ø§Ø¹ÙŠØ©.</p>
+          </div>
+          <span class="kh-circle__badge" id="khCircleStatus">Ø®Ø§Øµ â€¢ ÙŠØ­ØªØ§Ø¬ ØªØ³Ø¬ÙŠÙ„ Ø¯Ø®ÙˆÙ„</span>
+        </div>
+
+        <div class="kh-circle__grid">
+          <div class="kh-circle-card">
+            <h4>Ø§Ø¨Ø¯Ø£ Ø®ØªÙ…Ø© Ø¬Ù…Ø§Ø¹ÙŠØ©</h4>
+            <p>Ø§Ø®ØªØ± Ø§Ø³Ù…Ø§Ù‹ Ù„Ø·ÙŠÙØ§Ù‹ Ù„Ù„Ù…Ø¬Ù„Ø³ØŒ Ø«Ù… Ø§Ù†Ø³Ø® Ø§Ù„Ø±Ø§Ø¨Ø· ÙˆØ´Ø§Ø±ÙƒÙ‡. ÙŠÙ…ÙƒÙ† Ø£ÙŠØ¶Ø§Ù‹ Ø§Ù„Ø§Ù†Ø¶Ù…Ø§Ù… Ø¥Ù„Ù‰ Ø±Ø§Ø¨Ø· ÙˆØµÙ„ Ø¥Ù„ÙŠÙƒ Ù…Ù† Ø£Ø­Ø¯ Ø£ÙØ±Ø§Ø¯ Ø§Ù„Ø¹Ø§Ø¦Ù„Ø©.</p>
+            <div class="kh-circle-form">
+              <input id="khCircleNameInput" class="kh-circle-input" maxlength="80" placeholder="Ù…Ø«Ø§Ù„: Ø®ØªÙ…Ø© Ø§Ù„Ø¹Ø§Ø¦Ù„Ø© Ø¨Ø¹Ø¯ Ø§Ù„ÙØ¬Ø±">
+              <div class="kh-circle-actions">
+                <button class="ic-btn ic-btn--primary" id="khCircleCreateBtn" onclick="createKhatmaCircle()">âœ¨ Ø¥Ù†Ø´Ø§Ø¡ ØºØ±ÙØ©</button>
+                <button class="ic-btn ic-btn--ghost" onclick="syncKhatmaCircle(false)">ðŸ”„ Ù…Ø²Ø§Ù…Ù†Ø© ØªÙ‚Ø¯Ù…ÙŠ</button>
+              </div>
+            </div>
+            <div class="kh-circle-form" style="margin-top:var(--s-4)">
+              <input id="khCircleJoinInput" class="kh-circle-input" placeholder="Ø£Ù„ØµÙ‚ Ø±Ø§Ø¨Ø· Ø§Ù„Ø¯Ø¹ÙˆØ© Ø£Ùˆ Ø±Ù…Ø² Ø§Ù„ØºØ±ÙØ©">
+              <div class="kh-circle-actions">
+                <button class="ic-btn ic-btn--secondary" id="khCircleJoinBtn" onclick="joinKhatmaCircle()">ðŸ¤ Ø§Ù„Ø§Ù†Ø¶Ù…Ø§Ù… Ø¥Ù„Ù‰ ØºØ±ÙØ©</button>
+              </div>
+            </div>
+            <div class="kh-circle__sub" id="khCircleAuthState">Ø³Ø¬Ù‘Ù„ Ø¯Ø®ÙˆÙ„Ùƒ Ø£ÙˆÙ„Ø§Ù‹ Ø­ØªÙ‰ ØªØªÙ…ÙƒÙ† Ù…Ù† Ø¥Ù†Ø´Ø§Ø¡ ØºØ±ÙØ© Ø£Ùˆ Ø§Ù„Ø§Ù†Ø¶Ù…Ø§Ù… Ø¥Ù„ÙŠÙ‡Ø§.</div>
+          </div>
+
+          <div class="kh-circle-card">
+            <h4 id="khCircleRoomTitle">Ù„Ø§ ØªÙˆØ¬Ø¯ ØºØ±ÙØ© Ù†Ø´Ø·Ø© Ø­Ø§Ù„ÙŠØ§Ù‹</h4>
+            <p id="khCircleRoomSummary">Ø¨Ù…Ø¬Ø±Ø¯ Ø¥Ù†Ø´Ø§Ø¡ ØºØ±ÙØ© Ø£Ùˆ Ø§Ù„Ø§Ù†Ø¶Ù…Ø§Ù… Ø¥Ù„Ù‰ ÙˆØ§Ø­Ø¯Ø©ØŒ Ø³ØªØ¸Ù‡Ø± Ù‡Ù†Ø§ Ù†Ø³Ø¨Ø© Ø§Ù„Ø¥Ù†Ø¬Ø§Ø² Ø§Ù„Ø¬Ù…Ø§Ø¹ÙŠ ÙˆÙ‚Ø§Ø¦Ù…Ø© Ø§Ù„Ù…Ø´Ø§Ø±ÙƒÙŠÙ† ÙˆØ±ÙˆØ§Ø¨Ø· Ø§Ù„Ø¯Ø¹ÙˆØ©.</p>
+            <div id="khCircleActivePanel" style="display:none">
+              <div class="kh-circle-link"><span style="flex:1" id="khCircleInviteUrl"></span><button class="ic-btn ic-btn--sm ic-btn--ghost" onclick="copyKhatmaCircleLink()">Ù†Ø³Ø®</button></div>
+              <div class="kh-circle-metrics">
+                <div class="kh-circle-metric"><b id="khCircleMembersCount">0</b><span>Ø¹Ø¯Ø¯ Ø§Ù„Ù…Ø´Ø§Ø±ÙƒÙŠÙ†</span></div>
+                <div class="kh-circle-metric"><b id="khCircleProgressPercent">0%</b><span>Ø§Ù„Ø¥Ù†Ø¬Ø§Ø² Ø§Ù„Ø¬Ù…Ø§Ø¹ÙŠ</span></div>
+                <div class="kh-circle-metric"><b id="khCirclePagesTotal">0</b><span>Ø¥Ø¬Ù…Ø§Ù„ÙŠ Ø§Ù„ØµÙØ­Ø§Øª Ø§Ù„Ù…Ù†Ø¬Ø²Ø©</span></div>
+              </div>
+              <div class="kh-circle-progress"><div id="khCircleProgressBar"></div></div>
+              <div class="kh-circle__sub" id="khCircleMetaLine">â€”</div>
+              <div class="kh-circle-members" id="khCircleMembers"></div>
+            </div>
+            <div class="kh-circle-empty" id="khCircleEmpty">Ø§Ù„ØºØ±ÙØ© Ø§Ù„Ù†Ø´Ø·Ø© Ø³ØªØ¸Ù‡Ø± Ù‡Ù†Ø§ Ù…Ø¹ ØªØ±ØªÙŠØ¨ Ø§Ù„Ø£Ø¹Ø¶Ø§Ø¡ Ø¨Ø­Ø³Ø¨ Ø¹Ø¯Ø¯ Ø§Ù„ØµÙØ­Ø§Øª Ø§Ù„ØªÙŠ Ø£Ù†Ø¬Ø²Ù‡Ø§ ÙƒÙ„ Ù…Ø´Ø§Ø±Ùƒ.</div>
+          </div>
+        </div>
+      </div>
+    </div>
     <!-- Plan Box -->
     <div class="kh-section">
-      <div class="kh-section__title">🎯 خطة الختمة</div>
+      <div class="kh-section__title">ðŸŽ¯ Ø®Ø·Ø© Ø§Ù„Ø®ØªÙ…Ø©</div>
       <div class="kh-plan-box">
         <div class="kh-plan-btns">
-          <button class="kh-pbtn" onclick="setPlan(7,this)">📅 أسبوع</button>
-          <button class="kh-pbtn" onclick="setPlan(15,this)">🗓 15 يوم</button>
-          <button class="kh-pbtn" onclick="setPlan(30,this)">📆 شهر</button>
-          <button class="kh-pbtn" onclick="setPlan(60,this)">🌙 شهرين</button>
-          <button class="kh-pbtn" onclick="setPlan(90,this)">📖 3 أشهر</button>
-          <button class="kh-pbtn danger" id="plan-cancel" style="display:none" onclick="cancelPlan()">✕ إلغاء الخطة</button>
+          <button class="kh-pbtn" onclick="setPlan(7,this)">ðŸ“… Ø£Ø³Ø¨ÙˆØ¹</button>
+          <button class="kh-pbtn" onclick="setPlan(15,this)">ðŸ—“ 15 ÙŠÙˆÙ…</button>
+          <button class="kh-pbtn" onclick="setPlan(30,this)">ðŸ“† Ø´Ù‡Ø±</button>
+          <button class="kh-pbtn" onclick="setPlan(60,this)">ðŸŒ™ Ø´Ù‡Ø±ÙŠÙ†</button>
+          <button class="kh-pbtn" onclick="setPlan(90,this)">ðŸ“– 3 Ø£Ø´Ù‡Ø±</button>
+          <button class="kh-pbtn danger" id="plan-cancel" style="display:none" onclick="cancelPlan()">âœ• Ø¥Ù„ØºØ§Ø¡ Ø§Ù„Ø®Ø·Ø©</button>
         </div>
         <div class="kh-plan-detail" id="plan-detail"></div>
       </div>
@@ -1353,11 +1627,11 @@
     <!-- View: Surah -->
     <div id="view-surah">
       <div class="kh-section">
-        <div class="kh-section__title">⭐ سور مميزة وفضائلها</div>
+        <div class="kh-section__title">â­ Ø³ÙˆØ± Ù…Ù…ÙŠØ²Ø© ÙˆÙØ¶Ø§Ø¦Ù„Ù‡Ø§</div>
         <div class="kh-feat-grid" id="feat-grid"></div>
       </div>
       <div class="kh-section">
-        <div class="kh-section__title">📖 جميع السور الـ 114</div>
+        <div class="kh-section__title">ðŸ“– Ø¬Ù…ÙŠØ¹ Ø§Ù„Ø³ÙˆØ± Ø§Ù„Ù€ 114</div>
         <div class="kh-sgrid" id="sgrid"></div>
       </div>
     </div>
@@ -1365,13 +1639,13 @@
     <!-- View: Pages -->
     <div id="view-page" style="display:none">
       <div class="kh-section">
-        <div class="kh-section__title">📄 الصفحات — 604 صفحة</div>
+        <div class="kh-section__title">ðŸ“„ Ø§Ù„ØµÙØ­Ø§Øª â€” 604 ØµÙØ­Ø©</div>
         <div id="pgrid"></div>
       </div>
     </div>
 
     <div class="kh-reset-row">
-      <button class="kh-reset-btn" onclick="resetProgress()">🔄 إعادة تعيين التقدم</button>
+      <button class="kh-reset-btn" onclick="resetProgress()">ðŸ”„ Ø¥Ø¹Ø§Ø¯Ø© ØªØ¹ÙŠÙŠÙ† Ø§Ù„ØªÙ‚Ø¯Ù…</button>
     </div>
 
   </div>
@@ -1383,68 +1657,68 @@
 <div id="kh-reader">
   <div class="kh-reader-wrap">
 
-    <button class="kh-back-btn" onclick="closeReader()">← العودة للختمة</button>
+    <button class="kh-back-btn" onclick="closeReader()">â† Ø§Ù„Ø¹ÙˆØ¯Ø© Ù„Ù„Ø®ØªÙ…Ø©</button>
 
     <div class="kh-reader-info">
       <div class="kh-rib" style="--rc:var(--gd-400)">
-        <div class="kh-rib__icon">📄</div>
-        <div class="kh-rib__val" id="rPageNum">—</div>
-        <div class="kh-rib__lbl">الصفحة</div>
+        <div class="kh-rib__icon">ðŸ“„</div>
+        <div class="kh-rib__val" id="rPageNum">â€”</div>
+        <div class="kh-rib__lbl">Ø§Ù„ØµÙØ­Ø©</div>
       </div>
       <div class="kh-rib" style="--rc:var(--em-400)">
-        <div class="kh-rib__icon">📚</div>
-        <div class="kh-rib__val" id="rJuzNum">—</div>
-        <div class="kh-rib__lbl">الجزء</div>
+        <div class="kh-rib__icon">ðŸ“š</div>
+        <div class="kh-rib__val" id="rJuzNum">â€”</div>
+        <div class="kh-rib__lbl">Ø§Ù„Ø¬Ø²Ø¡</div>
       </div>
       <div class="kh-rib" style="--rc:#a78bfa">
-        <div class="kh-rib__icon">✅</div>
-        <div class="kh-rib__val" id="rDoneCount">—</div>
-        <div class="kh-rib__lbl">أكملت</div>
+        <div class="kh-rib__icon">âœ…</div>
+        <div class="kh-rib__val" id="rDoneCount">â€”</div>
+        <div class="kh-rib__lbl">Ø£ÙƒÙ…Ù„Øª</div>
       </div>
     </div>
 
     <div class="kh-page-nav">
-      <button class="kh-nav-btn" id="nav-prev" onclick="goToPrevPage()" disabled>→ السابقة</button>
-      <div class="kh-page-indicator">صفحة <span id="nav-page-lbl">1</span> / 604</div>
-      <button class="kh-nav-btn" id="nav-next" onclick="goToNextPage()">← التالية</button>
+      <button class="kh-nav-btn" id="nav-prev" onclick="goToPrevPage()" disabled>â†’ Ø§Ù„Ø³Ø§Ø¨Ù‚Ø©</button>
+      <div class="kh-page-indicator">ØµÙØ­Ø© <span id="nav-page-lbl">1</span> / 604</div>
+      <button class="kh-nav-btn" id="nav-next" onclick="goToNextPage()">â† Ø§Ù„ØªØ§Ù„ÙŠØ©</button>
     </div>
 
     <div class="kh-rcard">
       <div class="kh-rhead">
         <div>
-          <div class="kh-rtitle" id="readerTitle">سورة الفاتحة</div>
-          <div class="kh-rmeta" id="readerMeta">7 آيات • مكية</div>
+          <div class="kh-rtitle" id="readerTitle">Ø³ÙˆØ±Ø© Ø§Ù„ÙØ§ØªØ­Ø©</div>
+          <div class="kh-rmeta" id="readerMeta">7 Ø¢ÙŠØ§Øª â€¢ Ù…ÙƒÙŠØ©</div>
         </div>
-        <button class="kh-bm-btn" id="bookmark-page-btn" onclick="togglePageBookmark()">🔖 حفظ المكان</button>
+        <button class="kh-bm-btn" id="bookmark-page-btn" onclick="togglePageBookmark()">ðŸ”– Ø­ÙØ¸ Ø§Ù„Ù…ÙƒØ§Ù†</button>
       </div>
 
       <!-- Waqfa Bar -->
       <div class="kh-waqfa-bar" id="waqfa-bar">
-        <span style="font-size:20px">🔖</span>
+        <span style="font-size:20px">ðŸ”–</span>
         <div class="kh-waqfa-bar__txt">
-          وقفتك الأخيرة: آية <span id="waqfa-lbl">—</span>
-          <small class="kh-waqfa-bar__sub">اضغط رقم الآية 🔖 لحفظ وقفة جديدة</small>
+          ÙˆÙ‚ÙØªÙƒ Ø§Ù„Ø£Ø®ÙŠØ±Ø©: Ø¢ÙŠØ© <span id="waqfa-lbl">â€”</span>
+          <small class="kh-waqfa-bar__sub">Ø§Ø¶ØºØ· Ø±Ù‚Ù… Ø§Ù„Ø¢ÙŠØ© ðŸ”– Ù„Ø­ÙØ¸ ÙˆÙ‚ÙØ© Ø¬Ø¯ÙŠØ¯Ø©</small>
         </div>
-        <button class="ic-btn ic-btn--sm ic-btn--primary" onclick="scrollToWaqfa()">↓ اذهب إليها</button>
-        <button class="ic-btn ic-btn--sm ic-btn--ghost" onclick="clearWaqfa()">✕ مسح</button>
+        <button class="ic-btn ic-btn--sm ic-btn--primary" onclick="scrollToWaqfa()">â†“ Ø§Ø°Ù‡Ø¨ Ø¥Ù„ÙŠÙ‡Ø§</button>
+        <button class="ic-btn ic-btn--sm ic-btn--ghost" onclick="clearWaqfa()">âœ• Ù…Ø³Ø­</button>
       </div>
 
-      <div class="kh-bismillah" id="readerBismillah">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
+      <div class="kh-bismillah" id="readerBismillah">Ø¨ÙØ³Ù’Ù…Ù Ø§Ù„Ù„ÙŽÙ‘Ù‡Ù Ø§Ù„Ø±ÙŽÙ‘Ø­Ù’Ù…ÙŽÙ°Ù†Ù Ø§Ù„Ø±ÙŽÙ‘Ø­ÙÙŠÙ…Ù</div>
 
-      <div class="kh-tafsir-hint">💡 اضغط على أي <strong>كلمة</strong> لقراءة تفسيرها | اضغط على <strong>رقم الآية 🔖</strong> لحفظ وقفتك</div>
+      <div class="kh-tafsir-hint">ðŸ’¡ Ø§Ø¶ØºØ· Ø¹Ù„Ù‰ Ø£ÙŠ <strong>ÙƒÙ„Ù…Ø©</strong> Ù„Ù‚Ø±Ø§Ø¡Ø© ØªÙØ³ÙŠØ±Ù‡Ø§ | Ø§Ø¶ØºØ· Ø¹Ù„Ù‰ <strong>Ø±Ù‚Ù… Ø§Ù„Ø¢ÙŠØ© ðŸ”–</strong> Ù„Ø­ÙØ¸ ÙˆÙ‚ÙØªÙƒ</div>
 
       <div class="kh-mushaf">
         <div class="kh-loading" id="readerLoading">
           <div class="kh-spinner"></div>
-          جاري التحميل...
+          Ø¬Ø§Ø±ÙŠ Ø§Ù„ØªØ­Ù…ÙŠÙ„...
         </div>
         <div class="kh-mblock" id="readerContent" style="display:none"></div>
       </div>
 
       <div class="kh-rfoot">
-        <button class="kh-btn-prev" id="rfoot-prev" onclick="goToPrevPage()" disabled>→ السابقة</button>
-        <button class="kh-btn-done" id="btn-done" onclick="markDone()">✅ أكملت هذه الصفحة</button>
-        <button class="kh-btn-next" id="rfoot-next" onclick="goToNextPage()">← التالية</button>
+        <button class="kh-btn-prev" id="rfoot-prev" onclick="goToPrevPage()" disabled>â†’ Ø§Ù„Ø³Ø§Ø¨Ù‚Ø©</button>
+        <button class="kh-btn-done" id="btn-done" onclick="markDone()">âœ… Ø£ÙƒÙ…Ù„Øª Ù‡Ø°Ù‡ Ø§Ù„ØµÙØ­Ø©</button>
+        <button class="kh-btn-next" id="rfoot-next" onclick="goToNextPage()">â† Ø§Ù„ØªØ§Ù„ÙŠØ©</button>
       </div>
     </div>
 
@@ -1453,10 +1727,10 @@
   <!-- Tafsir Drawer -->
   <div class="kh-tafsir" id="tafsirDrawer">
     <div class="kh-tafsir__handle"></div>
-    <button class="kh-tafsir__close" onclick="closeTafsir()">✕ إغلاق</button>
+    <button class="kh-tafsir__close" onclick="closeTafsir()">âœ• Ø¥ØºÙ„Ø§Ù‚</button>
     <div class="kh-tafsir__ayah" id="tafsirAyah"></div>
-    <div class="kh-tafsir__lbl">التفسير الميسر</div>
-    <div class="kh-tafsir__txt" id="tafsirTxt">جاري التحميل...</div>
+    <div class="kh-tafsir__lbl">Ø§Ù„ØªÙØ³ÙŠØ± Ø§Ù„Ù…ÙŠØ³Ø±</div>
+    <div class="kh-tafsir__txt" id="tafsirTxt">Ø¬Ø§Ø±ÙŠ Ø§Ù„ØªØ­Ù…ÙŠÙ„...</div>
   </div>
 </div>
 
@@ -1464,14 +1738,14 @@
 <div id="loginModal" class="ic-modal">
   <div class="ic-modal__backdrop" id="modalBackdrop"></div>
   <div class="ic-modal__box">
-    <div class="ic-modal__icon">📖</div>
-    <h3 class="ic-modal__title">سجّل دخولك لحفظ تقدمك</h3>
-    <p class="ic-modal__sub">ختمتك وXP ستُحفظ على كل أجهزتك</p>
+    <div class="ic-modal__icon">ðŸ“–</div>
+    <h3 class="ic-modal__title">Ø³Ø¬Ù‘Ù„ Ø¯Ø®ÙˆÙ„Ùƒ Ù„Ø­ÙØ¸ ØªÙ‚Ø¯Ù…Ùƒ</h3>
+    <p class="ic-modal__sub">Ø®ØªÙ…ØªÙƒ ÙˆXP Ø³ØªÙØ­ÙØ¸ Ø¹Ù„Ù‰ ÙƒÙ„ Ø£Ø¬Ù‡Ø²ØªÙƒ</p>
     <div class="ic-modal__actions">
-      <button id="googleLoginBtn" class="ic-btn ic-btn--google ic-btn--full">الدخول بحساب Google</button>
-      <button id="guestBrowseBtn" class="ic-btn ic-btn--ghost ic-btn--full">تصفح بدون حساب</button>
+      <button id="googleLoginBtn" class="ic-btn ic-btn--google ic-btn--full">Ø§Ù„Ø¯Ø®ÙˆÙ„ Ø¨Ø­Ø³Ø§Ø¨ Google</button>
+      <button id="guestBrowseBtn" class="ic-btn ic-btn--ghost ic-btn--full">ØªØµÙØ­ Ø¨Ø¯ÙˆÙ† Ø­Ø³Ø§Ø¨</button>
     </div>
-    <p class="ic-modal__note">بالدخول توافق على <a href="/privacy">سياسة الخصوصية</a></p>
+    <p class="ic-modal__note">Ø¨Ø§Ù„Ø¯Ø®ÙˆÙ„ ØªÙˆØ§ÙÙ‚ Ø¹Ù„Ù‰ <a href="/privacy">Ø³ÙŠØ§Ø³Ø© Ø§Ù„Ø®ØµÙˆØµÙŠØ©</a></p>
   </div>
 </div>
 
@@ -1485,23 +1759,23 @@
 // DATA
 // ============================================================
 const JUZ_RANGES = [[1,21],[22,41],[42,61],[62,81],[82,101],[102,121],[122,141],[142,161],[162,181],[182,201],[202,221],[222,241],[242,261],[262,281],[282,301],[302,321],[322,341],[342,361],[362,381],[382,401],[402,421],[422,441],[442,461],[462,481],[482,501],[502,521],[522,541],[542,561],[562,581],[582,604]];
-const JUZ_NAMES  = ["الأول","الثاني","الثالث","الرابع","الخامس","السادس","السابع","الثامن","التاسع","العاشر","الحادي عشر","الثاني عشر","الثالث عشر","الرابع عشر","الخامس عشر","السادس عشر","السابع عشر","الثامن عشر","التاسع عشر","العشرون","الحادي والعشرون","الثاني والعشرون","الثالث والعشرون","الرابع والعشرون","الخامس والعشرون","السادس والعشرون","السابع والعشرون","الثامن والعشرون","التاسع والعشرون","الثلاثون"];
+const JUZ_NAMES  = ["Ø§Ù„Ø£ÙˆÙ„","Ø§Ù„Ø«Ø§Ù†ÙŠ","Ø§Ù„Ø«Ø§Ù„Ø«","Ø§Ù„Ø±Ø§Ø¨Ø¹","Ø§Ù„Ø®Ø§Ù…Ø³","Ø§Ù„Ø³Ø§Ø¯Ø³","Ø§Ù„Ø³Ø§Ø¨Ø¹","Ø§Ù„Ø«Ø§Ù…Ù†","Ø§Ù„ØªØ§Ø³Ø¹","Ø§Ù„Ø¹Ø§Ø´Ø±","Ø§Ù„Ø­Ø§Ø¯ÙŠ Ø¹Ø´Ø±","Ø§Ù„Ø«Ø§Ù†ÙŠ Ø¹Ø´Ø±","Ø§Ù„Ø«Ø§Ù„Ø« Ø¹Ø´Ø±","Ø§Ù„Ø±Ø§Ø¨Ø¹ Ø¹Ø´Ø±","Ø§Ù„Ø®Ø§Ù…Ø³ Ø¹Ø´Ø±","Ø§Ù„Ø³Ø§Ø¯Ø³ Ø¹Ø´Ø±","Ø§Ù„Ø³Ø§Ø¨Ø¹ Ø¹Ø´Ø±","Ø§Ù„Ø«Ø§Ù…Ù† Ø¹Ø´Ø±","Ø§Ù„ØªØ§Ø³Ø¹ Ø¹Ø´Ø±","Ø§Ù„Ø¹Ø´Ø±ÙˆÙ†","Ø§Ù„Ø­Ø§Ø¯ÙŠ ÙˆØ§Ù„Ø¹Ø´Ø±ÙˆÙ†","Ø§Ù„Ø«Ø§Ù†ÙŠ ÙˆØ§Ù„Ø¹Ø´Ø±ÙˆÙ†","Ø§Ù„Ø«Ø§Ù„Ø« ÙˆØ§Ù„Ø¹Ø´Ø±ÙˆÙ†","Ø§Ù„Ø±Ø§Ø¨Ø¹ ÙˆØ§Ù„Ø¹Ø´Ø±ÙˆÙ†","Ø§Ù„Ø®Ø§Ù…Ø³ ÙˆØ§Ù„Ø¹Ø´Ø±ÙˆÙ†","Ø§Ù„Ø³Ø§Ø¯Ø³ ÙˆØ§Ù„Ø¹Ø´Ø±ÙˆÙ†","Ø§Ù„Ø³Ø§Ø¨Ø¹ ÙˆØ§Ù„Ø¹Ø´Ø±ÙˆÙ†","Ø§Ù„Ø«Ø§Ù…Ù† ÙˆØ§Ù„Ø¹Ø´Ø±ÙˆÙ†","Ø§Ù„ØªØ§Ø³Ø¹ ÙˆØ§Ù„Ø¹Ø´Ø±ÙˆÙ†","Ø§Ù„Ø«Ù„Ø§Ø«ÙˆÙ†"];
 const JUZ_COLORS = ["#d4a843","#58a6ff","#3fb950","#f85149","#d2a8ff","#ffa657","#79c0ff","#56d364","#ff7b72","#e3b341","#a5d6ff","#7ee787","#ffa198","#c9b1ff","#ffca7a","#d4a843","#58a6ff","#3fb950","#f85149","#d2a8ff","#ffa657","#79c0ff","#56d364","#ff7b72","#e3b341","#a5d6ff","#7ee787","#ffa198","#c9b1ff","#ffca7a"];
 const JUZ_START  = [[1,1],[2,142],[2,253],[3,93],[4,24],[4,148],[5,82],[6,111],[7,88],[8,41],[9,93],[11,6],[12,53],[15,1],[17,1],[18,75],[21,1],[23,1],[25,21],[27,56],[29,46],[33,31],[36,28],[39,32],[41,47],[46,1],[51,31],[58,1],[67,1],[78,1]];
-const SURAHS = [["الفاتحة",7,"مكية"],["البقرة",286,"مدنية"],["آل عمران",200,"مدنية"],["النساء",176,"مدنية"],["المائدة",120,"مدنية"],["الأنعام",165,"مكية"],["الأعراف",206,"مكية"],["الأنفال",75,"مدنية"],["التوبة",129,"مدنية"],["يونس",109,"مكية"],["هود",123,"مكية"],["يوسف",111,"مكية"],["الرعد",43,"مدنية"],["إبراهيم",52,"مكية"],["الحجر",99,"مكية"],["النحل",128,"مكية"],["الإسراء",111,"مكية"],["الكهف",110,"مكية"],["مريم",98,"مكية"],["طه",135,"مكية"],["الأنبياء",112,"مكية"],["الحج",78,"مدنية"],["المؤمنون",118,"مكية"],["النور",64,"مدنية"],["الفرقان",77,"مكية"],["الشعراء",227,"مكية"],["النمل",93,"مكية"],["القصص",88,"مكية"],["العنكبوت",69,"مكية"],["الروم",60,"مكية"],["لقمان",34,"مكية"],["السجدة",30,"مكية"],["الأحزاب",73,"مدنية"],["سبأ",54,"مكية"],["فاطر",45,"مكية"],["يس",83,"مكية"],["الصافات",182,"مكية"],["ص",88,"مكية"],["الزمر",75,"مكية"],["غافر",85,"مكية"],["فصلت",54,"مكية"],["الشورى",53,"مكية"],["الزخرف",89,"مكية"],["الدخان",59,"مكية"],["الجاثية",37,"مكية"],["الأحقاف",35,"مكية"],["محمد",38,"مدنية"],["الفتح",29,"مدنية"],["الحجرات",18,"مدنية"],["ق",45,"مكية"],["الذاريات",60,"مكية"],["الطور",49,"مكية"],["النجم",62,"مكية"],["القمر",55,"مكية"],["الرحمن",78,"مدنية"],["الواقعة",96,"مكية"],["الحديد",29,"مدنية"],["المجادلة",22,"مدنية"],["الحشر",24,"مدنية"],["الممتحنة",13,"مدنية"],["الصف",14,"مدنية"],["الجمعة",11,"مدنية"],["المنافقون",11,"مدنية"],["التغابن",18,"مدنية"],["الطلاق",12,"مدنية"],["التحريم",12,"مدنية"],["الملك",30,"مكية"],["القلم",52,"مكية"],["الحاقة",52,"مكية"],["المعارج",44,"مكية"],["نوح",28,"مكية"],["الجن",28,"مكية"],["المزمل",20,"مكية"],["المدثر",56,"مكية"],["القيامة",40,"مكية"],["الإنسان",31,"مدنية"],["المرسلات",50,"مكية"],["النبأ",40,"مكية"],["النازعات",46,"مكية"],["عبس",42,"مكية"],["التكوير",29,"مكية"],["الانفطار",19,"مكية"],["المطففين",36,"مكية"],["الانشقاق",25,"مكية"],["البروج",22,"مكية"],["الطارق",17,"مكية"],["الأعلى",19,"مكية"],["الغاشية",26,"مكية"],["الفجر",30,"مكية"],["البلد",20,"مكية"],["الشمس",15,"مكية"],["الليل",21,"مكية"],["الضحى",11,"مكية"],["الشرح",8,"مكية"],["التين",8,"مكية"],["العلق",19,"مكية"],["القدر",5,"مكية"],["البينة",8,"مدنية"],["الزلزلة",8,"مدنية"],["العاديات",11,"مكية"],["القارعة",11,"مكية"],["التكاثر",8,"مكية"],["العصر",3,"مكية"],["الهمزة",9,"مكية"],["الفيل",5,"مكية"],["قريش",4,"مكية"],["الماعون",7,"مكية"],["الكوثر",3,"مكية"],["الكافرون",6,"مكية"],["النصر",3,"مدنية"],["المسد",5,"مكية"],["الإخلاص",4,"مكية"],["الفلق",5,"مكية"],["الناس",6,"مكية"]];
+const SURAHS = [["Ø§Ù„ÙØ§ØªØ­Ø©",7,"Ù…ÙƒÙŠØ©"],["Ø§Ù„Ø¨Ù‚Ø±Ø©",286,"Ù…Ø¯Ù†ÙŠØ©"],["Ø¢Ù„ Ø¹Ù…Ø±Ø§Ù†",200,"Ù…Ø¯Ù†ÙŠØ©"],["Ø§Ù„Ù†Ø³Ø§Ø¡",176,"Ù…Ø¯Ù†ÙŠØ©"],["Ø§Ù„Ù…Ø§Ø¦Ø¯Ø©",120,"Ù…Ø¯Ù†ÙŠØ©"],["Ø§Ù„Ø£Ù†Ø¹Ø§Ù…",165,"Ù…ÙƒÙŠØ©"],["Ø§Ù„Ø£Ø¹Ø±Ø§Ù",206,"Ù…ÙƒÙŠØ©"],["Ø§Ù„Ø£Ù†ÙØ§Ù„",75,"Ù…Ø¯Ù†ÙŠØ©"],["Ø§Ù„ØªÙˆØ¨Ø©",129,"Ù…Ø¯Ù†ÙŠØ©"],["ÙŠÙˆÙ†Ø³",109,"Ù…ÙƒÙŠØ©"],["Ù‡ÙˆØ¯",123,"Ù…ÙƒÙŠØ©"],["ÙŠÙˆØ³Ù",111,"Ù…ÙƒÙŠØ©"],["Ø§Ù„Ø±Ø¹Ø¯",43,"Ù…Ø¯Ù†ÙŠØ©"],["Ø¥Ø¨Ø±Ø§Ù‡ÙŠÙ…",52,"Ù…ÙƒÙŠØ©"],["Ø§Ù„Ø­Ø¬Ø±",99,"Ù…ÙƒÙŠØ©"],["Ø§Ù„Ù†Ø­Ù„",128,"Ù…ÙƒÙŠØ©"],["Ø§Ù„Ø¥Ø³Ø±Ø§Ø¡",111,"Ù…ÙƒÙŠØ©"],["Ø§Ù„ÙƒÙ‡Ù",110,"Ù…ÙƒÙŠØ©"],["Ù…Ø±ÙŠÙ…",98,"Ù…ÙƒÙŠØ©"],["Ø·Ù‡",135,"Ù…ÙƒÙŠØ©"],["Ø§Ù„Ø£Ù†Ø¨ÙŠØ§Ø¡",112,"Ù…ÙƒÙŠØ©"],["Ø§Ù„Ø­Ø¬",78,"Ù…Ø¯Ù†ÙŠØ©"],["Ø§Ù„Ù…Ø¤Ù…Ù†ÙˆÙ†",118,"Ù…ÙƒÙŠØ©"],["Ø§Ù„Ù†ÙˆØ±",64,"Ù…Ø¯Ù†ÙŠØ©"],["Ø§Ù„ÙØ±Ù‚Ø§Ù†",77,"Ù…ÙƒÙŠØ©"],["Ø§Ù„Ø´Ø¹Ø±Ø§Ø¡",227,"Ù…ÙƒÙŠØ©"],["Ø§Ù„Ù†Ù…Ù„",93,"Ù…ÙƒÙŠØ©"],["Ø§Ù„Ù‚ØµØµ",88,"Ù…ÙƒÙŠØ©"],["Ø§Ù„Ø¹Ù†ÙƒØ¨ÙˆØª",69,"Ù…ÙƒÙŠØ©"],["Ø§Ù„Ø±ÙˆÙ…",60,"Ù…ÙƒÙŠØ©"],["Ù„Ù‚Ù…Ø§Ù†",34,"Ù…ÙƒÙŠØ©"],["Ø§Ù„Ø³Ø¬Ø¯Ø©",30,"Ù…ÙƒÙŠØ©"],["Ø§Ù„Ø£Ø­Ø²Ø§Ø¨",73,"Ù…Ø¯Ù†ÙŠØ©"],["Ø³Ø¨Ø£",54,"Ù…ÙƒÙŠØ©"],["ÙØ§Ø·Ø±",45,"Ù…ÙƒÙŠØ©"],["ÙŠØ³",83,"Ù…ÙƒÙŠØ©"],["Ø§Ù„ØµØ§ÙØ§Øª",182,"Ù…ÙƒÙŠØ©"],["Øµ",88,"Ù…ÙƒÙŠØ©"],["Ø§Ù„Ø²Ù…Ø±",75,"Ù…ÙƒÙŠØ©"],["ØºØ§ÙØ±",85,"Ù…ÙƒÙŠØ©"],["ÙØµÙ„Øª",54,"Ù…ÙƒÙŠØ©"],["Ø§Ù„Ø´ÙˆØ±Ù‰",53,"Ù…ÙƒÙŠØ©"],["Ø§Ù„Ø²Ø®Ø±Ù",89,"Ù…ÙƒÙŠØ©"],["Ø§Ù„Ø¯Ø®Ø§Ù†",59,"Ù…ÙƒÙŠØ©"],["Ø§Ù„Ø¬Ø§Ø«ÙŠØ©",37,"Ù…ÙƒÙŠØ©"],["Ø§Ù„Ø£Ø­Ù‚Ø§Ù",35,"Ù…ÙƒÙŠØ©"],["Ù…Ø­Ù…Ø¯",38,"Ù…Ø¯Ù†ÙŠØ©"],["Ø§Ù„ÙØªØ­",29,"Ù…Ø¯Ù†ÙŠØ©"],["Ø§Ù„Ø­Ø¬Ø±Ø§Øª",18,"Ù…Ø¯Ù†ÙŠØ©"],["Ù‚",45,"Ù…ÙƒÙŠØ©"],["Ø§Ù„Ø°Ø§Ø±ÙŠØ§Øª",60,"Ù…ÙƒÙŠØ©"],["Ø§Ù„Ø·ÙˆØ±",49,"Ù…ÙƒÙŠØ©"],["Ø§Ù„Ù†Ø¬Ù…",62,"Ù…ÙƒÙŠØ©"],["Ø§Ù„Ù‚Ù…Ø±",55,"Ù…ÙƒÙŠØ©"],["Ø§Ù„Ø±Ø­Ù…Ù†",78,"Ù…Ø¯Ù†ÙŠØ©"],["Ø§Ù„ÙˆØ§Ù‚Ø¹Ø©",96,"Ù…ÙƒÙŠØ©"],["Ø§Ù„Ø­Ø¯ÙŠØ¯",29,"Ù…Ø¯Ù†ÙŠØ©"],["Ø§Ù„Ù…Ø¬Ø§Ø¯Ù„Ø©",22,"Ù…Ø¯Ù†ÙŠØ©"],["Ø§Ù„Ø­Ø´Ø±",24,"Ù…Ø¯Ù†ÙŠØ©"],["Ø§Ù„Ù…Ù…ØªØ­Ù†Ø©",13,"Ù…Ø¯Ù†ÙŠØ©"],["Ø§Ù„ØµÙ",14,"Ù…Ø¯Ù†ÙŠØ©"],["Ø§Ù„Ø¬Ù…Ø¹Ø©",11,"Ù…Ø¯Ù†ÙŠØ©"],["Ø§Ù„Ù…Ù†Ø§ÙÙ‚ÙˆÙ†",11,"Ù…Ø¯Ù†ÙŠØ©"],["Ø§Ù„ØªØºØ§Ø¨Ù†",18,"Ù…Ø¯Ù†ÙŠØ©"],["Ø§Ù„Ø·Ù„Ø§Ù‚",12,"Ù…Ø¯Ù†ÙŠØ©"],["Ø§Ù„ØªØ­Ø±ÙŠÙ…",12,"Ù…Ø¯Ù†ÙŠØ©"],["Ø§Ù„Ù…Ù„Ùƒ",30,"Ù…ÙƒÙŠØ©"],["Ø§Ù„Ù‚Ù„Ù…",52,"Ù…ÙƒÙŠØ©"],["Ø§Ù„Ø­Ø§Ù‚Ø©",52,"Ù…ÙƒÙŠØ©"],["Ø§Ù„Ù…Ø¹Ø§Ø±Ø¬",44,"Ù…ÙƒÙŠØ©"],["Ù†ÙˆØ­",28,"Ù…ÙƒÙŠØ©"],["Ø§Ù„Ø¬Ù†",28,"Ù…ÙƒÙŠØ©"],["Ø§Ù„Ù…Ø²Ù…Ù„",20,"Ù…ÙƒÙŠØ©"],["Ø§Ù„Ù…Ø¯Ø«Ø±",56,"Ù…ÙƒÙŠØ©"],["Ø§Ù„Ù‚ÙŠØ§Ù…Ø©",40,"Ù…ÙƒÙŠØ©"],["Ø§Ù„Ø¥Ù†Ø³Ø§Ù†",31,"Ù…Ø¯Ù†ÙŠØ©"],["Ø§Ù„Ù…Ø±Ø³Ù„Ø§Øª",50,"Ù…ÙƒÙŠØ©"],["Ø§Ù„Ù†Ø¨Ø£",40,"Ù…ÙƒÙŠØ©"],["Ø§Ù„Ù†Ø§Ø²Ø¹Ø§Øª",46,"Ù…ÙƒÙŠØ©"],["Ø¹Ø¨Ø³",42,"Ù…ÙƒÙŠØ©"],["Ø§Ù„ØªÙƒÙˆÙŠØ±",29,"Ù…ÙƒÙŠØ©"],["Ø§Ù„Ø§Ù†ÙØ·Ø§Ø±",19,"Ù…ÙƒÙŠØ©"],["Ø§Ù„Ù…Ø·ÙÙÙŠÙ†",36,"Ù…ÙƒÙŠØ©"],["Ø§Ù„Ø§Ù†Ø´Ù‚Ø§Ù‚",25,"Ù…ÙƒÙŠØ©"],["Ø§Ù„Ø¨Ø±ÙˆØ¬",22,"Ù…ÙƒÙŠØ©"],["Ø§Ù„Ø·Ø§Ø±Ù‚",17,"Ù…ÙƒÙŠØ©"],["Ø§Ù„Ø£Ø¹Ù„Ù‰",19,"Ù…ÙƒÙŠØ©"],["Ø§Ù„ØºØ§Ø´ÙŠØ©",26,"Ù…ÙƒÙŠØ©"],["Ø§Ù„ÙØ¬Ø±",30,"Ù…ÙƒÙŠØ©"],["Ø§Ù„Ø¨Ù„Ø¯",20,"Ù…ÙƒÙŠØ©"],["Ø§Ù„Ø´Ù…Ø³",15,"Ù…ÙƒÙŠØ©"],["Ø§Ù„Ù„ÙŠÙ„",21,"Ù…ÙƒÙŠØ©"],["Ø§Ù„Ø¶Ø­Ù‰",11,"Ù…ÙƒÙŠØ©"],["Ø§Ù„Ø´Ø±Ø­",8,"Ù…ÙƒÙŠØ©"],["Ø§Ù„ØªÙŠÙ†",8,"Ù…ÙƒÙŠØ©"],["Ø§Ù„Ø¹Ù„Ù‚",19,"Ù…ÙƒÙŠØ©"],["Ø§Ù„Ù‚Ø¯Ø±",5,"Ù…ÙƒÙŠØ©"],["Ø§Ù„Ø¨ÙŠÙ†Ø©",8,"Ù…Ø¯Ù†ÙŠØ©"],["Ø§Ù„Ø²Ù„Ø²Ù„Ø©",8,"Ù…Ø¯Ù†ÙŠØ©"],["Ø§Ù„Ø¹Ø§Ø¯ÙŠØ§Øª",11,"Ù…ÙƒÙŠØ©"],["Ø§Ù„Ù‚Ø§Ø±Ø¹Ø©",11,"Ù…ÙƒÙŠØ©"],["Ø§Ù„ØªÙƒØ§Ø«Ø±",8,"Ù…ÙƒÙŠØ©"],["Ø§Ù„Ø¹ØµØ±",3,"Ù…ÙƒÙŠØ©"],["Ø§Ù„Ù‡Ù…Ø²Ø©",9,"Ù…ÙƒÙŠØ©"],["Ø§Ù„ÙÙŠÙ„",5,"Ù…ÙƒÙŠØ©"],["Ù‚Ø±ÙŠØ´",4,"Ù…ÙƒÙŠØ©"],["Ø§Ù„Ù…Ø§Ø¹ÙˆÙ†",7,"Ù…ÙƒÙŠØ©"],["Ø§Ù„ÙƒÙˆØ«Ø±",3,"Ù…ÙƒÙŠØ©"],["Ø§Ù„ÙƒØ§ÙØ±ÙˆÙ†",6,"Ù…ÙƒÙŠØ©"],["Ø§Ù„Ù†ØµØ±",3,"Ù…Ø¯Ù†ÙŠØ©"],["Ø§Ù„Ù…Ø³Ø¯",5,"Ù…ÙƒÙŠØ©"],["Ø§Ù„Ø¥Ø®Ù„Ø§Øµ",4,"Ù…ÙƒÙŠØ©"],["Ø§Ù„ÙÙ„Ù‚",5,"Ù…ÙƒÙŠØ©"],["Ø§Ù„Ù†Ø§Ø³",6,"Ù…ÙƒÙŠØ©"]];
 
 const PAGE_MAP = [[1,1],[2,1],[2,6],[2,17],[2,25],[2,30],[2,38],[2,49],[2,58],[2,62],[2,70],[2,77],[2,84],[2,90],[2,97],[2,104],[2,110],[2,118],[2,124],[2,130],[2,136],[2,142],[2,148],[2,155],[2,163],[2,171],[2,177],[2,182],[2,186],[2,191],[2,197],[2,203],[2,211],[2,218],[2,224],[2,231],[2,238],[2,246],[2,254],[2,261],[2,268],[2,275],[2,283],[3,1],[3,10],[3,21],[3,31],[3,41],[3,51],[3,62],[3,72],[3,81],[3,92],[3,102],[3,111],[3,121],[3,130],[3,141],[3,150],[3,158],[3,166],[3,174],[3,182],[3,191],[3,200],[4,1],[4,12],[4,24],[4,36],[4,48],[4,58],[4,72],[4,83],[4,93],[4,102],[4,114],[4,123],[4,135],[4,148],[4,163],[4,172],[5,1],[5,7],[5,15],[5,25],[5,35],[5,46],[5,58],[5,68],[5,83],[5,94],[5,105],[6,1],[6,13],[6,21],[6,35],[6,45],[6,53],[6,62],[6,74],[6,82],[6,92],[6,102],[6,111],[6,121],[6,131],[6,140],[6,151],[6,163],[7,1],[7,13],[7,27],[7,39],[7,52],[7,60],[7,71],[7,83],[7,95],[7,106],[7,121],[7,131],[7,143],[7,155],[7,163],[7,171],[7,182],[7,189],[8,1],[8,9],[8,21],[8,30],[8,41],[8,51],[8,61],[8,71],[9,1],[9,7],[9,17],[9,26],[9,38],[9,47],[9,55],[9,65],[9,73],[9,82],[9,91],[9,101],[9,111],[9,121],[9,129],[10,1],[10,11],[10,22],[10,34],[10,44],[10,54],[10,64],[10,75],[10,84],[10,94],[10,103],[11,1],[11,7],[11,18],[11,29],[11,41],[11,54],[11,67],[11,78],[11,84],[11,94],[11,105],[12,1],[12,8],[12,17],[12,29],[12,38],[12,50],[12,61],[12,71],[12,80],[12,92],[12,105],[13,1],[13,7],[13,16],[13,26],[13,37],[14,1],[14,10],[14,22],[14,33],[14,43],[15,1],[15,17],[15,32],[15,52],[15,70],[15,85],[16,1],[16,11],[16,27],[16,41],[16,55],[16,65],[16,76],[16,88],[16,100],[16,109],[16,119],[17,1],[17,15],[17,28],[17,41],[17,57],[17,71],[17,84],[17,97],[17,107],[18,1],[18,10],[18,22],[18,33],[18,46],[18,61],[18,76],[18,90],[18,103],[19,1],[19,12],[19,27],[19,45],[19,59],[19,72],[19,85],[20,1],[20,18],[20,38],[20,57],[20,78],[20,96],[20,112],[20,128],[21,1],[21,12],[21,25],[21,37],[21,50],[21,65],[21,80],[21,91],[22,1],[22,11],[22,23],[22,34],[22,45],[22,55],[22,66],[22,73],[23,1],[23,11],[23,24],[23,38],[23,51],[23,64],[23,76],[23,89],[23,100],[24,1],[24,12],[24,22],[24,33],[24,41],[24,54],[24,62],[25,1],[25,12],[25,22],[25,36],[25,52],[25,68],[26,1],[26,12],[26,28],[26,52],[26,71],[26,90],[26,113],[26,138],[26,160],[26,181],[26,207],[27,1],[27,14],[27,26],[27,37],[27,46],[27,60],[27,71],[27,82],[28,1],[28,12],[28,22],[28,29],[28,38],[28,51],[28,62],[28,72],[28,82],[29,1],[29,8],[29,19],[29,32],[29,46],[29,60],[30,1],[30,12],[30,25],[30,38],[30,53],[31,1],[31,13],[31,24],[32,1],[32,12],[32,20],[33,1],[33,7],[33,17],[33,26],[33,35],[33,46],[33,60],[33,72],[34,1],[34,10],[34,23],[34,37],[34,49],[35,1],[35,9],[35,21],[35,36],[36,1],[36,14],[36,28],[36,41],[36,60],[36,75],[37,1],[37,21],[37,52],[37,80],[37,103],[37,127],[37,154],[38,1],[38,16],[38,31],[38,52],[39,1],[39,11],[39,22],[39,33],[39,48],[39,64],[39,75],[40,1],[40,12],[40,26],[40,38],[40,52],[40,68],[40,82],[41,1],[41,13],[41,25],[41,40],[41,51],[42,1],[42,11],[42,20],[42,31],[42,45],[43,1],[43,14],[43,28],[43,43],[43,61],[43,75],[44,1],[44,21],[44,40],[45,1],[45,14],[45,26],[46,1],[46,12],[46,26],[47,1],[47,12],[47,22],[47,32],[48,1],[48,10],[48,19],[48,28],[49,1],[49,12],[50,1],[50,13],[50,31],[51,1],[51,24],[51,47],[52,1],[52,28],[52,43],[53,1],[53,26],[53,51],[54,1],[54,24],[54,45],[55,1],[55,26],[55,56],[56,1],[56,26],[56,51],[56,75],[57,1],[57,13],[57,25],[58,1],[58,9],[58,20],[59,1],[59,11],[59,22],[60,1],[60,10],[61,1],[62,1],[63,1],[64,1],[65,1],[66,1],[67,1],[67,16],[67,25],[68,1],[68,21],[68,45],[69,1],[69,25],[69,44],[70,1],[70,25],[70,45],[71,1],[72,1],[72,16],[73,1],[73,17],[74,1],[74,20],[74,38],[74,55],[75,1],[75,24],[76,1],[76,17],[77,1],[77,26],[78,1],[78,26],[79,1],[79,27],[80,1],[80,25],[81,1],[82,1],[83,1],[83,19],[84,1],[85,1],[86,1],[87,1],[88,1],[89,1],[90,1],[91,1],[92,1],[93,1],[94,1],[95,1],[96,1],[97,1],[98,1],[99,1],[100,1],[101,1],[102,1],[103,1],[104,1],[105,1],[106,1],[107,1],[108,1],[109,1],[110,1],[111,1],[112,1],[113,1],[114,1]];
 
 const FEATURED = [
-  {n:1,  ic:"🌟",col:"#d4a843",badge:"فاتحة الكتاب",  desc:"أعظم سورة في القرآن، السبع المثاني. لا صلاة إلا بها."},
-  {n:2,  ic:"🐄",col:"#58a6ff",badge:"سيدة السور",    desc:"فيها آية الكرسي. من قرأها لم يدخل بيته الشيطان ثلاثة أيام."},
-  {n:18, ic:"🛡",col:"#3fb950",badge:"وقاية من الدجال",desc:"من قرأ عشر آيات من أولها عُصم من فتنة الدجال."},
-  {n:36, ic:"❤️",col:"#f85149",badge:"قلب القرآن",    desc:"قلب القرآن. تُقرأ على الأموات وتُيسّر الأمور."},
-  {n:55, ic:"🌹",col:"#d2a8ff",badge:"عروس القرآن",   desc:"عروس القرآن الكريم. تكررت ﴿فبأي آلاء ربكما تكذبان﴾ 31 مرة."},
-  {n:67, ic:"🌙",col:"#79c0ff",badge:"تقي من القبر",  desc:"المانعة — تشفع لصاحبها وتمنع عذاب القبر."},
-  {n:112,ic:"☝️",col:"#d4a843",badge:"ثلث القرآن",    desc:"من قرأها عشر مرات بنى الله له بيتاً في الجنة."},
-  {n:113,ic:"🌅",col:"#ff7b72",badge:"معوذة الصباح",  desc:"للحماية من الشرور صباحاً ومساءً."},
-  {n:114,ic:"🤲",col:"#56d364",badge:"ختام القرآن",   desc:"ختام المصحف. للاستعاذة من الوسواس والشياطين."},
+  {n:1,  ic:"ðŸŒŸ",col:"#d4a843",badge:"ÙØ§ØªØ­Ø© Ø§Ù„ÙƒØªØ§Ø¨",  desc:"Ø£Ø¹Ø¸Ù… Ø³ÙˆØ±Ø© ÙÙŠ Ø§Ù„Ù‚Ø±Ø¢Ù†ØŒ Ø§Ù„Ø³Ø¨Ø¹ Ø§Ù„Ù…Ø«Ø§Ù†ÙŠ. Ù„Ø§ ØµÙ„Ø§Ø© Ø¥Ù„Ø§ Ø¨Ù‡Ø§."},
+  {n:2,  ic:"ðŸ„",col:"#58a6ff",badge:"Ø³ÙŠØ¯Ø© Ø§Ù„Ø³ÙˆØ±",    desc:"ÙÙŠÙ‡Ø§ Ø¢ÙŠØ© Ø§Ù„ÙƒØ±Ø³ÙŠ. Ù…Ù† Ù‚Ø±Ø£Ù‡Ø§ Ù„Ù… ÙŠØ¯Ø®Ù„ Ø¨ÙŠØªÙ‡ Ø§Ù„Ø´ÙŠØ·Ø§Ù† Ø«Ù„Ø§Ø«Ø© Ø£ÙŠØ§Ù…."},
+  {n:18, ic:"ðŸ›¡",col:"#3fb950",badge:"ÙˆÙ‚Ø§ÙŠØ© Ù…Ù† Ø§Ù„Ø¯Ø¬Ø§Ù„",desc:"Ù…Ù† Ù‚Ø±Ø£ Ø¹Ø´Ø± Ø¢ÙŠØ§Øª Ù…Ù† Ø£ÙˆÙ„Ù‡Ø§ Ø¹ÙØµÙ… Ù…Ù† ÙØªÙ†Ø© Ø§Ù„Ø¯Ø¬Ø§Ù„."},
+  {n:36, ic:"â¤ï¸",col:"#f85149",badge:"Ù‚Ù„Ø¨ Ø§Ù„Ù‚Ø±Ø¢Ù†",    desc:"Ù‚Ù„Ø¨ Ø§Ù„Ù‚Ø±Ø¢Ù†. ØªÙÙ‚Ø±Ø£ Ø¹Ù„Ù‰ Ø§Ù„Ø£Ù…ÙˆØ§Øª ÙˆØªÙÙŠØ³Ù‘Ø± Ø§Ù„Ø£Ù…ÙˆØ±."},
+  {n:55, ic:"ðŸŒ¹",col:"#d2a8ff",badge:"Ø¹Ø±ÙˆØ³ Ø§Ù„Ù‚Ø±Ø¢Ù†",   desc:"Ø¹Ø±ÙˆØ³ Ø§Ù„Ù‚Ø±Ø¢Ù† Ø§Ù„ÙƒØ±ÙŠÙ…. ØªÙƒØ±Ø±Øª ï´¿ÙØ¨Ø£ÙŠ Ø¢Ù„Ø§Ø¡ Ø±Ø¨ÙƒÙ…Ø§ ØªÙƒØ°Ø¨Ø§Ù†ï´¾ 31 Ù…Ø±Ø©."},
+  {n:67, ic:"ðŸŒ™",col:"#79c0ff",badge:"ØªÙ‚ÙŠ Ù…Ù† Ø§Ù„Ù‚Ø¨Ø±",  desc:"Ø§Ù„Ù…Ø§Ù†Ø¹Ø© â€” ØªØ´ÙØ¹ Ù„ØµØ§Ø­Ø¨Ù‡Ø§ ÙˆØªÙ…Ù†Ø¹ Ø¹Ø°Ø§Ø¨ Ø§Ù„Ù‚Ø¨Ø±."},
+  {n:112,ic:"â˜ï¸",col:"#d4a843",badge:"Ø«Ù„Ø« Ø§Ù„Ù‚Ø±Ø¢Ù†",    desc:"Ù…Ù† Ù‚Ø±Ø£Ù‡Ø§ Ø¹Ø´Ø± Ù…Ø±Ø§Øª Ø¨Ù†Ù‰ Ø§Ù„Ù„Ù‡ Ù„Ù‡ Ø¨ÙŠØªØ§Ù‹ ÙÙŠ Ø§Ù„Ø¬Ù†Ø©."},
+  {n:113,ic:"ðŸŒ…",col:"#ff7b72",badge:"Ù…Ø¹ÙˆØ°Ø© Ø§Ù„ØµØ¨Ø§Ø­",  desc:"Ù„Ù„Ø­Ù…Ø§ÙŠØ© Ù…Ù† Ø§Ù„Ø´Ø±ÙˆØ± ØµØ¨Ø§Ø­Ø§Ù‹ ÙˆÙ…Ø³Ø§Ø¡Ù‹."},
+  {n:114,ic:"ðŸ¤²",col:"#56d364",badge:"Ø®ØªØ§Ù… Ø§Ù„Ù‚Ø±Ø¢Ù†",   desc:"Ø®ØªØ§Ù… Ø§Ù„Ù…ØµØ­Ù. Ù„Ù„Ø§Ø³ØªØ¹Ø§Ø°Ø© Ù…Ù† Ø§Ù„ÙˆØ³ÙˆØ§Ø³ ÙˆØ§Ù„Ø´ÙŠØ§Ø·ÙŠÙ†."},
 ];
 
 // ============================================================
@@ -1514,6 +1788,8 @@ let bookmark = parseInt(localStorage.getItem('kbm')      || '0');
 let readMode = localStorage.getItem('kmode')             || 'surah';
 let waqfa    = JSON.parse(localStorage.getItem('kwaqfa') || 'null');
 let curPage  = 0;
+let activeReaderRequest = 0;
+let khCircleRoomId = localStorage.getItem('khatmaRoomId') || '';
 const _apiCache = {};
 
 // ============================================================
@@ -1583,12 +1859,12 @@ function donePagesCount() { return Object.keys(pprog).length; }
 
 function stripBasmala(txt) {
   const patterns = [
-    /^بِسْمِ\s+[^\s]+\s+[^\s]+\s+[^\s]+\s*/,
-    /^بسم\s+الله\s+الرحمن\s+الرحيم\s*/,
-    /^بِسْمِ\s+ٱللَّهِ\s+ٱلرَّحْمَٰنِ\s+ٱلرَّحِيمِ\s*/,
+    /^Ø¨ÙØ³Ù’Ù…Ù\s+[^\s]+\s+[^\s]+\s+[^\s]+\s*/,
+    /^Ø¨Ø³Ù…\s+Ø§Ù„Ù„Ù‡\s+Ø§Ù„Ø±Ø­Ù…Ù†\s+Ø§Ù„Ø±Ø­ÙŠÙ…\s*/,
+    /^Ø¨ÙØ³Ù’Ù…Ù\s+Ù±Ù„Ù„ÙŽÙ‘Ù‡Ù\s+Ù±Ù„Ø±ÙŽÙ‘Ø­Ù’Ù…ÙŽÙ°Ù†Ù\s+Ù±Ù„Ø±ÙŽÙ‘Ø­ÙÙŠÙ…Ù\s*/,
   ];
   const fw = txt.trim().split(/\s+/)[0];
-  if (['بِسْمِ','بسم'].some(w => fw.startsWith(w))) {
+  if (['Ø¨ÙØ³Ù’Ù…Ù','Ø¨Ø³Ù…'].some(w => fw.startsWith(w))) {
     for (const p of patterns) {
       const m = txt.match(p);
       if (m) return txt.slice(m[0].length).trim();
@@ -1609,14 +1885,16 @@ function init() {
   updateStats();
   renderPlan();
   renderStreakBanner();
+  bootstrapKhatmaCircle();
 }
 
-window.addEventListener('islamiCalcReady', (e) => {
+window.addEventListener('islamiCalcReady', async (e) => {
   const streak = e.detail?.doc?.streak || parseInt(localStorage.getItem('userStreak') || '0');
   if (streak >= 2) {
     document.getElementById('streakNum').textContent = streak;
     document.getElementById('streakBanner').classList.add('show');
   }
+  await bootstrapKhatmaCircle();
 });
 
 function renderStreakBanner() {
@@ -1627,6 +1905,233 @@ function renderStreakBanner() {
   }
 }
 
+function escapeHTML(value) {
+  return String(value ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function getKhatmaCircleProgress() {
+  return {
+    currentPage: curPage || bookmark || _userProfile?.khatmaStats?.currentPage || 1,
+    completedPages: Object.keys(pprog).length,
+    completedSurahs: Object.keys(prog).length,
+    streak: parseInt(localStorage.getItem('userStreak') || '0', 10) || 0,
+  };
+}
+
+function getKhatmaCircleInviteFromLocation() {
+  const params = new URLSearchParams(location.search);
+  return (params.get('room') || '').trim();
+}
+
+function normalizeKhatmaCircleInput(value) {
+  const raw = String(value || '').trim();
+  if (!raw) return '';
+  try {
+    const url = new URL(raw, location.origin);
+    return (url.searchParams.get('room') || raw).trim();
+  } catch {
+    return raw;
+  }
+}
+
+function setKhatmaCircleBusy(isBusy) {
+  document.getElementById('khCircleCreateBtn')?.toggleAttribute('disabled', isBusy);
+  document.getElementById('khCircleJoinBtn')?.toggleAttribute('disabled', isBusy);
+}
+
+function renderKhatmaCircle(room) {
+  const activePanel = document.getElementById('khCircleActivePanel');
+  const empty = document.getElementById('khCircleEmpty');
+  const title = document.getElementById('khCircleRoomTitle');
+  const summary = document.getElementById('khCircleRoomSummary');
+  const inviteUrl = document.getElementById('khCircleInviteUrl');
+  const membersCount = document.getElementById('khCircleMembersCount');
+  const progressPercent = document.getElementById('khCircleProgressPercent');
+  const pagesTotal = document.getElementById('khCirclePagesTotal');
+  const progressBar = document.getElementById('khCircleProgressBar');
+  const meta = document.getElementById('khCircleMetaLine');
+  const members = document.getElementById('khCircleMembers');
+  const status = document.getElementById('khCircleStatus');
+
+  if (!room) {
+    activePanel.style.display = 'none';
+    empty.style.display = 'block';
+    title.textContent = 'Ù„Ø§ ØªÙˆØ¬Ø¯ ØºØ±ÙØ© Ù†Ø´Ø·Ø© Ø­Ø§Ù„ÙŠØ§Ù‹';
+    summary.textContent = 'Ø¨Ù…Ø¬Ø±Ø¯ Ø¥Ù†Ø´Ø§Ø¡ ØºØ±ÙØ© Ø£Ùˆ Ø§Ù„Ø§Ù†Ø¶Ù…Ø§Ù… Ø¥Ù„Ù‰ ÙˆØ§Ø­Ø¯Ø©ØŒ Ø³ØªØ¸Ù‡Ø± Ù‡Ù†Ø§ Ù†Ø³Ø¨Ø© Ø§Ù„Ø¥Ù†Ø¬Ø§Ø² Ø§Ù„Ø¬Ù…Ø§Ø¹ÙŠ ÙˆÙ‚Ø§Ø¦Ù…Ø© Ø§Ù„Ù…Ø´Ø§Ø±ÙƒÙŠÙ† ÙˆØ±ÙˆØ§Ø¨Ø· Ø§Ù„Ø¯Ø¹ÙˆØ©.';
+    members.innerHTML = '';
+    if (status) status.textContent = window.islamiCalc?.getCurrentUser?.() ? 'Ø¬Ø§Ù‡Ø² Ù„Ø¥Ù†Ø´Ø§Ø¡ ØºØ±ÙØ©' : 'Ø®Ø§Øµ â€¢ ÙŠØ­ØªØ§Ø¬ ØªØ³Ø¬ÙŠÙ„ Ø¯Ø®ÙˆÙ„';
+    return;
+  }
+
+  activePanel.style.display = 'block';
+  empty.style.display = 'none';
+  title.textContent = room.name;
+  summary.textContent = `Ø£Ù†Ø´Ø£Ù‡Ø§ ${room.ownerName || 'Ø£Ø­Ø¯ Ø§Ù„Ù…Ø´Ø§Ø±ÙƒÙŠÙ†'} â€” Ø§Ù„Ø±Ø§Ø¨Ø· ÙŠØ¨Ù‚Ù‰ Ø«Ø§Ø¨ØªØ§Ù‹ ÙˆÙŠÙ…ÙƒÙ† Ù…Ø´Ø§Ø±ÙƒØªÙ‡ Ù…Ø¹ Ø§Ù„Ø£Ø³Ø±Ø© Ø£Ùˆ Ø§Ù„Ø£ØµØ¯Ù‚Ø§Ø¡.`;
+  inviteUrl.textContent = room.inviteUrl;
+  membersCount.textContent = Number(room.memberCount || room.members?.length || 0).toLocaleString('ar');
+  progressPercent.textContent = `${Number(room.progressPercent || 0).toLocaleString('ar')}%`;
+  pagesTotal.textContent = Number(room.totalCompletedPages || 0).toLocaleString('ar');
+  progressBar.style.width = `${Math.min(100, Number(room.progressPercent || 0))}%`;
+  meta.textContent = `Ø±Ù…Ø² Ø§Ù„ØºØ±ÙØ©: ${room.inviteCode} â€¢ Ø¢Ø®Ø± Ù…Ø²Ø§Ù…Ù†Ø© Ø¬Ù…Ø§Ø¹ÙŠØ© Ù†Ø§Ø¬Ø­Ø©`;
+  if (status) status.textContent = `ØºØ±ÙØ© Ù†Ø´Ø·Ø© â€¢ ${room.memberCount || room.members?.length || 0} Ù…Ø´Ø§Ø±Ùƒ`;
+
+  const currentUid = window.islamiCalc?.getCurrentUser?.()?.uid || '';
+  members.innerHTML = (room.members || []).map(member => {
+    const initial = escapeHTML((member.displayName || 'Ù‚').trim().charAt(0));
+    const avatar = member.photoURL
+      ? `<img src="${escapeHTML(member.photoURL)}" alt="${escapeHTML(member.displayName)}">`
+      : initial;
+    const suffix = member.uid === currentUid ? ' â€¢ Ø£Ù†Øª' : '';
+    return `
+      <div class="kh-circle-member">
+        <div class="kh-circle-member__avatar">${avatar}</div>
+        <div class="kh-circle-member__meta">
+          <strong>${escapeHTML(member.displayName)}${suffix}</strong>
+          <span>ØµÙØ­Ø© ${Number(member.currentPage || 1).toLocaleString('ar')} â€¢ ${Number(member.completedSurahs || 0).toLocaleString('ar')} Ø³ÙˆØ±Ø© Ù…ÙƒØªÙ…Ù„Ø©</span>
+        </div>
+        <div class="kh-circle-member__score">${Number(member.completedPages || 0).toLocaleString('ar')} / Ù¦Ù Ù¤</div>
+      </div>`;
+  }).join('') || '<div class="kh-circle-empty">Ù„Ù… ÙŠÙ†Ø¶Ù… Ø£Ø­Ø¯ Ø¨Ø¹Ø¯ Ø¥Ù„Ù‰ Ù‡Ø°Ù‡ Ø§Ù„ØºØ±ÙØ©.</div>';
+}
+
+async function refreshKhatmaCircle(silent = false) {
+  const api = window.islamiCalc;
+  const authState = document.getElementById('khCircleAuthState');
+  const pendingInvite = localStorage.getItem('pendingKhatmaRoom');
+
+  if (!api?.getCurrentUser?.()) {
+    if (authState) {
+      authState.textContent = pendingInvite
+        ? 'Ù„Ø¯ÙŠÙƒ Ø±Ø§Ø¨Ø· ØºØ±ÙØ© Ù…Ø­ÙÙˆØ¸. Ø³Ø¬Ù‘Ù„ Ø§Ù„Ø¯Ø®ÙˆÙ„ Ø£ÙˆÙ„Ø§Ù‹ Ù„Ø¥ØªÙ…Ø§Ù… Ø§Ù„Ø§Ù†Ø¶Ù…Ø§Ù….'
+        : 'Ø³Ø¬Ù‘Ù„ Ø¯Ø®ÙˆÙ„Ùƒ Ø£ÙˆÙ„Ø§Ù‹ Ø­ØªÙ‰ ØªØªÙ…ÙƒÙ† Ù…Ù† Ø¥Ù†Ø´Ø§Ø¡ ØºØ±ÙØ© Ø£Ùˆ Ø§Ù„Ø§Ù†Ø¶Ù…Ø§Ù… Ø¥Ù„ÙŠÙ‡Ø§.';
+    }
+    renderKhatmaCircle(null);
+    return;
+  }
+
+  if (authState) {
+    authState.textContent = khCircleRoomId
+      ? 'ÙŠÙ…ÙƒÙ†Ùƒ Ù…Ø²Ø§Ù…Ù†Ø© ØªÙ‚Ø¯Ù…Ùƒ Ø§Ù„Ø­Ø§Ù„ÙŠ Ø£Ùˆ Ù…Ø´Ø§Ø±ÙƒØ© Ø§Ù„Ø±Ø§Ø¨Ø· Ù…Ø¹ Ù…Ù† ØªØ­Ø¨.'
+      : 'Ø£Ù†Øª Ù…Ø³Ø¬Ù‘Ù„ Ø§Ù„Ø¯Ø®ÙˆÙ„ Ø§Ù„Ø¢Ù†. Ø£Ù†Ø´Ø¦ ØºØ±ÙØ© Ø¬Ø¯ÙŠØ¯Ø© Ø£Ùˆ Ø§Ù„ØµÙ‚ Ø±Ø§Ø¨Ø· Ø¯Ø¹ÙˆØ© Ù„Ù„Ø§Ù†Ø¶Ù…Ø§Ù….';
+  }
+
+  if (!khCircleRoomId) {
+    renderKhatmaCircle(null);
+    return;
+  }
+
+  const room = await api.getKhatmaRoom?.(khCircleRoomId);
+  if (!room) {
+    khCircleRoomId = '';
+    localStorage.removeItem('khatmaRoomId');
+    renderKhatmaCircle(null);
+    if (!silent) window.showToast?.('âš ï¸ Ù„Ù… Ù†ØªÙ…ÙƒÙ† Ù…Ù† ØªØ­Ù…ÙŠÙ„ Ø§Ù„ØºØ±ÙØ© Ø§Ù„Ø­Ø§Ù„ÙŠØ©.', 'toast-error');
+    return;
+  }
+
+  renderKhatmaCircle(room);
+}
+
+async function createKhatmaCircle() {
+  const api = window.islamiCalc;
+  if (!api?.getCurrentUser?.()) {
+    api?.openLoginModal?.();
+    return;
+  }
+
+  setKhatmaCircleBusy(true);
+  try {
+    const roomName = document.getElementById('khCircleNameInput')?.value || '';
+    const room = await api.createKhatmaRoom?.(roomName);
+    if (!room) return;
+    khCircleRoomId = room.roomId;
+    localStorage.setItem('khatmaRoomId', khCircleRoomId);
+    localStorage.removeItem('pendingKhatmaRoom');
+    document.getElementById('khCircleNameInput').value = '';
+    renderKhatmaCircle(room);
+    window.history.replaceState({}, '', `${location.pathname}?room=${room.roomId}`);
+    window.showToast?.('ðŸ¤ ØªÙ… Ø¥Ù†Ø´Ø§Ø¡ Ø§Ù„Ø®ØªÙ…Ø© Ø§Ù„Ø¬Ù…Ø§Ø¹ÙŠØ© ÙˆÙ…Ø²Ø§Ù…Ù†Ø© ØªÙ‚Ø¯Ù…Ùƒ.', 'toast-success');
+  } finally {
+    setKhatmaCircleBusy(false);
+    refreshKhatmaCircle(true);
+  }
+}
+
+async function joinKhatmaCircle(value = null) {
+  const api = window.islamiCalc;
+  const roomCode = normalizeKhatmaCircleInput(value ?? document.getElementById('khCircleJoinInput')?.value);
+  if (!roomCode) {
+    window.showToast?.('âš ï¸ Ø§Ù„ØµÙ‚ Ø±Ø§Ø¨Ø· Ø§Ù„Ø¯Ø¹ÙˆØ© Ø£Ùˆ Ø±Ù…Ø² Ø§Ù„ØºØ±ÙØ© Ø£ÙˆÙ„Ø§Ù‹.', 'toast-error');
+    return;
+  }
+
+  if (!api?.getCurrentUser?.()) {
+    localStorage.setItem('pendingKhatmaRoom', roomCode);
+    api?.openLoginModal?.();
+    return;
+  }
+
+  setKhatmaCircleBusy(true);
+  try {
+    const room = await api.joinKhatmaRoom?.(roomCode, getKhatmaCircleProgress());
+    if (!room) return;
+    khCircleRoomId = room.roomId;
+    localStorage.setItem('khatmaRoomId', khCircleRoomId);
+    localStorage.removeItem('pendingKhatmaRoom');
+    document.getElementById('khCircleJoinInput').value = '';
+    renderKhatmaCircle(room);
+    window.history.replaceState({}, '', `${location.pathname}?room=${room.roomId}`);
+    window.showToast?.('ðŸ¤ ØªÙ… Ø§Ù„Ø§Ù†Ø¶Ù…Ø§Ù… Ø¥Ù„Ù‰ Ø§Ù„Ø®ØªÙ…Ø© Ø§Ù„Ø¬Ù…Ø§Ø¹ÙŠØ© Ø¨Ù†Ø¬Ø§Ø­.', 'toast-success');
+  } finally {
+    setKhatmaCircleBusy(false);
+    refreshKhatmaCircle(true);
+  }
+}
+
+async function syncKhatmaCircle(silent = true) {
+  const api = window.islamiCalc;
+  if (!api?.getCurrentUser?.() || !khCircleRoomId) {
+    if (!silent) window.showToast?.('â„¹ï¸ Ø£Ù†Ø´Ø¦ ØºØ±ÙØ© Ø£Ùˆ Ø§Ù†Ø¶Ù… Ø¥Ù„Ù‰ ÙˆØ§Ø­Ø¯Ø© Ø£ÙˆÙ„Ø§Ù‹.', 'toast');
+    return;
+  }
+
+  const room = await api.syncKhatmaRoomProgress?.(khCircleRoomId, getKhatmaCircleProgress());
+  if (room) {
+    renderKhatmaCircle(room);
+    if (!silent) window.showToast?.('âœ… ØªÙ… ØªØ­Ø¯ÙŠØ« ØªÙ‚Ø¯Ù…Ùƒ Ø¯Ø§Ø®Ù„ Ø§Ù„Ø®ØªÙ…Ø© Ø§Ù„Ø¬Ù…Ø§Ø¹ÙŠØ©.', 'toast-success');
+  }
+}
+
+function copyKhatmaCircleLink() {
+  const url = document.getElementById('khCircleInviteUrl')?.textContent?.trim();
+  if (!url) return;
+  navigator.clipboard?.writeText(url).then(() => {
+    window.showToast?.('ðŸ”— ØªÙ… Ù†Ø³Ø® Ø±Ø§Ø¨Ø· Ø§Ù„Ø¯Ø¹ÙˆØ©.', 'toast-success');
+  }).catch(() => {
+    window.showToast?.('âš ï¸ ØªØ¹Ø°Ø± Ù†Ø³Ø® Ø§Ù„Ø±Ø§Ø¨Ø· ØªÙ„Ù‚Ø§Ø¦ÙŠØ§Ù‹.', 'toast-error');
+  });
+}
+
+async function bootstrapKhatmaCircle() {
+  const inviteFromUrl = getKhatmaCircleInviteFromLocation();
+  if (inviteFromUrl) {
+    localStorage.setItem('pendingKhatmaRoom', inviteFromUrl);
+    window.history.replaceState({}, '', location.pathname);
+  }
+
+  const pendingInvite = localStorage.getItem('pendingKhatmaRoom');
+  if (pendingInvite && window.islamiCalc?.getCurrentUser?.()) {
+    await joinKhatmaCircle(pendingInvite);
+    return;
+  }
+
+  await refreshKhatmaCircle(true);
+}
 // ============================================================
 // MODE
 // ============================================================
@@ -1653,7 +2158,7 @@ function updateStats() {
   document.getElementById('sp2').textContent  = donePagesCount();
   document.getElementById('sa').textContent   = ay;
   document.getElementById('pfill').style.width = pct + '%';
-  document.getElementById('plbl').textContent  = sd + ' / 114 سورة';
+  document.getElementById('plbl').textContent  = sd + ' / 114 Ø³ÙˆØ±Ø©';
   document.getElementById('pct-lbl').textContent = pct + '%';
 
   if (bookmark > 0) {
@@ -1672,12 +2177,12 @@ function renderFeat() {
     const done = !!prog[f.n];
     return `
       <div class="kh-fcard" style="--fc:${f.col}" onclick="openSurah(${f.n})">
-        ${done ? '<div class="kh-fcard__check">✓</div>' : ''}
+        ${done ? '<div class="kh-fcard__check">âœ“</div>' : ''}
         <div class="kh-fcard__top">
           <span style="font-size:22px">${f.ic}</span>
           <div>
-            <div class="kh-fcard__name">سورة ${SURAHS[f.n-1][0]}</div>
-            <div style="font-size:10px;color:var(--text-3)">${SURAHS[f.n-1][1]} آية</div>
+            <div class="kh-fcard__name">Ø³ÙˆØ±Ø© ${SURAHS[f.n-1][0]}</div>
+            <div style="font-size:10px;color:var(--text-3)">${SURAHS[f.n-1][1]} Ø¢ÙŠØ©</div>
           </div>
         </div>
         <div class="kh-fcard__badge" style="background:${f.col}20;color:${f.col}">${f.badge}</div>
@@ -1694,10 +2199,10 @@ function renderGrid() {
     const n = i + 1, done = !!prog[n];
     return `
       <div class="kh-scard ${done ? 'done' : ''}" onclick="openSurah(${n})">
-        <div class="kh-snum">${done ? '✓' : n}</div>
+        <div class="kh-snum">${done ? 'âœ“' : n}</div>
         <div>
-          <div class="kh-sname">سورة ${s[0]}</div>
-          <div class="kh-smeta">${s[1]} آية • ${s[2]}</div>
+          <div class="kh-sname">Ø³ÙˆØ±Ø© ${s[0]}</div>
+          <div class="kh-smeta">${s[1]} Ø¢ÙŠØ© â€¢ ${s[2]}</div>
         </div>
       </div>`;
   }).join('');
@@ -1717,8 +2222,8 @@ function renderPageGrid() {
     const juzPct   = Math.round(doneJ / totalJ * 100);
     h += `
       <div class="kh-juz-header" style="--jc:${col}">
-        <span class="kh-juz-title">الجزء ${JUZ_NAMES[j]}</span>
-        <span class="kh-juz-meta">${ps}–${pe} &nbsp;•&nbsp; ${doneJ}/${totalJ}</span>
+        <span class="kh-juz-title">Ø§Ù„Ø¬Ø²Ø¡ ${JUZ_NAMES[j]}</span>
+        <span class="kh-juz-meta">${ps}â€“${pe} &nbsp;â€¢&nbsp; ${doneJ}/${totalJ}</span>
         <div class="kh-juz-pbar"><div class="kh-juz-pfill" style="width:${juzPct}%;background:${col}"></div></div>
       </div>
       <div class="kh-juz-pages">`;
@@ -1728,7 +2233,7 @@ function renderPageGrid() {
       const style = done ? `border-color:${col}50;background:${col}12` : bm ? `border-color:${col}` : '';
       h += `
         <div class="kh-pcard ${done ? 'done' : ''} ${bm ? 'bm' : ''}" style="${style}" onclick="openPage(${p})">
-          <div class="kh-pnum">${bm ? '🔖' : p}</div>
+          <div class="kh-pnum">${bm ? 'ðŸ”–' : p}</div>
         </div>`;
     }
     h += '</div>';
@@ -1748,7 +2253,7 @@ function setPlan(days, btn) {
   localStorage.setItem('kpl', JSON.stringify(plan));
   document.getElementById('plan-cancel').style.display = 'block';
   renderPlan();
-  window.islamiCalc?.logActivity?.('بدأ خطة ختمة ' + days + ' يوم', 'khatma_plan', '📅', '', 10);
+  window.islamiCalc?.logActivity?.('Ø¨Ø¯Ø£ Ø®Ø·Ø© Ø®ØªÙ…Ø© ' + days + ' ÙŠÙˆÙ…', 'khatma_plan', 'ðŸ“…', '', 10);
 }
 
 function cancelPlan() {
@@ -1781,28 +2286,28 @@ function renderPlan() {
       if (done[d])   cls = 'done';
       else if (d < elapsed) cls = 'late';
       else if (d === elapsed) cls = 'today';
-      return `<div class="kh-day ${cls}" title="يوم ${d+1}">${d+1}</div>`;
+      return `<div class="kh-day ${cls}" title="ÙŠÙˆÙ… ${d+1}">${d+1}</div>`;
     }).join('')
   }</div>`;
 
   const tagsHtml = [...Array(todayEnd - todayStart + 1)].map((_, i) => {
     const s = todayStart + i;
     const d = !!prog[s];
-    return `<span class="kh-stag ${d ? 'done' : ''}" onclick="openSurah(${s})">${d ? '✓' : ''} سورة ${SURAHS[s-1][0]}</span>`;
+    return `<span class="kh-stag ${d ? 'done' : ''}" onclick="openSurah(${s})">${d ? 'âœ“' : ''} Ø³ÙˆØ±Ø© ${SURAHS[s-1][0]}</span>`;
   }).join('');
 
   el.innerHTML = `
     <div class="kh-plan-info">
       <div class="kh-plan-info__header">
-        <span>📅 ختمة ${days} يوم — اليوم ${elapsed+1} / ${days}</span>
-        <span>${pct}% مكتمل</span>
+        <span>ðŸ“… Ø®ØªÙ…Ø© ${days} ÙŠÙˆÙ… â€” Ø§Ù„ÙŠÙˆÙ… ${elapsed+1} / ${days}</span>
+        <span>${pct}% Ù…ÙƒØªÙ…Ù„</span>
       </div>
       <div class="kh-plan-pbar"><div class="kh-plan-pfill" style="width:${pct}%"></div></div>
       <div class="kh-plan-meta">
-        <b>سور اليوم:</b> سورة ${SURAHS[todayStart-1][0]} → سورة ${SURAHS[todayEnd-1][0]}
+        <b>Ø³ÙˆØ± Ø§Ù„ÙŠÙˆÙ…:</b> Ø³ÙˆØ±Ø© ${SURAHS[todayStart-1][0]} â†’ Ø³ÙˆØ±Ø© ${SURAHS[todayEnd-1][0]}
       </div>
       ${daysHtml}
-      <div class="kh-today-label">سور ورد اليوم:</div>
+      <div class="kh-today-label">Ø³ÙˆØ± ÙˆØ±Ø¯ Ø§Ù„ÙŠÙˆÙ…:</div>
       <div class="kh-today-tags">${tagsHtml}</div>
     </div>`;
   el.classList.add('show');
@@ -1823,14 +2328,14 @@ function togglePageBookmark() {
     bookmark = 0;
     localStorage.removeItem('kbm');
     btn.classList.remove('active');
-    btn.textContent = '🔖 حفظ المكان';
-    window.showToast?.('🗑 تم مسح الوقفة');
+    btn.textContent = 'ðŸ”– Ø­ÙØ¸ Ø§Ù„Ù…ÙƒØ§Ù†';
+    window.showToast?.('ðŸ—‘ ØªÙ… Ù…Ø³Ø­ Ø§Ù„ÙˆÙ‚ÙØ©');
   } else {
     bookmark = curPage;
     localStorage.setItem('kbm', curPage);
     btn.classList.add('active');
-    btn.textContent = '✅ وقفتك هنا';
-    window.showToast?.('✅ تم حفظ وقفتك في صفحة ' + curPage, 'toast-success');
+    btn.textContent = 'âœ… ÙˆÙ‚ÙØªÙƒ Ù‡Ù†Ø§';
+    window.showToast?.('âœ… ØªÙ… Ø­ÙØ¸ ÙˆÙ‚ÙØªÙƒ ÙÙŠ ØµÙØ­Ø© ' + curPage, 'toast-success');
   }
 }
 
@@ -1840,7 +2345,7 @@ function togglePageBookmark() {
 function saveWaqfa(surah, ayah) {
   waqfa = { surah, ayah };
   localStorage.setItem('kwaqfa', JSON.stringify(waqfa));
-  window.showToast?.('🔖 تم حفظ وقفتك عند آية ' + ayah, 'toast-success');
+  window.showToast?.('ðŸ”– ØªÙ… Ø­ÙØ¸ ÙˆÙ‚ÙØªÙƒ Ø¹Ù†Ø¯ Ø¢ÙŠØ© ' + ayah, 'toast-success');
   renderWaqfaBar();
   window.islamiCalc?.addXP?.(5, 'waqfa_saved');
 }
@@ -1863,7 +2368,7 @@ function renderWaqfaBar() {
   const lbl = document.getElementById('waqfa-lbl');
   if (waqfa) {
     bar.classList.add('show');
-    lbl.textContent = waqfa.ayah + ' من سورة ' + SURAHS[waqfa.surah - 1][0];
+    lbl.textContent = waqfa.ayah + ' Ù…Ù† Ø³ÙˆØ±Ø© ' + SURAHS[waqfa.surah - 1][0];
   } else {
     bar.classList.remove('show');
   }
@@ -1911,14 +2416,14 @@ function updateReaderUI() {
   const alreadyDone = !!pprog[p];
   const doneBtn  = document.getElementById('btn-done');
   const nextBtn  = document.getElementById('rfoot-next');
-  doneBtn.textContent = alreadyDone ? '✅ مكتملة' : '✅ أكملت هذه الصفحة';
+  doneBtn.textContent = alreadyDone ? 'âœ… Ù…ÙƒØªÙ…Ù„Ø©' : 'âœ… Ø£ÙƒÙ…Ù„Øª Ù‡Ø°Ù‡ Ø§Ù„ØµÙØ­Ø©';
   doneBtn.disabled    = alreadyDone;
   nextBtn.className   = alreadyDone ? 'kh-btn-next ready' : 'kh-btn-next';
 
   const bmBtn = document.getElementById('bookmark-page-btn');
   const isBm  = bookmark === p;
   bmBtn.className   = 'kh-bm-btn' + (isBm ? ' active' : '');
-  bmBtn.textContent = isBm ? '✅ وقفتك هنا' : '🔖 حفظ المكان';
+  bmBtn.textContent = isBm ? 'âœ… ÙˆÙ‚ÙØªÙƒ Ù‡Ù†Ø§' : 'ðŸ”– Ø­ÙØ¸ Ø§Ù„Ù…ÙƒØ§Ù†';
 }
 
 // ============================================================
@@ -1927,6 +2432,7 @@ function updateReaderUI() {
 async function loadPageContent(p) {
   const content = document.getElementById('readerContent');
   const loading = document.getElementById('readerLoading');
+  const requestId = ++activeReaderRequest;
   content.style.display = 'none';
   loading.style.display = 'block';
 
@@ -1941,26 +2447,28 @@ async function loadPageContent(p) {
     let s = ss, a = sa;
 
     while (s < es || (s === es && a < ea)) {
-      const surah    = SURAHS[s - 1];
-      const totalAy  = surah[1];
-      const endAyah  = s === es ? ea - 1 : totalAy;
+      const currentSurah = s;
+      const currentStartAyah = a;
+      const totalAy = SURAHS[currentSurah - 1][1];
+      const currentEndAyah = currentSurah === es ? ea - 1 : totalAy;
       requests.push(
-        fetch(`https://api.alquran.cloud/v1/surah/${s}/ar.alafasy`)
+        fetch(`https://api.alquran.cloud/v1/surah/${currentSurah}/quran-uthmani`)
           .then(r => r.json())
-          .then(d => ({ s, startAyah: a, endAyah, data: d.data }))
+          .then(d => ({ s: currentSurah, startAyah: currentStartAyah, endAyah: currentEndAyah, data: d.data }))
       );
       s++;
       a = 1;
     }
 
-    const results = await Promise.all(requests);
-    _apiCache[p]  = results;
+    const results = (await Promise.all(requests)).sort((left, right) => (left.s - right.s) || (left.startAyah - right.startAyah));
+    if (requestId !== activeReaderRequest || curPage !== p) return;
+    _apiCache[p] = results;
     renderPage(results, p);
-
   } catch {
+    if (requestId !== activeReaderRequest || curPage !== p) return;
     loading.style.display = 'none';
     content.style.display = 'block';
-    content.innerHTML = '<div style="text-align:center;padding:48px;color:var(--error)">❌ تعذّر تحميل الصفحة — تحقق من اتصالك بالإنترنت</div>';
+    content.innerHTML = '<div style="text-align:center;padding:48px;color:var(--error)">\u062a\u0639\u0630\u0631 \u062a\u062d\u0645\u064a\u0644 \u0627\u0644\u0635\u0641\u062d\u0629. \u062d\u0627\u0648\u0644 \u0645\u0631\u0629 \u0623\u062e\u0631\u0649 \u0644\u0627\u062d\u0642\u0627\u064b.</div>';
   }
 }
 
@@ -1987,7 +2495,7 @@ function renderPage(results, p) {
     const surahType = SURAHS[s - 1][2];
 
     if (ri > 0 || startAyah === 1) {
-      html += `<span class="kh-page-sep">— سورة ${surahName} — ${surahType} —</span>`;
+      html += `<span class="kh-page-sep">â€” Ø³ÙˆØ±Ø© ${surahName} â€” ${surahType} â€”</span>`;
     }
 
     const isFatiha  = s === 1;
@@ -1995,7 +2503,7 @@ function renderPage(results, p) {
     const showBism  = startAyah === 1 && !isFatiha && !isTawbah;
 
     if (showBism) {
-      html += `<div style="text-align:center;font-family:'Scheherazade New',serif;font-size:22px;color:var(--gd-400);padding:12px 0 4px;opacity:0.9;">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>`;
+      html += `<div style="text-align:center;font-family:'Scheherazade New',serif;font-size:22px;color:var(--gd-400);padding:12px 0 4px;opacity:0.9;">Ø¨ÙØ³Ù’Ù…Ù Ø§Ù„Ù„ÙŽÙ‘Ù‡Ù Ø§Ù„Ø±ÙŽÙ‘Ø­Ù’Ù…ÙŽÙ°Ù†Ù Ø§Ù„Ø±ÙŽÙ‘Ø­ÙÙŠÙ…Ù</div>`;
     }
 
     const ayahs = data.ayahs.filter(ay => ay.numberInSurah >= startAyah && ay.numberInSurah <= endAyah);
@@ -2014,15 +2522,15 @@ function renderPage(results, p) {
 
   // Update header info
   const firstS = results[0].s;
-  document.getElementById('readerTitle').textContent = 'الصفحة ' + p + ' — سورة ' + SURAHS[firstS-1][0];
-  document.getElementById('readerMeta').textContent  = 'الجزء ' + juz;
+  document.getElementById('readerTitle').textContent = 'Ø§Ù„ØµÙØ­Ø© ' + p + ' â€” Ø³ÙˆØ±Ø© ' + SURAHS[firstS-1][0];
+  document.getElementById('readerMeta').textContent  = 'Ø§Ù„Ø¬Ø²Ø¡ ' + juz;
 
    const showBismMain = results.length === 1 && results[0].startAyah === 1 && results[0].s === 1;
   document.getElementById('readerBismillah').style.display = showBismMain ? 'block' : 'none';
 
   content.innerHTML = html;
 
-  // علّم الوقفة المحفوظة
+  // Ø¹Ù„Ù‘Ù… Ø§Ù„ÙˆÙ‚ÙØ© Ø§Ù„Ù…Ø­ÙÙˆØ¸Ø©
   if (waqfa) {
     const wEl = document.querySelector(`.kh-anum[data-s="${waqfa.surah}"][data-a="${waqfa.ayah}"]`);
     if (wEl) wEl.classList.add('waqfa-mark');
@@ -2030,7 +2538,7 @@ function renderPage(results, p) {
 }
 
 // ============================================================
-// WORD CLICK → TAFSIR
+// WORD CLICK â†’ TAFSIR
 // ============================================================
 async function wordClick(el) {
   const surah = parseInt(el.dataset.s);
@@ -2046,7 +2554,7 @@ async function openTafsir(surah, ayah) {
   const txtEl  = document.getElementById('tafsirTxt');
   const ayahEl = document.getElementById('tafsirAyah');
   drawer.classList.add('open');
-  txtEl.textContent  = 'جاري التحميل...';
+  txtEl.textContent  = 'Ø¬Ø§Ø±ÙŠ Ø§Ù„ØªØ­Ù…ÙŠÙ„...';
   ayahEl.textContent = '';
 
   const key = `tf_${surah}_${ayah}`;
@@ -2063,12 +2571,12 @@ async function openTafsir(surah, ayah) {
       fetch(`https://api.alquran.cloud/v1/ayah/${surah}:${ayah}/ar.muyassar`).then(r => r.json())
     ]);
     const ayahTxt   = ayahR.data?.text || '';
-    const tafsirTxt = tafsirR.data?.text || 'التفسير غير متاح حالياً';
+    const tafsirTxt = tafsirR.data?.text || 'Ø§Ù„ØªÙØ³ÙŠØ± ØºÙŠØ± Ù…ØªØ§Ø­ Ø­Ø§Ù„ÙŠØ§Ù‹';
     ayahEl.textContent = ayahTxt;
     txtEl.textContent  = tafsirTxt;
     sessionStorage.setItem(key, JSON.stringify({ ayah: ayahTxt, tafsir: tafsirTxt }));
   } catch {
-    txtEl.textContent = '⚠️ تعذّر تحميل التفسير';
+    txtEl.textContent = 'âš ï¸ ØªØ¹Ø°Ù‘Ø± ØªØ­Ù…ÙŠÙ„ Ø§Ù„ØªÙØ³ÙŠØ±';
   }
 }
 
@@ -2078,14 +2586,14 @@ function closeTafsir() {
 }
 
 // ============================================================
-// ANUM CLICK → WAQFA
+// ANUM CLICK â†’ WAQFA
 // ============================================================
 function anumClick(el) {
   const surah = parseInt(el.dataset.s);
   const ayah  = parseInt(el.dataset.a);
   if (waqfa && waqfa.surah === surah && waqfa.ayah === ayah) {
     clearWaqfa();
-    window.showToast?.('🗑 تم مسح الوقفة');
+    window.showToast?.('ðŸ—‘ ØªÙ… Ù…Ø³Ø­ Ø§Ù„ÙˆÙ‚ÙØ©');
   } else {
     document.querySelectorAll('.kh-anum.waqfa-mark').forEach(e => e.classList.remove('waqfa-mark'));
     el.classList.add('waqfa-mark');
@@ -2117,25 +2625,26 @@ function markDone() {
   // XP
   const xpGained = 15;
   window.islamiCalc?.addXP?.(xpGained, 'khatma_page');
-  window.showToast?.('✅ صفحة ' + p + ' مكتملة! +' + xpGained + ' XP 🎉', 'toast-success');
+  window.showToast?.('âœ… ØµÙØ­Ø© ' + p + ' Ù…ÙƒØªÙ…Ù„Ø©! +' + xpGained + ' XP ðŸŽ‰', 'toast-success');
 
-  // تحقق من اكتمال السورة
+  // ØªØ­Ù‚Ù‚ Ù…Ù† Ø§ÙƒØªÙ…Ø§Ù„ Ø§Ù„Ø³ÙˆØ±Ø©
   checkSurahCompletion(p);
 
-  // تحديث Streak
+  // ØªØ­Ø¯ÙŠØ« Streak
   updateStreak();
 
-  // تحديث الزر
+  // ØªØ­Ø¯ÙŠØ« Ø§Ù„Ø²Ø±
   const doneBtn = document.getElementById('btn-done');
-  doneBtn.textContent = '✅ مكتملة';
+  doneBtn.textContent = 'âœ… Ù…ÙƒØªÙ…Ù„Ø©';
   doneBtn.disabled    = true;
   document.getElementById('rfoot-next').className = 'kh-btn-next ready';
 
-  // رسم XP float
+  // Ø±Ø³Ù… XP float
   spawnXPFloat(xpGained);
 
-  // حفظ للسحابة
+  // Ø­ÙØ¸ Ù„Ù„Ø³Ø­Ø§Ø¨Ø©
   window.islamiCalc?.saveProgress?.({ khatmaPages: pprog });
+  syncKhatmaCircle(true);
 }
 
 function checkSurahCompletion(donePage) {
@@ -2147,17 +2656,17 @@ function checkSurahCompletion(donePage) {
     if (allDone && !prog[n]) {
       prog[n] = Date.now();
       localStorage.setItem('kp', JSON.stringify(prog));
-      window.showToast?.('🌟 أكملت سورة ' + s[0] + '! +50 XP', 'toast-gold');
+      window.showToast?.('ðŸŒŸ Ø£ÙƒÙ…Ù„Øª Ø³ÙˆØ±Ø© ' + s[0] + '! +50 XP', 'toast-gold');
       window.islamiCalc?.addXP?.(50, 'khatma_surah_' + n);
-      window.islamiCalc?.logActivity?.('أكمل سورة ' + s[0], 'khatma_complete', '📖', '', 50);
+      window.islamiCalc?.logActivity?.('Ø£ÙƒÙ…Ù„ Ø³ÙˆØ±Ø© ' + s[0], 'khatma_complete', 'ðŸ“–', '', 50);
       spawnXPFloat(50);
     }
   });
 
   if (Object.keys(prog).length === 114) {
-    window.showToast?.('🎉🎉 ختمة مكتملة! مبروك +500 XP', 'toast-gold');
+    window.showToast?.('ðŸŽ‰ðŸŽ‰ Ø®ØªÙ…Ø© Ù…ÙƒØªÙ…Ù„Ø©! Ù…Ø¨Ø±ÙˆÙƒ +500 XP', 'toast-gold');
     window.islamiCalc?.addXP?.(500, 'khatma_full');
-    window.islamiCalc?.unlockBadge?.('khatma_complete', '📖 خاتم القرآن');
+    window.islamiCalc?.unlockBadge?.('khatma_complete', 'ðŸ“– Ø®Ø§ØªÙ… Ø§Ù„Ù‚Ø±Ø¢Ù†');
     confettiBurst();
   }
 }
@@ -2180,6 +2689,7 @@ function updateStreak() {
     document.getElementById('streakNum').textContent = newStreak;
     document.getElementById('streakBanner').classList.add('show');
     window.islamiCalc?.updateStreak?.(newStreak);
+    syncKhatmaCircle(true);
   }
 }
 
@@ -2187,7 +2697,7 @@ function updateStreak() {
 // RESET
 // ============================================================
 function resetProgress() {
-  if (!confirm('هل أنت متأكد؟ سيتم مسح كل تقدمك في الختمة.')) return;
+  if (!confirm('Ù‡Ù„ Ø£Ù†Øª Ù…ØªØ£ÙƒØ¯ØŸ Ø³ÙŠØªÙ… Ù…Ø³Ø­ ÙƒÙ„ ØªÙ‚Ø¯Ù…Ùƒ ÙÙŠ Ø§Ù„Ø®ØªÙ…Ø©.')) return;
   prog = {}; pprog = {};
   localStorage.removeItem('kp');
   localStorage.removeItem('kpp');
@@ -2198,7 +2708,7 @@ function resetProgress() {
   renderGrid();
   renderPageGrid();
   renderFeat();
-  window.showToast?.('🔄 تم إعادة التعيين');
+  window.showToast?.('ðŸ”„ ØªÙ… Ø¥Ø¹Ø§Ø¯Ø© Ø§Ù„ØªØ¹ÙŠÙŠÙ†');
 }
 
 // ============================================================
@@ -2207,7 +2717,7 @@ function resetProgress() {
 function spawnXPFloat(xp) {
   const el       = document.createElement('div');
   el.className   = 'xp-float';
-  el.textContent = '+' + xp + ' XP ⭐';
+  el.textContent = '+' + xp + ' XP â­';
   el.style.cssText = `
     position: fixed;
     top: 50%; left: 50%;
@@ -2279,3 +2789,4 @@ init();
 
 </body>
 </html>
+

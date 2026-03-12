@@ -3,6 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="/icons/favicon.ico" sizes="any">
+  <link rel="icon" type="image/svg+xml" href="/icons/favicon.svg">
+  <link rel="icon" type="image/png" sizes="96x96" href="/icons/favicon-96x96.png">
+  <link rel="shortcut icon" href="/icons/favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png">
+  <link rel="manifest" href="/icons/site.webmanifest">
   <title>عمرك الإسلامي (الهجري) | IslamiCalc</title>
   <meta name="description" content="احسب عمرك بالتاريخ الهجري بالسنوات والأشهر والأيام، واعرف كم مضى من حياتك منذ ميلادك بالتاريخ الميلادي أو الهجري.">
   <meta property="og:title" content="عمرك الإسلامي (الهجري) — IslamiCalc">
@@ -17,6 +23,7 @@
   <link rel="stylesheet" href="/style.css">
   <script type="module" src="/core/firebase.js"></script>
   <script type="module" src="/core/app.js"></script>
+  <script type="module" src="/core/site-shell.js"></script>
 
   <style>
     /* ─── Hero ─────────────────────────────────────────── */
@@ -488,12 +495,7 @@
 <header class="ic-nav" id="icNav">
   <div class="ic-nav__inner">
     <a href="/" class="ic-nav__logo">
-      <div class="ic-nav__logo-mark">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <path d="M12 2L14.09 8.26L21 9L15.54 14.74L17.18 22L12 18.77L6.82 22L8.46 14.74L3 9L9.91 8.26L12 2Z"
-                fill="rgba(255,255,255,0.95)"/>
-        </svg>
-      </div>
+      <img src="/icons/logo.png" class="site-logo" alt="Site Logo">
       <span class="ic-nav__logo-text">IslamiCalc</span>
     </a>
     <div class="ic-nav__spacer"></div>
@@ -535,12 +537,7 @@
 
   <div class="ic-drawer__header">
     <a href="/" class="ic-drawer__logo">
-      <div class="ic-nav__logo-mark ic-nav__logo-mark--sm">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <path d="M12 2L14.09 8.26L21 9L15.54 14.74L17.18 22L12 18.77L6.82 22L8.46 14.74L3 9L9.91 8.26L12 2Z"
-                fill="rgba(255,255,255,0.95)"/>
-        </svg>
-      </div>
+      <img src="/icons/logo.png" class="site-logo site-logo--sm" alt="Site Logo">
       <span class="ic-nav__logo-text">IslamiCalc</span>
     </a>
     <button id="drawerClose" class="ic-drawer__close" aria-label="إغلاق القائمة">

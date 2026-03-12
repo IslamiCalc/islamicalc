@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" href="/favicon.ico" sizes="any">
-  <link rel="icon" href="/assets/favicon-32.png" type="image/png" sizes="32x32">
-  <link rel="icon" href="/assets/favicon-16.png" type="image/png" sizes="16x16">
-  <link rel="shortcut icon" href="/favicon.ico">
-  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
-  <link rel="manifest" href="/manifest.json">
+  <link rel="icon" href="/icons/favicon.ico" sizes="any">
+  <link rel="icon" type="image/svg+xml" href="/icons/favicon.svg">
+  <link rel="icon" type="image/png" sizes="96x96" href="/icons/favicon-96x96.png">
+  <link rel="shortcut icon" href="/icons/favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png">
+  <link rel="manifest" href="/icons/site.webmanifest">
   <title>IslamiCalc — منصة إسلامية ذكية</title>
   <meta name="description" content="منصة إسلامية متكاملة: ختمة القرآن، أوقات الصلاة، الأذكار، الزكاة، الميدان الديني وأكثر.">
   <meta name="theme-color" content="#10b981">
@@ -28,15 +28,13 @@
   <meta name="twitter:title"       content="IslamiCalc — منصة إسلامية ذكية">
   <meta name="twitter:description" content="ختمة القرآن · أوقات الصلاة · الأذكار · الزكاة · الميدان الديني">
   <meta name="twitter:image"       content="https://islamicalc.com/assets/og-image.png">
-
-  <!-- Manifest & Favicon -->
-  <link rel="manifest" href="/manifest.json">
-  <!-- Style -->
+<!-- Style -->
   <link rel="stylesheet" href="/style.css">
 
   <!-- Firebase + App (module) -->
   <script type="module" src="/core/firebase.js"></script>
   <script type="module" src="/core/app.js"></script>
+  <script type="module" src="/core/site-shell.js"></script>
 </head>
 
 <body>
@@ -48,14 +46,7 @@
   <div class="ic-nav__inner">
 
     <a href="/" class="ic-nav__logo">
-      <div class="ic-nav__logo-mark">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
-             xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <path d="M12 2L14.09 8.26L21 9L15.54 14.74L17.18 22L12 18.77
-                   L6.82 22L8.46 14.74L3 9L9.91 8.26L12 2Z"
-                fill="rgba(255,255,255,0.95)" stroke="none"/>
-        </svg>
-      </div>
+      <img src="/icons/logo.png" class="site-logo" alt="Site Logo">
       <span class="ic-nav__logo-text">IslamiCalc</span>
     </a>
 
@@ -108,14 +99,7 @@
 
   <div class="ic-drawer__header">
     <a href="/" class="ic-drawer__logo">
-      <div class="ic-nav__logo-mark ic-nav__logo-mark--sm">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
-             xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <path d="M12 2L14.09 8.26L21 9L15.54 14.74L17.18 22L12 18.77
-                   L6.82 22L8.46 14.74L3 9L9.91 8.26L12 2Z"
-                fill="rgba(255,255,255,0.95)"/>
-        </svg>
-      </div>
+      <img src="/icons/logo.png" class="site-logo site-logo--sm" alt="Site Logo">
       <span class="ic-nav__logo-text">IslamiCalc</span>
     </a>
     <button id="drawerClose" class="ic-drawer__close" aria-label="إغلاق القائمة">
@@ -446,19 +430,20 @@
         </div>
       </div>
 
-      <div class="ic-card ic-card--3d ic-card--xp">
+            <div class="ic-card ic-card--3d ic-card--dhikr">
         <div class="ic-card__header">
-          <span>⚡ نقاط XP</span>
-          <span class="ic-text--gold" id="heroXPDisplay">— نقطة</span>
+          <span>🤲 ذكر اليوم</span>
+          <span class="ic-badge ic-badge--gold">متجدد</span>
         </div>
-        <div class="ic-xp-mini">
-          <div class="ic-xp-mini__level" id="heroLevelName">سجّل دخولك لعرض مستواك</div>
-          <div class="ic-xp-mini__bar-wrap">
-            <div class="ic-xp-mini__bar" id="heroXPBar" style="width:0%"></div>
+        <div class="ic-dhikr-mini">
+          <div class="ic-dhikr-mini__text">سُبْحَانَ اللَّهِ وَبِحَمْدِهِ</div>
+          <div class="ic-dhikr-mini__meta">
+            <span class="ic-dhikr-mini__pill">100 مرة</span>
+            <span class="ic-dhikr-mini__pill">ذكر خفيف عظيم الأثر</span>
           </div>
-          <div class="ic-xp-mini__nums">
-            <span id="heroXPCurrent">0</span>
-            <span id="heroXPNext">100</span>
+          <div class="ic-dhikr-mini__footer">
+            <a href="/athkar" class="ic-btn ic-btn--gold ic-btn--sm">افتح الأذكار ←</a>
+            <div class="ic-dhikr-mini__count">برنامج اليوم: صباح · مساء · نوم</div>
           </div>
         </div>
       </div>
@@ -493,6 +478,75 @@
     </div>
   </div>
 
+
+  <section class="ic-section ic-section--quran-hub" aria-label="بوابة القرآن">
+    <div class="ic-container">
+      <div class="ic-section__header">
+        <span class="ic-section__eyebrow">📖 القرآن</span>
+        <h2 class="ic-section__title">تجربة مصحف رقمية أقرب إلى التطبيق</h2>
+        <p class="ic-section__sub">ادخل مباشرة إلى القراءة، واصل آخر صفحة، انتقل بين الأجزاء، وادعُ عائلتك إلى غرفة ختمة مشتركة.</p>
+      </div>
+
+      <div class="ic-quran-hub">
+        <article class="ic-quran-hub__hero">
+          <span class="ic-quran-hub__eyebrow">مسارك القرآني اليوم</span>
+          <h3>تابع من حيث توقفت، ثم افتح غرفة عائلية للإنجاز الجماعي</h3>
+          <p>الواجهة الجديدة تجعل الوصول إلى المصحف، الإشارات المرجعية، التقدّم اليومي، وروابط الغرف الخاصة أسرع وأكثر هدوءاً على الجوال والشاشات الكبيرة.</p>
+
+          <div class="ic-quran-hub__hero-actions">
+            <a href="/khatma" class="ic-btn ic-btn--primary ic-btn--lg">متابعة القراءة ←</a>
+            <a href="/khatma#khatmaCircle" class="ic-btn ic-btn--secondary ic-btn--lg">غرف العائلة والأصدقاء</a>
+          </div>
+
+          <div class="ic-quran-hub__stats">
+            <div class="ic-quran-hub__stat"><strong>15</strong><span>جزء مكتمل من 30</span></div>
+            <div class="ic-quran-hub__stat"><strong>300</strong><span>صفحة مقروءة هذا المسار</span></div>
+            <div class="ic-quran-hub__stat"><strong>5</strong><span>إشارات محفوظة للعودة السريعة</span></div>
+          </div>
+
+          <div class="ic-quran-hub__chips">
+            <a href="/khatma" class="ic-chip-link">اكمل آخر صفحة</a>
+            <a href="/khatma" class="ic-chip-link">انتقل إلى فهرس السور</a>
+            <a href="/khatma" class="ic-chip-link">تنقل بالأجزاء</a>
+            <a href="/khatma#khatmaCircle" class="ic-chip-link">غرفة ختمة خاصة</a>
+          </div>
+        </article>
+
+        <div class="ic-quran-hub__side">
+          <article class="ic-quran-hub__panel">
+            <h3>سور سريعة لقراءة اليوم</h3>
+            <p>وصول سريع إلى سور يكثر الرجوع إليها في الورد اليومي أو التلاوة السريعة.</p>
+            <div class="ic-quran-hub__chips">
+              <a href="/khatma" class="ic-chip-link">الفاتحة</a>
+              <a href="/khatma" class="ic-chip-link">يس</a>
+              <a href="/khatma" class="ic-chip-link">الملك</a>
+              <a href="/khatma" class="ic-chip-link">الكهف</a>
+            </div>
+          </article>
+
+          <article class="ic-quran-hub__panel">
+            <h3>تنقّل بالأجزاء</h3>
+            <p>ابدأ مباشرة من الجزء الذي تتابعه أو افتح الخطة اليومية لختمة شهرية هادئة.</p>
+            <div class="ic-quran-hub__chips">
+              <a href="/khatma" class="ic-chip-link">الجزء 1</a>
+              <a href="/khatma" class="ic-chip-link">الجزء 15</a>
+              <a href="/khatma" class="ic-chip-link">الجزء 30</a>
+            </div>
+          </article>
+
+          <article class="ic-quran-hub__panel">
+            <h3>إشارة محفوظة وغرفة مشتركة</h3>
+            <p>احفظ موضعك الحالي، ثم ادعُ الأسرة أو الأصدقاء إلى غرفة خاصة لمتابعة الختمة معاً من نفس المسار.</p>
+            <div class="ic-quran-hub__chips">
+              <a href="/khatma" class="ic-chip-link">حفظ آخر موضع</a>
+              <a href="/khatma#khatmaCircle" class="ic-chip-link">نسخ رابط الدعوة</a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- ============================================================
        SECTION: أدوات
        ============================================================ -->
@@ -504,48 +558,97 @@
         <p class="ic-section__sub">أدوات إسلامية دقيقة وسهلة الاستخدام مع نظام نقاط لتحفيزك</p>
       </div>
 
-      <div class="ic-tools-grid">
+            <div class="ic-tools-grid">
         <a href="/khatma" class="ic-tool-card ic-tool-card--featured">
           <div class="ic-tool-card__glow"></div>
           <div class="ic-tool-card__icon">📖</div>
           <h3>ختمة القرآن</h3>
-          <p>تتبع ختمتك بالصفحات أو الأجزاء مع مؤشر تقدم وقارئ مصحف كامل</p>
-          <span class="ic-tool-card__cta">ابدأ الآن ←</span>
+          <p>مصحف رقمي، متابعة صفحات وأجزاء، غرف عائلية، وإشارات مرجعية للعودة السريعة.</p>
+          <span class="ic-tool-card__cta">ادخل إلى المصحف ←</span>
         </a>
         <a href="/prayer" class="ic-tool-card">
           <div class="ic-tool-card__glow"></div>
           <div class="ic-tool-card__icon">🕌</div>
-          <h3>أوقات الصلاة</h3>
-          <p>أوقات الصلاة بدقة حسب موقعك مع عداد تنازلي للصلاة القادمة</p>
-          <span class="ic-tool-card__cta">عرض الأوقات ←</span>
+          <h3>مواقيت الصلاة</h3>
+          <p>أوقات دقيقة، عداد حي، تنبيه الصلاة التالية، واتجاه القبلة من صفحة واحدة.</p>
+          <span class="ic-tool-card__cta">عرض المواقيت ←</span>
         </a>
         <a href="/athkar" class="ic-tool-card">
           <div class="ic-tool-card__glow"></div>
-          <div class="ic-tool-card__icon">🐿</div>
-          <h3>الأذكار والتسبيح</h3>
-          <p>أذكار الصباح والمساء وتسبيح رقمي احترافي مع تتبع الإنجاز</p>
+          <div class="ic-tool-card__icon">🤲</div>
+          <h3>الأذكار والدعاء</h3>
+          <p>أذكار يومية، تسبيح رقمي، ووضع قراءة مريح يخفف التشتيت ويشجع الاستمرار.</p>
           <span class="ic-tool-card__cta">ابدأ الأذكار ←</span>
         </a>
         <a href="/arena" class="ic-tool-card">
           <div class="ic-tool-card__glow"></div>
           <div class="ic-tool-card__icon">⚔️</div>
-          <h3>الميدان الديني</h3>
-          <p>تحدّ نفسك بأسئلة إسلامية يومية واكسب XP وتسلق لوحة المتصدرين</p>
-          <span class="ic-tool-card__cta">تحدَّ الآن ←</span>
+          <h3>الميدان</h3>
+          <p>اختبارات سريعة، تنافس، تحدي الأصدقاء، ولوحة متصدرين متصلة بحسابك.</p>
+          <span class="ic-tool-card__cta">العب الآن ←</span>
         </a>
         <a href="/zakat" class="ic-tool-card">
           <div class="ic-tool-card__glow"></div>
           <div class="ic-tool-card__icon">💰</div>
           <h3>حاسبة الزكاة</h3>
-          <p>احسب زكاة المال والذهب والفضة بدقة مع شرح تفصيلي للنتائج</p>
+          <p>زكاة المال والذهب والفضة والأسهم مع واجهة أوضح ونتيجة قابلة للفهم.</p>
           <span class="ic-tool-card__cta">احسب الآن ←</span>
         </a>
         <a href="/inheritance" class="ic-tool-card">
           <div class="ic-tool-card__glow"></div>
           <div class="ic-tool-card__icon">⚖️</div>
-          <h3>حاسبة الميراث</h3>
-          <p>توزيع الميراث الشرعي تلقائياً حسب أحكام الفرائض الإسلامية</p>
-          <span class="ic-tool-card__cta">احسب الآن ←</span>
+          <h3>الميراث</h3>
+          <p>حاسبة تعليمية مبسطة لتوزيع الأنصبة مع تنبيه واضح بأنها ليست فتوى ملزمة.</p>
+          <span class="ic-tool-card__cta">ابدأ الحساب ←</span>
+        </a>
+        <a href="/hijri" class="ic-tool-card">
+          <div class="ic-tool-card__glow"></div>
+          <div class="ic-tool-card__icon">🗓️</div>
+          <h3>التحويل الهجري</h3>
+          <p>حوّل بين التاريخين الهجري والميلادي بسرعة مع واجهة تناسب الهاتف والسطح الكبير.</p>
+          <span class="ic-tool-card__cta">حوّل الآن ←</span>
+        </a>
+        <a href="/age" class="ic-tool-card">
+          <div class="ic-tool-card__glow"></div>
+          <div class="ic-tool-card__icon">⌛</div>
+          <h3>حساب العمر</h3>
+          <p>احسب العمر بالسنوات والأشهر والأيام مع عرض مختصر ومريح بصرياً.</p>
+          <span class="ic-tool-card__cta">احسب العمر ←</span>
+        </a>
+        <a href="/fasting" class="ic-tool-card">
+          <div class="ic-tool-card__glow"></div>
+          <div class="ic-tool-card__icon">🌙</div>
+          <h3>حساب الصيام</h3>
+          <p>متابعة القضاء والنذر وخطة رمضان في مساحة واحدة أكثر تنظيماً.</p>
+          <span class="ic-tool-card__cta">خطط للصيام ←</span>
+        </a>
+        <a href="/kafara" class="ic-tool-card">
+          <div class="ic-tool-card__glow"></div>
+          <div class="ic-tool-card__icon">🧾</div>
+          <h3>الكفارة</h3>
+          <p>شرح سريع وخطوات واضحة لحسابات الكفارة وفق الحالات التعليمية المتاحة.</p>
+          <span class="ic-tool-card__cta">استعرض الكفارة ←</span>
+        </a>
+        <a href="/sadaqa" class="ic-tool-card">
+          <div class="ic-tool-card__glow"></div>
+          <div class="ic-tool-card__icon">💚</div>
+          <h3>الصدقة</h3>
+          <p>أفكار عملية وخطط عطاء يومية تساعدك على الاستمرارية وبناء عادة نافعة.</p>
+          <span class="ic-tool-card__cta">استكشف الصدقة ←</span>
+        </a>
+        <a href="/ramadan" class="ic-tool-card">
+          <div class="ic-tool-card__glow"></div>
+          <div class="ic-tool-card__icon">🫶</div>
+          <h3>متابعة رمضان</h3>
+          <p>بوابة رمضان تجمع الصيام، الصلاة، الأذكار، والقرآن في لوحة موحدة.</p>
+          <span class="ic-tool-card__cta">افتح رمضان ←</span>
+        </a>
+        <a href="/prayer#qibla-card" class="ic-tool-card">
+          <div class="ic-tool-card__glow"></div>
+          <div class="ic-tool-card__icon">🧭</div>
+          <h3>اتجاه القبلة</h3>
+          <p>بطاقة قبلة سريعة مناسبة للجوال مع زاوية الاتجاه داخل صفحة الصلاة.</p>
+          <span class="ic-tool-card__cta">عرض القبلة ←</span>
         </a>
       </div>
     </div>
@@ -707,6 +810,92 @@
     </div>
   </section>
 
+
+  <section class="ic-section ic-section--learn" aria-label="المعرفة الإسلامية">
+    <div class="ic-container">
+      <div class="ic-section__header">
+        <span class="ic-section__eyebrow">📚 المعرفة</span>
+        <h2 class="ic-section__title">قصص، سيرة، فقه، ومقالات في واجهة واحدة</h2>
+        <p class="ic-section__sub">بطاقات معرفية كبيرة بصرياً تساعد الزائر على الانتقال من الأداة إلى التعلّم بسهولة.</p>
+      </div>
+
+      <div class="ic-learn-grid">
+        <a href="/prophets" class="ic-learn-card ic-learn-card--prophets">
+          <div class="ic-learn-card__bg"></div>
+          <div class="ic-learn-card__content">
+            <div class="ic-learn-card__icon">📚</div>
+            <h3>قصص الأنبياء</h3>
+            <p>تسلسل قصصي واضح ودروس تربوية مركزة.</p>
+            <span class="ic-learn-card__cta">ابدأ القصص ←</span>
+          </div>
+        </a>
+        <a href="/seerah" class="ic-learn-card ic-learn-card--seerah">
+          <div class="ic-learn-card__bg"></div>
+          <div class="ic-learn-card__content">
+            <div class="ic-learn-card__icon">🕋</div>
+            <h3>السيرة النبوية</h3>
+            <p>محطات أساسية من السيرة في تصميم أكثر تركيزاً ووضوحاً.</p>
+            <span class="ic-learn-card__cta">استعرض السيرة ←</span>
+          </div>
+        </a>
+        <a href="/fiqh" class="ic-learn-card ic-learn-card--fiqh">
+          <div class="ic-learn-card__bg"></div>
+          <div class="ic-learn-card__content">
+            <div class="ic-learn-card__icon">⚖️</div>
+            <h3>الفقه والأسئلة</h3>
+            <p>وصول أسرع إلى المسائل الشائعة والتنقل بين الموضوعات.</p>
+            <span class="ic-learn-card__cta">ادخل إلى الفقه ←</span>
+          </div>
+        </a>
+        <a href="/articles" class="ic-learn-card ic-learn-card--asma">
+          <div class="ic-learn-card__bg"></div>
+          <div class="ic-learn-card__content">
+            <div class="ic-learn-card__icon">📰</div>
+            <h3>المقالات الإسلامية</h3>
+            <p>قراءة هادئة مع بطاقات واضحة وهرمية محتوى أفضل.</p>
+            <span class="ic-learn-card__cta">اقرأ المقالات ←</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="ic-section ic-section--challenges" aria-label="التحديات القرآنية">
+    <div class="ic-container">
+      <div class="ic-section__header">
+        <span class="ic-section__eyebrow">📈 التحديات</span>
+        <h2 class="ic-section__title">قراءة يومية وتحديات مجتمعية تشجّع الاستمرار</h2>
+        <p class="ic-section__sub">تصميم أكثر حيوية للتقدّم اليومي، الإنجاز الجماعي، والتحديات التي تربط القرآن بالعادة اليومية.</p>
+      </div>
+
+      <div class="ic-challenges-grid">
+        <article class="ic-challenge-card">
+          <span class="ic-challenge-card__eyebrow">ورد اليوم</span>
+          <h3>تحدي القراءة اليومية</h3>
+          <p>اقرأ 8 صفحات يومياً لتحافظ على إيقاع ثابت دون ضغط، مع شريط تقدّم حي وواضح.</p>
+          <div class="ic-progress ic-progress--68"><span></span></div>
+          <div class="ic-challenge-card__meta"><span>68% من هدف اليوم</span><span>5 من 8 صفحات</span></div>
+        </article>
+
+        <article class="ic-challenge-card">
+          <span class="ic-challenge-card__eyebrow">المجتمع</span>
+          <h3>التقدّم الجماعي</h3>
+          <p>اعرض نسبة الإنجاز داخل غرفة القرآن العائلية وشاهد كيف يقترب الفريق من الختمة المشتركة.</p>
+          <div class="ic-progress ic-progress--47"><span></span></div>
+          <div class="ic-challenge-card__meta"><span>47% من الختمة الجماعية</span><span>14 جزءاً من 30</span></div>
+        </article>
+
+        <article class="ic-challenge-card">
+          <span class="ic-challenge-card__eyebrow">الاستمرارية</span>
+          <h3>تحدي 7 أيام بلا انقطاع</h3>
+          <p>سلسلة تشجيعية تربط القراءة، الذكر، والصلاة ضمن تجربة هادئة تشبه التطبيقات الحديثة.</p>
+          <div class="ic-progress ic-progress--83"><span></span></div>
+          <div class="ic-challenge-card__meta"><span>اليوم 6 من 7</span><span>استمر يوماً إضافياً</span></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
   <!-- ============================================================
        SECTION: رمضان
        ============================================================ -->
@@ -743,12 +932,7 @@
     <div class="ic-container">
       <div class="ic-footer__inner ic-footer__inner--simple">
         <div class="ic-footer__brand">
-          <div class="ic-nav__logo-mark ic-nav__logo-mark--sm">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <path d="M12 2L14.09 8.26L21 9L15.54 14.74L17.18 22L12 18.77L6.82 22L8.46 14.74L3 9L9.91 8.26L12 2Z"
-                    fill="rgba(255,255,255,0.95)"/>
-            </svg>
-          </div>
+          <img src="/icons/logo.png" class="site-logo site-logo--sm" alt="Site Logo">
           <span class="ic-nav__logo-text" style="font-size:16px">IslamiCalc</span>
         </div>
         <nav class="ic-footer__links" aria-label="روابط ثانوية">
@@ -1063,4 +1247,7 @@
 
 </body>
 </html>
+
+
+
 
